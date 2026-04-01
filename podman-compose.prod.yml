@@ -4,7 +4,7 @@ services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Containerfile
     container_name: yutro-app
     env_file: .env.production
     ports:
