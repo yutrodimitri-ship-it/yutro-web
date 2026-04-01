@@ -20,12 +20,9 @@ const navItems = [
 export function Header() {
   const t = useTranslations("nav");
   const { scrollY } = useScroll();
-  const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
-    const previous = scrollY.getPrevious() ?? 0;
-    setHidden(latest > 100 && latest > previous);
     setScrolled(latest > 50);
   });
 
@@ -36,8 +33,6 @@ export function Header() {
           ? "bg-background/80 backdrop-blur-md border-b border-border/50"
           : "bg-transparent"
       }`}
-      animate={{ y: hidden ? "-100%" : "0%" }}
-      transition={{ duration: 0.3 }}
     >
       <Container>
         <nav className="flex h-16 items-center justify-between lg:h-20">

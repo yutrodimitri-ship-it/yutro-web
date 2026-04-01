@@ -50,7 +50,7 @@ export default async function ProjectPage({
         </div>
 
         {/* Hero Image with parallax */}
-        <ProjectHeroImage title={project.title} />
+        <ProjectHeroImage title={project.title} image={project.image} />
 
         {/* Title */}
         <h1 className="mt-10 text-4xl font-bold tracking-tight sm:text-5xl">
@@ -103,7 +103,7 @@ export default async function ProjectPage({
           </h2>
           <div className="aspect-video overflow-hidden rounded-xl bg-muted">
             <iframe
-              src={project.videoUrl}
+              src={`${project.videoUrl}?rel=0&modestbranding=1&showinfo=0&controls=1&disablekb=0&fs=1&iv_load_policy=3`}
               title={`${project.title} Video`}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen

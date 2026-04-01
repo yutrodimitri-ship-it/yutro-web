@@ -1,8 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { Link } from "@/i18n/navigation";
-import { Badge } from "@/components/ui/badge";
 import type { Project } from "@/data/projects";
 
 interface ProjectCardProps {
@@ -22,10 +22,13 @@ export function ProjectCard({ project, locale }: ProjectCardProps) {
       >
         {/* Image */}
         <div className="relative aspect-video overflow-hidden">
-          <div className="h-full w-full bg-muted flex items-center justify-center text-muted-foreground text-sm">
-            {/* Placeholder until real images */}
-            {project.title}
-          </div>
+          <Image
+            src={project.image}
+            alt={project.title}
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          />
 
           {/* Hover Overlay */}
           <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/80 via-black/20 to-transparent p-6 opacity-0 transition-opacity duration-300 group-hover:opacity-100">

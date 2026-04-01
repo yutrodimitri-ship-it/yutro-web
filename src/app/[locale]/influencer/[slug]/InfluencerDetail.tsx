@@ -1,9 +1,11 @@
 "use client";
 
+import { useState, useCallback, useEffect } from "react";
 import { notFound, useParams } from "next/navigation";
 import { useLocale } from "next-intl";
 import { motion } from "framer-motion";
 import { Link } from "@/i18n/navigation";
+import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import { influencers } from "@/data/influencers";
 
 const fadeUp = {
@@ -29,6 +31,40 @@ export default function InfluencerDetail() {
   const locale = useLocale();
   const influencer = influencers.find((i) => i.slug === slug);
   const isEs = locale === "es";
+
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+
+  const closeLightbox = useCallback(() => setLightboxIndex(null), []);
+
+  const prevImage = useCallback(() => {
+    setLightboxIndex((i) =>
+      i !== null && i > 0 ? i - 1 : influencer!.gallery.length - 1
+    );
+  }, [influencer]);
+
+  const nextImage = useCallback(() => {
+    setLightboxIndex((i) =>
+      i !== null && i < influencer!.gallery.length - 1 ? i + 1 : 0
+    );
+  }, [influencer]);
+
+  useEffect(() => {
+    if (lightboxIndex === null) return;
+
+    function handleKey(e: KeyboardEvent) {
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowLeft") prevImage();
+      if (e.key === "ArrowRight") nextImage();
+    }
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleKey);
+
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", handleKey);
+    };
+  }, [lightboxIndex, closeLightbox, prevImage, nextImage]);
 
   if (!influencer) notFound();
 
@@ -166,7 +202,8 @@ export default function InfluencerDetail() {
             className="grid grid-cols-3 gap-1 py-1 sm:gap-1.5 sm:py-1.5"
           >
             {influencer.gallery.map((img, idx) => (
-              <motion.div
+              <motion.button
+                type="button"
                 key={idx}
                 custom={idx}
                 variants={{
@@ -177,16 +214,14 @@ export default function InfluencerDetail() {
                     transition: { delay: i * 0.06, duration: 0.4, ease: "easeOut" as const },
                   }),
                 }}
-                className="group relative aspect-square cursor-pointer overflow-hidden bg-muted"
+                onClick={() => setLightboxIndex(idx)}
+                className="group relative aspect-square cursor-zoom-in overflow-hidden bg-muted"
               >
-                {/* Placeholder — replace with next/image */}
                 <div className="flex h-full w-full items-center justify-center text-sm font-medium text-muted-foreground transition-all duration-300 group-hover:scale-110">
                   {String(idx + 1).padStart(2, "0")}
                 </div>
-
-                {/* Hover overlay */}
                 <div className="absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/20" />
-              </motion.div>
+              </motion.button>
             ))}
           </motion.div>
         </div>
@@ -225,6 +260,51 @@ export default function InfluencerDetail() {
           </motion.div>
         </div>
       </section>
+
+      {/* Lightbox */}
+      {lightboxIndex !== null && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-sm"
+          onClick={closeLightbox}
+        >
+          <button
+            type="button"
+            onClick={closeLightbox}
+            className="absolute top-4 right-4 z-10 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/20"
+          >
+            <X className="h-6 w-6" />
+          </button>
+
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); prevImage(); }}
+            className="absolute left-4 z-10 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/20"
+          >
+            <ChevronLeft className="h-6 w-6" />
+          </button>
+
+          <div
+            className="relative h-[80vh] w-[90vw] max-w-5xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex h-full w-full items-center justify-center text-2xl text-muted-foreground">
+              {String(lightboxIndex + 1).padStart(2, "0")}
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); nextImage(); }}
+            className="absolute right-4 z-10 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/20"
+          >
+            <ChevronRight className="h-6 w-6" />
+          </button>
+
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-sm text-white/60">
+            {lightboxIndex + 1} / {influencer.gallery.length}
+          </div>
+        </div>
+      )}
 
       {/* ══════════════════════════════════════════════
           CTA — Gradient accent
