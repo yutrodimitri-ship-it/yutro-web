@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import { contactSchema } from "@/lib/validation";
 import { verifyCsrfToken } from "@/lib/csrf";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { sendContactEmail } from "@/lib/email";
+import { db } from "@/db";
+import { contactSubmissions } from "@/db/schema";
 
 export async function POST(request: Request) {
   // Rate limiting: 5 requests per minute per IP
@@ -43,27 +46,40 @@ export async function POST(request: Request) {
   }
 
   const data = result.data;
+  const userAgent = request.headers.get("user-agent") || undefined;
 
-  // Send email — for now log to console. Replace with Resend/SendGrid/Nodemailer in production.
-  // eslint-disable-next-line no-console
-  console.log("📧 Contact form submission:", {
-    name: data.name,
-    email: data.email,
-    phone: data.phone,
-    subject: data.subject,
-    message: data.message.slice(0, 100) + (data.message.length > 100 ? "..." : ""),
-    ip,
-    timestamp: new Date().toISOString(),
-  });
+  // Save to database
+  try {
+    await db.insert(contactSubmissions).values({
+      name: data.name,
+      email: data.email,
+      company: undefined,
+      phone: data.phone,
+      message: data.message,
+      ipAddress: ip === "unknown" ? undefined : ip,
+      userAgent,
+    });
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error("DB insert failed:", err);
+    // Don't block the user — still try to send email
+  }
 
-  // TODO: Uncomment when email service is configured
-  // await sendEmail({
-  //   to: "contacto@yutro.cl",
-  //   from: "noreply@yutro.cl",
-  //   replyTo: data.email,
-  //   subject: `[YUTRO Web] ${data.subject}`,
-  //   text: `Nombre: ${data.name}\nEmail: ${data.email}\nTeléfono: ${data.phone || "N/A"}\n\n${data.message}`,
-  // });
+  // Send email notification
+  try {
+    await sendContactEmail({
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      subject: data.subject,
+      message: data.message,
+      ip,
+    });
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error("Email send failed:", err);
+    // Data is saved in DB, so we still return success
+  }
 
   return NextResponse.json({ success: true });
 }
