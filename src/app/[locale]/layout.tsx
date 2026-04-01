@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { GSAPProvider } from "@/components/providers/GSAPProvider";
-import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { SkipLink } from "@/components/layout/SkipLink";
@@ -28,16 +27,14 @@ export default async function LocaleLayout({
     <NextIntlClientProvider locale={locale} messages={messages}>
       <ThemeProvider>
         <GSAPProvider>
-          <SmoothScrollProvider>
-            <OrganizationJsonLd />
-            <WebSiteJsonLd />
-            <SkipLink />
-            <Header />
-            <main id="main-content" className="flex-1 pt-16 lg:pt-20">
-              {children}
-            </main>
-            <Footer />
-          </SmoothScrollProvider>
+          <OrganizationJsonLd />
+          <WebSiteJsonLd />
+          <SkipLink />
+          <Header />
+          <main id="main-content" className="flex-1 pt-16 lg:pt-20">
+            {children}
+          </main>
+          <Footer />
         </GSAPProvider>
       </ThemeProvider>
     </NextIntlClientProvider>

@@ -8,11 +8,13 @@ const directions = ["left", "right", "up", "down"] as const;
 
 export function ProjectHeroImage({ title }: { title: string }) {
   return (
-    <Parallax speed={-0.15}>
-      <div className="aspect-video overflow-hidden rounded-xl bg-muted flex items-center justify-center text-muted-foreground text-lg">
-        {title}
-      </div>
-    </Parallax>
+    <div className="relative overflow-hidden rounded-xl">
+      <Parallax speed={-0.1}>
+        <div className="aspect-video bg-muted flex items-center justify-center text-muted-foreground text-lg">
+          {title}
+        </div>
+      </Parallax>
+    </div>
   );
 }
 

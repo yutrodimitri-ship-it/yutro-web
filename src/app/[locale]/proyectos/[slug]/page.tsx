@@ -43,9 +43,11 @@ export default async function ProjectPage({
     <section className="py-20 lg:py-28">
       <Container className="max-w-5xl">
         {/* Back */}
-        <CTAButton href="/proyectos" variant="outline" className="mb-8 text-sm px-4 py-2">
-          &larr; {l === "es" ? "Volver a proyectos" : "Back to projects"}
-        </CTAButton>
+        <div className="relative z-10 mb-8">
+          <CTAButton href="/proyectos" variant="outline" className="text-sm px-4 py-2">
+            &larr; {l === "es" ? "Volver a proyectos" : "Back to projects"}
+          </CTAButton>
+        </div>
 
         {/* Hero Image with parallax */}
         <ProjectHeroImage title={project.title} />

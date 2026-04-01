@@ -50,7 +50,7 @@ function applySecurityHeaders(
   const csp = [
     "default-src 'self'",
     `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'${isDev ? " 'unsafe-eval'" : ""}`,
-    `style-src 'self' 'nonce-${nonce}'`,
+    `style-src 'self' 'unsafe-inline'`,
     "connect-src 'self' https://*.sanity.io https://cdn.sanity.io",
     "frame-src 'self' https://www.youtube.com https://player.vimeo.com",
     "img-src 'self' data: https://cdn.sanity.io blob:",
@@ -96,13 +96,5 @@ function applySecurityHeaders(
 }
 
 export const config = {
-  matcher: [
-    {
-      source: "/((?!_next/static|_next/image|favicon.ico).*)",
-      missing: [
-        { type: "header" as const, key: "next-router-prefetch" },
-        { type: "header" as const, key: "purpose", value: "prefetch" },
-      ],
-    },
-  ],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
 };
