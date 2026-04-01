@@ -1,0 +1,60 @@
+{
+  "framework": "nextjs",
+  "redirects": [
+    {
+      "source": "/proyectos",
+      "destination": "/es/proyectos",
+      "permanent": true
+    },
+    {
+      "source": "/servicios",
+      "destination": "/es/servicios",
+      "permanent": true
+    },
+    {
+      "source": "/contacto",
+      "destination": "/es/contacto",
+      "permanent": true
+    },
+    {
+      "source": "/blog",
+      "destination": "/es/blog",
+      "permanent": true
+    },
+    {
+      "source": "/wp-admin/:path*",
+      "destination": "/es",
+      "permanent": false
+    },
+    {
+      "source": "/wp-content/:path*",
+      "destination": "/es",
+      "permanent": false
+    },
+    {
+      "source": "/wp-login.php",
+      "destination": "/es",
+      "permanent": false
+    }
+  ],
+  "headers": [
+    {
+      "source": "/fonts/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/(.*).svg",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400, s-maxage=604800"
+        }
+      ]
+    }
+  ]
+}

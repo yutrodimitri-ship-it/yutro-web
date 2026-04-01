@@ -1,0 +1,30 @@
+# YUTRO.
+
+> Productora audiovisual especializada en inteligencia artificial generativa. Parte de VRYP - Art & AI Solutions.
+
+## Servicios
+
+- Imágenes Hiperrealistas con IA
+- Animación & Storytelling
+- Producción Audiovisual con IA
+- 3D & Motion Graphics
+- Postproducción & FX
+- Consistencia Visual de Marca
+
+## Contacto
+
+- Email: contacto@yutro.cl
+- Instagram: @yutro_ia
+- Web: https://www.yutro.cl
+
+## Secciones
+
+- [Proyectos](https://www.yutro.cl/es/proyectos): Portfolio de campañas para marcas como Head, Super Pollo, Santander, Paris, Falabella, MG, Bburago, Sprim, Frutos de Chile.
+- [Servicios](https://www.yutro.cl/es/servicios): Detalle de los 6 servicios principales.
+- [Influencer](https://www.yutro.cl/es/influencer): Avatares digitales creados con IA (Luna, Kai, Nova).
+- [Blog](https://www.yutro.cl/es/blog): Artículos sobre IA generativa y producción audiovisual.
+- [Contacto](https://www.yutro.cl/es/contacto): Formulario de contacto.
+
+## Idiomas
+
+Disponible en español (es) e inglés (en).

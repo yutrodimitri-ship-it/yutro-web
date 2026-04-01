@@ -1,0 +1,12 @@
+node_modules
+.next
+.git
+.gitignore
+.env*
+!.env.example
+secrets/
+*.md
+drizzle/
+podman-compose*.yml
+Dockerfile
+.dockerignore

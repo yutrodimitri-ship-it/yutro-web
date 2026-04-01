@@ -1,0 +1,67 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "projects": "Proyectos",
+    "services": "Servicios",
+    "influencer": "Influencer",
+    "blog": "Blog",
+    "contact": "Contacto"
+  },
+  "home": {
+    "heroTitle": "CREAMOS CON IA",
+    "heroSubtitle": "Producción audiovisual impulsada por inteligencia artificial",
+    "heroCTA": "Hablemos",
+    "featuredTitle": "Proyectos destacados",
+    "featuredCTA": "Quiero ver más",
+    "servicesTitle": "Servicios y propuestas",
+    "ctaTitle": "¿Tienes un PROYECTO EN MENTE?",
+    "ctaCTA": "Hablemos",
+    "latestPostsTitle": "Últimas noticias"
+  },
+  "projects": {
+    "title": "Proyectos",
+    "allCategories": "Todos",
+    "loadMore": "Cargar más"
+  },
+  "services": {
+    "title": "Servicios",
+    "learnMore": "Saber más"
+  },
+  "blog": {
+    "title": "Blog",
+    "readMore": "Leer más",
+    "readingTime": "{minutes} min de lectura",
+    "publishedAt": "Publicado el {date}"
+  },
+  "contact": {
+    "title": "Contacto",
+    "name": "Nombre",
+    "email": "Correo electrónico",
+    "phone": "Teléfono (opcional)",
+    "subject": "Asunto",
+    "message": "Mensaje",
+    "send": "Enviar mensaje",
+    "sending": "Enviando...",
+    "success": "¡Mensaje enviado correctamente! Te responderemos pronto.",
+    "error": "Hubo un error al enviar el mensaje. Intenta de nuevo.",
+    "rateLimited": "Demasiados intentos. Espera un momento antes de volver a intentar."
+  },
+  "common": {
+    "backToHome": "Volver al inicio",
+    "notFound": "Página no encontrada",
+    "notFoundDescription": "La página que buscas no existe o ha sido movida.",
+    "copyright": "© {year} YUTRO. Una marca de VRYP – Art & AI Solutions."
+  },
+  "meta": {
+    "homeTitle": "YUTRO. — Productora Audiovisual con IA",
+    "homeDescription": "Creamos contenido audiovisual con inteligencia artificial. Producción creativa, 3D, motion graphics y postproducción avanzada.",
+    "projectsTitle": "Proyectos",
+    "projectsDescription": "Explora nuestro portafolio de proyectos audiovisuales creados con IA.",
+    "servicesTitle": "Servicios",
+    "servicesDescription": "Producción creativa, animación, 3D, motion graphics, postproducción y más con IA.",
+    "blogTitle": "Blog",
+    "blogDescription": "Noticias, tendencias y novedades del mundo audiovisual con IA.",
+    "contactTitle": "Contacto",
+    "contactDescription": "Ponte en contacto con YUTRO. Cuéntanos tu proyecto."
+  }
+}

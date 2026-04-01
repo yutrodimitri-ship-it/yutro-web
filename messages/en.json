@@ -1,0 +1,67 @@
+{
+  "nav": {
+    "home": "Home",
+    "projects": "Projects",
+    "services": "Services",
+    "influencer": "Influencer",
+    "blog": "Blog",
+    "contact": "Contact"
+  },
+  "home": {
+    "heroTitle": "WE CREATE WITH AI",
+    "heroSubtitle": "Audiovisual production powered by artificial intelligence",
+    "heroCTA": "Let's Talk",
+    "featuredTitle": "Featured Projects",
+    "featuredCTA": "See More",
+    "servicesTitle": "Services & Proposals",
+    "ctaTitle": "Got a PROJECT IN MIND?",
+    "ctaCTA": "Let's Talk",
+    "latestPostsTitle": "Latest News"
+  },
+  "projects": {
+    "title": "Projects",
+    "allCategories": "All",
+    "loadMore": "Load More"
+  },
+  "services": {
+    "title": "Services",
+    "learnMore": "Learn More"
+  },
+  "blog": {
+    "title": "Blog",
+    "readMore": "Read More",
+    "readingTime": "{minutes} min read",
+    "publishedAt": "Published on {date}"
+  },
+  "contact": {
+    "title": "Contact",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone (optional)",
+    "subject": "Subject",
+    "message": "Message",
+    "send": "Send Message",
+    "sending": "Sending...",
+    "success": "Message sent successfully! We'll get back to you soon.",
+    "error": "There was an error sending your message. Please try again.",
+    "rateLimited": "Too many attempts. Please wait a moment before trying again."
+  },
+  "common": {
+    "backToHome": "Back to Home",
+    "notFound": "Page Not Found",
+    "notFoundDescription": "The page you're looking for doesn't exist or has been moved.",
+    "copyright": "© {year} YUTRO. A brand of VRYP – Art & AI Solutions."
+  },
+  "meta": {
+    "homeTitle": "YUTRO. — AI-Powered Audiovisual Production",
+    "homeDescription": "We create audiovisual content with artificial intelligence. Creative production, 3D, motion graphics and advanced post-production.",
+    "projectsTitle": "Projects",
+    "projectsDescription": "Explore our portfolio of AI-powered audiovisual projects.",
+    "servicesTitle": "Services",
+    "servicesDescription": "Creative production, animation, 3D, motion graphics, post-production and more with AI.",
+    "blogTitle": "Blog",
+    "blogDescription": "News, trends and updates from the AI audiovisual world.",
+    "contactTitle": "Contact",
+    "contactDescription": "Get in touch with YUTRO. Tell us about your project."
+  }
+}

@@ -1,0 +1,58 @@
+import type { BlogPost } from "@/components/cards/BlogCard";
+
+export const blogPosts: (BlogPost & { locale: string })[] = [
+  {
+    slug: "ia-generativa-publicidad-2025",
+    title: "IA Generativa en Publicidad: Tendencias 2025",
+    excerpt:
+      "Descubre cómo la inteligencia artificial está transformando la industria publicitaria con imágenes hiperrealistas y producción audiovisual automatizada.",
+    date: "2025-12-15",
+    readingTime: 5,
+    locale: "es",
+  },
+  {
+    slug: "generative-ai-advertising-2025",
+    title: "Generative AI in Advertising: 2025 Trends",
+    excerpt:
+      "Discover how artificial intelligence is transforming the advertising industry with hyperrealistic images and automated audiovisual production.",
+    date: "2025-12-15",
+    readingTime: 5,
+    locale: "en",
+  },
+  {
+    slug: "detras-de-camaras-super-pollo",
+    title: "Detrás de cámaras: Proyecto Super Pollo",
+    excerpt:
+      "Un vistazo al proceso creativo detrás de nuestra campaña para Super Pollo utilizando IA generativa y postproducción avanzada.",
+    date: "2025-11-20",
+    readingTime: 4,
+    locale: "es",
+  },
+  {
+    slug: "behind-the-scenes-super-pollo",
+    title: "Behind the Scenes: Super Pollo Project",
+    excerpt:
+      "A look at the creative process behind our Super Pollo campaign using generative AI and advanced post-production.",
+    date: "2025-11-20",
+    readingTime: 4,
+    locale: "en",
+  },
+  {
+    slug: "consistencia-visual-marca-ia",
+    title: "Consistencia Visual de Marca con IA",
+    excerpt:
+      "Cómo mantenemos coherencia visual en personajes, productos y escenarios usando inteligencia artificial.",
+    date: "2025-10-05",
+    readingTime: 6,
+    locale: "es",
+  },
+  {
+    slug: "brand-visual-consistency-ai",
+    title: "Brand Visual Consistency with AI",
+    excerpt:
+      "How we maintain visual coherence across characters, products, and scenarios using artificial intelligence.",
+    date: "2025-10-05",
+    readingTime: 6,
+    locale: "en",
+  },
+];
