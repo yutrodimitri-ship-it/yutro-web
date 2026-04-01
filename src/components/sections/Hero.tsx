@@ -5,14 +5,17 @@ import { Container } from "@/components/shared/Container";
 import { CTAButton } from "@/components/shared/CTAButton";
 import { TextReveal } from "@/components/animations/TextReveal";
 import { FadeInOnScroll } from "@/components/animations/FadeInOnScroll";
+import { Parallax } from "@/components/animations/Parallax";
 
 export function Hero() {
   const t = useTranslations("home");
 
   return (
     <section className="relative flex min-h-[85vh] items-center overflow-hidden bg-background">
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent" />
+      {/* Background gradient with parallax */}
+      <Parallax speed={-0.2} className="absolute inset-0 -top-20 -bottom-20">
+        <div className="h-full w-full bg-gradient-to-b from-primary/5 via-transparent to-transparent" />
+      </Parallax>
 
       <Container className="relative z-10 py-20">
         <div className="mx-auto max-w-4xl text-center">

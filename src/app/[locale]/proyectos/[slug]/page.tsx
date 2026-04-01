@@ -5,6 +5,7 @@ import { CTAButton } from "@/components/shared/CTAButton";
 import { Separator } from "@/components/ui/separator";
 import { projects } from "@/data/projects";
 import { createMetadata } from "@/lib/metadata";
+import { ProjectHeroImage, ProjectGallery } from "./ProjectDetailClient";
 
 export function generateStaticParams() {
   return projects.map((project) => ({ slug: project.slug }));
@@ -46,10 +47,8 @@ export default async function ProjectPage({
           &larr; {l === "es" ? "Volver a proyectos" : "Back to projects"}
         </CTAButton>
 
-        {/* Hero Image */}
-        <div className="aspect-video overflow-hidden rounded-xl bg-muted flex items-center justify-center text-muted-foreground text-lg">
-          {project.title}
-        </div>
+        {/* Hero Image with parallax */}
+        <ProjectHeroImage title={project.title} />
 
         {/* Title */}
         <h1 className="mt-10 text-4xl font-bold tracking-tight sm:text-5xl">
@@ -118,19 +117,7 @@ export default async function ProjectPage({
           <h2 className="mb-6 text-2xl font-bold">
             {l === "es" ? "Proceso & Imágenes" : "Process & Images"}
           </h2>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
-            {project.gallery.map((img, idx) => (
-              <div
-                key={idx}
-                className="group relative aspect-square overflow-hidden rounded-lg bg-muted"
-              >
-                {/* Placeholder — reemplazar con next/image cuando haya imágenes reales */}
-                <div className="flex h-full w-full items-center justify-center text-xs text-muted-foreground transition-colors group-hover:bg-primary/5">
-                  {String(idx + 1).padStart(2, "0")}
-                </div>
-              </div>
-            ))}
-          </div>
+          <ProjectGallery gallery={project.gallery} />
         </div>
 
         {/* CTA */}
