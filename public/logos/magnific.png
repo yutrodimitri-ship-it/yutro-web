@@ -1,0 +1,79 @@
+<!doctype html><html lang="en"><head><meta name="robots" content="noindex,nofollow"><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/png" sizes="16x16" href="/favicon16.png"><link rel="icon" type="image/png" sizes="32x32" href="/favicon32.png"><link rel="apple-touch-icon" sizes="76x76" href="/favicon76.png"><link rel="preconnect" href="https://images.magnific.ai" crossorigin><link rel="dns-prefetch" href="https://images.magnific.ai"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:400,500,600,700"><script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"></script><meta property="og:site_name" content="Magnific AI"><meta name="author" content="@Magnific_AI"><meta property="og:image" content="https://magnific.ai/back_socialnetworks.jpg"><meta property="og:type" content="website"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content="@Magnific_AI"><meta name="twitter:creator" content="@Magnific_AI"><meta name="twitter:image" content="https://magnific.ai/back_socialnetworks.jpg"><title>Magnific AI — The magic image Upscaler & Enhancer</title><meta name="description" content="The most advanced AI upscaler & enhancer. Magnific can reimagine as many details in your image or photo as you wish, guided by your prompt and parameters!"><meta property="og:title" content="Magnific AI"><meta property="og:url" content="https://magnific.ai"><meta property="og:description" content="The most advanced AI upscaler & enhancer. Magnific can hallucinate and reimagine as many details as you wish guided by your own prompt and parameters!"><meta property="og:image:alt" content="The most advanced AI upscaler & enhancer. Magnific can hallucinate and reimagine as many details as you wish guided by your own prompt and parameters!"><meta name="twitter:title" content="Magnific AI"><meta name="twitter:description" content="The most advanced AI upscaler & enhancer. Magnific can hallucinate and reimagine as many details as you wish guided by your own prompt and parameters!"><meta name="twitter:image:alt" content="The most advanced AI upscaler & enhancer. Magnific can hallucinate and reimagine as many details as you wish guided by your own prompt and parameters!"><meta name="twitter:url" content="https://magnific.ai"><script src="https://unpkg.com/powerglitch/dist/powerglitch.min.js"></script><style>body {
+                    margin: 0;
+                    background: linear-gradient(135deg, #1A1A1A, #0D0D0D);
+                    color: #FFFFFF;
+                    display: flex;
+                    flex-direction: column;
+                    overflow: hidden;
+                    min-height: 100vh;
+                }
+
+                h1 {
+                    font-size: 4rem !important;
+                    margin-bottom: 2rem;
+                }
+
+                .subtitle {
+                    margin-bottom: 2rem;
+                }
+
+                main {
+                    flex: 1;
+                    display: flex !important;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                .logo-container {
+                    margin: 2rem 0;
+                }
+
+                .logo-container img {
+                    width: 150px;
+                    height: 150px;
+                }
+
+                .main-btn {
+                    cursor: pointer;
+                }</style><script defer="defer" src="/main_9e81d69b1fe1e1c46c53.js"></script><link href="/main_91c13777537b99e3a0d4.css" rel="stylesheet"></head><body class="coolback" data-page="404"><div class="header"><div class="topnav" id="myTopnav"><a class="logoa" id="logo-home" href="javascript:void(0)"><div class="clearfix"><div class="logo lefts"><img src="/logomagnific2.png" alt="MAGNIFIC"></div><div class="logotext lefts">MAGNIFIC</div></div></a><span class="topnav-right"><a href="/api/" class="nav-api">API</a> <a href="https://twitter.com/javilopen/status/1734945521121239112" target="_blank" class="nav-tutorials">Tutorials</a><a class="faq-link" href="#faq">FAQ</a><div id="account-button" class="dropdown" style="display: none;"><button type="button" class="dropbtn s2">Account <i class="fa fa-caret-down"></i></button><div class="dropdown-content"><a href="/account">My Account</a> <a href="/upgrade">Manage Sub</a> <a href="/legal">Terms of Service</a> <a id="logout-button" href>Log Out</a></div></div><a id="upgrade-button" class="upgradeheader" href="javascript:void(0)">Upscale, transform or generate an image</a> <a style="font-size:20px;" class="icon" id="menu_icon">&#9776;</a></span></div></div><div id="dialogModal" class="modal"><div class="modal-content"><span id="x-close" class="close close-modal">×</span><p id="modal-text"></p><center><span class="loader loaderbigbig" style="display: none"></span></center><p id="butt-sep" class="sep1"></p><button id="myModalButt" class="butt1" type="button">Upgrade</button></div></div><div id="loginModal" class="modal" style="display: none;"><div class="modal-content modal-login"><span class="close close-modal">×</span><p class="sep1"></p><div id="legacy-login-message" class="legacy-login-message" style="display: none;"><p class="legacy-welcome">Welcome back!</p><p class="legacy-info">Log in with your existing Magnific.ai account.</p><p id="legacy-new-user-link" class="legacy-info"></p></div><div id="firebaseui-auth-container"></div><center><span id="login-loader" class="loader loaderbigbig"></span></center><div id="cloudflare-loader" class="" data-appearance="interaction-only" data-theme="light"></div><div id="div-terms" class="checkterms"><input type="checkbox" id="terms" name="terms"> <label for="terms">I accept the <a href="/legal#privacy" target="_blank">Privacy Policy</a> and <a href="/legal" target="_blank">Terms of Service</a>.</label></div><div id="photoshop-plugin" style="display: none;">Logged in! You can return to Photoshop.</div></div></div><div id="block-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000; background: transparent; display: none;"></div><main><h1>404</h1><div class="logo-container" id="glitch-logo"><img src="/logomagnific2.png" alt="Magnific AI Logo"></div><p class="subtitle">Oops! This page is lost in the AI ether.</p><a class="upgradeheader main-btn" href="/">Let Magnific blow your mind</a></main><div class="footer article clearfix"><div class="footercolumn footercolumnf"><a id="footer-icon" class="logoa logoaf" href=""><div class="clearfix"><div class="logo logof"><img src="/logomagnific2.png" alt="MAGNIFIC"></div><div class="logotextf">MAGNIFIC</div></div></a><p class="footerinfo" id="creatorInfo">Created by<br><script>var names = ['<a href="https://twitter.com/javilopen" target="_blank">@javilopen</a>', '<a href="https://twitter.com/emailnicolas" target="_blank">@emailnicolas</a>'];
+            if (Math.random() < 0.5) {
+                document.write(names[0] + ' & ' + names[1]);
+            } else {
+                document.write(names[1] + ' & ' + names[0]);
+            }</script></p></div><div class="footercolumn"><h5>Pages</h5><ul><li><a class="faq-link" href="#faq">FAQ</a></li><li><a href="/legal" target="_blank">Terms of Service</a></li><li><a href="/legal#privacy" target="_blank">Privacy Policy</a></li><li><a href="/legal#cookies" target="_blank">Cookies Policy</a></li></ul></div><div class="footercolumn"><h5 class="footer-tutorials-title">Tutorials & Social</h5><h5 class="footer-social-title" style="display:none;">Social</h5><ul><li class="footer-tutorials-link"><a href="https://twitter.com/javilopen/status/1734945521121239112" target="_blank">Tutorials</a></li><li><a href="https://twitter.com/magnific_ai" target="_blank">Twitter</a></li><li><a href="https://www.instagram.com/magnific_ai" target="_blank">Instagram</a></li><li><a href="https://www.tiktok.com/@magnific.ai" target="_blank">TikTok</a></li></ul></div><div class="footercolumn"><h5>Other sites</h5><ul><li class="footer-freepik-link"><a href="https://www.freepik.com/" target="_blank">Freepik</a></li><li class="footer-magnific-com-link" style="display:none;"></li></ul></div></div><script>const buttonTexts = [
+            'Let Magnific blow your mind',
+            'Prepare to be amazed by Magnific',
+            'Let Magnific dazzle you',
+            'Experience the magic of Magnific'
+        ];
+
+        const randomButtonText = buttonTexts[Math.floor(Math.random() * buttonTexts.length)];
+        document.querySelector('.main-btn').textContent = randomButtonText;
+
+        PowerGlitch.glitch('#glitch-logo', {
+            playMode: 'always',
+            createContainers: true,
+            hideOverflow: false,
+            timing: {
+                duration: 1500,
+                iterations: Infinity,
+                easing: 'ease-out'
+            },
+            glitchTimeSpan: {
+                start: 0.05,
+                end: 0.5
+            },
+            shake: {
+                velocity: 15,
+                amplitudeX: 0.1,
+                amplitudeY: 0.1
+            },
+            slice: {
+                count: 5,
+                velocity: 10,
+                minHeight: 0.1,
+                maxHeight: 0.2,
+                hueRotate: true
+            }
+        });</script></body></html>

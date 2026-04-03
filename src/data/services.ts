@@ -1,6 +1,7 @@
 export interface Service {
   slug: string;
   icon: string;
+  image: string;
   title: {
     es: string;
     en: string;
@@ -15,6 +16,7 @@ export const services: Service[] = [
   {
     slug: "imagenes-hiperrealistas",
     icon: "camera",
+    image: "/services/hyperrealistic.png",
     title: {
       es: "Imágenes Hiperrealistas",
       en: "Hyperrealistic Images",
@@ -27,6 +29,7 @@ export const services: Service[] = [
   {
     slug: "animacion-storytelling",
     icon: "film",
+    image: "/services/animation.png",
     title: {
       es: "Animación & Storytelling",
       en: "Animation & Storytelling",
@@ -39,6 +42,7 @@ export const services: Service[] = [
   {
     slug: "produccion-audiovisual-ia",
     icon: "video",
+    image: "/services/audiovisual.png",
     title: {
       es: "Producción Audiovisual con IA",
       en: "AI Audiovisual Production",
@@ -51,6 +55,7 @@ export const services: Service[] = [
   {
     slug: "3d-motion-graphics",
     icon: "cube",
+    image: "/services/3d-motion.png",
     title: {
       es: "3D & Motion Graphics",
       en: "3D & Motion Graphics",
@@ -63,6 +68,7 @@ export const services: Service[] = [
   {
     slug: "postproduccion-fx",
     icon: "sparkles",
+    image: "/services/postproduction.png",
     title: {
       es: "Postproducción & FX",
       en: "Post-Production & FX",
@@ -75,6 +81,7 @@ export const services: Service[] = [
   {
     slug: "consistencia-visual",
     icon: "palette",
+    image: "/services/brand.png",
     title: {
       es: "Consistencia Visual de Marca",
       en: "Brand Visual Consistency",

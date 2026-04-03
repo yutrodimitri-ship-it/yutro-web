@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Hero } from "@/components/sections/Hero";
+import { HeroScrollAnimation } from "@/components/sections/HeroScrollAnimation";
 
 export const metadata: Metadata = {
   title: "YUTRO. — Productora Audiovisual con IA",
@@ -15,7 +15,7 @@ export default function HomePage() {
   return (
     <>
       <ScrollProgress />
-      <Hero />
+      <HeroScrollAnimation />
       <FeaturedProjects />
       <ServicesPreview />
       <CTASection />

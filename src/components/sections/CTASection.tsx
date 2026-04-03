@@ -1,52 +1,61 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import Image from "next/image";
 import { useTranslations } from "next-intl";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Container } from "@/components/shared/Container";
 import { CTAButton } from "@/components/shared/CTAButton";
 import { FadeInOnScroll } from "@/components/animations/FadeInOnScroll";
 
+const clients = [
+  "Head", "Santander", "Paris", "Falabella", "Carozzi",
+  "Copec · Mobil", "Frutos de Chile", "MG Motors",
+  "Head", "Santander", "Paris", "Falabella", "Carozzi",
+  "Copec · Mobil", "Frutos de Chile", "MG Motors",
+];
+
+const stats = [
+  { value: "9+", label: "Proyectos" },
+  { value: "100%", label: "IA Generativa" },
+  { value: "8", label: "Marcas" },
+  { value: "5", label: "Agencias" },
+];
+
 export function CTASection() {
   const t = useTranslations("home");
-  const sectionRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReduced || !sectionRef.current) return;
-
-    gsap.registerPlugin(ScrollTrigger);
-
-    const bg = sectionRef.current.querySelector(".cta-bg");
-    if (!bg) return;
-
-    gsap.to(bg, {
-      yPercent: -20,
-      ease: "none",
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: "top bottom",
-        end: "bottom top",
-        scrub: true,
-      },
-    });
-
-    return () => {
-      ScrollTrigger.getAll().forEach((st) => {
-        if (st.trigger === sectionRef.current) st.kill();
-      });
-    };
-  }, []);
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative overflow-hidden py-24 lg:py-32"
-    >
-      {/* Parallax background */}
-      <div className="cta-bg absolute inset-0 -top-20 -bottom-20 bg-gradient-to-br from-primary/10 via-primary/5 to-background" />
+    <section className="relative overflow-hidden py-24 lg:py-32">
+      {/* Background image */}
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <Image
+          src="/projects/mochilas-head.webp"
+          alt=""
+          fill
+          className="object-cover opacity-10"
+          sizes="100vw"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-background/80 to-background" />
+      </div>
 
+
+      {/* Marquee */}
+      <div className="relative mb-16 overflow-hidden">
+        <div className="flex animate-[marquee_20s_linear_infinite] gap-12 whitespace-nowrap">
+          {clients.map((client, i) => (
+            <span
+              key={i}
+              className="text-sm font-semibold uppercase tracking-[0.2em] text-muted-foreground/40"
+            >
+              {client}
+            </span>
+          ))}
+        </div>
+        {/* Edge fades */}
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-background to-transparent" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-background to-transparent" />
+      </div>
+
+      {/* CTA */}
       <Container className="relative z-10">
         <div className="mx-auto max-w-3xl text-center">
           <FadeInOnScroll>

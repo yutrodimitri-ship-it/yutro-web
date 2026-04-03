@@ -15,16 +15,17 @@ export function FeaturedProjects() {
   const featured = projects.filter((p) => p.featured).slice(0, 6);
 
   return (
-    <section className="py-20 lg:py-28">
+    <section className="relative py-20 lg:py-28">
+      <div className="pointer-events-none absolute -top-24 left-0 right-0 h-24 bg-gradient-to-b from-background to-transparent" />
       <Container>
         <FadeInOnScroll>
           <SectionHeader title={t("featuredTitle")} />
         </FadeInOnScroll>
 
         <StaggerContainer className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {featured.map((project) => (
+          {featured.map((project, i) => (
             <StaggerItem key={project.slug}>
-              <ProjectCard project={project} locale={locale} />
+              <ProjectCard project={project} locale={locale} index={i} />
             </StaggerItem>
           ))}
         </StaggerContainer>
