@@ -96,20 +96,34 @@ export default async function ProjectPage({
 
         <Separator className="my-12" />
 
-        {/* Video 16:9 */}
+        {/* Video(s) 16:9 */}
         <div>
-          <h2 className="mb-6 text-2xl font-bold">
-            Video
-          </h2>
-          <div className="aspect-video overflow-hidden rounded-xl bg-muted">
-            <iframe
-              src={`${project.videoUrl}?rel=0&modestbranding=1&showinfo=0&controls=1&disablekb=0&fs=1&iv_load_policy=3`}
-              title={`${project.title} Video`}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              className="h-full w-full"
-            />
-          </div>
+          <h2 className="mb-6 text-2xl font-bold">Video</h2>
+          {Array.isArray(project.videoUrl) ? (
+            <div className="flex flex-col gap-6">
+              {project.videoUrl.map((url, idx) => (
+                <div key={idx} className="aspect-video overflow-hidden rounded-xl bg-muted">
+                  <iframe
+                    src={`${url}?rel=0&modestbranding=1&showinfo=0&iv_load_policy=3`}
+                    title={`${project.title} Video ${idx + 1}`}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="h-full w-full"
+                  />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="aspect-video overflow-hidden rounded-xl bg-muted">
+              <iframe
+                src={`${project.videoUrl}?rel=0&modestbranding=1&showinfo=0&iv_load_policy=3`}
+                title={`${project.title} Video`}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="h-full w-full"
+              />
+            </div>
+          )}
         </div>
 
         <Separator className="my-12" />
