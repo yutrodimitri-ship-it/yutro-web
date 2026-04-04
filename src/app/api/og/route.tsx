@@ -5,8 +5,11 @@ export const runtime = "edge";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
-  const title = searchParams.get("title") || "YUTRO.";
-  const locale = searchParams.get("locale") || "es";
+  const rawTitle = searchParams.get("title") ?? "YUTRO.";
+  // Sanitize: strip control chars, limit length to prevent layout abuse
+  const title = rawTitle.replace(/[\x00-\x1F\x7F]/g, "").slice(0, 100) || "YUTRO.";
+  const rawLocale = searchParams.get("locale") ?? "es";
+  const locale = rawLocale === "en" ? "en" : "es";
   const subtitle =
     locale === "es"
       ? "Productora Audiovisual con IA"

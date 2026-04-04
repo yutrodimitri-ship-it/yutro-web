@@ -3,8 +3,10 @@ import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   const secret = request.headers.get("x-sanity-secret");
+  const expectedSecret = process.env.SANITY_REVALIDATE_SECRET;
 
-  if (secret !== process.env.SANITY_REVALIDATE_SECRET) {
+  // Reject if env secret not configured or request secret doesn't match
+  if (!expectedSecret || !secret || secret !== expectedSecret) {
     return NextResponse.json({ error: "Invalid secret" }, { status: 401 });
   }
 

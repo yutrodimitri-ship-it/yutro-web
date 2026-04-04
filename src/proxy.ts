@@ -50,11 +50,11 @@ function applySecurityHeaders(
   const csp = [
     "default-src 'self'",
     `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'${isDev ? " 'unsafe-eval'" : ""}`,
-    `style-src 'self' 'unsafe-inline'`,
+    `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`,
     "connect-src 'self' https://*.sanity.io https://cdn.sanity.io",
     "frame-src 'self' https://www.youtube.com https://player.vimeo.com",
     "img-src 'self' data: https://cdn.sanity.io blob:",
-    "font-src 'self'",
+    "font-src 'self' https://fonts.gstatic.com",
     "media-src 'self' https:",
     "object-src 'none'",
     "base-uri 'self'",
