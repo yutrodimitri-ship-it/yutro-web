@@ -54,14 +54,15 @@ interface ServiceCardProps {
   service: Service;
   locale: string;
   className?: string;
+  featured?: boolean;
 }
 
-export function ServiceCard({ service, locale, className }: ServiceCardProps) {
+export function ServiceCard({ service, locale, className, featured = false }: ServiceCardProps) {
   return (
     <div
       className={cn(
-        "group relative overflow-hidden rounded-xl",
-        "aspect-[4/3] cursor-default",
+        "group relative overflow-hidden rounded-xl cursor-pointer",
+        featured ? "h-full min-h-[400px]" : "aspect-[4/3]",
         className
       )}
     >

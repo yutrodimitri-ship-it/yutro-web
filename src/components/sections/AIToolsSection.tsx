@@ -145,8 +145,13 @@ function ToolPill({ tool }: { tool: Tool }) {
 
 // ─── Section ─────────────────────────────────────────────────────────────────
 
+// Split tools into two rows for opposite-direction marquees
+const rowA = tools.slice(0, Math.ceil(tools.length / 2));
+const rowB = tools.slice(Math.ceil(tools.length / 2));
+
 export function AIToolsSection() {
-  const doubled = [...tools, ...tools];
+  const doubledA = [...rowA, ...rowA, ...rowA];
+  const doubledB = [...rowB, ...rowB, ...rowB];
 
   return (
     <section className="relative overflow-hidden border-t border-border/50 py-20 lg:py-28">
@@ -156,29 +161,39 @@ export function AIToolsSection() {
 
       <Container>
         <FadeInOnScroll>
-          <div className="mb-12 text-center">
+          <div className="mb-12">
             <p className="mb-2 text-xs font-semibold uppercase tracking-[0.3em] text-primary">
               Stack Tecnológico
             </p>
-            <h2 className="text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl">
+            <h2 className="font-heading text-2xl font-bold tracking-tighter leading-none sm:text-3xl lg:text-4xl">
               Herramientas de producción
             </h2>
-            <p className="mx-auto mt-3 max-w-lg text-sm text-muted-foreground">
+            <p className="mt-3 max-w-lg text-sm text-muted-foreground">
               Los modelos de IA y software más avanzados del mercado para producción audiovisual profesional.
             </p>
           </div>
         </FadeInOnScroll>
       </Container>
 
-      {/* Single marquee row */}
-      <div className="relative mt-4">
+      {/* Edge fades shared by both rows */}
+      <div className="relative mt-4 space-y-3">
         <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-40 bg-gradient-to-r from-background to-transparent" />
         <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-40 bg-gradient-to-l from-background to-transparent" />
 
-        <div className="flex overflow-hidden py-2">
-          <div className="flex animate-[marquee_40s_linear_infinite]">
-            {doubled.map((tool, i) => (
-              <ToolPill key={i} tool={tool} />
+        {/* Row A — left to right */}
+        <div className="flex overflow-hidden py-1">
+          <div className="flex animate-[marquee_36s_linear_infinite]">
+            {doubledA.map((tool, i) => (
+              <ToolPill key={`a-${i}`} tool={tool} />
+            ))}
+          </div>
+        </div>
+
+        {/* Row B — right to left */}
+        <div className="flex overflow-hidden py-1">
+          <div className="flex animate-[marquee-reverse_42s_linear_infinite]">
+            {doubledB.map((tool, i) => (
+              <ToolPill key={`b-${i}`} tool={tool} />
             ))}
           </div>
         </div>

@@ -9,8 +9,6 @@ import { FadeInOnScroll } from "@/components/animations/FadeInOnScroll";
 const clients = [
   "Head", "Santander", "Paris", "Falabella", "Carozzi",
   "Copec · Mobil", "Frutos de Chile", "MG Motors",
-  "Head", "Santander", "Paris", "Falabella", "Carozzi",
-  "Copec · Mobil", "Frutos de Chile", "MG Motors",
 ];
 
 const stats = [
@@ -38,17 +36,19 @@ export function CTASection() {
       </div>
 
 
-      {/* Marquee */}
+      {/* Marquee — 4 tracks guarantee viewport coverage at all times */}
       <div className="relative mb-16 overflow-hidden">
-        <div className="flex animate-[marquee_20s_linear_infinite] gap-12 whitespace-nowrap">
-          {clients.map((client, i) => (
-            <span
-              key={i}
-              className="text-sm font-semibold uppercase tracking-[0.2em] text-muted-foreground/40"
-            >
-              {client}
-            </span>
-          ))}
+        <div className="flex animate-[marquee-quad_30s_linear_infinite]">
+          {[0, 1, 2, 3].map((track) =>
+            clients.map((client, i) => (
+              <span
+                key={`${track}-${i}`}
+                className="mx-8 shrink-0 text-sm font-semibold uppercase tracking-[0.2em] text-muted-foreground/40 whitespace-nowrap"
+              >
+                {client}
+              </span>
+            ))
+          )}
         </div>
         {/* Edge fades */}
         <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-background to-transparent" />
@@ -57,15 +57,15 @@ export function CTASection() {
 
       {/* CTA */}
       <Container className="relative z-10">
-        <div className="mx-auto max-w-3xl text-center">
+        <div className="mx-auto max-w-2xl text-center">
           <FadeInOnScroll>
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
+            <h2 className="font-heading text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl">
               {t("ctaTitle")}
             </h2>
           </FadeInOnScroll>
 
           <FadeInOnScroll delay={0.2}>
-            <div className="mt-8">
+            <div className="mt-8 flex justify-center">
               <CTAButton href="/contacto">{t("ctaCTA")}</CTAButton>
             </div>
           </FadeInOnScroll>

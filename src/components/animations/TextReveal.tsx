@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 interface TextRevealProps {
   text: string;
   className?: string;
+  style?: React.CSSProperties;
   as?: "h1" | "h2" | "h3" | "p" | "span";
   delay?: number;
 }
@@ -14,6 +15,7 @@ interface TextRevealProps {
 export function TextReveal({
   text,
   className,
+  style,
   as: Tag = "h1",
   delay = 0,
 }: TextRevealProps) {
@@ -54,7 +56,7 @@ export function TextReveal({
 
   return (
     <div ref={containerRef} className="overflow-hidden">
-      <Tag className={className}>
+      <Tag className={className} style={style}>
         {words.map((word, wordIdx) => (
           <span key={wordIdx} className="inline-block whitespace-nowrap">
             {word.split("").map((char, charIdx) => (

@@ -6,9 +6,40 @@ html {
   scroll-behavior: smooth;
 }
 
+/* ── Film grain overlay (cinematic texture) ── */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9989;
+  opacity: 0.032;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+  mix-blend-mode: overlay;
+}
+
+/* Hide scrollbar on horizontal scroll strips */
+.overflow-x-auto::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes scroll-line {
+  0% { transform: translateY(-100%); opacity: 0; }
+  30% { opacity: 1; }
+  70% { opacity: 1; }
+  100% { transform: translateY(200%); opacity: 0; }
+}
+
 @keyframes marquee {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
+}
+
+@keyframes marquee-quad {
+  from { transform: translateX(0); }
+  to { transform: translateX(-25%); }
 }
 
 @keyframes marquee-reverse {
@@ -19,6 +50,9 @@ html {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+  body::after {
+    display: none;
   }
 }
 
@@ -67,6 +101,34 @@ html {
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+  @keyframes onloadopacity {
+  24% {
+    opacity: 0;
+    }
+  100% {
+    opacity: 1;
+    }
+  }
+  @keyframes onloadbgt {
+  0% {
+    translate: 0 -70%;
+    opacity: 0.3;
+    }
+  100% {
+    translate: 0 -64%;
+    opacity: 0.8;
+    }
+  }
+  @keyframes onloadbgb {
+  0% {
+    translate: 0 70%;
+    opacity: 0.3;
+    }
+  100% {
+    translate: 0 64%;
+    opacity: 0.8;
+    }
+  }
 }
 
 /* YUTRO Light Theme */
@@ -77,8 +139,8 @@ html {
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  /* Primary: YUTRO naranja/coral hsl(12, 85%, 58%) */
-  --primary: oklch(0.65 0.19 25);
+  /* Primary: YUTRO naranja #ff7404 */
+  --primary: oklch(0.68 0.21 42);
   --primary-foreground: oklch(1 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.145 0 0);
@@ -89,11 +151,11 @@ html {
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
-  --ring: oklch(0.65 0.19 25);
+  --ring: oklch(0.68 0.21 42);
   /* YUTRO brand color */
-  --brand: oklch(0.65 0.19 25);
+  --brand: oklch(0.68 0.21 42);
   --brand-foreground: oklch(1 0 0);
-  --chart-1: oklch(0.65 0.19 25);
+  --chart-1: oklch(0.68 0.21 42);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
@@ -101,7 +163,7 @@ html {
   --radius: 0.625rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.65 0.19 25);
+  --sidebar-primary: oklch(0.68 0.21 42);
   --sidebar-primary-foreground: oklch(1 0 0);
   --sidebar-accent: oklch(0.97 0 0);
   --sidebar-accent-foreground: oklch(0.145 0 0);
@@ -117,8 +179,8 @@ html {
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.18 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  /* Primary naranja/coral en dark */
-  --primary: oklch(0.7 0.19 25);
+  /* Primary: YUTRO naranja #ff7404 en dark */
+  --primary: oklch(0.72 0.21 42);
   --primary-foreground: oklch(0.145 0 0);
   --secondary: oklch(0.22 0 0);
   --secondary-foreground: oklch(0.985 0 0);
@@ -129,18 +191,18 @@ html {
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.7 0.19 25);
+  --ring: oklch(0.72 0.21 42);
   /* YUTRO brand color dark */
-  --brand: oklch(0.7 0.19 25);
+  --brand: oklch(0.72 0.21 42);
   --brand-foreground: oklch(0.145 0 0);
-  --chart-1: oklch(0.7 0.19 25);
+  --chart-1: oklch(0.72 0.21 42);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
   --sidebar: oklch(0.18 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.7 0.19 25);
+  --sidebar-primary: oklch(0.72 0.21 42);
   --sidebar-primary-foreground: oklch(0.145 0 0);
   --sidebar-accent: oklch(0.22 0 0);
   --sidebar-accent-foreground: oklch(0.985 0 0);

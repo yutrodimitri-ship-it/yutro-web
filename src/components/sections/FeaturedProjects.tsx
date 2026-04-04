@@ -19,13 +19,17 @@ export function FeaturedProjects() {
       <div className="pointer-events-none absolute -top-24 left-0 right-0 h-24 bg-gradient-to-b from-background to-transparent" />
       <Container>
         <FadeInOnScroll>
-          <SectionHeader title={t("featuredTitle")} />
+          <SectionHeader title={t("featuredTitle")} align="left" />
         </FadeInOnScroll>
 
-        <StaggerContainer className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {/* Asymmetric grid: first card featured full-width, rest in 2 columns */}
+        <StaggerContainer className="grid gap-5 grid-cols-1 md:grid-cols-2">
           {featured.map((project, i) => (
-            <StaggerItem key={project.slug}>
-              <ProjectCard project={project} locale={locale} index={i} />
+            <StaggerItem
+              key={project.slug}
+              className={i === 0 ? "md:col-span-2" : ""}
+            >
+              <ProjectCard project={project} locale={locale} featured={i === 0} />
             </StaggerItem>
           ))}
         </StaggerContainer>

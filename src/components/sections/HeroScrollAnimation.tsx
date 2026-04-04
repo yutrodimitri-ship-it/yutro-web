@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
-import { Container } from "@/components/shared/Container";
 import { CTAButton } from "@/components/shared/CTAButton";
 import { FadeInOnScroll } from "@/components/animations/FadeInOnScroll";
 import { TextReveal } from "@/components/animations/TextReveal";
@@ -74,7 +73,15 @@ export function HeroScrollAnimation() {
       );
       if (frameIndex !== currentFrameRef.current) {
         currentFrameRef.current = frameIndex;
-        drawFrame(frameIndex);
+        // Only animate frames if reduced-motion is NOT set
+        if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          drawFrame(frameIndex);
+        }
+      }
+      // Fade out scroll indicator
+      const indicator = document.getElementById("hero-scroll-indicator");
+      if (indicator) {
+        indicator.style.opacity = String(Math.max(0, 1 - progress * 8));
       }
     }
 
@@ -88,24 +95,25 @@ export function HeroScrollAnimation() {
 
   return (
     <section id="hero-scroll-section" className="relative" style={{ height: "350vh" }}>
-      {/* Sticky viewport */}
-      <div className="sticky top-0 h-screen overflow-hidden">
+      {/* Sticky viewport — min-h-[100dvh] prevents iOS Safari layout jumping */}
+      <div className="sticky top-0 min-h-[100dvh]" style={{ overflow: "clip" }}>
         {/* Frame canvas */}
         <canvas ref={canvasRef} className="absolute inset-0" />
 
         {/* Overlay for text legibility */}
-        <div className="absolute inset-0 bg-black/45" />
+        <div className="absolute inset-0 bg-black/40" />
 
-        {/* Text content */}
-        <Container className="relative z-10 flex h-full flex-col items-center justify-center py-20">
-          <div className="mx-auto max-w-4xl text-center">
-            <TextReveal
-              text={t("heroTitle")}
-              className="text-5xl font-extrabold tracking-tight text-white sm:text-6xl md:text-7xl lg:text-8xl"
-            />
+        {/* Text content — left-aligned per DESIGN_VARIANCE 8 */}
+        <div className="relative z-10 flex min-h-[100dvh] flex-col items-center justify-center py-20 px-6 text-center">
+          <TextReveal
+            text={t("heroTitle")}
+            className="font-heading font-extrabold tracking-tighter leading-none text-white whitespace-nowrap"
+            style={{ fontSize: "clamp(2rem, 5.5vw, 5.5rem)" }}
+          />
 
+          <div className="max-w-xl">
             <FadeInOnScroll delay={0.8}>
-              <p className="mx-auto mt-6 max-w-2xl text-lg text-white/80 sm:text-xl md:text-2xl">
+              <p className="mt-6 text-lg leading-relaxed text-white/75 sm:text-xl">
                 {t("heroSubtitle")}
               </p>
             </FadeInOnScroll>
@@ -116,7 +124,27 @@ export function HeroScrollAnimation() {
               </div>
             </FadeInOnScroll>
           </div>
-        </Container>
+        </div>
+
+        {/* Scroll indicator */}
+        <div
+          id="hero-scroll-indicator"
+          className="absolute bottom-10 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2"
+          style={{ transition: "opacity 0.4s ease" }}
+        >
+          <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-white/40">
+            Scroll
+          </span>
+          {/* Animated line */}
+          <div className="relative h-10 w-px overflow-hidden bg-white/15">
+            <div
+              className="absolute top-0 h-1/2 w-full bg-white/50"
+              style={{
+                animation: "scroll-line 1.6s ease-in-out infinite",
+              }}
+            />
+          </div>
+        </div>
 
         {/* Bottom fade into page */}
         <div className="absolute bottom-0 left-0 right-0" style={{ height: "40vh" }}>

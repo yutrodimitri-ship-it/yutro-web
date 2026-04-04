@@ -1,11 +1,12 @@
 "use client";
 
-import { useRef, useState, useCallback } from "react";
+import { useRef } from "react";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 
 interface MagneticButtonProps {
   children: React.ReactNode;
   className?: string;
-  strength?: number; // pixels of magnetic pull (default 20)
+  strength?: number;
 }
 
 export function MagneticButton({
@@ -14,45 +15,41 @@ export function MagneticButton({
   strength = 20,
 }: MagneticButtonProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const [transform, setTransform] = useState("translate3d(0, 0, 0)");
 
-  const handleMouseMove = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
-      if (!ref.current) return;
-      const prefersReduced = window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-      ).matches;
-      if (prefersReduced) return;
+  // useMotionValue keeps transforms out of the React render cycle
+  const rawX = useMotionValue(0);
+  const rawY = useMotionValue(0);
 
-      const rect = ref.current.getBoundingClientRect();
-      const x = e.clientX - rect.left - rect.width / 2;
-      const y = e.clientY - rect.top - rect.height / 2;
+  // Spring physics — premium feel per skill §4
+  const x = useSpring(rawX, { stiffness: 150, damping: 18, mass: 0.5 });
+  const y = useSpring(rawY, { stiffness: 150, damping: 18, mass: 0.5 });
 
-      const pullX = (x / rect.width) * strength;
-      const pullY = (y / rect.height) * strength;
+  function onMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+    if (!ref.current) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-      setTransform(`translate3d(${pullX}px, ${pullY}px, 0)`);
-    },
-    [strength]
-  );
+    const rect = ref.current.getBoundingClientRect();
+    const cx = e.clientX - rect.left - rect.width / 2;
+    const cy = e.clientY - rect.top - rect.height / 2;
 
-  const handleMouseLeave = useCallback(() => {
-    setTransform("translate3d(0, 0, 0)");
-  }, []);
+    rawX.set((cx / rect.width) * strength);
+    rawY.set((cy / rect.height) * strength);
+  }
+
+  function onMouseLeave() {
+    rawX.set(0);
+    rawY.set(0);
+  }
 
   return (
-    <div
+    <motion.div
       ref={ref}
+      style={{ x, y, display: "inline-block" }}
       className={className}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{
-        transform,
-        transition: transform === "translate3d(0, 0, 0)" ? "transform 0.5s cubic-bezier(0.33, 1, 0.68, 1)" : "transform 0.15s ease-out",
-        display: "inline-block",
-      }}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
     >
       {children}
-    </div>
+    </motion.div>
   );
 }
