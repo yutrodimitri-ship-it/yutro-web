@@ -113,7 +113,7 @@ const tools: Tool[] = [
 
 function ToolPill({ tool }: { tool: Tool }) {
   return (
-    <div className="group mx-3 flex shrink-0 items-center gap-3 rounded-full border border-white/10 bg-white/5 px-5 py-3 backdrop-blur-sm transition-all duration-300 hover:border-white/25 hover:bg-white/10">
+    <div className="group mx-3 flex shrink-0 items-center gap-3 rounded-full border border-border bg-card px-5 py-3 shadow-sm transition-all duration-300 hover:border-primary/30 hover:shadow-md">
       {/* Logo */}
       <div className="shrink-0 transition-transform duration-300 group-hover:scale-110">
         {tool.logo.type === "img" && tool.logo.src ? (
@@ -122,8 +122,7 @@ function ToolPill({ tool }: { tool: Tool }) {
             alt={tool.name}
             width={28}
             height={28}
-            className="h-7 w-7 object-contain"
-            style={tool.logo.src.endsWith(".svg") ? { filter: "invert(1) brightness(2)" } : undefined}
+            className="h-7 w-7 object-contain dark:invert dark:brightness-200"
           />
         ) : (
           tool.logo.svg
@@ -132,10 +131,10 @@ function ToolPill({ tool }: { tool: Tool }) {
 
       {/* Name + category */}
       <div>
-        <p className="whitespace-nowrap text-sm font-semibold text-white/90 leading-none">
+        <p className="whitespace-nowrap text-sm font-semibold text-foreground leading-none">
           {tool.name}
         </p>
-        <p className="mt-0.5 text-[10px] font-medium uppercase tracking-wider text-white/35">
+        <p className="mt-0.5 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
           {tool.category}
         </p>
       </div>
@@ -154,13 +153,13 @@ export function AIToolsSection() {
   const doubledB = [...rowB, ...rowB, ...rowB];
 
   return (
-    <section className="relative overflow-hidden border-t border-border/50 py-20 lg:py-28">
+    <section id="herramientas" className="relative overflow-hidden border-t border-border/50 py-20 lg:py-28">
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/5 blur-[130px]" />
       </div>
 
       <Container>
-        <FadeInOnScroll>
+        <FadeInOnScroll variant="fade-blur" duration={0.8}>
           <div className="mb-12">
             <p className="mb-2 text-xs font-semibold uppercase tracking-[0.3em] text-primary">
               Stack Tecnológico

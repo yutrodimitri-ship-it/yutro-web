@@ -12,9 +12,31 @@ interface ProjectCardProps {
   featured?: boolean;
 }
 
+// Image wipe reveal: clip from left to right
+const imageReveal = {
+  hidden: { clipPath: "inset(0 100% 0 0)" },
+  visible: {
+    clipPath: "inset(0 0% 0 0)",
+    transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+// Card info slides up
+const infoReveal = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, delay: 0.4, ease: "easeOut" },
+  },
+};
+
 export function ProjectCard({ project, locale, index = 0, featured = false }: ProjectCardProps) {
   return (
     <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-60px" }}
       whileHover={{ y: -4 }}
       transition={{ type: "spring", stiffness: 120, damping: 20 }}
     >
@@ -22,8 +44,11 @@ export function ProjectCard({ project, locale, index = 0, featured = false }: Pr
         href={`/proyectos/${project.slug}`}
         className="group relative block overflow-hidden rounded-xl bg-card"
       >
-        {/* Image — featured gets wider cinematic ratio */}
-        <div className={`relative overflow-hidden ${featured ? "aspect-[21/9]" : "aspect-video"}`}>
+        {/* Image — clip-path reveal from left */}
+        <motion.div
+          className={`relative overflow-hidden ${featured ? "aspect-[21/9]" : "aspect-video"}`}
+          variants={imageReveal}
+        >
           <Image
             src={project.image}
             alt={project.title}
@@ -41,10 +66,10 @@ export function ProjectCard({ project, locale, index = 0, featured = false }: Pr
               {project.excerpt[locale as "es" | "en"]}
             </p>
           </div>
-        </div>
+        </motion.div>
 
-        {/* Info */}
-        <div className="flex items-center justify-between p-4">
+        {/* Info — slides up after image reveals */}
+        <motion.div className="flex items-center justify-between p-4" variants={infoReveal}>
           <div>
             <h3 className={`font-semibold text-card-foreground transition-colors duration-300 group-hover:text-primary ${featured ? "text-lg" : ""}`}>
               {project.title}
@@ -56,7 +81,7 @@ export function ProjectCard({ project, locale, index = 0, featured = false }: Pr
           <span className="text-sm text-muted-foreground transition-all duration-300 group-hover:translate-x-1 group-hover:text-primary">
             →
           </span>
-        </div>
+        </motion.div>
 
         {/* Bottom accent */}
         <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-gradient-to-r from-primary to-primary/40 transition-all duration-500 group-hover:w-full" />

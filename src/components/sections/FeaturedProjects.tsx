@@ -15,15 +15,15 @@ export function FeaturedProjects() {
   const featured = projects.filter((p) => p.featured).slice(0, 6);
 
   return (
-    <section className="relative py-20 lg:py-28">
+    <section id="proyectos" className="relative py-20 lg:py-28">
       <div className="pointer-events-none absolute -top-24 left-0 right-0 h-24 bg-gradient-to-b from-background to-transparent" />
       <Container>
-        <FadeInOnScroll>
+        <FadeInOnScroll variant="fade-blur">
           <SectionHeader title={t("featuredTitle")} align="left" />
         </FadeInOnScroll>
 
         {/* Asymmetric grid: first card featured full-width, rest in 2 columns */}
-        <StaggerContainer className="grid gap-5 grid-cols-1 md:grid-cols-2">
+        <StaggerContainer className="grid gap-5 grid-cols-1 md:grid-cols-2" staggerDelay={0.12}>
           {featured.map((project, i) => (
             <StaggerItem
               key={project.slug}
@@ -34,7 +34,7 @@ export function FeaturedProjects() {
           ))}
         </StaggerContainer>
 
-        <FadeInOnScroll>
+        <FadeInOnScroll delay={0.3} variant="fade-scale">
           <div className="mt-12 text-center">
             <CTAButton href="/proyectos" variant="outline">
               {t("featuredCTA")}

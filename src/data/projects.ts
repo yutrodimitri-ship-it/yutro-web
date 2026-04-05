@@ -65,7 +65,7 @@ export const projects: Project[] = [
       en: "Hybrid commercial developed with BBDO for Super Pollo, combining live footage with AI-generated animation.",
     },
     image: "/projects/super-pollo.webp",
-    videoUrl: "https://www.youtube.com/embed/x5iJpsPZxyo",
+    videoUrl: "https://player.vimeo.com/video/1180144720?badge=0&autopause=0&player_id=0&app_id=58479",
     gallery: [
       "/projects/super-pollo/01.webp",
       "/projects/super-pollo/02.webp",

@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { usePathname } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import { Container } from "@/components/shared/Container";
 import { ThemeSwitcher } from "./ThemeSwitcher";
@@ -10,21 +11,33 @@ import { MobileNav } from "./MobileNav";
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 
 const navItems = [
-  { key: "projects", href: "/proyectos" },
-  { key: "services", href: "/servicios" },
-  { key: "influencer", href: "/influencer" },
-  { key: "blog", href: "/blog" },
-  { key: "contact", href: "/contacto" },
+  { key: "projects", href: "/proyectos", anchor: "#proyectos" },
+  { key: "services", href: "/servicios", anchor: "#servicios" },
+  { key: "influencer", href: "/influencer", anchor: null },
+  { key: "blog", href: "/blog", anchor: null },
+  { key: "contact", href: "/contacto", anchor: "#contacto-cta" },
 ] as const;
 
 export function Header() {
   const t = useTranslations("nav");
+  const pathname = usePathname();
   const { scrollY } = useScroll();
   const [scrolled, setScrolled] = useState(false);
+
+  // Detect if we're on the homepage (e.g. "/es", "/en", "/es/", "/en/")
+  const isHome = /^\/(es|en)\/?$/.test(pathname);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     setScrolled(latest > 50);
   });
+
+  function handleAnchorClick(e: React.MouseEvent, anchor: string) {
+    e.preventDefault();
+    const el = document.querySelector(anchor);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+  }
 
   return (
     <motion.header
@@ -46,15 +59,26 @@ export function Header() {
 
           {/* Desktop Nav */}
           <div className="hidden items-center gap-8 md:flex">
-            {navItems.map((item) => (
-              <Link
-                key={item.key}
-                href={item.href}
-                className="text-sm font-medium text-foreground/70 transition-colors hover:text-primary"
-              >
-                {t(item.key)}
-              </Link>
-            ))}
+            {navItems.map((item) =>
+              isHome && item.anchor ? (
+                <a
+                  key={item.key}
+                  href={item.anchor}
+                  onClick={(e) => handleAnchorClick(e, item.anchor!)}
+                  className="text-sm font-medium text-foreground/70 transition-colors hover:text-primary cursor-pointer"
+                >
+                  {t(item.key)}
+                </a>
+              ) : (
+                <Link
+                  key={item.key}
+                  href={item.href}
+                  className="text-sm font-medium text-foreground/70 transition-colors hover:text-primary"
+                >
+                  {t(item.key)}
+                </Link>
+              )
+            )}
           </div>
 
           {/* Actions */}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
+import Image from "next/image";
 import { notFound, useParams } from "next/navigation";
 import { useLocale } from "next-intl";
 import { motion } from "framer-motion";
@@ -109,8 +110,14 @@ export default function InfluencerDetail() {
               <div className="relative">
                 {/* Gradient ring */}
                 <div className="absolute -inset-1 rounded-full bg-gradient-to-br from-primary via-primary/60 to-primary/20 animate-[spin_6s_linear_infinite] opacity-80" />
-                <div className="relative h-28 w-28 overflow-hidden rounded-full bg-card ring-4 ring-background sm:h-40 sm:w-40 flex items-center justify-center text-4xl font-bold text-muted-foreground sm:text-6xl">
-                  {influencer.name[0]}
+                <div className="relative h-28 w-28 overflow-hidden rounded-full bg-card ring-4 ring-background sm:h-40 sm:w-40">
+                  <Image
+                    src={influencer.image}
+                    alt={influencer.name}
+                    fill
+                    className="object-cover"
+                    sizes="160px"
+                  />
                 </div>
               </div>
             </motion.div>
@@ -127,15 +134,17 @@ export default function InfluencerDetail() {
                 {influencer.name}
               </motion.h1>
 
-              <motion.p
-                custom={1}
-                variants={fadeUp}
-                initial="hidden"
-                animate="visible"
-                className="mt-1.5 text-base font-medium text-primary sm:text-lg"
-              >
-                {influencer.handle}
-              </motion.p>
+              {influencer.handle && (
+                <motion.p
+                  custom={1}
+                  variants={fadeUp}
+                  initial="hidden"
+                  animate="visible"
+                  className="mt-1.5 text-base font-medium text-primary sm:text-lg"
+                >
+                  {influencer.handle}
+                </motion.p>
+              )}
 
               {/* Bio */}
               <motion.p
@@ -186,12 +195,6 @@ export default function InfluencerDetail() {
               </svg>
               {isEs ? "Publicaciones" : "Posts"}
             </button>
-            <button className="flex flex-1 items-center justify-center gap-2 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground transition-colors hover:text-foreground">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <polygon points="5 3 19 12 5 21 5 3" />
-              </svg>
-              Reels
-            </button>
           </div>
 
           {/* 3x3 Grid */}
@@ -217,9 +220,13 @@ export default function InfluencerDetail() {
                 onClick={() => setLightboxIndex(idx)}
                 className="group relative aspect-square cursor-zoom-in overflow-hidden bg-muted"
               >
-                <div className="flex h-full w-full items-center justify-center text-sm font-medium text-muted-foreground transition-all duration-300 group-hover:scale-110">
-                  {String(idx + 1).padStart(2, "0")}
-                </div>
+                <Image
+                  src={img}
+                  alt={`${influencer.name} ${idx + 1}`}
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  sizes="(max-width: 640px) 33vw, 280px"
+                />
                 <div className="absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/20" />
               </motion.button>
             ))}
@@ -227,39 +234,6 @@ export default function InfluencerDetail() {
         </div>
       </section>
 
-      {/* ══════════════════════════════════════════════
-          VIDEO REEL — Cinematic full-width
-         ══════════════════════════════════════════════ */}
-      <section className="mt-16 sm:mt-24">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 32 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] as const }}
-          >
-            <div className="flex items-center gap-3 mb-6">
-              <div className="h-px flex-1 bg-border" />
-              <h2 className="text-sm font-semibold uppercase tracking-[0.25em] text-muted-foreground">
-                {isEs ? "Video Reel" : "Video Reel"}
-              </h2>
-              <div className="h-px flex-1 bg-border" />
-            </div>
-
-            <div className="relative overflow-hidden rounded-2xl bg-muted shadow-2xl shadow-primary/5 ring-1 ring-border/50">
-              <div className="aspect-video">
-                <iframe
-                  src={influencer.reelUrl}
-                  title={`${influencer.name} Reel`}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="h-full w-full"
-                />
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
 
       {/* Lightbox */}
       {lightboxIndex !== null && (
@@ -287,9 +261,13 @@ export default function InfluencerDetail() {
             className="relative h-[80vh] w-[90vw] max-w-5xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex h-full w-full items-center justify-center text-2xl text-muted-foreground">
-              {String(lightboxIndex + 1).padStart(2, "0")}
-            </div>
+            <Image
+              src={influencer.gallery[lightboxIndex]}
+              alt={`${influencer.name} ${lightboxIndex + 1}`}
+              fill
+              className="object-contain"
+              sizes="90vw"
+            />
           </div>
 
           <button

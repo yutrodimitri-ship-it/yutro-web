@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useLocale } from "next-intl";
 import { motion } from "framer-motion";
 import { Link } from "@/i18n/navigation";
@@ -37,12 +38,16 @@ export default function InfluencerPage() {
                 >
                   {/* Avatar Image */}
                   <div className="relative aspect-[3/4] overflow-hidden rounded-xl bg-muted">
-                    <div className="flex h-full w-full items-center justify-center text-4xl font-bold text-muted-foreground">
-                      {influencer.name[0]}
-                    </div>
+                    <Image
+                      src={influencer.image}
+                      alt={influencer.name}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    />
 
                     {/* Overlay with name */}
-                    <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/70 via-transparent to-transparent p-6 transition-opacity">
+                    <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/70 via-transparent to-transparent p-6">
                       <h3 className="text-2xl font-bold text-white">
                         {influencer.name}
                       </h3>

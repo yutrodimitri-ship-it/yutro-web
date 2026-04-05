@@ -10,12 +10,17 @@ export function proxy(request: NextRequest) {
   const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
   const isDev = process.env.NODE_ENV === "development";
 
-  // Skip i18n for studio, api, and static files
+  // Skip i18n for studio, api, static files, and generated assets (icon, apple-icon, sitemap, robots)
   if (
     pathname.startsWith("/studio") ||
     pathname.startsWith("/api") ||
     pathname.startsWith("/_next") ||
-    pathname.includes(".")
+    pathname.includes(".") ||
+    pathname === "/icon" ||
+    pathname === "/apple-icon" ||
+    pathname === "/favicon.ico" ||
+    pathname === "/sitemap.xml" ||
+    pathname === "/robots.txt"
   ) {
     const response = NextResponse.next();
     applySecurityHeaders(response, nonce, isDev);

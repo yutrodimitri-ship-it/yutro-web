@@ -29,7 +29,7 @@ export const services: Service[] = [
   {
     slug: "animacion-storytelling",
     icon: "film",
-    image: "/services/animation.png",
+    image: "/services/animation2.png",
     title: {
       es: "Animación & Storytelling",
       en: "Animation & Storytelling",

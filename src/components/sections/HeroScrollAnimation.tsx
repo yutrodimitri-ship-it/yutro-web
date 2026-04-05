@@ -103,7 +103,7 @@ export function HeroScrollAnimation() {
         {/* Overlay for text legibility */}
         <div className="absolute inset-0 bg-black/40" />
 
-        {/* Text content — left-aligned per DESIGN_VARIANCE 8 */}
+        {/* Text content — centered */}
         <div className="relative z-10 flex min-h-[100dvh] flex-col items-center justify-center py-20 px-6 text-center">
           <TextReveal
             text={t("heroTitle")}
@@ -112,13 +112,13 @@ export function HeroScrollAnimation() {
           />
 
           <div className="max-w-xl">
-            <FadeInOnScroll delay={0.8}>
+            <FadeInOnScroll delay={0.6} variant="fade-blur" duration={1}>
               <p className="mt-6 text-lg leading-relaxed text-white/75 sm:text-xl">
                 {t("heroSubtitle")}
               </p>
             </FadeInOnScroll>
 
-            <FadeInOnScroll delay={1.2}>
+            <FadeInOnScroll delay={1} variant="fade-scale" duration={0.8}>
               <div className="mt-10">
                 <CTAButton href="/contacto">{t("heroCTA")}</CTAButton>
               </div>

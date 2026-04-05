@@ -14,11 +14,11 @@ export default function AppleIcon() {
           alignItems: "center",
           justifyContent: "center",
           borderRadius: "36px",
-          background: "#e8623a",
+          background: "#ffffff",
           fontFamily: "sans-serif",
         }}
       >
-        <span style={{ fontSize: "100px", fontWeight: 800, color: "white" }}>
+        <span style={{ fontSize: "100px", fontWeight: 800, color: "#0a0a0a" }}>
           Y.
         </span>
       </div>

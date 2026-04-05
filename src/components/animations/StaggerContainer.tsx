@@ -24,7 +24,7 @@ export function StaggerContainer({
       className={className}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-50px" }}
+      viewport={{ once: true, margin: "-80px" }}
       variants={{
         hidden: {},
         visible: {
@@ -50,8 +50,22 @@ export function StaggerItem({
     <motion.div
       className={className}
       variants={{
-        hidden: { opacity: 0, y: 30 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+        hidden: {
+          opacity: 0,
+          y: 60,
+          scale: 0.92,
+          filter: "blur(6px)",
+        },
+        visible: {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          filter: "blur(0px)",
+          transition: {
+            duration: 0.7,
+            ease: [0.22, 1, 0.36, 1],
+          },
+        },
       }}
     >
       {children}

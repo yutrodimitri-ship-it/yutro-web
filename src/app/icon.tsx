@@ -14,11 +14,11 @@ export default function Icon() {
           alignItems: "center",
           justifyContent: "center",
           borderRadius: "6px",
-          background: "#e8623a",
+          background: "#ffffff",
           fontFamily: "sans-serif",
         }}
       >
-        <span style={{ fontSize: "18px", fontWeight: 800, color: "white" }}>
+        <span style={{ fontSize: "18px", fontWeight: 800, color: "#0a0a0a" }}>
           Y.
         </span>
       </div>
