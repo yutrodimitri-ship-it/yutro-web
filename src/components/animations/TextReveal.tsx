@@ -41,7 +41,7 @@ export function TextReveal({
       scrollTrigger: {
         trigger: containerRef.current,
         start: "top 80%",
-        once: true,
+        once: false,
       },
     });
 

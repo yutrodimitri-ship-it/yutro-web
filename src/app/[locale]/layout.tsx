@@ -30,8 +30,16 @@ export default async function LocaleLayout({
           <OrganizationJsonLd />
           <WebSiteJsonLd />
           <SkipLink />
+          {/* Global ambient gradient — CSS radial-gradient (GPU composited, no scroll jank) */}
+          <div
+            className="pointer-events-none fixed inset-0 z-0 will-change-transform"
+            style={{
+              background:
+                "radial-gradient(ellipse 700px 600px at -5% -5%, color-mix(in srgb, var(--primary) 22%, transparent) 0%, transparent 70%), radial-gradient(ellipse 600px 500px at 105% 100%, color-mix(in srgb, var(--primary) 16%, transparent) 0%, transparent 70%)",
+            }}
+          />
           <Header />
-          <main id="main-content" className="flex-1 pt-16 lg:pt-20">
+          <main id="main-content" className="relative z-10 flex-1">
             {children}
           </main>
           <Footer />

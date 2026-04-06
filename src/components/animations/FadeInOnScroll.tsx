@@ -77,7 +77,6 @@ export function FadeInOnScroll({
     return <div className={className}>{children}</div>;
   }
 
-  // If no variant specified, use legacy direction-based behavior
   const resolvedVariant = variant ?? (`fade-${direction}` as AnimationVariant);
 
   return (
@@ -85,7 +84,7 @@ export function FadeInOnScroll({
       className={className}
       initial={getInitial(resolvedVariant)}
       whileInView={getAnimate(resolvedVariant)}
-      viewport={{ once: true, margin: "-80px" }}
+      viewport={{ once: false, margin: "-80px" }}
       transition={{ duration, delay, ease: [0.25, 0.1, 0.25, 1] }}
     >
       {children}

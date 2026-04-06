@@ -12,7 +12,6 @@ interface ProjectCardProps {
   featured?: boolean;
 }
 
-// Image wipe reveal: clip from left to right
 const imageReveal = {
   hidden: { clipPath: "inset(0 100% 0 0)" },
   visible: {
@@ -21,7 +20,6 @@ const imageReveal = {
   },
 };
 
-// Card info slides up
 const infoReveal = {
   hidden: { opacity: 0, y: 20 },
   visible: {
@@ -36,7 +34,7 @@ export function ProjectCard({ project, locale, index = 0, featured = false }: Pr
     <motion.div
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-60px" }}
+      viewport={{ once: false, margin: "-60px" }}
       whileHover={{ y: -4 }}
       transition={{ type: "spring", stiffness: 120, damping: 20 }}
     >
@@ -44,7 +42,6 @@ export function ProjectCard({ project, locale, index = 0, featured = false }: Pr
         href={`/proyectos/${project.slug}`}
         className="group relative block overflow-hidden rounded-xl bg-card"
       >
-        {/* Image — clip-path reveal from left */}
         <motion.div
           className={`relative overflow-hidden ${featured ? "aspect-[21/9]" : "aspect-video"}`}
           variants={imageReveal}
@@ -56,11 +53,7 @@ export function ProjectCard({ project, locale, index = 0, featured = false }: Pr
             className="object-cover transition-transform duration-700 group-hover:scale-110"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
-
-          {/* Gradient overlay — always visible, deeper on hover */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent transition-opacity duration-300 group-hover:opacity-100 opacity-60" />
-
-          {/* Hover content */}
           <div className="absolute bottom-0 left-0 right-0 translate-y-2 p-5 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
             <p className="text-xs leading-relaxed text-white/80">
               {project.excerpt[locale as "es" | "en"]}
@@ -68,7 +61,6 @@ export function ProjectCard({ project, locale, index = 0, featured = false }: Pr
           </div>
         </motion.div>
 
-        {/* Info — slides up after image reveals */}
         <motion.div className="flex items-center justify-between p-4" variants={infoReveal}>
           <div>
             <h3 className={`font-semibold text-card-foreground transition-colors duration-300 group-hover:text-primary ${featured ? "text-lg" : ""}`}>
@@ -83,7 +75,6 @@ export function ProjectCard({ project, locale, index = 0, featured = false }: Pr
           </span>
         </motion.div>
 
-        {/* Bottom accent */}
         <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-gradient-to-r from-primary to-primary/40 transition-all duration-500 group-hover:w-full" />
       </Link>
     </motion.div>

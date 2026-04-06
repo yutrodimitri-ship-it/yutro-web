@@ -74,15 +74,10 @@ export default function InfluencerDetail() {
       {/* ══════════════════════════════════════════════
           HERO — Full-bleed gradient + profile
          ══════════════════════════════════════════════ */}
-      <section className="relative overflow-hidden pb-16 pt-28 sm:pb-24 sm:pt-36">
-        {/* Background gradient mesh */}
-        <div className="pointer-events-none absolute inset-0 -z-10">
-          <div className="absolute -left-1/4 -top-1/4 h-[600px] w-[600px] rounded-full bg-primary/15 blur-[120px]" />
-          <div className="absolute -right-1/4 bottom-0 h-[500px] w-[500px] rounded-full bg-primary/10 blur-[100px]" />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
-        </div>
+      <section className="relative pb-16 pt-28 sm:pb-24 sm:pt-36">
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
 
-        <div className="mx-auto max-w-5xl px-4 sm:px-6">
+        <div className="relative z-10 mx-auto max-w-5xl px-4 sm:px-6">
           {/* Back link */}
           <motion.div
             initial={{ opacity: 0, x: -16 }}
@@ -183,26 +178,27 @@ export default function InfluencerDetail() {
           GALLERY — Instagram-style grid with hover
          ══════════════════════════════════════════════ */}
       <section className="border-t border-border/50">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6">
           {/* Tab bar */}
-          <div className="flex border-b border-border/50">
-            <button className="flex flex-1 items-center justify-center gap-2 border-t-2 border-foreground py-4 text-xs font-semibold uppercase tracking-[0.2em]">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="3" y="3" width="7" height="7" />
-                <rect x="14" y="3" width="7" height="7" />
-                <rect x="3" y="14" width="7" height="7" />
-                <rect x="14" y="14" width="7" height="7" />
-              </svg>
-              {isEs ? "Publicaciones" : "Posts"}
-            </button>
+          <div className="mx-auto max-w-5xl px-4 sm:px-6">
+            <div className="flex border-b border-border/50">
+              <button className="flex flex-1 items-center justify-center gap-2 border-t-2 border-foreground py-4 text-xs font-semibold uppercase tracking-[0.2em]">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="3" width="7" height="7" />
+                  <rect x="14" y="3" width="7" height="7" />
+                  <rect x="3" y="14" width="7" height="7" />
+                  <rect x="14" y="14" width="7" height="7" />
+                </svg>
+                {isEs ? "Publicaciones" : "Posts"}
+              </button>
+            </div>
           </div>
 
-          {/* 3x3 Grid */}
+          {/* Full-width Grid */}
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-40px" }}
-            className="grid grid-cols-3 gap-1 py-1 sm:gap-1.5 sm:py-1.5"
+            className="grid grid-cols-3 gap-1 sm:gap-1.5"
           >
             {influencer.gallery.map((img, idx) => (
               <motion.button
@@ -225,13 +221,12 @@ export default function InfluencerDetail() {
                   alt={`${influencer.name} ${idx + 1}`}
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
-                  sizes="(max-width: 640px) 33vw, 280px"
+                  sizes="33vw"
                 />
                 <div className="absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/20" />
               </motion.button>
             ))}
           </motion.div>
-        </div>
       </section>
 
 
