@@ -5,8 +5,6 @@ import { contactSchema } from "@/lib/validation";
 import { verifyCsrfToken } from "@/lib/csrf";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { sendContactEmail } from "@/lib/email";
-import { db } from "@/db";
-import { contactSubmissions } from "@/db/schema";
 
 export async function POST(request: Request) {
   // Rate limiting: 5 requests per minute per IP
@@ -50,21 +48,23 @@ export async function POST(request: Request) {
   const data = result.data;
   const userAgent = request.headers.get("user-agent") || undefined;
 
-  // Save to database
-  try {
-    await db.insert(contactSubmissions).values({
-      name: data.name,
-      email: data.email,
-      company: undefined,
-      phone: data.phone,
-      message: data.message,
-      ipAddress: ip === "unknown" ? undefined : ip,
-      userAgent,
-    });
-  } catch (err) {
-    // eslint-disable-next-line no-console
-    console.error("DB insert failed:", err);
-    // Don't block the user — still try to send email
+  // Save to database (only if DATABASE_URL is configured)
+  if (process.env.DATABASE_URL) {
+    try {
+      const { db } = await import("@/db");
+      const { contactSubmissions } = await import("@/db/schema");
+      await db.insert(contactSubmissions).values({
+        name: data.name,
+        email: data.email,
+        company: undefined,
+        phone: data.phone,
+        message: data.message,
+        ipAddress: ip === "unknown" ? undefined : ip,
+        userAgent,
+      });
+    } catch (err) {
+      console.error("DB insert failed:", err);
+    }
   }
 
   // Send email notification
@@ -78,9 +78,7 @@ export async function POST(request: Request) {
       ip,
     });
   } catch (err) {
-    // eslint-disable-next-line no-console
     console.error("Email send failed:", err);
-    // Data is saved in DB, so we still return success
   }
 
   return NextResponse.json({ success: true });
