@@ -59,7 +59,7 @@ export function Header() {
           </Link>
 
           {/* Desktop Nav */}
-          <div className="hidden items-center gap-8 md:flex">
+          <div className="hidden items-center gap-12 md:flex">
             {navItems.map((item) =>
               isHome && item.anchor ? (
                 <a
