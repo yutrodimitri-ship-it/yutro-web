@@ -1,15 +1,11 @@
-import Redis from "ioredis";
-
-// --- In-memory store (development) ---
+// --- In-memory store ---
 
 const memoryMap = new Map<string, { count: number; resetTime: number }>();
 
 setInterval(() => {
   const now = Date.now();
   for (const [key, value] of memoryMap) {
-    if (now > value.resetTime) {
-      memoryMap.delete(key);
-    }
+    if (now > value.resetTime) memoryMap.delete(key);
   }
 }, 60_000);
 
@@ -28,59 +24,43 @@ function checkMemoryRateLimit(
 
   entry.count++;
   const remaining = Math.max(0, maxRequests - entry.count);
-  const resetIn = entry.resetTime - now;
-
-  return { allowed: entry.count <= maxRequests, remaining, resetIn };
+  return { allowed: entry.count <= maxRequests, remaining, resetIn: entry.resetTime - now };
 }
 
-// --- Redis store (production) ---
-
-let redis: Redis | null = null;
-
-function getRedis(): Redis {
-  if (!redis) {
-    redis = new Redis(process.env.REDIS_URL || "redis://localhost:6379", {
-      maxRetriesPerRequest: 3,
-      lazyConnect: true,
-    });
-  }
-  return redis;
-}
+// --- Redis store (lazy) ---
 
 async function checkRedisRateLimit(
   key: string,
   maxRequests: number,
   windowMs: number
 ): Promise<{ allowed: boolean; remaining: number; resetIn: number }> {
-  const client = getRedis();
+  const { default: Redis } = await import("ioredis");
+  const client = new Redis(process.env.REDIS_URL || "redis://localhost:6379", {
+    maxRetriesPerRequest: 3,
+    lazyConnect: true,
+  });
+
   const redisKey = `rl:${key}`;
   const windowSec = Math.ceil(windowMs / 1000);
-
   const count = await client.incr(redisKey);
-  if (count === 1) {
-    await client.expire(redisKey, windowSec);
-  }
-
+  if (count === 1) await client.expire(redisKey, windowSec);
   const ttl = await client.ttl(redisKey);
-  const remaining = Math.max(0, maxRequests - count);
 
   return {
     allowed: count <= maxRequests,
-    remaining,
+    remaining: Math.max(0, maxRequests - count),
     resetIn: ttl > 0 ? ttl * 1000 : windowMs,
   };
 }
 
 // --- Public API ---
 
-const useRedis = process.env.RATE_LIMIT_STORE === "redis";
-
 export async function checkRateLimit(
   key: string,
   maxRequests: number,
   windowMs: number
 ): Promise<{ allowed: boolean; remaining: number; resetIn: number }> {
-  if (useRedis) {
+  if (process.env.RATE_LIMIT_STORE === "redis") {
     return checkRedisRateLimit(key, maxRequests, windowMs);
   }
   return checkMemoryRateLimit(key, maxRequests, windowMs);
