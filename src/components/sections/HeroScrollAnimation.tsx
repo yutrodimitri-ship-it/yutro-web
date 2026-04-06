@@ -105,11 +105,12 @@ export function HeroScrollAnimation() {
 
         {/* Text content — centered */}
         <div className="relative z-10 flex min-h-[100dvh] flex-col items-center justify-center py-20 px-6 text-center">
-          <TextReveal
-            text={t("heroTitle")}
+          <h1
             className="font-heading font-extrabold tracking-tighter leading-none text-white whitespace-nowrap"
             style={{ fontSize: "clamp(2rem, 5.5vw, 5.5rem)" }}
-          />
+          >
+            CREAMOS CON <span className="text-primary">IA</span>
+          </h1>
 
           <div className="max-w-xl">
             <FadeInOnScroll delay={0.6} variant="fade-blur" duration={1}>
