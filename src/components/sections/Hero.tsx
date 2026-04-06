@@ -19,10 +19,9 @@ export function Hero() {
 
       <Container className="relative z-10 py-20">
         <div className="mx-auto max-w-4xl text-center">
-          <TextReveal
-            text={t("heroTitle")}
-            className="text-5xl font-extrabold tracking-tight sm:text-6xl md:text-7xl lg:text-8xl"
-          />
+          <h1 className="text-5xl font-extrabold tracking-tight sm:text-6xl md:text-7xl lg:text-8xl">
+            CREAMOS CON <span className="text-primary">IA</span>
+          </h1>
 
           <FadeInOnScroll delay={0.8}>
             <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground sm:text-xl md:text-2xl">
