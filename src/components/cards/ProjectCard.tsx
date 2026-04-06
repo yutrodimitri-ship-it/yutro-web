@@ -16,7 +16,7 @@ const imageReveal = {
   hidden: { clipPath: "inset(0 100% 0 0)" },
   visible: {
     clipPath: "inset(0 0% 0 0)",
-    transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] as const },
   },
 };
 
@@ -25,7 +25,7 @@ const infoReveal = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.5, delay: 0.4, ease: "easeOut" },
+    transition: { duration: 0.5, delay: 0.4, ease: "easeOut" as const },
   },
 };
 

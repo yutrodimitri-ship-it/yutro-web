@@ -1,7 +1,5 @@
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 const CONTACT_EMAIL = process.env.CONTACT_EMAIL_TO || "contacto@yutro.cl";
 
 interface ContactEmailData {
@@ -20,6 +18,8 @@ export async function sendContactEmail(data: ContactEmailData) {
     console.log("[DEV] Email skipped (no RESEND_API_KEY):", data.subject);
     return { success: true, dev: true };
   }
+
+  const resend = new Resend(process.env.RESEND_API_KEY);
 
   const { data: result, error } = await resend.emails.send({
     from: "YUTRO Web <noreply@yutro.cl>",

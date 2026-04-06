@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { NextResponse } from "next/server";
 import { contactSchema } from "@/lib/validation";
 import { verifyCsrfToken } from "@/lib/csrf";
