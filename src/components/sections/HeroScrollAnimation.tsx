@@ -6,7 +6,7 @@ import { CTAButton } from "@/components/shared/CTAButton";
 import { FadeInOnScroll } from "@/components/animations/FadeInOnScroll";
 import { TextReveal } from "@/components/animations/TextReveal";
 
-const FRAME_COUNT = 121;
+const FRAME_COUNT = 60;
 
 function frameUrl(i: number) {
   return `/hero-frames/frame_${String(i).padStart(3, "0")}.jpg`;
@@ -26,7 +26,7 @@ export function HeroScrollAnimation() {
 
     // Source image dimensions
     const SRC_W = 1280;
-    const SRC_H = 712;
+    const SRC_H = 726;
 
     function setSize() {
       canvas!.width = window.innerWidth;
@@ -103,25 +103,27 @@ export function HeroScrollAnimation() {
         {/* Overlay for text legibility */}
         <div className="absolute inset-0 bg-black/40" />
 
-        {/* Text content — centered */}
-        <div className="relative z-10 flex min-h-[100dvh] flex-col items-center justify-center py-20 px-6 text-center">
+        {/* Text content — left aligned */}
+        <div className="relative z-10 flex min-h-[100dvh] flex-col items-start justify-center px-[12%] sm:px-[15%] lg:px-[18%] text-left">
           <h1
-            className="font-heading font-extrabold tracking-tighter leading-none text-white whitespace-nowrap"
-            style={{ fontSize: "clamp(2rem, 5.5vw, 5.5rem)" }}
+            className="font-heading font-extrabold leading-none text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.5)]"
+            style={{ fontSize: "clamp(2.5rem, 6vw, 6rem)", letterSpacing: "0.02em" }}
           >
-            CREAMOS CON <span className="text-primary">IA</span>
+            CREAMOS<br />CON <span className="text-primary">IA</span>
           </h1>
 
-          <div className="max-w-xl">
+          <div className="max-w-md">
             <FadeInOnScroll delay={0.6} variant="fade-blur" duration={1}>
-              <p className="mt-6 text-lg leading-relaxed text-white/75 sm:text-xl">
+              <p className="mt-6 text-lg leading-relaxed text-white/80 drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)] sm:text-xl">
                 {t("heroSubtitle")}
               </p>
             </FadeInOnScroll>
 
             <FadeInOnScroll delay={1} variant="fade-scale" duration={0.8}>
               <div className="mt-10">
-                <CTAButton href="/contacto">{t("heroCTA")}</CTAButton>
+                <CTAButton href="/contacto" className="px-10 py-4 text-base shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40">
+                  {t("heroCTA")}
+                </CTAButton>
               </div>
             </FadeInOnScroll>
           </div>
@@ -147,10 +149,8 @@ export function HeroScrollAnimation() {
           </div>
         </div>
 
-        {/* Bottom fade into page */}
-        <div className="absolute bottom-0 left-0 right-0" style={{ height: "40vh" }}>
-          <div className="h-full bg-gradient-to-t from-background via-background/80 to-transparent" />
-        </div>
+        {/* Small bottom fade */}
+        <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-background to-transparent" />
       </div>
     </section>
   );

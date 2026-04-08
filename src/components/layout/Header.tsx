@@ -11,8 +11,8 @@ import { MobileNav } from "./MobileNav";
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 
 const navItems = [
-  { key: "projects", href: "/proyectos", anchor: "#proyectos" },
-  { key: "services", href: "/servicios", anchor: "#servicios" },
+  { key: "projects", href: "/proyectos", anchor: null },
+  { key: "services", href: "/servicios", anchor: null },
   { key: "influencer", href: "/influencer", anchor: null },
   { key: "blog", href: "/blog", anchor: null },
   { key: "contact", href: "/contacto", anchor: "#contacto-cta" },
