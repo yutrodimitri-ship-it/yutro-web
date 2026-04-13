@@ -1,4 +1,4 @@
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
 
 const CONTACT_EMAIL = process.env.CONTACT_EMAIL_TO || "contacto@yutro.cl";
 
@@ -12,17 +12,25 @@ interface ContactEmailData {
 }
 
 export async function sendContactEmail(data: ContactEmailData) {
-  // Skip sending if no API key (development)
-  if (!process.env.RESEND_API_KEY) {
+  // Skip sending if no SMTP credentials (development)
+  if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
     // eslint-disable-next-line no-console
-    console.log("[DEV] Email skipped (no RESEND_API_KEY):", data.subject);
+    console.log("[DEV] Email skipped (no SMTP credentials):", data.subject);
     return { success: true, dev: true };
   }
 
-  const resend = new Resend(process.env.RESEND_API_KEY);
+  const transporter = nodemailer.createTransport({
+    host: "smtp.zoho.com",
+    port: 465,
+    secure: true,
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
+    },
+  });
 
-  const { data: result, error } = await resend.emails.send({
-    from: "YUTRO Web <noreply@yutro.cl>",
+  const info = await transporter.sendMail({
+    from: `"YUTRO Web" <${process.env.SMTP_USER}>`,
     to: CONTACT_EMAIL,
     replyTo: data.email,
     subject: `[YUTRO Web] ${data.subject}`,
@@ -64,11 +72,7 @@ export async function sendContactEmail(data: ContactEmailData) {
     `,
   });
 
-  if (error) {
-    throw new Error(`Email send failed: ${error.message}`);
-  }
-
-  return { success: true, id: result?.id };
+  return { success: true, id: info.messageId };
 }
 
 function escapeHtml(str: string): string {
