@@ -45,13 +45,17 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
+  params,
 }: Readonly<{
   children: React.ReactNode;
+  params: Promise<{ locale?: string }>;
 }>) {
+  const { locale } = await params;
+  const lang = locale === "en" ? "en" : "es";
   return (
-    <html lang="es" className={`${plusJakarta.variable} ${outfit.variable} h-full antialiased`} suppressHydrationWarning>
+    <html lang={lang} className={`${plusJakarta.variable} ${outfit.variable} h-full antialiased`} suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{

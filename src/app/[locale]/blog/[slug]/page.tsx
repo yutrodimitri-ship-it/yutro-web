@@ -5,8 +5,11 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/shared/Container";
 import { CTAButton } from "@/components/shared/CTAButton";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { blogPosts } from "@/data/blog";
 import { createMetadata } from "@/lib/metadata";
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.yutro.cl";
 
 function TertuliasIAContent() {
   return (
@@ -221,6 +224,32 @@ export default async function BlogPostPage({
 
   return (
     <section className="py-20 lg:py-28">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "BlogPosting",
+          headline: post.title,
+          description: post.excerpt,
+          datePublished: post.date,
+          author: {
+            "@type": "Person",
+            name: "Milivoy Yutronic",
+          },
+          publisher: {
+            "@type": "Organization",
+            name: "YUTRO.",
+            url: SITE_URL,
+          },
+          ...(post.image && {
+            image: `${SITE_URL}${post.image}`,
+          }),
+          mainEntityOfPage: {
+            "@type": "WebPage",
+            "@id": `${SITE_URL}/${locale}/blog/${slug}`,
+          },
+          inLanguage: locale,
+        }}
+      />
       <Container className="max-w-3xl">
         <CTAButton href="/blog" variant="outline" className="mb-8 text-sm px-4 py-2">
           &larr; {locale === "es" ? "Volver al blog" : "Back to blog"}
