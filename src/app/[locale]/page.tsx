@@ -9,12 +9,12 @@ import { createMetadata } from "@/lib/metadata";
 
 const meta: Record<string, { title: string; description: string }> = {
   es: {
-    title: "YUTRO. — Productora Audiovisual con IA",
+    title: "YUTRO. — Creamos con IA",
     description:
       "Creamos contenido audiovisual con inteligencia artificial. Producción creativa, 3D, motion graphics y postproducción avanzada.",
   },
   en: {
-    title: "YUTRO. — AI Audiovisual Production",
+    title: "YUTRO. — We Create with AI",
     description:
       "We create audiovisual content with artificial intelligence. Creative production, 3D, motion graphics and advanced post-production.",
   },
