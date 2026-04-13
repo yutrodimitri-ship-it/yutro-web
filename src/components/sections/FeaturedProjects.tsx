@@ -16,7 +16,6 @@ export function FeaturedProjects() {
 
   return (
     <section id="proyectos" className="relative py-20 lg:py-28">
-      <div className="pointer-events-none absolute -top-24 left-0 right-0 h-24 bg-gradient-to-b from-background to-transparent" />
       <Container>
         <FadeInOnScroll variant="fade-blur">
           <SectionHeader title={t("featuredTitle")} align="left" />

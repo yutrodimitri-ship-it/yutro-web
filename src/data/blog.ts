@@ -6,6 +6,7 @@ export const blogPosts: (BlogPost & { locale: string })[] = [
     title: "Casting digital con ComfyUI en Tertulias IA – Universidad Mayor",
     excerpt:
       "Yutro fue parte de Tertulias IA en la Universidad Mayor: una jornada de 7 horas con 12 panelistas que exploró el estado actual de la inteligencia artificial creativa en Chile. Compartimos nuestro flujo de trabajo en ComfyUI para casting digital de personajes consistentes.",
+    image: "/blog/tertulias-ia-umayor.webp",
     date: "2026-03-27",
     readingTime: 7,
     locale: "es",
@@ -15,6 +16,7 @@ export const blogPosts: (BlogPost & { locale: string })[] = [
     title: "Digital Casting with ComfyUI at Tertulias IA – Universidad Mayor",
     excerpt:
       "Yutro was part of Tertulias IA at Universidad Mayor: a 7-hour event with 12 panelists exploring the current state of creative AI in Chile. We shared our ComfyUI workflow for consistent digital character casting.",
+    image: "/blog/tertulias-ia-umayor.webp",
     date: "2026-03-27",
     readingTime: 7,
     locale: "en",

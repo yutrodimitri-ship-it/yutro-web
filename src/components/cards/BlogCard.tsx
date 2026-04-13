@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 
 export interface BlogPost {
@@ -22,8 +23,20 @@ export function BlogCard({ post, readMoreLabel, readingTimeLabel }: BlogCardProp
       className="group block overflow-hidden rounded-lg border border-border bg-card transition-all duration-300 hover:border-primary/50 hover:shadow-lg"
     >
       {/* Image */}
-      <div className="aspect-video bg-muted flex items-center justify-center text-muted-foreground text-sm">
-        {post.title}
+      <div className="relative aspect-video bg-muted overflow-hidden">
+        {post.image ? (
+          <Image
+            src={post.image}
+            alt={post.title}
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          />
+        ) : (
+          <div className="flex h-full items-center justify-center text-muted-foreground text-sm">
+            {post.title}
+          </div>
+        )}
       </div>
 
       {/* Content */}

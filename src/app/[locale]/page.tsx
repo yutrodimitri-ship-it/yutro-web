@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { HeroScrollAnimation } from "@/components/sections/HeroScrollAnimation";
+import { HeroVideo } from "@/components/sections/HeroVideo";
 import { FeaturedProjects } from "@/components/sections/FeaturedProjects";
 import { ServicesPreview } from "@/components/sections/ServicesPreview";
 import { CTASection } from "@/components/sections/CTASection";
@@ -16,8 +16,7 @@ export default function HomePage() {
   return (
     <>
       <ScrollProgress />
-      <HeroScrollAnimation />
-      <SectionDivider />
+      <HeroVideo />
       <FeaturedProjects />
       <SectionDivider />
       <ServicesPreview />

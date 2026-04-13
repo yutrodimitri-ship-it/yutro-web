@@ -2,7 +2,7 @@ export const contactInfo = {
   email: "contacto@yutro.cl",
   phones: [
     { label: "Principal", number: "+56 9 62479939" },
-    { label: "Secundario", number: "+56 9 62479930" },
+    { label: "Secundario", number: "+56 9 51008051" },
   ],
   instagram: {
     handle: "@yutro_ia",

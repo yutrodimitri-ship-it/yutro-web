@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import type { Metadata } from "next";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/shared/Container";
 import { CTAButton } from "@/components/shared/CTAButton";
@@ -226,8 +227,20 @@ export default async function BlogPostPage({
         </CTAButton>
 
         {/* Hero Image */}
-        <div className="aspect-video overflow-hidden rounded-lg bg-muted flex items-center justify-center text-muted-foreground text-lg">
-          {post.title}
+        <div className="relative aspect-video overflow-hidden rounded-lg bg-muted">
+          {(slug === "tertulias-ia-universidad-mayor-comfyui-casting-digital" || slug === "tertulias-ia-universidad-mayor-comfyui-digital-casting") ? (
+            <Image
+              src="/blog/tertulias-ia-umayor.webp"
+              alt={post.title}
+              fill
+              className="object-cover"
+              priority
+            />
+          ) : (
+            <div className="flex h-full items-center justify-center text-muted-foreground text-lg">
+              {post.title}
+            </div>
+          )}
         </div>
 
         {/* Meta */}
