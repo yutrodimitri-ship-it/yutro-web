@@ -20,7 +20,7 @@ export function HeroVideo() {
   }, []);
 
   return (
-    <section className="relative h-screen overflow-hidden">
+    <section className="relative h-screen overflow-hidden bg-black">
       {/* Video background */}
       <video
         ref={videoRef}
