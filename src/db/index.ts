@@ -7,7 +7,7 @@ const pool = new pg.Pool({
   max: 10,
   idleTimeoutMillis: 30_000,
   connectionTimeoutMillis: 5_000,
-  ssl: process.env.NODE_ENV === "production" ? true : { rejectUnauthorized: false },
+  ssl: { rejectUnauthorized: false },
 });
 
 // Disable prepared statements for Supabase transaction mode pooler (port 6543)
