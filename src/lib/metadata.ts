@@ -33,6 +33,7 @@ export function createMetadata({
       languages: {
         es: `${SITE_URL}/es${path}`,
         en: `${SITE_URL}/en${path}`,
+        "x-default": `${SITE_URL}/es${path}`,
       },
     },
     openGraph: {

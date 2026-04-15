@@ -4,6 +4,7 @@
     "projects": "Projects",
     "services": "Services",
     "influencer": "Influencer",
+    "studio": "Studio",
     "blog": "Blog",
     "contact": "Contact"
   },
@@ -64,5 +65,90 @@
     "blogDescription": "News, trends and updates from the AI audiovisual world.",
     "contactTitle": "Contact",
     "contactDescription": "Get in touch with YUTRO. Tell us about your project."
+  },
+  "studio": {
+    "sidebar": {
+      "dashboard": "Dashboard",
+      "createAvatar": "Create Avatar",
+      "history": "History",
+      "admin": "Admin",
+      "credits": "Credits",
+      "backToSite": "yutro.cl",
+      "logout": "Sign out"
+    },
+    "login": {
+      "title": "Sign in",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Sign in",
+      "submitting": "Signing in...",
+      "backToSite": "Back to yutro.cl",
+      "error": "Invalid credentials",
+      "rateLimited": "Too many attempts. Please try again in a few minutes."
+    },
+    "dashboard": {
+      "greeting": "Hello, {name}",
+      "welcome": "Welcome to your AI avatar studio",
+      "credits": "Available credits",
+      "generated": "Avatars generated",
+      "recent": "Recent",
+      "viewAll": "View all",
+      "empty": "You don't have any avatars yet.",
+      "createFirst": "Create your first",
+      "start": "Start"
+    },
+    "generate": {
+      "title": "Create Avatar",
+      "subtitle": "Configure your character's features",
+      "step1Tab": "1. Demographics",
+      "step2Tab": "2. Features (optional)",
+      "gender": "Gender",
+      "ageRange": "Age range",
+      "ethnicity": "Ethnicity / Features",
+      "hairColor": "Hair color",
+      "hairTexture": "Texture",
+      "hairCut": "Haircut",
+      "eyeColor": "Eye color",
+      "skinTone": "Skin tone",
+      "wardrobeTitle": "Choose wardrobe",
+      "yourAvatar": "Your avatar",
+      "generatePortrait": "Generate Portrait",
+      "regenerate": "Regenerate",
+      "finishNoWardrobe": "Finish without wardrobe",
+      "chooseWardrobe": "Choose wardrobe",
+      "applyWardrobe": "Apply wardrobe",
+      "changeWardrobe": "Change wardrobe",
+      "finishNoSession": "Finish without session",
+      "photoSession": "Photo session",
+      "completed": "Avatar completed",
+      "confirmCredit": "1 credit will be deducted. Continue?",
+      "viewHistory": "View in history",
+      "createAnother": "Create another avatar",
+      "connectionError": "Connection error with server"
+    },
+    "loader": {
+      "step1Title": "Generating base portrait",
+      "step2Title": "Applying wardrobe — {preset}",
+      "step3Title": "Generating photo session — 9 poses"
+    },
+    "history": {
+      "title": "History",
+      "generations": "generations",
+      "empty": "You don't have any generations yet.",
+      "createFirst": "Create your first avatar",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "results": {
+      "portrait": "Portrait",
+      "wardrobe": "Wardrobe",
+      "session": "Session",
+      "download": "Download",
+      "zoom": "Zoom"
+    },
+    "banner": {
+      "description": "Create photorealistic avatars with AI. Generate characters, dress them and get complete photo sessions in minutes.",
+      "cta": "Go to Studio"
+    }
   }
 }

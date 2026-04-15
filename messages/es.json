@@ -4,6 +4,7 @@
     "projects": "Proyectos",
     "services": "Servicios",
     "influencer": "Influencer",
+    "studio": "Studio",
     "blog": "Blog",
     "contact": "Contacto"
   },
@@ -64,5 +65,90 @@
     "blogDescription": "Noticias, tendencias y novedades del mundo audiovisual con IA.",
     "contactTitle": "Contacto",
     "contactDescription": "Ponte en contacto con YUTRO. Cuéntanos tu proyecto."
+  },
+  "studio": {
+    "sidebar": {
+      "dashboard": "Dashboard",
+      "createAvatar": "Crear Avatar",
+      "history": "Historial",
+      "admin": "Admin",
+      "credits": "Créditos",
+      "backToSite": "yutro.cl",
+      "logout": "Cerrar sesión"
+    },
+    "login": {
+      "title": "Iniciar sesión",
+      "email": "Email",
+      "password": "Contraseña",
+      "submit": "Ingresar",
+      "submitting": "Ingresando...",
+      "backToSite": "Volver a yutro.cl",
+      "error": "Credenciales inválidas",
+      "rateLimited": "Demasiados intentos. Intenta de nuevo en unos minutos."
+    },
+    "dashboard": {
+      "greeting": "Hola, {name}",
+      "welcome": "Bienvenido a tu estudio de avatares IA",
+      "credits": "Créditos disponibles",
+      "generated": "Avatares generados",
+      "recent": "Recientes",
+      "viewAll": "Ver todo",
+      "empty": "Aún no tienes avatares.",
+      "createFirst": "Crea el primero",
+      "start": "Empezar"
+    },
+    "generate": {
+      "title": "Crear Avatar",
+      "subtitle": "Configura las características de tu personaje",
+      "step1Tab": "1. Demografía",
+      "step2Tab": "2. Rasgos (opcional)",
+      "gender": "Género",
+      "ageRange": "Rango de edad",
+      "ethnicity": "Etnia / Rasgos",
+      "hairColor": "Color de cabello",
+      "hairTexture": "Textura",
+      "hairCut": "Corte",
+      "eyeColor": "Color de ojos",
+      "skinTone": "Tono de piel",
+      "wardrobeTitle": "Elige el vestuario",
+      "yourAvatar": "Tu avatar",
+      "generatePortrait": "Generar Retrato",
+      "regenerate": "Regenerar",
+      "finishNoWardrobe": "Finalizar sin vestuario",
+      "chooseWardrobe": "Elegir vestuario",
+      "applyWardrobe": "Aplicar vestuario",
+      "changeWardrobe": "Cambiar vestuario",
+      "finishNoSession": "Finalizar sin sesión",
+      "photoSession": "Sesión de fotos",
+      "completed": "Avatar completado",
+      "confirmCredit": "Se descontará 1 crédito. ¿Continuar?",
+      "viewHistory": "Ver en historial",
+      "createAnother": "Crear otro avatar",
+      "connectionError": "Error de conexión con el servidor"
+    },
+    "loader": {
+      "step1Title": "Generando retrato base",
+      "step2Title": "Aplicando vestuario — {preset}",
+      "step3Title": "Generando sesión de fotos — 9 poses"
+    },
+    "history": {
+      "title": "Historial",
+      "generations": "generaciones",
+      "empty": "No tienes generaciones aun.",
+      "createFirst": "Crear tu primer avatar",
+      "previous": "Anterior",
+      "next": "Siguiente"
+    },
+    "results": {
+      "portrait": "Retrato",
+      "wardrobe": "Vestuario",
+      "session": "Sesión",
+      "download": "Descargar",
+      "zoom": "Ampliar"
+    },
+    "banner": {
+      "description": "Crea avatares fotorrealistas con IA. Genera personajes, vístelos y obtén sesiones de fotos completas en minutos.",
+      "cta": "Ir a Studio"
+    }
   }
 }

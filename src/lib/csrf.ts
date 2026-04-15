@@ -1,7 +1,12 @@
 import { randomBytes, createHmac, timingSafeEqual } from "crypto";
 
 function getCsrfSecret(): string {
-  return process.env.CSRF_SECRET || "yutro-csrf-dev-secret-change-in-prod";
+  const secret = process.env.CSRF_SECRET;
+  if (!secret || secret.length < 32) {
+    if (process.env.NODE_ENV === "production") throw new Error("CSRF_SECRET must be set");
+    return "dev-csrf-secret-must-be-32-bytes!!";
+  }
+  return secret;
 }
 
 const SECRET = getCsrfSecret();

@@ -25,7 +25,7 @@ export function Counter({
   stiffness = 40,
 }: CounterProps) {
   const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: false, margin: "-100px" });
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
   const prefersReduced = useReducedMotion();
   const motionValue = useMotionValue(0);
   const spring = useSpring(motionValue, {

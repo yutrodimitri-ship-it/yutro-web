@@ -22,6 +22,10 @@ body::after {
   mix-blend-mode: overlay;
 }
 
+@media (max-width: 768px) {
+  body::after { display: none; }
+}
+
 /* Hide scrollbar on horizontal scroll strips */
 .overflow-x-auto::-webkit-scrollbar {
   display: none;

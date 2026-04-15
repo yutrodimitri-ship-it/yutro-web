@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { usePathname } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import {
   Sheet,
@@ -10,17 +11,12 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 
-const navItems = [
-  { key: "home", href: "/" },
-  { key: "projects", href: "/proyectos" },
-  { key: "services", href: "/servicios" },
-  { key: "influencer", href: "/influencer" },
-  { key: "blog", href: "/blog" },
-  { key: "contact", href: "/contacto" },
-] as const;
+import { mobileNavItems } from "@/data/navigation";
 
 export function MobileNav() {
   const t = useTranslations("nav");
+  const pathname = usePathname();
+  const locale = pathname.split("/")[1] || "es";
   const [open, setOpen] = useState(false);
 
   return (
@@ -49,7 +45,17 @@ export function MobileNav() {
           YUTRO<span className="text-primary">.</span>
         </SheetTitle>
         <nav className="mt-8 flex flex-col gap-4">
-          {navItems.map((item) => (
+          {mobileNavItems.map((item) => (
+            "external" in item && item.external ? (
+            <a
+              key={item.key}
+              href={`/${locale}${item.href}`}
+              onClick={() => setOpen(false)}
+              className="text-lg font-medium text-foreground/70 transition-colors hover:text-primary"
+            >
+              {t(item.key)}
+            </a>
+            ) : (
             <Link
               key={item.key}
               href={item.href}
@@ -58,6 +64,7 @@ export function MobileNav() {
             >
               {t(item.key)}
             </Link>
+            )
           ))}
         </nav>
       </SheetContent>

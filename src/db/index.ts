@@ -7,6 +7,12 @@ const pool = new pg.Pool({
   max: 10,
   idleTimeoutMillis: 30_000,
   connectionTimeoutMillis: 5_000,
+  ssl: process.env.NODE_ENV === "production" ? true : { rejectUnauthorized: false },
 });
 
-export const db = drizzle(pool, { schema });
+// Disable prepared statements for Supabase transaction mode pooler (port 6543)
+pool.on("connect", (client) => {
+  client.query("SET plan_cache_mode = 'force_custom_plan'");
+});
+
+export const db = drizzle(pool, { schema, logger: process.env.NODE_ENV === "development" });
