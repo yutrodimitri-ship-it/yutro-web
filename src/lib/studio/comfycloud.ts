@@ -1,15 +1,9 @@
 // YUTRO Studio — ComfyCloud API client
 // Handles Step 1: Z-Image Turbo portrait generation in the cloud
-// Uses WebSocket for job completion (HTTP /history requires session auth)
-
-import WebSocket from "ws";
+// Uses native WebSocket (Node 20+) for job completion tracking
 
 const COMFYCLOUD_BASE = "https://cloud.comfy.org/api";
 const COMFYCLOUD_WS = "wss://cloud.comfy.org/ws";
-
-export interface ComfyCloudResult {
-  imageUrl: string;
-}
 
 /**
  * Build the Z-Image Turbo workflow JSON
@@ -77,8 +71,14 @@ function getApiKey(): string {
   return key;
 }
 
+interface OutputImage {
+  filename: string;
+  subfolder?: string;
+  type?: string;
+}
+
 /**
- * Submit a job and wait for completion via WebSocket
+ * Submit a job and wait for completion via native WebSocket
  * Returns the image as a Buffer
  */
 export async function generatePortrait(promptText: string, timeoutMs = 100_000): Promise<Buffer> {
@@ -107,7 +107,7 @@ export async function generatePortrait(promptText: string, timeoutMs = 100_000):
   // Wait for completion via WebSocket
   const output = await waitViaWebSocket(prompt_id, apiKey, timeoutMs);
 
-  // Fetch the output image
+  // Fetch the output image via /view
   const imageUrl = `${COMFYCLOUD_BASE}/view?filename=${encodeURIComponent(output.filename)}&subfolder=${encodeURIComponent(output.subfolder || "")}&type=${output.type || "output"}`;
   const imgRes = await fetch(imageUrl, {
     headers: { Authorization: `Bearer ${apiKey}` },
@@ -120,43 +120,42 @@ export async function generatePortrait(promptText: string, timeoutMs = 100_000):
   return Buffer.from(await imgRes.arrayBuffer());
 }
 
-interface OutputImage {
-  filename: string;
-  subfolder?: string;
-  type?: string;
-}
-
 function waitViaWebSocket(
   promptId: string,
   apiKey: string,
   timeoutMs: number
 ): Promise<OutputImage> {
   return new Promise((resolve, reject) => {
-    const ws = new WebSocket(COMFYCLOUD_WS, {
-      headers: { Authorization: `Bearer ${apiKey}` },
-    });
+    // Use native WebSocket (available in Node 20+ and Vercel runtime)
+    const ws = new WebSocket(`${COMFYCLOUD_WS}?token=${apiKey}`);
 
     const timer = setTimeout(() => {
       ws.close();
       reject(new Error("ComfyCloud job timed out"));
     }, timeoutMs);
 
-    ws.on("error", (err) => {
+    ws.addEventListener("error", (event) => {
       clearTimeout(timer);
-      reject(new Error(`WebSocket error: ${err.message}`));
+      reject(new Error(`WebSocket error: ${String(event)}`));
     });
 
-    ws.on("message", (data) => {
+    ws.addEventListener("message", (event) => {
       try {
-        const msg = JSON.parse(data.toString());
+        const msg = JSON.parse(String(event.data)) as {
+          type: string;
+          data: {
+            prompt_id?: string;
+            output?: { images?: OutputImage[] };
+            exception_message?: string;
+          };
+        };
 
         if (msg.type === "executed" && msg.data?.prompt_id === promptId) {
-          // Job completed — extract output images
-          const outputs = msg.data.output;
-          if (outputs?.images?.length) {
+          const images = msg.data.output?.images;
+          if (images?.length) {
             clearTimeout(timer);
             ws.close();
-            resolve(outputs.images[0] as OutputImage);
+            resolve(images[0]);
             return;
           }
         }
@@ -171,9 +170,8 @@ function waitViaWebSocket(
       }
     });
 
-    ws.on("close", () => {
+    ws.addEventListener("close", () => {
       clearTimeout(timer);
-      // Only reject if not already resolved
     });
   });
 }
