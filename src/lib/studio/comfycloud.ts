@@ -51,7 +51,7 @@ function buildZImageWorkflow(promptText: string): Record<string, unknown> {
       class_type: "KSampler",
       inputs: {
         seed: Math.floor(Math.random() * 2_000_000_000),
-        steps: 8,
+        steps: 9,
         cfg: 1,
         sampler_name: "res_multistep",
         scheduler: "simple",
