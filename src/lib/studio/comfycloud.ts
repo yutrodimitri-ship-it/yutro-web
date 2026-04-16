@@ -67,7 +67,11 @@ function buildZImageWorkflow(promptText: string): Record<string, unknown> {
 
 function getApiKey(): string {
   const key = process.env.COMFYCLOUD_API_KEY;
-  if (!key) throw new Error("COMFYCLOUD_API_KEY not configured");
+  if (!key) {
+    if (process.env.NODE_ENV === "production") throw new Error("COMFYCLOUD_API_KEY not configured");
+    console.warn("WARNING: COMFYCLOUD_API_KEY not set");
+    return "";
+  }
   return key;
 }
 

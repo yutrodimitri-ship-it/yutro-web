@@ -20,7 +20,11 @@ interface GeminiResponse {
 
 function getApiKey(): string {
   const key = process.env.GEMINI_API_KEY;
-  if (!key) throw new Error("GEMINI_API_KEY not configured");
+  if (!key) {
+    if (process.env.NODE_ENV === "production") throw new Error("GEMINI_API_KEY not configured");
+    console.warn("WARNING: GEMINI_API_KEY not set");
+    return "";
+  }
   return key;
 }
 
