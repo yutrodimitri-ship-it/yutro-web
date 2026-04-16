@@ -275,9 +275,14 @@ export default function GeneratePage() {
             </div>
           </div>
           <div className="flex items-center justify-between">
-            <button onClick={regenerateStep1} className="inline-flex items-center gap-2 rounded-lg border border-[#222] px-4 py-2 text-sm hover:bg-[#1e1e1e]">
-              <RefreshCw className="h-4 w-4" /> Regenerar
-            </button>
+            <div className="flex items-center gap-2">
+              <button onClick={() => { setPhase("config"); setStep1Image(""); }} className="inline-flex items-center gap-2 rounded-lg border border-[#222] px-4 py-2 text-sm text-white/40 hover:bg-[#1e1e1e]">
+                <ChevronLeft className="h-4 w-4" /> Reconfigurar
+              </button>
+              <button onClick={regenerateStep1} className="inline-flex items-center gap-2 rounded-lg border border-[#222] px-4 py-2 text-sm hover:bg-[#1e1e1e]">
+                <RefreshCw className="h-4 w-4" /> Regenerar
+              </button>
+            </div>
             <div className="flex items-center gap-2">
               <button onClick={finishGeneration} className="inline-flex items-center gap-2 rounded-lg border border-[#222] px-4 py-2 text-sm text-white/40 hover:bg-[#1e1e1e]">
                 Finalizar sin vestuario
