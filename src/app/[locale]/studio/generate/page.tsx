@@ -231,41 +231,68 @@ export default function GeneratePage() {
       {/* === PHASE: Config === */}
       {phase === "config" && (
         <>
-          <div className="space-y-6">
+          <div className="space-y-8">
             {/* ── Demografía (obligatorio) ── */}
-            <div className="rounded-xl border border-[#222] bg-[#1a1a1a] p-6 space-y-6">
-              <h2 className="text-base font-semibold text-primary">Demografía</h2>
-              <div><h3 className="mb-3 text-sm font-medium">Género</h3><SelectGrid options={GENDERS} value={form.gender} onChange={v => set("gender", v)} columns={2} /></div>
-              <div><h3 className="mb-3 text-sm font-medium">Rango de edad</h3><SelectGrid options={AGE_RANGES} value={form.ageRange} onChange={v => set("ageRange", v)} columns={2} /></div>
-              <div><h3 className="mb-3 text-sm font-medium">Etnia / Rasgos</h3><SelectGrid options={ETHNICITIES} value={form.ethnicity} onChange={v => set("ethnicity", v)} columns={2} /></div>
-              <div><h3 className="mb-3 text-sm font-medium">Tono de piel</h3><SelectGrid options={SKIN_TONES} value={form.skinTone} onChange={v => set("skinTone", v)} /></div>
+            <div className="rounded-xl border border-[#333] bg-[#1a1a1a] p-6 space-y-5">
+              <h2 className="text-lg font-bold text-primary border-b border-[#333] pb-3">Demografía</h2>
+              <div className="rounded-lg border border-[#333] bg-[#141414] p-4 space-y-4">
+                <h3 className="text-sm font-semibold text-white/70">Género</h3>
+                <SelectGrid options={GENDERS} value={form.gender} onChange={v => set("gender", v)} columns={2} />
+              </div>
+              <div className="rounded-lg border border-[#333] bg-[#141414] p-4 space-y-4">
+                <h3 className="text-sm font-semibold text-white/70">Rango de edad</h3>
+                <SelectGrid options={AGE_RANGES} value={form.ageRange} onChange={v => set("ageRange", v)} columns={2} />
+              </div>
+              <div className="rounded-lg border border-[#333] bg-[#141414] p-4 space-y-4">
+                <h3 className="text-sm font-semibold text-white/70">Etnia / Rasgos</h3>
+                <SelectGrid options={ETHNICITIES} value={form.ethnicity} onChange={v => set("ethnicity", v)} columns={2} />
+              </div>
+              <div className="rounded-lg border border-[#333] bg-[#141414] p-4 space-y-4">
+                <h3 className="text-sm font-semibold text-white/70">Tono de piel</h3>
+                <SelectGrid options={SKIN_TONES} value={form.skinTone} onChange={v => set("skinTone", v)} />
+              </div>
             </div>
 
             {/* ── Pelo (opcional) ── */}
-            <div className="rounded-xl border border-[#222] bg-[#1a1a1a] p-6 space-y-6">
-              <h2 className="text-base font-semibold">Pelo <span className="text-xs font-normal text-white/30 ml-2">opcional</span></h2>
-              <div><h3 className="mb-3 text-sm font-medium">Color de cabello</h3><SelectGrid options={HAIR_COLORS} value={form.hairColor} onChange={v => set("hairColor", v)} /></div>
-              <div><h3 className="mb-3 text-sm font-medium">Textura</h3><SelectGrid options={HAIR_TEXTURES} value={form.hairTexture} onChange={v => set("hairTexture", v)} columns={4} /></div>
-              <div><h3 className="mb-3 text-sm font-medium">Corte</h3><SelectGrid options={HAIR_CUTS} value={form.hairCut} onChange={v => set("hairCut", v)} /></div>
-              <div><h3 className="mb-3 text-sm font-medium">Largo</h3><SelectGrid options={HAIR_LENGTHS} value={form.hairLength} onChange={v => set("hairLength", v)} columns={5} /></div>
-              <div><h3 className="mb-3 text-sm font-medium">Vello facial</h3><SelectGrid options={FACIAL_HAIR} value={form.facialHair} onChange={v => set("facialHair", v)} columns={2} /></div>
+            <div className="rounded-xl border border-[#333] bg-[#1a1a1a] p-6 space-y-5">
+              <h2 className="text-lg font-bold border-b border-[#333] pb-3">Pelo <span className="text-xs font-normal text-white/30 ml-2">opcional</span></h2>
+              <div className="rounded-lg border border-[#333] bg-[#141414] p-4 space-y-4">
+                <h3 className="text-sm font-semibold text-white/70">Color de cabello</h3>
+                <SelectGrid options={HAIR_COLORS} value={form.hairColor} onChange={v => set("hairColor", v)} />
+              </div>
+              <div className="rounded-lg border border-[#333] bg-[#141414] p-4 space-y-4">
+                <h3 className="text-sm font-semibold text-white/70">Textura</h3>
+                <SelectGrid options={HAIR_TEXTURES} value={form.hairTexture} onChange={v => set("hairTexture", v)} columns={4} />
+              </div>
+              <div className="rounded-lg border border-[#333] bg-[#141414] p-4 space-y-4">
+                <h3 className="text-sm font-semibold text-white/70">Corte</h3>
+                <SelectGrid options={HAIR_CUTS} value={form.hairCut} onChange={v => set("hairCut", v)} />
+              </div>
+              <div className="rounded-lg border border-[#333] bg-[#141414] p-4 space-y-4">
+                <h3 className="text-sm font-semibold text-white/70">Largo</h3>
+                <SelectGrid options={HAIR_LENGTHS} value={form.hairLength} onChange={v => set("hairLength", v)} columns={5} />
+              </div>
+              <div className="rounded-lg border border-[#333] bg-[#141414] p-4 space-y-4">
+                <h3 className="text-sm font-semibold text-white/70">Vello facial</h3>
+                <SelectGrid options={FACIAL_HAIR} value={form.facialHair} onChange={v => set("facialHair", v)} columns={2} />
+              </div>
             </div>
 
             {/* ── Rostro (opcional) ── */}
-            <div className="rounded-xl border border-[#222] bg-[#1a1a1a] p-6 space-y-5">
-              <h2 className="text-base font-semibold">Rostro <span className="text-xs font-normal text-white/30 ml-2">opcional</span></h2>
+            <div className="rounded-xl border border-[#333] bg-[#1a1a1a] p-6 space-y-5">
+              <h2 className="text-lg font-bold border-b border-[#333] pb-3">Rostro <span className="text-xs font-normal text-white/30 ml-2">opcional</span></h2>
 
               {/* Ojos */}
-              <div className="rounded-lg border border-[#2a2a2a] p-4 space-y-4">
-                <h3 className="text-sm font-semibold text-primary/80">Ojos</h3>
+              <div className="rounded-lg border border-[#333] bg-[#141414] p-4 space-y-4">
+                <h3 className="text-sm font-semibold text-primary">Ojos</h3>
                 <div><h4 className="mb-2 text-xs font-medium text-white/50">Forma</h4><SelectGrid options={EYE_SHAPES} value={form.eyeShape} onChange={v => set("eyeShape", v)} columns={4} /></div>
                 <div><h4 className="mb-2 text-xs font-medium text-white/50">Color</h4><SelectGrid options={EYE_COLORS} value={form.eyeColor} onChange={v => set("eyeColor", v)} /></div>
                 <div><h4 className="mb-2 text-xs font-medium text-white/50">Expresión</h4><SelectGrid options={EYE_EXPRESSIONS} value={form.eyeExpression} onChange={v => set("eyeExpression", v)} /></div>
               </div>
 
               {/* Nariz */}
-              <div className="rounded-lg border border-[#2a2a2a] p-4 space-y-4">
-                <h3 className="text-sm font-semibold text-primary/80">Nariz</h3>
+              <div className="rounded-lg border border-[#333] bg-[#141414] p-4 space-y-4">
+                <h3 className="text-sm font-semibold text-primary">Nariz</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div><h4 className="mb-2 text-xs font-medium text-white/50">Tamaño</h4><SelectGrid options={NOSE_SIZES} value={form.noseSize} onChange={v => set("noseSize", v)} columns={1} /></div>
                   <div><h4 className="mb-2 text-xs font-medium text-white/50">Anchura</h4><SelectGrid options={NOSE_WIDTHS} value={form.noseWidth} onChange={v => set("noseWidth", v)} columns={1} /></div>
@@ -274,8 +301,8 @@ export default function GeneratePage() {
               </div>
 
               {/* Labios */}
-              <div className="rounded-lg border border-[#2a2a2a] p-4 space-y-4">
-                <h3 className="text-sm font-semibold text-primary/80">Labios</h3>
+              <div className="rounded-lg border border-[#333] bg-[#141414] p-4 space-y-4">
+                <h3 className="text-sm font-semibold text-primary">Labios</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div><h4 className="mb-2 text-xs font-medium text-white/50">Tamaño</h4><SelectGrid options={LIP_SIZES} value={form.lipSize} onChange={v => set("lipSize", v)} columns={2} /></div>
                   <div><h4 className="mb-2 text-xs font-medium text-white/50">Forma</h4><SelectGrid options={LIP_SHAPES} value={form.lipShape} onChange={v => set("lipShape", v)} columns={2} /></div>
@@ -283,8 +310,8 @@ export default function GeneratePage() {
               </div>
 
               {/* Cejas */}
-              <div className="rounded-lg border border-[#2a2a2a] p-4 space-y-4">
-                <h3 className="text-sm font-semibold text-primary/80">Cejas</h3>
+              <div className="rounded-lg border border-[#333] bg-[#141414] p-4 space-y-4">
+                <h3 className="text-sm font-semibold text-primary">Cejas</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div><h4 className="mb-2 text-xs font-medium text-white/50">Grosor</h4><SelectGrid options={EYEBROW_THICKNESS} value={form.eyebrowThickness} onChange={v => set("eyebrowThickness", v)} columns={1} /></div>
                   <div><h4 className="mb-2 text-xs font-medium text-white/50">Forma</h4><SelectGrid options={EYEBROW_SHAPES} value={form.eyebrowShape} onChange={v => set("eyebrowShape", v)} columns={1} /></div>
@@ -294,10 +321,16 @@ export default function GeneratePage() {
             </div>
 
             {/* ── Composición (opcional) ── */}
-            <div className="rounded-xl border border-[#222] bg-[#1a1a1a] p-6 space-y-6">
-              <h2 className="text-base font-semibold">Composición <span className="text-xs font-normal text-white/30 ml-2">opcional</span></h2>
-              <div><h3 className="mb-3 text-sm font-medium">Expresión facial</h3><SelectGrid options={EXPRESSIONS} value={form.expression} onChange={v => set("expression", v)} columns={2} /></div>
-              <div><h3 className="mb-3 text-sm font-medium">Iluminación</h3><SelectGrid options={LIGHTINGS} value={form.lighting} onChange={v => set("lighting", v)} columns={2} /></div>
+            <div className="rounded-xl border border-[#333] bg-[#1a1a1a] p-6 space-y-5">
+              <h2 className="text-lg font-bold border-b border-[#333] pb-3">Composición <span className="text-xs font-normal text-white/30 ml-2">opcional</span></h2>
+              <div className="rounded-lg border border-[#333] bg-[#141414] p-4 space-y-4">
+                <h3 className="text-sm font-semibold text-white/70">Expresión facial</h3>
+                <SelectGrid options={EXPRESSIONS} value={form.expression} onChange={v => set("expression", v)} columns={2} />
+              </div>
+              <div className="rounded-lg border border-[#333] bg-[#141414] p-4 space-y-4">
+                <h3 className="text-sm font-semibold text-white/70">Iluminación</h3>
+                <SelectGrid options={LIGHTINGS} value={form.lighting} onChange={v => set("lighting", v)} columns={2} />
+              </div>
             </div>
           </div>
 
