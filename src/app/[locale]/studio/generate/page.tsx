@@ -66,7 +66,7 @@ export default function GeneratePage() {
 
   const [phase, setPhase] = useState<Phase>("config");
   const [error, setError] = useState("");
-  const [configStep, setConfigStep] = useState(0); // 0=demo, 1=pelo, 2=rostro, 3=composicion
+  // configStep no longer needed — single scroll layout
 
   // Form state
   const [form, setForm] = useState({
@@ -219,7 +219,10 @@ export default function GeneratePage() {
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
-      <h1 className="text-2xl font-bold">Crear Avatar</h1>
+      <div>
+        <h1 className="text-2xl font-bold">Crear Avatar</h1>
+        <p className="mt-2 text-sm text-white/40">Define los rasgos de tu personaje. Mientras más detalles selecciones, más personalidad tendrá el resultado.</p>
+      </div>
 
       {error && (
         <div className="rounded-lg bg-destructive/10 px-4 py-3 text-sm text-destructive">{error}</div>
@@ -228,69 +231,59 @@ export default function GeneratePage() {
       {/* === PHASE: Config === */}
       {phase === "config" && (
         <>
-          <div className="flex flex-wrap gap-2">
-            <button onClick={() => setConfigStep(0)}
-              className={`rounded-lg px-4 py-2 text-sm font-medium ${configStep === 0 ? "bg-primary text-primary-foreground" : "bg-[#1e1e1e] text-white/40"}`}>
-              1. Demografía
-            </button>
-            <button onClick={() => setConfigStep(1)} disabled={!form.gender}
-              className={`rounded-lg px-4 py-2 text-sm font-medium ${configStep === 1 ? "bg-primary text-primary-foreground" : "bg-[#1e1e1e] text-white/40"} disabled:opacity-30`}>
-              2. Pelo
-            </button>
-            <button onClick={() => setConfigStep(2)} disabled={!form.gender}
-              className={`rounded-lg px-4 py-2 text-sm font-medium ${configStep === 2 ? "bg-primary text-primary-foreground" : "bg-[#1e1e1e] text-white/40"} disabled:opacity-30`}>
-              3. Rostro
-            </button>
-            <button onClick={() => setConfigStep(3)} disabled={!form.gender}
-              className={`rounded-lg px-4 py-2 text-sm font-medium ${configStep === 3 ? "bg-primary text-primary-foreground" : "bg-[#1e1e1e] text-white/40"} disabled:opacity-30`}>
-              4. Composición
-            </button>
-          </div>
-          <p className="text-xs text-white/30">Solo la demografía es obligatoria. El resto es opcional.</p>
-
-          <div className="rounded-xl border border-[#222] bg-[#1a1a1a] p-6 space-y-6">
-            {/* Tab 1: Demografía */}
-            {configStep === 0 && (<>
+          <div className="space-y-6">
+            {/* ── Demografía (obligatorio) ── */}
+            <div className="rounded-xl border border-[#222] bg-[#1a1a1a] p-6 space-y-6">
+              <h2 className="text-base font-semibold text-primary">Demografía</h2>
               <div><h3 className="mb-3 text-sm font-medium">Género</h3><SelectGrid options={GENDERS} value={form.gender} onChange={v => set("gender", v)} columns={2} /></div>
               <div><h3 className="mb-3 text-sm font-medium">Rango de edad</h3><SelectGrid options={AGE_RANGES} value={form.ageRange} onChange={v => set("ageRange", v)} columns={2} /></div>
               <div><h3 className="mb-3 text-sm font-medium">Etnia / Rasgos</h3><SelectGrid options={ETHNICITIES} value={form.ethnicity} onChange={v => set("ethnicity", v)} columns={2} /></div>
               <div><h3 className="mb-3 text-sm font-medium">Tono de piel</h3><SelectGrid options={SKIN_TONES} value={form.skinTone} onChange={v => set("skinTone", v)} /></div>
-            </>)}
+            </div>
 
-            {/* Tab 2: Pelo */}
-            {configStep === 1 && (<>
+            {/* ── Pelo (opcional) ── */}
+            <div className="rounded-xl border border-[#222] bg-[#1a1a1a] p-6 space-y-6">
+              <h2 className="text-base font-semibold">Pelo <span className="text-xs font-normal text-white/30 ml-2">opcional</span></h2>
               <div><h3 className="mb-3 text-sm font-medium">Color de cabello</h3><SelectGrid options={HAIR_COLORS} value={form.hairColor} onChange={v => set("hairColor", v)} /></div>
               <div><h3 className="mb-3 text-sm font-medium">Textura</h3><SelectGrid options={HAIR_TEXTURES} value={form.hairTexture} onChange={v => set("hairTexture", v)} columns={4} /></div>
               <div><h3 className="mb-3 text-sm font-medium">Corte</h3><SelectGrid options={HAIR_CUTS} value={form.hairCut} onChange={v => set("hairCut", v)} /></div>
               <div><h3 className="mb-3 text-sm font-medium">Largo</h3><SelectGrid options={HAIR_LENGTHS} value={form.hairLength} onChange={v => set("hairLength", v)} columns={5} /></div>
               <div><h3 className="mb-3 text-sm font-medium">Vello facial</h3><SelectGrid options={FACIAL_HAIR} value={form.facialHair} onChange={v => set("facialHair", v)} columns={2} /></div>
-            </>)}
+            </div>
 
-            {/* Tab 3: Rostro */}
-            {configStep === 2 && (<>
+            {/* ── Rostro (opcional) ── */}
+            <div className="rounded-xl border border-[#222] bg-[#1a1a1a] p-6 space-y-6">
+              <h2 className="text-base font-semibold">Rostro <span className="text-xs font-normal text-white/30 ml-2">opcional</span></h2>
               <div><h3 className="mb-3 text-sm font-medium">Forma de ojos</h3><SelectGrid options={EYE_SHAPES} value={form.eyeShape} onChange={v => set("eyeShape", v)} columns={4} /></div>
               <div><h3 className="mb-3 text-sm font-medium">Color de ojos</h3><SelectGrid options={EYE_COLORS} value={form.eyeColor} onChange={v => set("eyeColor", v)} /></div>
               <div><h3 className="mb-3 text-sm font-medium">Expresión de ojos</h3><SelectGrid options={EYE_EXPRESSIONS} value={form.eyeExpression} onChange={v => set("eyeExpression", v)} /></div>
-              <div><h3 className="mb-3 text-sm font-medium">Tamaño de nariz</h3><SelectGrid options={NOSE_SIZES} value={form.noseSize} onChange={v => set("noseSize", v)} columns={3} /></div>
-              <div><h3 className="mb-3 text-sm font-medium">Anchura de nariz</h3><SelectGrid options={NOSE_WIDTHS} value={form.noseWidth} onChange={v => set("noseWidth", v)} columns={3} /></div>
-              <div><h3 className="mb-3 text-sm font-medium">Puente nasal</h3><SelectGrid options={NOSE_BRIDGES} value={form.noseBridge} onChange={v => set("noseBridge", v)} columns={5} /></div>
-              <div><h3 className="mb-3 text-sm font-medium">Tamaño de labios</h3><SelectGrid options={LIP_SIZES} value={form.lipSize} onChange={v => set("lipSize", v)} columns={4} /></div>
-              <div><h3 className="mb-3 text-sm font-medium">Forma de labios</h3><SelectGrid options={LIP_SHAPES} value={form.lipShape} onChange={v => set("lipShape", v)} columns={3} /></div>
-              <div><h3 className="mb-3 text-sm font-medium">Grosor de cejas</h3><SelectGrid options={EYEBROW_THICKNESS} value={form.eyebrowThickness} onChange={v => set("eyebrowThickness", v)} columns={3} /></div>
-              <div><h3 className="mb-3 text-sm font-medium">Forma de cejas</h3><SelectGrid options={EYEBROW_SHAPES} value={form.eyebrowShape} onChange={v => set("eyebrowShape", v)} columns={5} /></div>
-              <div><h3 className="mb-3 text-sm font-medium">Densidad de cejas</h3><SelectGrid options={EYEBROW_DENSITY} value={form.eyebrowDensity} onChange={v => set("eyebrowDensity", v)} columns={4} /></div>
-            </>)}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                <div><h3 className="mb-3 text-sm font-medium">Tamaño nariz</h3><SelectGrid options={NOSE_SIZES} value={form.noseSize} onChange={v => set("noseSize", v)} columns={1} /></div>
+                <div><h3 className="mb-3 text-sm font-medium">Anchura nariz</h3><SelectGrid options={NOSE_WIDTHS} value={form.noseWidth} onChange={v => set("noseWidth", v)} columns={1} /></div>
+                <div><h3 className="mb-3 text-sm font-medium">Puente nasal</h3><SelectGrid options={NOSE_BRIDGES} value={form.noseBridge} onChange={v => set("noseBridge", v)} columns={1} /></div>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div><h3 className="mb-3 text-sm font-medium">Tamaño de labios</h3><SelectGrid options={LIP_SIZES} value={form.lipSize} onChange={v => set("lipSize", v)} columns={2} /></div>
+                <div><h3 className="mb-3 text-sm font-medium">Forma de labios</h3><SelectGrid options={LIP_SHAPES} value={form.lipShape} onChange={v => set("lipShape", v)} columns={2} /></div>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                <div><h3 className="mb-3 text-sm font-medium">Grosor cejas</h3><SelectGrid options={EYEBROW_THICKNESS} value={form.eyebrowThickness} onChange={v => set("eyebrowThickness", v)} columns={1} /></div>
+                <div><h3 className="mb-3 text-sm font-medium">Forma cejas</h3><SelectGrid options={EYEBROW_SHAPES} value={form.eyebrowShape} onChange={v => set("eyebrowShape", v)} columns={1} /></div>
+                <div><h3 className="mb-3 text-sm font-medium">Densidad cejas</h3><SelectGrid options={EYEBROW_DENSITY} value={form.eyebrowDensity} onChange={v => set("eyebrowDensity", v)} columns={1} /></div>
+              </div>
+            </div>
 
-            {/* Tab 4: Composición */}
-            {configStep === 3 && (<>
+            {/* ── Composición (opcional) ── */}
+            <div className="rounded-xl border border-[#222] bg-[#1a1a1a] p-6 space-y-6">
+              <h2 className="text-base font-semibold">Composición <span className="text-xs font-normal text-white/30 ml-2">opcional</span></h2>
               <div><h3 className="mb-3 text-sm font-medium">Expresión facial</h3><SelectGrid options={EXPRESSIONS} value={form.expression} onChange={v => set("expression", v)} columns={2} /></div>
               <div><h3 className="mb-3 text-sm font-medium">Iluminación</h3><SelectGrid options={LIGHTINGS} value={form.lighting} onChange={v => set("lighting", v)} columns={2} /></div>
-            </>)}
+            </div>
           </div>
 
-          <div className="flex justify-end">
+          <div className="sticky bottom-4 z-10 flex justify-end">
             <button onClick={startStep1} disabled={!form.gender || !form.ageRange || !form.ethnicity}
-              className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50">
+              className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-medium text-primary-foreground shadow-lg shadow-primary/30 hover:bg-primary/90 hover:shadow-xl hover:shadow-primary/40 disabled:opacity-50 disabled:shadow-none transition-all">
               <Sparkles className="h-4 w-4" /> Generar Retrato
             </button>
           </div>
