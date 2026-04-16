@@ -33,16 +33,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Demasiadas generaciones. Espera unos minutos." }, { status: 429 });
     }
 
-    // Check ComfyUI health
-    const tunnelUrl = process.env.COMFY_TUNNEL_URL || "https://comfy.yutro.cl";
-    try {
-      const healthRes = await fetch(`${tunnelUrl}/health`, { signal: AbortSignal.timeout(5000) });
-      const health = await healthRes.json();
-      if (health.status !== "ok") throw new Error("ComfyUI offline");
-    } catch {
-      return NextResponse.json({ error: "El sistema de generacion no esta disponible. Intenta mas tarde." }, { status: 503 });
-    }
-
     // Atomic credit deduction — prevents race condition
     const [updated] = await db
       .update(users)
@@ -79,41 +69,6 @@ export async function POST(request: NextRequest) {
       amount: -1,
       reason: "generation",
       generationId: generation.id,
-    });
-
-    // Send to pipeline runner via tunnel
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://yutro.cl";
-    const webhookSecret = process.env.STUDIO_WEBHOOK_SECRET || "";
-
-    const pipelinePayload = {
-      generationId: generation.id,
-      userId: session.userId,
-      gender: data.gender,
-      ageRange: data.ageRange,
-      ethnicity: data.ethnicity,
-      hairTexture: data.hairTexture,
-      hairCut: data.hairCut,
-      hairLength: data.hairLength,
-      hairColor: data.hairColor,
-      eyeShape: data.eyeShape,
-      eyeColor: data.eyeColor,
-      skinTone: data.skinTone,
-      skinSubtone: data.skinSubtone,
-      wardrobePreset: data.wardrobePreset,
-      callbackUrl: `${siteUrl}/api/studio/webhook/comfy-status`,
-    };
-
-    const tunnelSecret = process.env.COMFY_TUNNEL_SECRET || "";
-
-    fetch(`${tunnelUrl}/pipeline/start`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Tunnel-Secret": tunnelSecret,
-      },
-      body: JSON.stringify(pipelinePayload),
-    }).catch((e) => {
-      console.error("Pipeline trigger error:", e.message);
     });
 
     return NextResponse.json({ generationId: generation.id }, { status: 202 });

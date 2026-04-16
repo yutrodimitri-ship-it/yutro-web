@@ -1,8 +1,14 @@
+export const dynamic = "force-dynamic";
+export const maxDuration = 180;
+
 import { NextRequest, NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth";
-import { verifyGenerationOwnership, handleApiError, requireEnvSecret } from "@/lib/api-utils";
+import { verifyGenerationOwnership, handleApiError } from "@/lib/api-utils";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { z } from "zod";
+import { buildWardrobePrompt } from "@/lib/studio/prompts";
+import { enrichPrompt, generateWithNB2 } from "@/lib/studio/gemini";
+import { getCachedImage, cacheImage } from "@/lib/studio/image-cache";
 
 const step2Schema = z.object({
   generationId: z.string().uuid(),
@@ -23,18 +29,33 @@ export async function POST(request: NextRequest) {
     const gen = await verifyGenerationOwnership(data.generationId, session.userId);
     if (!gen) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
-    const tunnelUrl = process.env.COMFY_TUNNEL_URL || "https://comfy.yutro.cl";
-    const tunnelSecret = requireEnvSecret("COMFY_TUNNEL_SECRET");
+    // Get step1 image from cache
+    const refBuffer = getCachedImage(data.inputImage);
+    if (!refBuffer) {
+      return NextResponse.json(
+        { error: "Imagen de referencia no encontrada. Regenera el retrato." },
+        { status: 404 }
+      );
+    }
+    const refBase64 = refBuffer.toString("base64");
 
-    const res = await fetch(`${tunnelUrl}/step2`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", ...(tunnelSecret ? { "X-Tunnel-Secret": tunnelSecret } : {}) },
-      body: JSON.stringify(data),
-      signal: AbortSignal.timeout(300000),
-    });
+    // Gemini Flash enriches the wardrobe prompt by analyzing the reference image
+    const basePrompt = buildWardrobePrompt(data.wardrobePreset, data.gender);
+    console.log(`[Step2] Enriching prompt for ${data.wardrobePreset}...`);
+    const enrichedPrompt = await enrichPrompt(basePrompt, refBase64);
 
-    const result = await res.json();
-    return NextResponse.json(result, { status: res.ok ? 200 : 500 });
+    // NB2 generates the wardrobe image
+    console.log(`[Step2] Generating with NB2...`);
+    const resultBase64 = await generateWithNB2(enrichedPrompt, refBase64);
+
+    // Decode and cache
+    const imageBuffer = Buffer.from(resultBase64, "base64");
+    const shortId = data.generationId.replace(/-/g, "").slice(0, 8);
+    const filename = `gen_${shortId}_step2.png`;
+    cacheImage(filename, imageBuffer);
+
+    console.log(`[Step2] Cached as ${filename} (${imageBuffer.length} bytes)`);
+    return NextResponse.json({ success: true, image: filename });
   } catch (e) {
     return handleApiError(e);
   }

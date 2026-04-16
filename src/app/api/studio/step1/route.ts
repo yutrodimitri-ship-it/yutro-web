@@ -1,8 +1,14 @@
+export const dynamic = "force-dynamic";
+export const maxDuration = 120;
+
 import { NextRequest, NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth";
-import { verifyGenerationOwnership, handleApiError, requireEnvSecret } from "@/lib/api-utils";
+import { verifyGenerationOwnership, handleApiError } from "@/lib/api-utils";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { z } from "zod";
+import { buildPortraitPrompt } from "@/lib/studio/prompts";
+import { generatePortrait } from "@/lib/studio/comfycloud";
+import { cacheImage } from "@/lib/studio/image-cache";
 
 const step1Schema = z.object({
   generationId: z.string().uuid(),
@@ -31,18 +37,21 @@ export async function POST(request: NextRequest) {
     const gen = await verifyGenerationOwnership(data.generationId, session.userId);
     if (!gen) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
-    const tunnelUrl = process.env.COMFY_TUNNEL_URL || "https://comfy.yutro.cl";
-    const tunnelSecret = requireEnvSecret("COMFY_TUNNEL_SECRET");
+    // Build prompt from params
+    const promptText = buildPortraitPrompt(data);
 
-    const res = await fetch(`${tunnelUrl}/step1`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", ...(tunnelSecret ? { "X-Tunnel-Secret": tunnelSecret } : {}) },
-      body: JSON.stringify(data),
-      signal: AbortSignal.timeout(120000),
-    });
+    // Generate via ComfyCloud (submit + WebSocket wait + fetch image)
+    console.log(`[Step1] Starting ComfyCloud generation...`);
+    const imageBuffer = await generatePortrait(promptText);
+    console.log(`[Step1] Generation complete`);
 
-    const result = await res.json();
-    return NextResponse.json(result, { status: res.ok ? 200 : 500 });
+    // Cache with a filename the frontend can reference
+    const shortId = data.generationId.replace(/-/g, "").slice(0, 8);
+    const filename = `gen_${shortId}_step1.png`;
+    cacheImage(filename, imageBuffer);
+
+    console.log(`[Step1] Cached as ${filename} (${imageBuffer.length} bytes)`);
+    return NextResponse.json({ success: true, image: filename });
   } catch (e) {
     return handleApiError(e);
   }
