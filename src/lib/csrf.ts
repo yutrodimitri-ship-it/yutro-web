@@ -9,16 +9,20 @@ function getCsrfSecret(): string {
   return secret;
 }
 
-const SECRET = getCsrfSecret();
+let _secret: string | null = null;
+function getSecret(): string {
+  if (!_secret) _secret = getCsrfSecret();
+  return _secret;
+}
 
 export function generateCsrfToken(): { token: string; signature: string } {
   const token = randomBytes(32).toString("hex");
-  const signature = createHmac("sha256", SECRET).update(token).digest("hex");
+  const signature = createHmac("sha256", getSecret()).update(token).digest("hex");
   return { token, signature };
 }
 
 export function verifyCsrfToken(token: string, signature: string): boolean {
-  const expected = createHmac("sha256", SECRET).update(token).digest();
+  const expected = createHmac("sha256", getSecret()).update(token).digest();
   const actual = Buffer.from(signature, "hex");
   if (expected.length !== actual.length) return false;
   return timingSafeEqual(expected, actual);
