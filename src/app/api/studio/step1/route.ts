@@ -21,8 +21,20 @@ const step1Schema = z.object({
   hairColor: z.string().optional(),
   eyeShape: z.string().optional(),
   eyeColor: z.string().optional(),
+  eyeExpression: z.string().optional(),
   skinTone: z.string().optional(),
   skinSubtone: z.string().optional(),
+  facialHair: z.string().optional(),
+  noseSize: z.string().optional(),
+  noseWidth: z.string().optional(),
+  noseBridge: z.string().optional(),
+  lipSize: z.string().optional(),
+  lipShape: z.string().optional(),
+  eyebrowThickness: z.string().optional(),
+  eyebrowShape: z.string().optional(),
+  eyebrowDensity: z.string().optional(),
+  expression: z.string().optional(),
+  lighting: z.string().optional(),
 });
 
 export async function POST(request: NextRequest) {

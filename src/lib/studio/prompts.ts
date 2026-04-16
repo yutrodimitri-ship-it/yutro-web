@@ -92,6 +92,105 @@ const LARGO_PELO_MAP: Record<string, string> = {
   "Muy largo": "very long hair length, reaching mid-back or longer",
 };
 
+const VELLO_FACIAL_MAP: Record<string, string> = {
+  "Sin vello": "completely clean-shaven face, smooth skin with no facial hair at all, no beard whatsoever, no mustache, no stubble, perfectly shaven appearance",
+  "Barba completa larga": "full thick long beard covering entire lower face, prominent dense facial hair growth extending well below chin, luxurious long beard",
+  "Barba completa media": "full medium-length beard, well-groomed medium beard covering lower face, beard extending to jawline, moderate beard length",
+  "Barba completa corta": "short full beard, close-cropped beard covering jaw and chin, neatly trimmed short beard, beard kept short but visible",
+  "Barba de candado": "goatee beard style, chin beard only without cheek coverage, Van Dyke style facial hair, clean-shaven cheeks with chin beard only",
+  "Bigote solo": "prominent thick mustache on upper lip exclusively, mustache only without any chin beard, clean-shaven chin and cheeks, distinctive mustache",
+  "Bigote + candado": "mustache combined with goatee beard, Van Dyke style with mustache and chin beard, facial hair on upper lip and chin only, clean-shaven cheeks",
+  "Barba de 3 días": "stubble beard, three-day stubble growth, short unshaven facial hair, 5 o'clock shadow appearance, visible stubble as texture",
+};
+
+const TAMANO_NARIZ_MAP: Record<string, string> = {
+  "Pequeña": "small nose, petite nose size",
+  Media: "medium nose, average nose size",
+  Grande: "large nose, prominent nose size",
+};
+
+const ANCHURA_NARIZ_MAP: Record<string, string> = {
+  Estrecha: "narrow nose, thin nose width",
+  Media: "medium nose width, average nasal width",
+  Ancha: "wide nose, broad nasal width",
+};
+
+const PUENTE_NARIZ_MAP: Record<string, string> = {
+  Alto: "high nose bridge, prominent nasal bridge",
+  Medio: "medium nose bridge, average bridge height",
+  Bajo: "low nose bridge, flat nasal bridge",
+  Recto: "straight nose bridge, linear nasal profile",
+  Arqueado: "arched nose bridge, curved nasal bridge",
+};
+
+const TAMANO_LABIOS_MAP: Record<string, string> = {
+  Finos: "thin lips, narrow lip fullness",
+  Medios: "medium lips, average lip fullness",
+  Gruesos: "thick lips, full lips",
+  "Muy gruesos": "very thick lips, very full plump lips",
+};
+
+const FORMA_LABIOS_MAP: Record<string, string> = {
+  Rectos: "straight lips with minimal curve",
+  "Arco cupido definido": "defined Cupid's bow, pronounced lip peaks",
+  "Arco cupido sutil": "subtle Cupid's bow, slight lip peak definition",
+  "Inferior más grueso": "lower lip fuller than upper lip, bottom-heavy lip proportion",
+  "Superior más grueso": "upper lip fuller than lower lip, top-heavy lip proportion",
+  Iguales: "equal lip proportion, balanced upper and lower lip fullness",
+};
+
+const GROSOR_CEJAS_MAP: Record<string, string> = {
+  Finas: "thin eyebrows, narrow brow thickness",
+  Medias: "medium eyebrows, average brow thickness",
+  Gruesas: "thick eyebrows, bold prominent brows",
+};
+
+const FORMA_CEJAS_MAP: Record<string, string> = {
+  Rectas: "straight eyebrows, flat brow line",
+  Arqueadas: "arched eyebrows, curved brow shape",
+  Angulosas: "angular eyebrows, sharp brow angles",
+  Redondeadas: "rounded eyebrows, soft curved brows",
+  Ascendentes: "upward slanting eyebrows, rising brow line",
+};
+
+const DENSIDAD_CEJAS_MAP: Record<string, string> = {
+  Ralas: "sparse eyebrows, light brow density",
+  Normales: "normal eyebrows, average brow density",
+  Pobladas: "full eyebrows, dense thick brows",
+  "Muy pobladas": "very full eyebrows, very dense bushy brows",
+};
+
+const EXPRESION_OJOS_MAP: Record<string, string> = {
+  Neutral: "neutral eye expression, calm gaze",
+  Calmada: "calm relaxed eyes, peaceful gaze",
+  Seria: "serious eyes, focused stern gaze",
+  "Cálida": "warm eyes, friendly inviting gaze",
+  Enfocada: "focused eyes, concentrated gaze",
+  Intensa: "intense eyes, piercing strong gaze",
+};
+
+const EXPRESION_MAP: Record<string, string> = {
+  Neutral: "neutral facial expression, calm composed face, relaxed features",
+  "Sonrisa suave": "soft gentle smile, subtle pleasant expression, friendly demeanor",
+  "Sonrisa amplia": "broad wide smile, joyful expression, teeth visible",
+  Seria: "serious expression, focused stern face, no smile",
+  Confiada: "confident expression, self-assured look, strong presence",
+  Pensativa: "thoughtful expression, contemplative look, introspective gaze",
+  Relajada: "relaxed expression, at ease, comfortable demeanor",
+  Alegre: "cheerful expression, happy demeanor, positive energy",
+};
+
+const ILUMINACION_MAP: Record<string, string> = {
+  Rembrandt: "Rembrandt lighting setup, dramatic 45-degree key light creating triangle highlight on cheek, classic portrait lighting with defined shadows, chiaroscuro effect, professional studio lighting",
+  Butterfly: "butterfly lighting, key light positioned directly in front and above subject, soft shadow under nose resembling butterfly wings, glamour lighting style, even facial illumination",
+  Loop: "loop lighting setup, key light at 30-45 degrees creating small shadow of nose on cheek, natural portrait lighting, soft dimensional modeling",
+  Split: "split lighting, key light from side creating half-lit half-shadow face, dramatic high-contrast lighting, strong dimensional effect",
+  Broad: "broad lighting, key light illuminating the side of face turned toward camera, well-lit main facial plane, flattering wide-face lighting",
+  Short: "short lighting, key light illuminating the side of face turned away from camera, slimming lighting effect, dimensional portrait style",
+  "Natural suave": "soft natural lighting, diffused daylight, gentle even illumination, no harsh shadows, window light quality, natural ambient light",
+  "Flat (sin sombras)": "flat lighting setup, shadowless even illumination from multiple soft sources, no modeling shadows, uniform light coverage, beauty photography lighting, high-key even exposure",
+};
+
 // ═══════════════════════════════════════════════════════════════════════
 // PORTRAIT PROMPT BUILDER — replicates YutroPortraitZImageEN.generate()
 // ═══════════════════════════════════════════════════════════════════════
@@ -106,8 +205,20 @@ export interface PortraitParams {
   hairLength?: string;
   eyeColor?: string;
   eyeShape?: string;
+  eyeExpression?: string;
   skinTone?: string;
   skinSubtone?: string;
+  facialHair?: string;
+  noseSize?: string;
+  noseWidth?: string;
+  noseBridge?: string;
+  lipSize?: string;
+  lipShape?: string;
+  eyebrowThickness?: string;
+  eyebrowShape?: string;
+  eyebrowDensity?: string;
+  expression?: string;
+  lighting?: string;
 }
 
 export function buildPortraitPrompt(params: PortraitParams): string {
@@ -121,10 +232,30 @@ export function buildPortraitPrompt(params: PortraitParams): string {
   const colorEn = (params.hairColor && COLOR_PELO_MAP[params.hairColor]) || "";
   const textureEn = (params.hairTexture && TEXTURA_PELO_MAP[params.hairTexture]) || "";
   const lengthEn = (params.hairLength && LARGO_PELO_MAP[params.hairLength]) || "";
+  const facialEn = (params.facialHair && VELLO_FACIAL_MAP[params.facialHair]) || "";
 
   // Eyes
   const eyeShapeEn = (params.eyeShape && FORMA_OJOS_MAP[params.eyeShape]) || "";
   const eyeColorEn = (params.eyeColor && COLOR_OJOS_MAP[params.eyeColor]) || "";
+  const eyeExprEn = (params.eyeExpression && EXPRESION_OJOS_MAP[params.eyeExpression]) || "";
+
+  // Nose
+  const noseSizeEn = (params.noseSize && TAMANO_NARIZ_MAP[params.noseSize]) || "";
+  const noseWidthEn = (params.noseWidth && ANCHURA_NARIZ_MAP[params.noseWidth]) || "";
+  const noseBridgeEn = (params.noseBridge && PUENTE_NARIZ_MAP[params.noseBridge]) || "";
+
+  // Lips
+  const lipSizeEn = (params.lipSize && TAMANO_LABIOS_MAP[params.lipSize]) || "";
+  const lipShapeEn = (params.lipShape && FORMA_LABIOS_MAP[params.lipShape]) || "";
+
+  // Eyebrows
+  const browThickEn = (params.eyebrowThickness && GROSOR_CEJAS_MAP[params.eyebrowThickness]) || "";
+  const browShapeEn = (params.eyebrowShape && FORMA_CEJAS_MAP[params.eyebrowShape]) || "";
+  const browDensEn = (params.eyebrowDensity && DENSIDAD_CEJAS_MAP[params.eyebrowDensity]) || "";
+
+  // Composition
+  const expressionEn = (params.expression && EXPRESION_MAP[params.expression]) || "neutral facial expression, calm composed face, relaxed features";
+  const lightingEn = (params.lighting && ILUMINACION_MAP[params.lighting]) || "soft natural lighting, diffused daylight, gentle even illumination, no harsh shadows";
 
   // Skin
   const skinToneEn = (params.skinTone && TONO_PIEL_MAP[params.skinTone]) || "";
@@ -136,38 +267,40 @@ export function buildPortraitPrompt(params: PortraitParams): string {
   prompt += `${ethnicityEn}, `;
 
   // Hair block
-  if (cutEn) {
-    prompt += cutEn + ", ";
-  }
-  if (colorEn) {
-    prompt += colorEn + ", ";
-  }
-  if (textureEn) {
-    prompt += textureEn + ", ";
-  }
-  if (lengthEn) {
-    prompt += lengthEn + ", ";
-  }
+  if (cutEn) prompt += cutEn + ", ";
+  if (colorEn) prompt += colorEn + ", ";
+  if (textureEn) prompt += textureEn + ", ";
+  if (lengthEn) prompt += lengthEn + ", ";
+  if (facialEn) prompt += facialEn + ", ";
 
   // Eyes block
-  if (eyeShapeEn) {
-    prompt += eyeShapeEn + ", ";
-  }
-  if (eyeColorEn) {
-    prompt += eyeColorEn + ", ";
-  }
+  if (eyeShapeEn) prompt += eyeShapeEn + ", ";
+  if (eyeColorEn) prompt += eyeColorEn + ", ";
+  if (eyeExprEn) prompt += eyeExprEn + ", ";
+
+  // Nose block
+  if (noseSizeEn) prompt += noseSizeEn + ", ";
+  if (noseWidthEn) prompt += noseWidthEn + ", ";
+  if (noseBridgeEn) prompt += noseBridgeEn + ", ";
+
+  // Lips block
+  if (lipSizeEn) prompt += lipSizeEn + ", ";
+  if (lipShapeEn) prompt += lipShapeEn + ", ";
+
+  // Eyebrows block
+  if (browThickEn) prompt += browThickEn + ", ";
+  if (browShapeEn) prompt += browShapeEn + ", ";
+  if (browDensEn) prompt += browDensEn + ", ";
 
   // Skin
-  if (skinToneEn) {
-    prompt += skinToneEn + ", ";
-  }
+  if (skinToneEn) prompt += skinToneEn + ", ";
 
   // Clothing
   prompt += "wearing a plain black t-shirt, solid black shirt with no logos or text or graphics, simple plain black clothing on upper body, ";
 
   // Lighting + Expression
-  prompt += "soft natural lighting, diffused daylight, gentle even illumination, no harsh shadows, ";
-  prompt += "neutral facial expression, calm composed face, relaxed features, ";
+  prompt += lightingEn + ", ";
+  prompt += expressionEn + ", ";
 
   // Background
   prompt += "white background, pure white backdrop, white studio background, clean white solid background, ";
