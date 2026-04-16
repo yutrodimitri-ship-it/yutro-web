@@ -69,14 +69,26 @@ export function buildPortraitPrompt(params: PortraitParams): string {
     `, age ${params.ageRange || "25"}, ${params.ethnicity || "European"} features`,
   ];
 
-  if (params.hairColor) parts.push(`, ${params.hairColor} hair`);
+  // Hair description — grouped for stronger emphasis
+  const hairParts: string[] = [];
+  if (params.hairColor) hairParts.push(params.hairColor);
+  if (params.hairTexture) hairParts.push(params.hairTexture.toLowerCase());
+  if (params.hairLength) hairParts.push(params.hairLength.toLowerCase());
+  if (hairParts.length) parts.push(`, ${hairParts.join(" ")} hair`);
   if (params.hairCut) parts.push(`, ${params.hairCut} hairstyle`);
-  if (params.hairTexture) parts.push(`, ${params.hairTexture} hair texture`);
-  if (params.hairLength) parts.push(`, ${params.hairLength} hair length`);
-  if (params.eyeColor) parts.push(`, ${params.eyeColor} eyes`);
-  if (params.eyeShape) parts.push(`, ${params.eyeShape} eyes`);
-  if (params.skinTone) parts.push(`, ${params.skinTone} skin tone`);
-  if (params.skinSubtone) parts.push(`, ${params.skinSubtone} undertone`);
+
+  // Eyes — combined for clarity
+  if (params.eyeColor && params.eyeShape) {
+    parts.push(`, ${params.eyeShape.toLowerCase()} ${params.eyeColor.toLowerCase()} eyes`);
+  } else if (params.eyeColor) {
+    parts.push(`, ${params.eyeColor.toLowerCase()} eyes`);
+  } else if (params.eyeShape) {
+    parts.push(`, ${params.eyeShape.toLowerCase()} eyes`);
+  }
+
+  // Skin
+  if (params.skinTone) parts.push(`, ${params.skinTone.toLowerCase()} skin tone`);
+  if (params.skinSubtone) parts.push(`, ${params.skinSubtone.toLowerCase()} undertone`);
 
   parts.push(
     ", wearing a plain black fitted t-shirt, solid black with no logos",
@@ -86,6 +98,15 @@ export function buildPortraitPrompt(params: PortraitParams): string {
     ", 8K UHD professional photography, DSLR, photorealistic, natural skin texture",
     ", no artificial smoothing, no CGI appearance"
   );
+
+  // Reinforce key traits at the end for models that weight end of prompt more
+  const reinforcements: string[] = [];
+  if (params.hairColor) reinforcements.push(`${params.hairColor} hair`);
+  if (params.eyeColor) reinforcements.push(`${params.eyeColor} eyes`);
+  if (params.skinTone) reinforcements.push(`${params.skinTone} skin`);
+  if (reinforcements.length) {
+    parts.push(`, IMPORTANT: must have ${reinforcements.join(", ")}`);
+  }
 
   return parts.join("");
 }
