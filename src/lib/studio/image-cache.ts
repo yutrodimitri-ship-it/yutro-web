@@ -1,47 +1,80 @@
-// YUTRO Studio — In-memory image cache with TTL
-// Stores generated images between pipeline steps
-// Note: Does not persist across Vercel cold starts — migrate to Supabase Storage if needed
+// YUTRO Studio — Image storage via Supabase Storage
+// Persists images between serverless function invocations on Vercel
 
-const DEFAULT_TTL_MS = 30 * 60 * 1000; // 30 minutes
+const BUCKET = "studio-generations";
 
-interface CacheEntry {
-  data: Buffer;
-  expires: number;
-}
-
-const cache = new Map<string, CacheEntry>();
-
-/**
- * Store an image in the cache
- */
-export function cacheImage(
-  filename: string,
-  buffer: Buffer,
-  ttlMs = DEFAULT_TTL_MS
-): void {
-  cache.set(filename, { data: buffer, expires: Date.now() + ttlMs });
-}
-
-/**
- * Retrieve an image from the cache
- * Returns null if not found or expired
- */
-export function getCachedImage(filename: string): Buffer | null {
-  const entry = cache.get(filename);
-  if (!entry) return null;
-
-  if (Date.now() > entry.expires) {
-    cache.delete(filename);
+function getSupabaseConfig() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !key) {
+    console.warn("WARNING: Supabase not configured, falling back to in-memory cache");
     return null;
   }
-
-  return entry.data;
+  return { url, key };
 }
 
-// Cleanup expired entries every 5 minutes
-setInterval(() => {
-  const now = Date.now();
-  for (const [key, entry] of cache) {
-    if (now > entry.expires) cache.delete(key);
+// In-memory fallback for local dev
+const memCache = new Map<string, { data: Buffer; expires: number }>();
+
+/**
+ * Store an image — Supabase Storage in production, in-memory locally
+ */
+export async function cacheImage(filename: string, buffer: Buffer): Promise<void> {
+  const config = getSupabaseConfig();
+
+  if (config) {
+    const res = await fetch(
+      `${config.url}/storage/v1/object/${BUCKET}/${filename}`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${config.key}`,
+          apikey: config.key,
+          "Content-Type": "image/png",
+          "x-upsert": "true",
+        },
+        body: new Uint8Array(buffer),
+      }
+    );
+
+    if (!res.ok) {
+      const text = await res.text();
+      console.error(`[ImageCache] Upload failed: ${res.status} ${text}`);
+      // Fall through to memory cache
+    } else {
+      return;
+    }
   }
-}, 5 * 60 * 1000);
+
+  // Fallback: in-memory (works locally, not across Vercel invocations)
+  memCache.set(filename, { data: buffer, expires: Date.now() + 30 * 60 * 1000 });
+}
+
+/**
+ * Retrieve an image — Supabase Storage in production, in-memory locally
+ */
+export async function getCachedImage(filename: string): Promise<Buffer | null> {
+  const config = getSupabaseConfig();
+
+  if (config) {
+    const res = await fetch(
+      `${config.url}/storage/v1/object/${BUCKET}/${filename}`,
+      {
+        headers: { Authorization: `Bearer ${config.key}`, apikey: config.key },
+      }
+    );
+
+    if (res.ok) {
+      return Buffer.from(await res.arrayBuffer());
+    }
+    // Not found in Supabase, try memory
+  }
+
+  // Fallback: in-memory
+  const entry = memCache.get(filename);
+  if (!entry || Date.now() > entry.expires) {
+    if (entry) memCache.delete(filename);
+    return null;
+  }
+  return entry.data;
+}

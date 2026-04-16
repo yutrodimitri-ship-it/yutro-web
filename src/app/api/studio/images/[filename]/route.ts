@@ -22,7 +22,7 @@ export async function GET(
   }
 
   // Try in-memory cache first (cloud-generated images)
-  const cached = getCachedImage(filename);
+  const cached = await getCachedImage(filename);
   if (cached) {
     return new NextResponse(new Uint8Array(cached), {
       headers: {

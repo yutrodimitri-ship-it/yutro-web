@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
     if (!gen) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
     // Get step1 image from cache
-    const refBuffer = getCachedImage(data.inputImage);
+    const refBuffer = await getCachedImage(data.inputImage);
     if (!refBuffer) {
       return NextResponse.json(
         { error: "Imagen de referencia no encontrada. Regenera el retrato." },
@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
     const imageBuffer = Buffer.from(resultBase64, "base64");
     const shortId = data.generationId.replace(/-/g, "").slice(0, 8);
     const filename = `gen_${shortId}_step2.png`;
-    cacheImage(filename, imageBuffer);
+    await cacheImage(filename, imageBuffer);
 
     console.log(`[Step2] Cached as ${filename} (${imageBuffer.length} bytes)`);
     return NextResponse.json({ success: true, image: filename });

@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
     // Cache with a filename the frontend can reference
     const shortId = data.generationId.replace(/-/g, "").slice(0, 8);
     const filename = `gen_${shortId}_step1.png`;
-    cacheImage(filename, imageBuffer);
+    await cacheImage(filename, imageBuffer);
 
     console.log(`[Step1] Cached as ${filename} (${imageBuffer.length} bytes)`);
     return NextResponse.json({ success: true, image: filename });
