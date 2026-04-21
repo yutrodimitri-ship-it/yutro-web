@@ -1,5 +1,5 @@
 export const dynamic = "force-dynamic";
-export const maxDuration = 120;
+export const maxDuration = 180;
 
 import { NextRequest, NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth";
@@ -7,7 +7,7 @@ import { verifyGenerationOwnership, handleApiError } from "@/lib/api-utils";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { z } from "zod";
 import { buildPortraitPrompt } from "@/lib/studio/prompts";
-import { generatePortrait } from "@/lib/studio/comfycloud";
+import { generateWithNBPro } from "@/lib/studio/gemini";
 import { cacheImage } from "@/lib/studio/image-cache";
 
 const step1Schema = z.object({
@@ -52,10 +52,11 @@ export async function POST(request: NextRequest) {
     // Build prompt from params
     const promptText = buildPortraitPrompt(data);
 
-    // Generate via ComfyCloud (submit + WebSocket wait + fetch image)
-    console.log(`[Step1] Starting ComfyCloud generation...`);
-    const imageBuffer = await generatePortrait(promptText);
-    console.log(`[Step1] Generation complete`);
+    // Generate via Gemini NB Pro (text-to-image, no reference needed)
+    console.log(`[Step1] Generating portrait with Nano Banana Pro...`);
+    const imageBase64 = await generateWithNBPro(promptText);
+    const imageBuffer = Buffer.from(imageBase64, "base64");
+    console.log(`[Step1] Generation complete (${imageBuffer.length} bytes)`);
 
     // Cache with a filename the frontend can reference
     const shortId = data.generationId.replace(/-/g, "").slice(0, 8);
