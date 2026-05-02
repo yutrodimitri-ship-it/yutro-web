@@ -149,6 +149,224 @@
     "banner": {
       "description": "Create photorealistic avatars with AI. Generate characters, dress them and get complete photo sessions in minutes.",
       "cta": "Go to Studio"
+    },
+    "talent": {
+      "hub": {
+        "eyebrow": "Yutro Studio · Hub",
+        "title": "Yutro Studio",
+        "subtitle": "Create, manage and select digital talent. Your personal studio and Yutro's curated roster, in one place.",
+        "avatars": {
+          "title": "My Avatars",
+          "description": "Generate photorealistic AI avatars. Your personal library of digital talent, managed with your credits.",
+          "cta": "Go to My Avatars"
+        },
+        "library": {
+          "title": "Talent Library",
+          "description": "Access the studio's curated roster. Professional talent, ready to license for your campaign.",
+          "badge": "Premium access",
+          "cta": "View library"
+        },
+        "noTalentAccessNote": "Talent Library is an invite-only program. If your campaign requires curated studio talent, reach out to your Yutro contact."
+      },
+      "placeholders": {
+        "catalog": "The catalog ships next sprint. Here you'll see the talents available for your project, filters by gender/age/category, and a live count of your casting.",
+        "detail": "The detail view ships next sprint. Here you'll see the full talent profile, studio and lifestyle galleries, and the action to add them to your casting.",
+        "casting": "The confirmation screen ships next sprint. Here you'll review your selection, mark exclusives and confirm license terms."
+      },
+      "common": {
+        "brand": "Yutro Estudio",
+        "submarca": "Talent",
+        "back": "Back",
+        "backToHub": "Back to hub",
+        "backToCatalog": "Back to catalog",
+        "comingSoon": "Coming soon",
+        "confidential": "Confidential",
+        "configuredByStudio": "Configured by Yutro Estudio",
+        "rightClickBlocked": "Images are property of Yutro Estudio.",
+        "addToCasting": "Add to casting",
+        "alreadyAdded": "Already in your casting",
+        "removeFromCasting": "Remove from casting",
+        "spotsFull": "Slots full",
+        "exclusive": "Exclusive",
+        "available": "Available",
+        "inCampaign": "In campaign",
+        "reserved": "Reserved"
+      },
+      "catalog": {
+        "metaProject": "Active project · {client} · Starts {date}",
+        "title": "Casting {projectName}",
+        "subtitle": "Catalog filtered for your project. Showing only talents available for {category} campaigns during your campaign window.",
+        "subtitleNoCategory": "Catalog filtered for your project. Showing only talents available for the campaign window.",
+        "stats": {
+          "available": "Available",
+          "shortlist": "Your casting",
+          "exclusive": "Exclusivity"
+        },
+        "filters": {
+          "label": "Filter:",
+          "all": "All",
+          "men": "Men",
+          "women": "Women",
+          "20s": "20s",
+          "30s": "30s",
+          "40s": "40s",
+          "50s": "50s+",
+          "categories": {
+            "corporativo": "Corporate",
+            "lifestyle": "Aspirational lifestyle",
+            "familiar": "Family",
+            "urbano": "Urban",
+            "senior": "Senior",
+            "oficios": "Trades"
+          }
+        },
+        "card": {
+          "addToCasting": "Add to casting",
+          "removeFromCasting": "Remove from casting",
+          "fullCapacity": "Slots full"
+        },
+        "toast": {
+          "fullCapacity": "Slots full. Your project includes {max} talents.",
+          "exclusiveFull": "Your project allows up to {max} exclusive talents."
+        },
+        "viewCasting": "View my casting",
+        "noResults": "No talents match the current filters."
+      },
+      "detail": {
+        "back": "Back to catalog",
+        "spec": {
+          "phenotype": "Phenotype",
+          "ageRange": "Age range",
+          "archetype": "Archetype",
+          "tone": "Commercial tone",
+          "market": "Market",
+          "status": "Status"
+        },
+        "status": {
+          "available": "Available",
+          "inCampaign": "In campaign",
+          "reserved": "Reserved"
+        },
+        "suggestedUses": "Suggested uses",
+        "actions": {
+          "add": "Add to casting",
+          "alreadyIn": "Already in your casting",
+          "full": "Slots full",
+          "back": "Back"
+        },
+        "gallery": {
+          "studio": "Studio gallery",
+          "lifestyle": "Lifestyle gallery"
+        }
+      },
+      "casting": {
+        "subtitle": "Final step · Licensing confirmation",
+        "title": "Your casting",
+        "intro": "Review the selected talents and define license terms. Mark individually which ones require exclusivity for your campaign. The studio will confirm availability and send a tailored quote within 24 business hours.",
+        "empty": {
+          "title": "Your casting is empty",
+          "description": "Go back to the catalog and add talents that match your campaign.",
+          "cta": "Go to catalog"
+        },
+        "license": {
+          "title": "License terms",
+          "configuredBy": "Configured by Yutro Estudio",
+          "market": "Market",
+          "duration": "Rights duration",
+          "exclusivity": "Campaign exclusivity",
+          "modes": {
+            "none": "No exclusivity",
+            "category": "By category ({category})",
+            "total": "Total campaign exclusivity"
+          },
+          "helpCategory": "Mark below which talents need exclusive lock for the {category} category.",
+          "helpNone": "No exclusivity: talents stay free for simultaneous use in other campaigns.",
+          "helpTotal": "Total exclusivity: marked talents are fully locked from the market for the agreed duration."
+        },
+        "summary": {
+          "selected": "Selected talents",
+          "exclusive": "Exclusive talents"
+        },
+        "toggle": {
+          "exclusive": "Exclusive",
+          "disabledTitle": "Exclusive cap reached"
+        },
+        "actions": {
+          "submit": "Confirm selection",
+          "submitting": "Sending…",
+          "remove": "Remove"
+        },
+        "toast": {
+          "submitSuccess": "✓ Selection confirmed. {selected} talents · {exclusive} exclusive. — Yutro Estudio",
+          "submitError": "Something went wrong sending your selection. Try again in a moment.",
+          "exclusiveFull": "Your project allows up to {max} exclusive talents.",
+          "needAtLeastOne": "Add at least one talent before confirming."
+        },
+        "submitted": {
+          "title": "✓ Received",
+          "body": "The studio will get back to you within 24 business hours."
+        },
+        "confirm": {
+          "title": "Confirm your selection?",
+          "body": "You're about to send your casting to the studio. Review the details before confirming.",
+          "summaryProject": "Project",
+          "summarySelected": "Talents",
+          "summaryExclusive": "Exclusive",
+          "summaryDuration": "Duration",
+          "irreversible": "This action is final. Once submitted, the studio receives your selection by email and starts coordinating.",
+          "cancel": "Cancel",
+          "confirm": "Yes, send to studio"
+        }
+      },
+      "nda": {
+        "eyebrow": "Private access · Project session",
+        "title": "Confidentiality Agreement",
+        "subtitle": "Before accessing the {project} ({client}) catalog, you must accept the private viewing terms.",
+        "bullets": {
+          "confidential": "The information shown is confidential and property of VRYP ART & AI SOLUTIONS SPA.",
+          "noShare": "Do not reproduce, distribute, or disclose this information to third parties.",
+          "ipExclusive": "Digital talents are exclusive IP of the studio. The client acquires a license for the final pieces produced, not for the talent itself.",
+          "audit": "This session is registered with timestamp and IP for legal traceability.",
+          "watermark": "Images contain identifying watermarks with client name, date and talent code.",
+          "legal": "Misuse has legal consequences under Chilean Law 19.628 and applicable regulations."
+        },
+        "checkbox": "I have read and accept the private viewing terms.",
+        "accept": "Access catalog",
+        "cancel": "Cancel"
+      },
+      "welcome": {
+        "ariaLabel": "Project welcome screen",
+        "eyebrow": "Welcome · {client}",
+        "subtitle": "Catalog curated by Yutro Estudio",
+        "metaTalent": "Digital talent",
+        "totalExclusive": "Total exclusivity",
+        "noExclusive": "No exclusivity",
+        "continue": "Continue to catalog"
+      },
+      "error": {
+        "title": "Something went wrong",
+        "body": "There was an error loading this project. The Yutro Estudio team has been notified. Try again or go back to the hub.",
+        "retry": "Try again",
+        "backToHub": "Back to hub"
+      },
+      "admin": {
+        "hub": {
+          "title": "Talent Admin",
+          "subtitle": "Manage the catalog, projects and incoming selections.",
+          "talents": {
+            "title": "Talents",
+            "count": "{count} active"
+          },
+          "projects": {
+            "title": "Projects",
+            "count": "{count} active"
+          },
+          "submissions": {
+            "title": "Selections",
+            "count": "{count} pending"
+          }
+        }
+      }
     }
   }
 }

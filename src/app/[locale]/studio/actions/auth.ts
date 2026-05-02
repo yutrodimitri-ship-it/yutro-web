@@ -56,7 +56,8 @@ export async function loginAction(
     role: user.role,
   });
 
-  redirect(`/${locale}/studio/dashboard`);
+  // Hub /studio: muestra puertas Mis Avatares + (condicional) Catalogo Talent
+  redirect(`/${locale}/studio`);
 }
 
 export async function logoutAction(formData?: FormData) {

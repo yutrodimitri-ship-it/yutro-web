@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Sparkles, Clock, Users, LogOut, Zap, Menu, X, ExternalLink } from "lucide-react";
+import { LayoutDashboard, Sparkles, Clock, Users, LogOut, Zap, Menu, X, ExternalLink, Library, Home, ClipboardList } from "lucide-react";
 import { logoutAction } from "@/app/[locale]/studio/actions/auth";
 
 interface StudioSidebarProps {
@@ -11,28 +11,57 @@ interface StudioSidebarProps {
   role: string;
   userName?: string;
   credits?: number;
+  /** Si true, muestra link "Catalogo Talent" — clientes con proyecto activo. */
+  showTalentLink?: boolean;
 }
 
-export function StudioSidebar({ locale, role, userName, credits }: StudioSidebarProps) {
+interface SidebarLink {
+  href: string;
+  label: string;
+  icon: typeof LayoutDashboard;
+  /** Marca visual de submarca Talent (icono + active state en dorado). */
+  variant?: "default" | "talent";
+}
+
+export function StudioSidebar({ locale, role, userName, credits, showTalentLink }: StudioSidebarProps) {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const base = `/${locale}/studio`;
 
-  const links = [
-    { href: `${base}/dashboard`, label: "Dashboard", icon: LayoutDashboard },
-    { href: `${base}/generate`, label: "Crear Avatar", icon: Sparkles },
-    { href: `${base}/history`, label: "Historial", icon: Clock },
+  const isTalentLabel = locale === "en" ? "Talent Library" : "Catálogo Talent";
+  const dashboardLabel = locale === "en" ? "My Avatars" : "Mis Avatares";
+
+  const links: SidebarLink[] = [
+    { href: `${base}`, label: locale === "en" ? "Hub" : "Hub", icon: Home },
+    { href: `${base}/dashboard`, label: dashboardLabel, icon: LayoutDashboard },
+    { href: `${base}/generate`, label: locale === "en" ? "Create Avatar" : "Crear Avatar", icon: Sparkles },
+    { href: `${base}/history`, label: locale === "en" ? "History" : "Historial", icon: Clock },
   ];
+
+  if (showTalentLink) {
+    links.push({
+      href: `${base}/talent`,
+      label: isTalentLabel,
+      icon: Library,
+      variant: "talent",
+    });
+  }
 
   if (role === "admin") {
     links.push({ href: `${base}/admin`, label: "Admin", icon: Users });
+    links.push({
+      href: `${base}/talent/admin`,
+      label: "Talent Admin",
+      icon: ClipboardList,
+      variant: "talent",
+    });
   }
 
   const sidebarContent = (
     <>
       {/* Logo */}
       <div className="flex h-20 items-center gap-1.5 border-b border-[#1e1e1e] px-6">
-        <Link href={`/${locale}/studio/dashboard`} className="text-[28px] font-extrabold tracking-tight text-white">
+        <Link href={`/${locale}/studio`} className="text-[28px] font-extrabold tracking-tight text-white">
           YUTRO<span className="text-primary">.</span>
         </Link>
         <span className="text-[20px] font-medium text-white/30">studio</span>
@@ -41,7 +70,17 @@ export function StudioSidebar({ locale, role, userName, credits }: StudioSidebar
       {/* Navigation */}
       <nav className="flex-1 space-y-0.5 px-3 py-4">
         {links.map((link) => {
-          const isActive = pathname.startsWith(link.href);
+          // El hub solo se considera active con match exacto (no para sub-rutas)
+          const isActive =
+            link.href === base
+              ? pathname === base || pathname === `${base}/`
+              : pathname.startsWith(link.href);
+          const isTalent = link.variant === "talent";
+          const activeIconClass = isActive
+            ? isTalent
+              ? "text-[var(--accent)]"
+              : "text-primary"
+            : "";
           return (
             <Link
               key={link.href}
@@ -53,7 +92,7 @@ export function StudioSidebar({ locale, role, userName, credits }: StudioSidebar
                   : "text-white/40 hover:bg-white/[0.04] hover:text-white/70"
               }`}
             >
-              <link.icon className={`h-[18px] w-[18px] ${isActive ? "text-primary" : ""}`} />
+              <link.icon className={`h-[18px] w-[18px] ${activeIconClass}`} />
               {link.label}
             </Link>
           );

@@ -90,6 +90,7 @@ body::after {
   --color-destructive: var(--destructive);
   --color-accent-foreground: var(--accent-foreground);
   --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
   --color-muted-foreground: var(--muted-foreground);
   --color-muted: var(--muted);
   --color-secondary-foreground: var(--secondary-foreground);
@@ -152,7 +153,9 @@ body::after {
   --secondary-foreground: oklch(0.145 0 0);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
+  /* Accent: dorado #d9b478 — uso EXCLUSIVO del modulo Studio Talent (badges, watermarks, toggles) */
+  --accent: oklch(0.78 0.08 75);
+  --accent-soft: oklch(0.78 0.08 75 / 0.12);
   --accent-foreground: oklch(0.145 0 0);
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
@@ -192,8 +195,10 @@ body::after {
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.22 0 0);
   --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.22 0 0);
-  --accent-foreground: oklch(0.985 0 0);
+  /* Accent dorado en dark — exclusivo Studio Talent */
+  --accent: oklch(0.78 0.08 75);
+  --accent-soft: oklch(0.78 0.08 75 / 0.12);
+  --accent-foreground: oklch(0.145 0 0);
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
@@ -225,5 +230,104 @@ body::after {
   }
   html {
     @apply font-sans scroll-smooth;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Yutro Estudio Talent — submarca curada dentro de /studio.
+   Aliases locales que apuntan a tokens globales (--accent dorado +
+   surfaces dark del studio). Solo agrega helpers tipograficos
+   especificos del modulo Talent. NO redefine colores nuevos.
+   ───────────────────────────────────────────────────────────── */
+.studio-talent {
+  /* Surfaces propias del modulo (mas oscuras que el resto del studio) */
+  --talent-bg: oklch(0.135 0 0);          /* #0a0a0a */
+  --talent-bg-elev: oklch(0.18 0 0);      /* #131313 */
+  --talent-bg-elev-2: oklch(0.205 0 0);   /* #1a1a1a */
+
+  /* Ink — aliases con tonalidad calida coherente con el dorado */
+  --talent-ink: oklch(0.95 0.012 75);
+  --talent-ink-dim: oklch(0.6 0.012 70);
+  --talent-ink-mute: oklch(0.38 0.012 70);
+  --talent-line: oklch(0.27 0.005 70);
+
+  /* Aliases al accent global — NO redefinir, apuntar al token oficial */
+  --talent-accent: var(--accent);
+  --talent-accent-soft: var(--accent-soft);
+  --talent-accent-line: oklch(from var(--accent) l c h / 0.4);
+
+  /* Status */
+  --talent-danger: oklch(0.65 0.13 25);
+  --talent-danger-soft: oklch(0.65 0.13 25 / 0.15);
+  --talent-success: oklch(0.7 0.07 145);
+
+  background: var(--talent-bg);
+  color: var(--talent-ink);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-weight: 300;
+}
+
+.studio-talent .talent-display {
+  font-family: var(--font-heading), serif;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+}
+
+.studio-talent .talent-display em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--talent-accent);
+}
+
+.studio-talent .talent-mono {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, "Cascadia Code", monospace;
+  font-weight: 400;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Focus ring dorado para todos los focusables dentro del modulo Talent */
+.studio-talent :focus-visible,
+[data-talent] :focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@keyframes talent-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+@keyframes talent-fadein {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Skeleton shimmer dorado para los loading.tsx del modulo Talent */
+.talent-skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in oklch, var(--accent) 8%, transparent) 50%,
+    transparent 100%
+  );
+  animation: talent-shimmer 1.6s ease-in-out infinite;
+  transform: translateX(-100%);
+}
+
+@keyframes talent-shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .talent-skeleton::after {
+    animation: none;
+    opacity: 0.4;
+    transform: none;
   }
 }

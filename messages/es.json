@@ -149,6 +149,224 @@
     "banner": {
       "description": "Crea avatares fotorrealistas con IA. Genera personajes, vístelos y obtén sesiones de fotos completas en minutos.",
       "cta": "Ir a Studio"
+    },
+    "talent": {
+      "hub": {
+        "eyebrow": "Yutro Studio · Hub",
+        "title": "Yutro Studio",
+        "subtitle": "Crea, gestiona y selecciona talento digital. Tu estudio personal y el roster curado de Yutro, en un solo lugar.",
+        "avatars": {
+          "title": "Mis Avatares",
+          "description": "Genera avatares fotorrealistas con IA. Tu biblioteca personal de talento digital, gestionada con tus créditos.",
+          "cta": "Ir a Mis Avatares"
+        },
+        "library": {
+          "title": "Catálogo Talent",
+          "description": "Accede al roster curado del estudio. Talento profesional, listo para licenciar en tu campaña.",
+          "badge": "Acceso premium",
+          "cta": "Ver catálogo"
+        },
+        "noTalentAccessNote": "El Catálogo Talent es un programa privado por invitación. Si tu campaña requiere talento curado del estudio, contacta a tu ejecutivo en Yutro."
+      },
+      "placeholders": {
+        "catalog": "El catálogo se construye en el siguiente sprint. Aquí verás los talentos disponibles para tu proyecto, filtros por género/edad/categoría, y el contador de tu casting en vivo.",
+        "detail": "La vista de detalle se construye en el siguiente sprint. Aquí verás la ficha completa del talento, galerías de estudio y lifestyle, y el botón para sumarlo a tu casting.",
+        "casting": "La pantalla de confirmación se construye en el siguiente sprint. Aquí revisarás tu selección, marcarás exclusividades y confirmarás los términos de licencia."
+      },
+      "common": {
+        "brand": "Yutro Estudio",
+        "submarca": "Talent",
+        "back": "Volver",
+        "backToHub": "Volver al hub",
+        "backToCatalog": "Volver al catálogo",
+        "comingSoon": "Próximamente",
+        "confidential": "Confidencial",
+        "configuredByStudio": "Configurado por Yutro Estudio",
+        "rightClickBlocked": "Las imágenes son propiedad de Yutro Estudio.",
+        "addToCasting": "Agregar al casting",
+        "alreadyAdded": "Ya en tu casting",
+        "removeFromCasting": "Quitar del casting",
+        "spotsFull": "Cupo completo",
+        "exclusive": "Exclusivo",
+        "available": "Disponible",
+        "inCampaign": "En campaña",
+        "reserved": "Reservado"
+      },
+      "catalog": {
+        "metaProject": "Proyecto activo · {client} · Inicia {date}",
+        "title": "Casting {projectName}",
+        "subtitle": "Catálogo filtrado para tu proyecto. Solo se muestran talentos disponibles para campaña en categoría {category} durante el periodo de la campaña.",
+        "subtitleNoCategory": "Catálogo filtrado para tu proyecto. Solo se muestran talentos disponibles para campaña durante el periodo definido.",
+        "stats": {
+          "available": "Disponibles",
+          "shortlist": "Tu casting",
+          "exclusive": "Con exclusividad"
+        },
+        "filters": {
+          "label": "Filtrar:",
+          "all": "Todos",
+          "men": "Hombres",
+          "women": "Mujeres",
+          "20s": "20s",
+          "30s": "30s",
+          "40s": "40s",
+          "50s": "50s+",
+          "categories": {
+            "corporativo": "Corporativo",
+            "lifestyle": "Lifestyle aspiracional",
+            "familiar": "Familiar",
+            "urbano": "Urbano",
+            "senior": "Senior",
+            "oficios": "Oficios"
+          }
+        },
+        "card": {
+          "addToCasting": "Agregar al casting",
+          "removeFromCasting": "Quitar del casting",
+          "fullCapacity": "Cupo completo"
+        },
+        "toast": {
+          "fullCapacity": "Cupo completo. Tu proyecto contempla {max} talentos.",
+          "exclusiveFull": "Tu proyecto contempla máximo {max} talentos con exclusividad."
+        },
+        "viewCasting": "Ver mi casting",
+        "noResults": "No hay talentos que coincidan con los filtros."
+      },
+      "detail": {
+        "back": "Volver al catálogo",
+        "spec": {
+          "phenotype": "Fenotipo",
+          "ageRange": "Rango etario",
+          "archetype": "Arquetipo",
+          "tone": "Tono comercial",
+          "market": "Mercado",
+          "status": "Estado"
+        },
+        "status": {
+          "available": "Disponible",
+          "inCampaign": "En campaña",
+          "reserved": "Reservado"
+        },
+        "suggestedUses": "Usos sugeridos",
+        "actions": {
+          "add": "Agregar al casting",
+          "alreadyIn": "Ya en tu casting",
+          "full": "Cupo completo",
+          "back": "Volver"
+        },
+        "gallery": {
+          "studio": "Galería estudio",
+          "lifestyle": "Galería lifestyle"
+        }
+      },
+      "casting": {
+        "subtitle": "Paso final · Confirmación de licenciamiento",
+        "title": "Tu casting",
+        "intro": "Revisa los talentos seleccionados y define los términos de licencia. Marca individualmente cuáles requieren exclusividad para tu campaña. El estudio confirmará disponibilidad y enviará cotización ajustada en menos de 24 horas hábiles.",
+        "empty": {
+          "title": "Tu casting está vacío",
+          "description": "Vuelve al catálogo y agrega los talentos que mejor encajen con tu campaña.",
+          "cta": "Ir al catálogo"
+        },
+        "license": {
+          "title": "Términos de licencia",
+          "configuredBy": "Configurado por Yutro Estudio",
+          "market": "Mercado",
+          "duration": "Duración derechos",
+          "exclusivity": "Exclusividad de campaña",
+          "modes": {
+            "none": "Sin exclusividad",
+            "category": "Por categoría ({category})",
+            "total": "Exclusividad total de campaña"
+          },
+          "helpCategory": "Marca individualmente abajo qué talentos requieren bloqueo exclusivo en categoría {category}.",
+          "helpNone": "Sin exclusividad: los talentos quedan libres para uso simultáneo en otras campañas.",
+          "helpTotal": "Exclusividad total: los talentos marcados quedan bloqueados completamente del mercado durante la duración pactada."
+        },
+        "summary": {
+          "selected": "Talentos seleccionados",
+          "exclusive": "Talentos con exclusividad"
+        },
+        "toggle": {
+          "exclusive": "Exclusivo",
+          "disabledTitle": "Cupo de exclusividad completo"
+        },
+        "actions": {
+          "submit": "Confirmar selección al estudio",
+          "submitting": "Enviando…",
+          "remove": "Quitar"
+        },
+        "toast": {
+          "submitSuccess": "✓ Selección confirmada al estudio. {selected} talentos · {exclusive} con exclusividad. — Yutro Estudio",
+          "submitError": "Hubo un error al enviar tu selección. Intenta de nuevo en un momento.",
+          "exclusiveFull": "Tu proyecto contempla máximo {max} talentos con exclusividad.",
+          "needAtLeastOne": "Agrega al menos un talento antes de confirmar."
+        },
+        "submitted": {
+          "title": "✓ Recibido",
+          "body": "El estudio te responde en menos de 24 horas hábiles."
+        },
+        "confirm": {
+          "title": "¿Confirmar tu selección?",
+          "body": "Estás a punto de enviar tu casting al estudio. Revisa los detalles antes de confirmar.",
+          "summaryProject": "Proyecto",
+          "summarySelected": "Talentos",
+          "summaryExclusive": "Con exclusividad",
+          "summaryDuration": "Duración",
+          "irreversible": "Esta acción es definitiva. Una vez enviado, el estudio recibe tu selección por email y empieza a coordinarla.",
+          "cancel": "Cancelar",
+          "confirm": "Sí, enviar al estudio"
+        }
+      },
+      "nda": {
+        "eyebrow": "Acceso privado · Sesión proyecto",
+        "title": "Acuerdo de Confidencialidad",
+        "subtitle": "Antes de acceder al catálogo de {project} ({client}), debes aceptar los términos de visualización privada.",
+        "bullets": {
+          "confidential": "La información mostrada es confidencial y propiedad de VRYP ART & AI SOLUTIONS SPA.",
+          "noShare": "No reproducir, distribuir, ni divulgar esta información a terceros.",
+          "ipExclusive": "Los talentos digitales son IP exclusiva del estudio. Cliente adquiere licencia de uso de las piezas finales producidas, no del talento.",
+          "audit": "Esta sesión queda registrada con timestamp e IP para trazabilidad legal.",
+          "watermark": "Las imágenes contienen marcas de agua identificadoras del cliente, fecha y código del talento.",
+          "legal": "El uso indebido tiene consecuencias legales bajo Ley 19.628 de Chile y normativa aplicable."
+        },
+        "checkbox": "He leído y acepto los términos de visualización privada.",
+        "accept": "Acceder al catálogo",
+        "cancel": "Cancelar"
+      },
+      "welcome": {
+        "ariaLabel": "Pantalla de bienvenida del proyecto",
+        "eyebrow": "Bienvenido · {client}",
+        "subtitle": "Catálogo curado por Yutro Estudio",
+        "metaTalent": "Talento digital",
+        "totalExclusive": "Exclusividad total",
+        "noExclusive": "Sin exclusividad",
+        "continue": "Continuar al catálogo"
+      },
+      "error": {
+        "title": "Algo salió mal",
+        "body": "Ocurrió un error al cargar este proyecto. El equipo de Yutro Estudio fue notificado. Intenta de nuevo o vuelve al hub.",
+        "retry": "Intentar de nuevo",
+        "backToHub": "Volver al hub"
+      },
+      "admin": {
+        "hub": {
+          "title": "Talent Admin",
+          "subtitle": "Gestiona el catálogo, los proyectos y las selecciones recibidas.",
+          "talents": {
+            "title": "Talents",
+            "count": "{count} activos"
+          },
+          "projects": {
+            "title": "Proyectos",
+            "count": "{count} activos"
+          },
+          "submissions": {
+            "title": "Selecciones",
+            "count": "{count} pendientes"
+          }
+        }
+      }
     }
   }
 }

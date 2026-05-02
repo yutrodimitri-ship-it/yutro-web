@@ -1,4 +1,4 @@
-import { pgTable, uuid, text, inet, timestamp, integer, boolean, jsonb, uniqueIndex, index } from "drizzle-orm/pg-core";
+import { pgTable, uuid, text, inet, timestamp, integer, boolean, jsonb, uniqueIndex, index, varchar, date } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
 
 // UUID v7 default — uses the function created in init-db.sql
@@ -102,6 +102,159 @@ export const creditTransactions = pgTable(
   },
   (table) => [
     index("idx_credit_tx_user").on(table.userId, table.createdAt),
+  ]
+);
+
+// ─── Existing tables ───
+
+// ─────────────────────────────────────────────────
+// YUTRO STUDIO TALENT — tablas Fase 2 (Sprint 5)
+// ─────────────────────────────────────────────────
+
+export const talents = pgTable("talents", {
+  code: varchar("code", { length: 16 }).primaryKey(), // YE-W07
+  // bilingual
+  nameEs: text("name_es").notNull(),
+  nameEn: text("name_en").notNull(),
+  shortDescEs: text("short_desc_es").notNull(),
+  shortDescEn: text("short_desc_en").notNull(),
+  phenotypeEs: text("phenotype_es").notNull(),
+  phenotypeEn: text("phenotype_en").notNull(),
+  archetypeEs: text("archetype_es").notNull(),
+  archetypeEn: text("archetype_en").notNull(),
+  toneCommercialEs: text("tone_commercial_es").notNull(),
+  toneCommercialEn: text("tone_commercial_en").notNull(),
+  // attrs
+  gender: varchar("gender", { length: 1 }).notNull(),
+  ageRange: varchar("age_range", { length: 16 }).notNull(),
+  ageBucket: varchar("age_bucket", { length: 4 }).notNull(),
+  category: varchar("category", { length: 24 }).notNull(),
+  status: varchar("status", { length: 16 }).default("available").notNull(),
+  market: jsonb("market").$type<string[]>().notNull(),
+  suggestedUses: jsonb("suggested_uses")
+    .$type<{ es: string; en: string }[]>()
+    .notNull(),
+  // visual placeholder (Sprint 5) + futuras URLs (Sprint 8)
+  hue: integer("hue").notNull(),
+  sat: integer("sat").notNull(),
+  imageProfileKey: text("image_profile_key"),
+  imageCharsheetKey: text("image_charsheet_key"),
+  galleryKeys: jsonb("gallery_keys")
+    .$type<string[]>()
+    .default(sql`'[]'::jsonb`)
+    .notNull(),
+  // soft delete
+  isActive: boolean("is_active").notNull().default(true),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+});
+
+export const talentProjects = pgTable("talent_projects", {
+  slug: varchar("slug", { length: 64 }).primaryKey(),
+  name: text("name").notNull(),
+  client: text("client").notNull(),
+  contactEmail: varchar("contact_email", { length: 254 }).notNull(),
+  contactName: text("contact_name").notNull(),
+  market: text("market").notNull(),
+  rightsDurationEs: text("rights_duration_es").notNull(),
+  rightsDurationEn: text("rights_duration_en").notNull(),
+  exclusivityMode: varchar("exclusivity_mode", { length: 16 }).notNull(),
+  exclusivityCategoryEs: text("exclusivity_category_es"),
+  exclusivityCategoryEn: text("exclusivity_category_en"),
+  exclusivityHelpEs: text("exclusivity_help_es").notNull(),
+  exclusivityHelpEn: text("exclusivity_help_en").notNull(),
+  maxTalents: integer("max_talents").notNull(),
+  maxExclusive: integer("max_exclusive").notNull(),
+  startDate: date("start_date").notNull(),
+  blockedTalentCodes: jsonb("blocked_talent_codes")
+    .$type<string[]>()
+    .default(sql`'[]'::jsonb`)
+    .notNull(),
+  status: varchar("status", { length: 16 }).default("active").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+});
+
+// Relacion N:M emails autorizados x proyecto (un email puede ver varios proyectos)
+export const talentProjectAccess = pgTable(
+  "talent_project_access",
+  {
+    id: uuid("id").primaryKey().default(uuidV7Default),
+    projectSlug: varchar("project_slug", { length: 64 })
+      .notNull()
+      .references(() => talentProjects.slug, { onDelete: "cascade" }),
+    userEmail: varchar("user_email", { length: 254 }).notNull(),
+    grantedBy: uuid("granted_by").references(() => users.id),
+    grantedAt: timestamp("granted_at", { withTimezone: true }).defaultNow().notNull(),
+    revokedAt: timestamp("revoked_at", { withTimezone: true }),
+  },
+  (t) => [
+    uniqueIndex("talent_project_access_unique").on(t.projectSlug, t.userEmail),
+    index("talent_project_access_email_idx").on(t.userEmail),
+  ]
+);
+
+export const castingSubmissions = pgTable(
+  "casting_submissions",
+  {
+    id: uuid("id").primaryKey().default(uuidV7Default),
+    projectSlug: varchar("project_slug", { length: 64 })
+      .notNull()
+      .references(() => talentProjects.slug),
+    userEmail: varchar("user_email", { length: 254 }).notNull(),
+    shortlist: jsonb("shortlist").$type<string[]>().notNull(),
+    exclusives: jsonb("exclusives").$type<string[]>().notNull(),
+    status: varchar("status", { length: 16 }).default("pending").notNull(),
+    // hash de idempotencia: project + sortedList + minuto de timestamp
+    idempotencyKey: varchar("idempotency_key", { length: 64 }).notNull(),
+    submittedAt: timestamp("submitted_at", { withTimezone: true }).defaultNow().notNull(),
+    reviewedAt: timestamp("reviewed_at", { withTimezone: true }),
+    reviewedBy: uuid("reviewed_by").references(() => users.id),
+    adminNotes: text("admin_notes"),
+    emailDeliveryStatus: varchar("email_delivery_status", { length: 16 }), // 'sent' | 'failed' | null
+  },
+  (t) => [
+    uniqueIndex("casting_idempotency_unique").on(t.idempotencyKey),
+    index("casting_project_idx").on(t.projectSlug, t.submittedAt),
+  ]
+);
+
+export const ndaAcceptances = pgTable(
+  "nda_acceptances",
+  {
+    id: uuid("id").primaryKey().default(uuidV7Default),
+    projectSlug: varchar("project_slug", { length: 64 })
+      .notNull()
+      .references(() => talentProjects.slug, { onDelete: "cascade" }),
+    userEmail: varchar("user_email", { length: 254 }).notNull(),
+    acceptedAt: timestamp("accepted_at", { withTimezone: true }).defaultNow().notNull(),
+    ipAddress: varchar("ip_address", { length: 64 }),
+    userAgent: text("user_agent"),
+    revokedAt: timestamp("revoked_at", { withTimezone: true }),
+    revokedBy: uuid("revoked_by").references(() => users.id),
+  },
+  (t) => [
+    uniqueIndex("nda_unique_active").on(t.projectSlug, t.userEmail),
+  ]
+);
+
+export const talentAccessLogs = pgTable(
+  "talent_access_logs",
+  {
+    id: uuid("id").primaryKey().default(uuidV7Default),
+    eventType: varchar("event_type", { length: 32 }).notNull(),
+    userEmail: varchar("user_email", { length: 254 }).notNull(),
+    projectSlug: varchar("project_slug", { length: 64 }).notNull(),
+    talentCode: varchar("talent_code", { length: 16 }),
+    payload: jsonb("payload")
+      .$type<Record<string, unknown>>()
+      .default(sql`'{}'::jsonb`)
+      .notNull(),
+    ipAddress: varchar("ip_address", { length: 64 }),
+    timestamp: timestamp("timestamp", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (t) => [
+    index("audit_project_time_idx").on(t.projectSlug, t.timestamp),
+    index("audit_user_time_idx").on(t.userEmail, t.timestamp),
   ]
 );
 

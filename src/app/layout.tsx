@@ -13,7 +13,7 @@ const outfit = Outfit({
   variable: "--font-heading",
   subsets: ["latin"],
   display: "swap",
-  weight: ["700", "800"],
+  weight: ["300", "400", "700", "800"],
 });
 
 export const metadata: Metadata = {

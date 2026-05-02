@@ -3,6 +3,7 @@ import { db } from "@/db";
 import { users } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { StudioSidebar } from "@/components/studio/StudioSidebar";
+import { userHasTalentAccess } from "@/lib/talent/data-source";
 
 export default async function StudioLayout({
   children,
@@ -33,6 +34,8 @@ export default async function StudioLayout({
     return <div className="h-screen bg-[#141414] text-white">{children}</div>;
   }
 
+  const showTalentLink = await userHasTalentAccess(session.email);
+
   return (
     <div className="flex h-screen bg-[#141414] text-white">
       <StudioSidebar
@@ -40,6 +43,7 @@ export default async function StudioLayout({
         role={session.role}
         userName={userName}
         credits={credits}
+        showTalentLink={showTalentLink}
       />
       <main className="flex-1 overflow-y-auto bg-[#141414]">
         <div className="mx-auto max-w-5xl px-4 py-6 pt-16 sm:px-8 sm:py-10 md:pt-10">

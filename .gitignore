@@ -48,3 +48,10 @@ yarn-error.log*
 next-env.d.ts
 
 .vercel
+
+# Claude Code internal
+.claude/
+
+# Playwright + vitest reports
+/playwright-report/
+/test-results/
