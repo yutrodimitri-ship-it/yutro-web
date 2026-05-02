@@ -77,23 +77,12 @@ export async function deleteImage(key: string): Promise<void> {
   );
 }
 
-export const VARIANTS = [
-  "profile",
-  "charsheet",
-  "studio-1",
-  "studio-2",
-  "studio-3",
-  "lifestyle-1",
-  "lifestyle-2",
-  "lifestyle-3",
-] as const;
-
-export type ImageVariant = (typeof VARIANTS)[number];
-
-export function isValidVariant(v: string): v is ImageVariant {
-  return (VARIANTS as readonly string[]).includes(v);
-}
-
-export function buildKey(code: string, variant: ImageVariant): string {
-  return `talents/${code}/${variant}.jpg`;
-}
+// VARIANTS / ImageVariant / isValidVariant / buildKey viven en
+// `image-variants.ts` (safe para client). Re-exportamos aqui para que el
+// codigo server existente siga funcionando sin cambios.
+export {
+  VARIANTS,
+  isValidVariant,
+  buildKey,
+  type ImageVariant,
+} from "./image-variants";

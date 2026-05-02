@@ -4,7 +4,7 @@ import { db } from "@/db";
 import { talents } from "@/db/schema";
 import { AdminPageHeader } from "@/components/studio/talent/admin/AdminPageHeader";
 import { BulkUpload } from "@/components/studio/talent/admin/BulkUpload";
-import type { ImageVariant } from "@/lib/talent/r2-client";
+import type { ImageVariant } from "@/lib/talent/image-variants";
 
 export const dynamic = "force-dynamic";
 

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Check, Loader2, Upload, X } from "lucide-react";
-import { VARIANTS, type ImageVariant } from "@/lib/talent/r2-client";
+import { VARIANTS, type ImageVariant } from "@/lib/talent/image-variants";
 
 type SlotState =
   | { status: "empty" }
