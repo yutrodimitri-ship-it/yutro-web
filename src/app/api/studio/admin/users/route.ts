@@ -23,6 +23,7 @@ export async function GET() {
         role: users.role,
         credits: users.credits,
         isActive: users.isActive,
+        canAccessIntel: users.canAccessIntel,
         createdAt: users.createdAt,
       })
       .from(users)

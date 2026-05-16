@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Users, Plus, CreditCard, Power, PowerOff, Trash2 } from "lucide-react";
+import { Users, Plus, CreditCard, Power, PowerOff, Trash2, ShieldCheck, ShieldOff } from "lucide-react";
 import { Toast } from "@/components/studio/Toast";
+import { ConfirmDialog } from "@/components/studio/ConfirmDialog";
 
 interface User {
   id: string;
@@ -11,6 +12,7 @@ interface User {
   role: string;
   credits: number;
   isActive: boolean;
+  canAccessIntel: boolean;
   createdAt: string;
 }
 
@@ -21,6 +23,7 @@ export default function AdminUsersPage() {
   const [creditsModal, setCreditsModal] = useState<User | null>(null);
   const [createError, setCreateError] = useState("");
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
+  const [deleteDialog, setDeleteDialog] = useState<User | null>(null);
 
   const fetchUsers = useCallback(async () => {
     const res = await fetch("/api/studio/admin/users");
@@ -73,9 +76,13 @@ export default function AdminUsersPage() {
     }
   }
 
-  async function handleDelete(user: User) {
+  function handleDelete(user: User) {
     if (user.role === "admin") { setToast({ message: "No se puede eliminar un admin", type: "error" }); return; }
-    if (!confirm(`¿Eliminar a ${user.name} (${user.email})?`)) return;
+    setDeleteDialog(user);
+  }
+
+  async function executeDelete(user: User) {
+    setDeleteDialog(null);
     const res = await fetch(`/api/studio/admin/users/${user.id}`, { method: "DELETE" });
     if (res.ok) { setToast({ message: "Usuario eliminado", type: "success" }); fetchUsers(); }
     else setToast({ message: "Error al eliminar", type: "error" });
@@ -89,6 +96,18 @@ export default function AdminUsersPage() {
     });
     if (res.ok) {
       setToast({ message: `Usuario ${user.isActive ? "desactivado" : "activado"}`, type: "success" });
+    }
+    fetchUsers();
+  }
+
+  async function toggleIntel(user: User) {
+    const res = await fetch(`/api/studio/admin/users/${user.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ canAccessIntel: !user.canAccessIntel }),
+    });
+    if (res.ok) {
+      setToast({ message: `Acceso Intel ${user.canAccessIntel ? "revocado" : "habilitado"}`, type: "success" });
     }
     fetchUsers();
   }
@@ -123,6 +142,7 @@ export default function AdminUsersPage() {
               <th className="px-4 py-3 text-left font-medium">Rol</th>
               <th className="px-4 py-3 text-right font-medium">Creditos</th>
               <th className="px-4 py-3 text-center font-medium">Estado</th>
+              <th className="px-4 py-3 text-center font-medium">Intel</th>
               <th className="px-4 py-3 text-right font-medium">Acciones</th>
             </tr>
           </thead>
@@ -143,6 +163,19 @@ export default function AdminUsersPage() {
                 <td className="px-4 py-3 text-right font-mono">{user.credits}</td>
                 <td className="px-4 py-3 text-center">
                   <span className={`inline-block h-2 w-2 rounded-full ${user.isActive ? "bg-green-500" : "bg-red-500"}`} />
+                </td>
+                <td className="px-4 py-3 text-center">
+                  <button
+                    onClick={() => toggleIntel(user)}
+                    className={`rounded-lg p-1.5 transition-colors ${
+                      user.canAccessIntel
+                        ? "text-orange-400 hover:bg-orange-500/10"
+                        : "text-white/20 hover:bg-white/[0.04] hover:text-white/60"
+                    }`}
+                    title={user.canAccessIntel ? "Revocar acceso Intel" : "Dar acceso Intel"}
+                  >
+                    {user.canAccessIntel ? <ShieldCheck className="h-4 w-4" /> : <ShieldOff className="h-4 w-4" />}
+                  </button>
                 </td>
                 <td className="px-4 py-3 text-right">
                   <div className="flex items-center justify-end gap-1">
@@ -239,6 +272,15 @@ export default function AdminUsersPage() {
         </div>
       )}
       {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
+
+      <ConfirmDialog
+        open={!!deleteDialog}
+        message={deleteDialog ? `¿Eliminar a ${deleteDialog.name} (${deleteDialog.email})?` : ""}
+        onConfirm={() => { if (deleteDialog) void executeDelete(deleteDialog); }}
+        onCancel={() => setDeleteDialog(null)}
+        danger
+        confirmLabel="Eliminar"
+      />
     </div>
   );
 }

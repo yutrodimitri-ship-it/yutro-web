@@ -9,6 +9,7 @@ const updateUserSchema = z.object({
   name: z.string().min(1).optional(),
   isActive: z.boolean().optional(),
   role: z.enum(["admin", "client"]).optional(),
+  canAccessIntel: z.boolean().optional(),
 });
 
 export async function GET(
@@ -27,6 +28,7 @@ export async function GET(
         role: users.role,
         credits: users.credits,
         isActive: users.isActive,
+        canAccessIntel: users.canAccessIntel,
         createdAt: users.createdAt,
       })
       .from(users)
@@ -64,6 +66,7 @@ export async function PATCH(
         role: users.role,
         credits: users.credits,
         isActive: users.isActive,
+        canAccessIntel: users.canAccessIntel,
       });
 
     if (!updated) return NextResponse.json({ error: "User not found" }, { status: 404 });

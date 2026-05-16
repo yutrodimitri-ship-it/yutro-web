@@ -1,4 +1,4 @@
-import { pgTable, uuid, text, inet, timestamp, integer, boolean, jsonb, uniqueIndex, index, varchar, date } from "drizzle-orm/pg-core";
+﻿import { pgTable, uuid, text, inet, timestamp, integer, boolean, jsonb, uniqueIndex, index, varchar, date } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
 
 // UUID v7 default — uses the function created in init-db.sql
@@ -35,6 +35,7 @@ export const users = pgTable(
     role: text("role").notNull().default("client"),
     credits: integer("credits").notNull().default(0),
     isActive: boolean("is_active").notNull().default(true),
+    canAccessIntel: boolean("can_access_intel").notNull().default(false),
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
   },
