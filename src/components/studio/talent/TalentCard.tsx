@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { useTranslations } from "next-intl";
@@ -15,31 +16,19 @@ import type { Locale, Talent } from "@/types/talent";
 interface TalentCardProps {
   talent: Talent;
   locale: Locale;
-  /** Cliente en uppercase para el watermark (ej. "BBDO"). */
   clientName: string;
-  /** Fecha formateada compact (ej. "30·04·26"). */
   watermarkDate: string;
-  /** Slug del proyecto para construir el href de detalle. */
   projectSlug: string;
+  isExclusiveBlocked?: boolean;
 }
 
-/**
- * Card del catalogo. Aspect ratio 3:4 obligatorio.
- *
- * Estados:
- *   - Normal: hover lift -4px, accion `+` en hover top-right
- *   - En shortlist: badge `✓` permanente top-right (clickeable para quitar)
- *   - Disabled (cupo lleno y no en shortlist): grayscale + badge "Cupo completo" rojo
- *
- * Click en card → navega a /studio/talent/[projectSlug]/talent/[code]
- * Click en boton +/✓ → toggle shortlist (no propaga al Link)
- */
 export function TalentCard({
   talent,
   locale,
   clientName,
   watermarkDate,
   projectSlug,
+  isExclusiveBlocked = false,
 }: TalentCardProps) {
   const tCard = useTranslations("studio.talent.catalog.card");
   const tToast = useTranslations("studio.talent.catalog.toast");
@@ -47,10 +36,46 @@ export function TalentCard({
   const { isInShortlist, isFull, add, remove, limits } = useCasting();
   const session = useTalentSession();
   const toast = useToast();
+  const [hovered, setHovered] = useState(false);
 
   const inShortlist = isInShortlist(talent.code);
   const isDisabled = isFull && !inShortlist;
   const detailHref = `/${locale}/studio/talent/${projectSlug}/talent/${talent.code}`;
+
+  if (isExclusiveBlocked) {
+    return (
+      <div className="group flex flex-col" style={{ opacity: 0.45, pointerEvents: "none" }}>
+        <div className="relative overflow-hidden" style={{ aspectRatio: "3 / 4", background: "var(--talent-bg-elev-2, oklch(0.91 0.012 77))", filter: "grayscale(100%)" }}>
+          <TalentImage talent={talent} variant="profile" disabled />
+          <WatermarkOverlay clientName={clientName} talentCode={talent.code} date={watermarkDate} />
+          <div
+            className="absolute inset-0 z-[5] flex flex-col items-center justify-center gap-2"
+            style={{ background: "rgba(0,0,0,0.55)" }}
+          >
+            <span
+              className="font-mono text-[9px] uppercase tracking-[0.18em] px-2 py-0.5"
+              style={{ background: "rgba(0,0,0,0.7)", color: "rgba(255,255,255,0.7)", border: "1px solid rgba(255,255,255,0.2)" }}
+            >
+              Exclusivo
+            </span>
+          </div>
+        </div>
+        <div className="px-2 pt-2.5 pb-3">
+          <div
+            className="truncate text-[15px] leading-tight"
+            style={{ fontFamily: "var(--font-heading)", fontWeight: 700, letterSpacing: "-0.02em", color: "var(--talent-ink)" }}
+          >
+            {talent.name[locale]}
+          </div>
+          <div className="mt-1 flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-[0.1em]" style={{ color: "var(--talent-ink-mute)" }}>
+            <span>{talent.code}</span>
+            <span style={{ color: "var(--talent-line)" }}>·</span>
+            <span style={{ color: "var(--talent-ink-dim)" }}>{talent.category}</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   function handleToggle(e: React.MouseEvent) {
     e.preventDefault();
@@ -70,122 +95,89 @@ export function TalentCard({
   return (
     <motion.div
       variants={{
-        hidden: { opacity: 0, y: 12 },
-        show: { opacity: 1, y: 0 },
+        hidden: { opacity: 0 },
+        show: { opacity: 1 },
       }}
-      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-      whileHover={reduce ? undefined : { y: -4 }}
-      className="group relative block overflow-hidden bg-[#131313]"
-      style={{ aspectRatio: "3 / 4" }}
+      transition={{ duration: 0.3 }}
+      onHoverStart={() => setHovered(true)}
+      onHoverEnd={() => setHovered(false)}
+      className="group flex flex-col"
     >
-      {/* Toda la card es Link al detalle (incluso disabled — exploracion permitida) */}
-      <Link
-        href={detailHref}
-        aria-label={talent.name[locale]}
-        className="absolute inset-0 z-[1] block"
-      />
+      {/* ── Imagen ── */}
+      <div className="relative overflow-hidden" style={{ aspectRatio: "3 / 4", background: "var(--talent-bg-elev-2, oklch(0.91 0.012 77))" }}>
+        {/* Link de navegación */}
+        <Link
+          href={detailHref}
+          aria-label={talent.name[locale]}
+          className="absolute inset-0 z-[1] block"
+        />
 
-      {/* Imagen real (con watermark dinamico) o fallback al SVG placeholder */}
-      <TalentImage
-        talent={talent}
-        variant="profile"
-        disabled={isDisabled}
-      />
+        <TalentImage talent={talent} variant="profile" disabled={isDisabled} />
+        <WatermarkOverlay clientName={clientName} talentCode={talent.code} date={watermarkDate} />
 
-      <WatermarkOverlay
-        clientName={clientName}
-        talentCode={talent.code}
-        date={watermarkDate}
-      />
-
-      {/* Code badge top-left */}
-      <span
-        className="absolute left-4 top-4 z-[6] px-2.5 py-1 font-mono text-[9px] uppercase tracking-[0.1em] backdrop-blur-md"
-        style={{
-          background: "rgba(10,10,10,0.7)",
-          color: "var(--accent)",
-        }}
-      >
-        {talent.code}
-      </span>
-
-      {/* "Cupo completo" badge top-right cuando disabled */}
-      {isDisabled && (
-        <span
-          className="absolute right-4 top-4 z-[6] px-2.5 py-1 font-mono text-[9px] uppercase tracking-[0.1em] backdrop-blur-md"
+        {/* Overlay hover: gradiente + botón */}
+        <motion.div
+          animate={{ opacity: hovered && !reduce ? 1 : 0 }}
+          transition={{ duration: 0.18 }}
+          className="pointer-events-none absolute inset-0 z-[3]"
           style={{
-            background: "color-mix(in oklch, oklch(0.65 0.13 25) 15%, transparent)",
-            color: "oklch(0.65 0.13 25)",
-            border: "1px solid color-mix(in oklch, oklch(0.65 0.13 25) 40%, transparent)",
+            background: "linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.1) 50%, transparent 100%)",
           }}
-        >
-          {tCard("fullCapacity")}
-        </span>
-      )}
+        />
 
-      {/* Boton +/✓ — siempre top-right cuando NO disabled */}
-      {!isDisabled && (
-        <button
-          type="button"
-          onClick={handleToggle}
-          aria-label={
-            inShortlist ? tCard("removeFromCasting") : tCard("addToCasting")
-          }
-          title={
-            inShortlist ? tCard("removeFromCasting") : tCard("addToCasting")
-          }
-          className={`absolute right-4 top-4 z-[7] grid h-9 w-9 cursor-pointer place-items-center backdrop-blur-md transition-all duration-200 ${
-            inShortlist
-              ? "opacity-100"
-              : "opacity-0 group-hover:opacity-100"
-          }`}
-          style={{
-            background: inShortlist
-              ? "var(--accent)"
-              : "rgba(10,10,10,0.7)",
-            border: `1px solid ${
+        {/* Botón +/✓ — esquina superior derecha, aparece en hover */}
+        {!isDisabled && (
+          <motion.button
+            type="button"
+            onClick={handleToggle}
+            aria-label={inShortlist ? tCard("removeFromCasting") : tCard("addToCasting")}
+            animate={{ opacity: hovered || inShortlist ? 1 : 0 }}
+            transition={{ duration: 0.15 }}
+            className="pointer-events-auto absolute right-2.5 top-2.5 z-[6] flex h-7 w-7 cursor-pointer items-center justify-center rounded-full"
+            style={
               inShortlist
-                ? "var(--accent)"
-                : "color-mix(in oklch, white 20%, transparent)"
-            }`,
-            color: inShortlist
-              ? "var(--accent-foreground)"
-              : "white",
-          }}
-        >
-          {inShortlist ? (
-            <Check className="h-4 w-4" strokeWidth={2.5} />
-          ) : (
-            <Plus className="h-4 w-4" strokeWidth={2} />
-          )}
-        </button>
-      )}
+                ? { background: "var(--accent)", color: "var(--accent-foreground)" }
+                : {
+                    background: "rgba(0,0,0,0.45)",
+                    border: "1px solid rgba(255,255,255,0.25)",
+                    backdropFilter: "blur(6px)",
+                    color: "rgba(255,255,255,0.9)",
+                  }
+            }
+          >
+            {inShortlist
+              ? <Check className="h-3 w-3" strokeWidth={2.5} />
+              : <Plus className="h-3 w-3" strokeWidth={2} />
+            }
+          </motion.button>
+        )}
 
-      {/* Bottom gradient overlay */}
-      <div
-        className="pointer-events-none absolute inset-0 z-[2]"
-        style={{
-          background:
-            "linear-gradient(to top, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0.4) 50%, rgba(10,10,10,0) 100%)",
-        }}
-      />
+        {/* Badge "cupo completo" */}
+        {isDisabled && (
+          <div
+            className="absolute bottom-0 left-0 right-0 z-[5] px-3 py-2 font-mono text-[9px] uppercase tracking-[0.1em]"
+            style={{
+              background: "rgba(0,0,0,0.65)",
+              color: "rgba(255,255,255,0.75)",
+            }}
+          >
+            {tCard("fullCapacity")}
+          </div>
+        )}
+      </div>
 
-      {/* Bottom info */}
-      <div className="pointer-events-none absolute bottom-0 left-0 right-0 z-[3] p-5">
-        <div className="mb-1.5 font-mono text-[11px] uppercase tracking-[0.1em]" style={{ color: "var(--accent)" }}>
-          {talent.code}
-        </div>
+      {/* ── Info debajo de imagen ── */}
+      <div className="px-2 pt-2.5 pb-3">
         <div
-          className="mb-1 text-lg leading-tight text-white"
-          style={{
-            fontFamily: "var(--font-heading)",
-            fontWeight: 400,
-          }}
+          className="truncate text-[15px] leading-tight"
+          style={{ fontFamily: "var(--font-heading)", fontWeight: 700, letterSpacing: "-0.02em", color: "var(--talent-ink)" }}
         >
           {talent.name[locale]}
         </div>
-        <div className="text-xs text-white/55">
-          {talent.shortDesc[locale]}
+        <div className="mt-1 flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-[0.1em]" style={{ color: "var(--talent-ink-mute)" }}>
+          <span>{talent.code}</span>
+          <span style={{ color: "var(--talent-line)" }}>·</span>
+          <span style={{ color: "var(--talent-ink-dim)" }}>{talent.category}</span>
         </div>
       </div>
     </motion.div>

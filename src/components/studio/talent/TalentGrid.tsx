@@ -13,6 +13,7 @@ interface TalentGridProps {
   clientName: string;
   watermarkDate: string;
   projectSlug: string;
+  exclusiveBlockedCodes?: string[];
 }
 
 const AGE_BUCKETS = new Set<FilterValue>(["20s", "30s", "40s", "50s"]);
@@ -25,23 +26,13 @@ const CATEGORIES = new Set<FilterValue>([
   "oficios",
 ]);
 
-/**
- * Grid de talentos con FilterChips arriba.
- *
- * Filtra el array `talents` segun el chip activo:
- *   - "all"          → todos
- *   - "m" | "f"      → genero
- *   - "20s"-"50s"    → ageBucket
- *   - categoria      → category
- *
- * Stagger reveal de los cards al cargar (respeta reduced-motion).
- */
 export function TalentGrid({
   talents,
   locale,
   clientName,
   watermarkDate,
   projectSlug,
+  exclusiveBlockedCodes = [],
 }: TalentGridProps) {
   const t = useTranslations("studio.talent.catalog");
   const [filter, setFilter] = useState<FilterValue>("all");
@@ -68,35 +59,36 @@ export function TalentGrid({
         show: {
           transition: {
             staggerChildren: 0.04,
-            // Tope: con 22 cards y 0.04s = 0.88s, dentro del max 1s del spec
             staggerDirection: 1,
           },
         },
       };
 
   return (
-    <div className="space-y-8">
-      <FilterChips activeFilter={filter} onFilterChange={setFilter} />
+    <div className="flex flex-col">
+      {/* Filtros con padding lateral */}
+      <div className="px-6 py-3 sm:px-10">
+        <FilterChips activeFilter={filter} onFilterChange={setFilter} />
+      </div>
 
       {filtered.length === 0 ? (
         <div
-          className="py-20 text-center text-sm text-white/40"
+          className="mx-6 py-20 text-center text-sm sm:mx-10"
           style={{
-            border: "1px dashed color-mix(in oklch, white 12%, transparent)",
+            color: "var(--talent-ink-mute)",
+            border: "1px dashed color-mix(in oklch, black 12%, transparent)",
           }}
         >
           {t("noResults")}
         </div>
       ) : (
         <motion.div
-          key={filter} // re-stagger cuando cambia el filtro
+          key={filter}
           variants={containerVariants}
           initial="hidden"
           animate="show"
-          className="grid gap-1"
-          style={{
-            gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-          }}
+          className="grid grid-cols-2 gap-px sm:grid-cols-3 lg:grid-cols-4"
+          style={{ background: "var(--talent-line)" }}
         >
           {filtered.map((talent) => (
             <TalentCard
@@ -106,6 +98,7 @@ export function TalentGrid({
               clientName={clientName}
               watermarkDate={watermarkDate}
               projectSlug={projectSlug}
+              isExclusiveBlocked={exclusiveBlockedCodes.includes(talent.code)}
             />
           ))}
         </motion.div>

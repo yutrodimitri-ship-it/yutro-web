@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { LayoutDashboard, Sparkles, Clock, Users, LogOut, Zap, Menu, X, ExternalLink, Library, Home, ClipboardList } from "lucide-react";
+import { usePathname, useParams } from "next/navigation";
+import { Users, LogOut, Menu, X, ExternalLink, Library, ClipboardList } from "lucide-react";
 import { logoutAction } from "@/app/[locale]/studio/actions/auth";
 
 interface StudioSidebarProps {
@@ -11,32 +11,53 @@ interface StudioSidebarProps {
   role: string;
   userName?: string;
   credits?: number;
-  /** Si true, muestra link "Catalogo Talent" — clientes con proyecto activo. */
   showTalentLink?: boolean;
 }
 
 interface SidebarLink {
   href: string;
   label: string;
-  icon: typeof LayoutDashboard;
-  /** Marca visual de submarca Talent (icono + active state en dorado). */
+  icon: typeof Users;
   variant?: "default" | "talent";
+  exactPrefix?: string;
 }
 
-export function StudioSidebar({ locale, role, userName, credits, showTalentLink }: StudioSidebarProps) {
+interface TalentProjectCtx {
+  projectName: string;
+  activeUserName: string;
+  activeUserEmail: string;
+  otherUsers: { email: string; name: string }[];
+}
+
+export function StudioSidebar({ locale, role, userName, showTalentLink }: StudioSidebarProps) {
   const pathname = usePathname();
+  const params = useParams();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [talentCtx, setTalentCtx] = useState<TalentProjectCtx | null>(null);
+
   const base = `/${locale}/studio`;
 
-  const isTalentLabel = locale === "en" ? "Talent Library" : "Catálogo Talent";
-  const dashboardLabel = locale === "en" ? "My Avatars" : "Mis Avatares";
+  // Detect if we're inside a talent project route (not admin)
+  const projectSlug =
+    typeof params.projectSlug === "string" &&
+    !pathname.includes("/talent/admin")
+      ? params.projectSlug
+      : null;
 
-  const links: SidebarLink[] = [
-    { href: `${base}`, label: locale === "en" ? "Hub" : "Hub", icon: Home },
-    { href: `${base}/dashboard`, label: dashboardLabel, icon: LayoutDashboard },
-    { href: `${base}/generate`, label: locale === "en" ? "Create Avatar" : "Crear Avatar", icon: Sparkles },
-    { href: `${base}/history`, label: locale === "en" ? "History" : "Historial", icon: Clock },
-  ];
+  useEffect(() => {
+    if (!projectSlug) {
+      setTalentCtx(null);
+      return;
+    }
+    fetch(`/api/studio/talent/${projectSlug}/context`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => setTalentCtx(data ?? null))
+      .catch(() => setTalentCtx(null));
+  }, [projectSlug]);
+
+  const isTalentLabel = locale === "en" ? "Talent Library" : "Catálogo Talent";
+
+  const links: SidebarLink[] = [];
 
   if (showTalentLink) {
     links.push({
@@ -44,6 +65,7 @@ export function StudioSidebar({ locale, role, userName, credits, showTalentLink 
       label: isTalentLabel,
       icon: Library,
       variant: "talent",
+      exactPrefix: `${base}/talent/admin`,
     });
   }
 
@@ -57,24 +79,85 @@ export function StudioSidebar({ locale, role, userName, credits, showTalentLink 
     });
   }
 
+  const logoHref =
+    role === "admin"
+      ? `${base}/talent/admin`
+      : showTalentLink
+      ? `${base}/talent`
+      : base;
+
   const sidebarContent = (
     <>
       {/* Logo */}
       <div className="flex h-20 items-center gap-1.5 border-b border-[#1e1e1e] px-6">
-        <Link href={`/${locale}/studio`} className="text-[28px] font-extrabold tracking-tight text-white">
+        <Link href={logoHref} className="text-[28px] font-extrabold tracking-tight text-white">
           YUTRO<span className="text-primary">.</span>
         </Link>
         <span className="text-[20px] font-medium text-white/30">studio</span>
       </div>
 
+      {/* ── Talent project context block ───────────────────── */}
+      {talentCtx && (
+        <div className="border-b border-[#1e1e1e] px-5 py-5">
+          {/* Project name */}
+          <p className="mb-1.5 text-[9px] font-medium uppercase tracking-[0.22em] text-white/25">
+            Proyecto
+          </p>
+          <p className="mb-5 text-[13px] font-bold leading-tight tracking-tight text-white/90">
+            {talentCtx.projectName}
+          </p>
+
+          {/* Active user */}
+          <p className="mb-2 text-[9px] font-medium uppercase tracking-[0.22em] text-white/25">
+            Sesión activa
+          </p>
+          <div className="mb-1 flex items-center gap-2">
+            <span
+              className="block h-1.5 w-1.5 shrink-0 rounded-full"
+              style={{ background: "var(--accent)" }}
+            />
+            <span className="text-[13px] font-semibold text-white/80">
+              {talentCtx.activeUserName}
+            </span>
+          </div>
+          <p className="mb-4 truncate pl-3.5 text-[10px] text-white/25">
+            {talentCtx.activeUserEmail}
+          </p>
+
+          {/* Other users */}
+          {talentCtx.otherUsers.length > 0 && (
+            <>
+              <p className="mb-2 text-[9px] font-medium uppercase tracking-[0.22em] text-white/25">
+                También con acceso
+              </p>
+              <div className="flex flex-col gap-1.5">
+                {talentCtx.otherUsers.map((u) => (
+                  <div key={u.email} className="flex items-center gap-2">
+                    <span
+                      className="block h-1.5 w-1.5 shrink-0 rounded-full border border-white/20"
+                      style={{ background: "transparent" }}
+                    />
+                    <span className="text-[12px] text-white/35">{u.name}</span>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+        </div>
+      )}
+
       {/* Navigation */}
       <nav className="flex-1 space-y-0.5 px-3 py-4">
         {links.map((link) => {
-          // El hub solo se considera active con match exacto (no para sub-rutas)
-          const isActive =
-            link.href === base
-              ? pathname === base || pathname === `${base}/`
-              : pathname.startsWith(link.href);
+          let isActive: boolean;
+          if (link.exactPrefix) {
+            isActive =
+              pathname.startsWith(link.href) &&
+              !pathname.startsWith(link.exactPrefix);
+          } else {
+            isActive = pathname.startsWith(link.href);
+          }
+
           const isTalent = link.variant === "talent";
           const activeIconClass = isActive
             ? isTalent
@@ -99,19 +182,6 @@ export function StudioSidebar({ locale, role, userName, credits, showTalentLink 
         })}
       </nav>
 
-      {/* Credits */}
-      {credits !== undefined && (
-        <div className="mx-3 mb-3 rounded-lg bg-white/[0.04] px-4 py-3">
-          <div className="flex items-center gap-2.5">
-            <Zap className="h-4 w-4 text-primary" />
-            <div>
-              <p className="text-[11px] font-medium uppercase tracking-wider text-white/50">Créditos</p>
-              <p className="text-sm font-bold text-white">{credits}</p>
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* Back to site */}
       <div className="px-3 mb-1">
         <a
@@ -134,7 +204,12 @@ export function StudioSidebar({ locale, role, userName, credits, showTalentLink 
           </div>
           <form action={logoutAction}>
             <input type="hidden" name="locale" value={locale} />
-            <button type="submit" className="rounded-md p-1.5 text-white/20 transition-colors hover:text-white/50" title="Cerrar sesión" aria-label="Cerrar sesión">
+            <button
+              type="submit"
+              className="rounded-md p-1.5 text-white/20 transition-colors hover:text-white/50"
+              title="Cerrar sesión"
+              aria-label="Cerrar sesión"
+            >
               <LogOut className="h-3.5 w-3.5" />
             </button>
           </form>
@@ -145,7 +220,7 @@ export function StudioSidebar({ locale, role, userName, credits, showTalentLink 
 
   return (
     <>
-      {/* Mobile hamburger button */}
+      {/* Mobile hamburger */}
       <button
         onClick={() => setMobileOpen(true)}
         className="fixed left-4 top-4 z-40 flex h-10 w-10 items-center justify-center rounded-lg bg-[#1a1a1a] text-white/60 md:hidden"
@@ -162,13 +237,12 @@ export function StudioSidebar({ locale, role, userName, credits, showTalentLink 
         />
       )}
 
-      {/* Sidebar — mobile: slide-in overlay, desktop: fixed */}
+      {/* Sidebar */}
       <aside
         className={`fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-[#1e1e1e] bg-[#1a1a1a] transition-transform duration-300 md:static md:translate-x-0 ${
           mobileOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        {/* Mobile close button */}
         <button
           onClick={() => setMobileOpen(false)}
           className="absolute right-3 top-6 rounded-md p-1 text-white/30 hover:text-white/60 md:hidden"

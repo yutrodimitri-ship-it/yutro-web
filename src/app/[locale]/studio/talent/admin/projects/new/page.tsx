@@ -22,6 +22,8 @@ const EMPTY_INITIAL = {
   exclusivityHelpEn: "",
   maxTalents: 10,
   maxExclusive: 3,
+  industrySector: "",
+  rightsDurationMonths: 12,
   startDate: today,
   blockedTalentCodes: [] as string[],
   status: "active" as const,

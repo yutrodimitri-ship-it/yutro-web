@@ -166,6 +166,8 @@ export const talentProjects = pgTable("talent_projects", {
   exclusivityHelpEn: text("exclusivity_help_en").notNull(),
   maxTalents: integer("max_talents").notNull(),
   maxExclusive: integer("max_exclusive").notNull(),
+  industrySector: text("industry_sector").notNull().default(""),
+  rightsDurationMonths: integer("rights_duration_months").notNull().default(12),
   startDate: date("start_date").notNull(),
   blockedTalentCodes: jsonb("blocked_talent_codes")
     .$type<string[]>()

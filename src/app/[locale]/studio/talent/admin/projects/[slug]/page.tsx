@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { and, desc, eq } from "drizzle-orm";
 import { db } from "@/db";
 import {
+  castingSubmissions,
   ndaAcceptances,
   talentProjectAccess,
   talentProjects,
@@ -11,6 +12,7 @@ import { AdminPageHeader } from "@/components/studio/talent/admin/AdminPageHeade
 import { ProjectForm } from "@/components/studio/talent/admin/ProjectForm";
 import { ProjectAccessManager } from "@/components/studio/talent/admin/ProjectAccessManager";
 import { ProjectNdaManager } from "@/components/studio/talent/admin/ProjectNdaManager";
+import { ProjectSubmissionsPanel } from "@/components/studio/talent/admin/ProjectSubmissionsPanel";
 import {
   EXCLUSIVITY_MODES,
   PROJECT_STATUSES,
@@ -33,7 +35,7 @@ export default async function AdminProjectEditPage({
     .limit(1);
   if (!project) notFound();
 
-  const [accessRows, ndaRows, talentRows] = await Promise.all([
+  const [accessRows, ndaRows, talentRows, submissionRows] = await Promise.all([
     db
       .select()
       .from(talentProjectAccess)
@@ -48,6 +50,11 @@ export default async function AdminProjectEditPage({
       .select({ code: talents.code, name: talents.nameEs })
       .from(talents)
       .where(eq(talents.isActive, true)),
+    db
+      .select()
+      .from(castingSubmissions)
+      .where(eq(castingSubmissions.projectSlug, slug))
+      .orderBy(desc(castingSubmissions.submittedAt)),
   ]);
 
   const initial = {
@@ -66,6 +73,8 @@ export default async function AdminProjectEditPage({
     exclusivityHelpEn: project.exclusivityHelpEn,
     maxTalents: project.maxTalents,
     maxExclusive: project.maxExclusive,
+    industrySector: project.industrySector,
+    rightsDurationMonths: project.rightsDurationMonths,
     startDate: project.startDate,
     blockedTalentCodes: project.blockedTalentCodes,
     status: project.status as (typeof PROJECT_STATUSES)[number],
@@ -112,6 +121,26 @@ export default async function AdminProjectEditPage({
           revokedAt: n.revokedAt?.toISOString() ?? null,
         }))}
       />
+
+      <hr className="border-white/[0.08]" />
+
+      <section className="space-y-4">
+        <h2 className="font-mono text-[11px] uppercase tracking-[0.1em] text-white/40">
+          Envíos de casting ({submissionRows.length})
+        </h2>
+        <ProjectSubmissionsPanel
+          projectSlug={slug}
+          submissions={submissionRows.map((s) => ({
+            id: s.id,
+            userEmail: s.userEmail,
+            shortlist: s.shortlist,
+            exclusives: s.exclusives,
+            status: s.status,
+            submittedAt: s.submittedAt.toISOString(),
+            adminNotes: s.adminNotes ?? null,
+          }))}
+        />
+      </section>
     </div>
   );
 }

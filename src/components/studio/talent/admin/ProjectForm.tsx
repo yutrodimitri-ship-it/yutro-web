@@ -24,6 +24,8 @@ export interface ProjectFormValues {
   exclusivityHelpEn: string;
   maxTalents: number;
   maxExclusive: number;
+  industrySector: string;
+  rightsDurationMonths: number;
   startDate: string; // yyyy-mm-dd
   blockedTalentCodes: string[];
   status: (typeof PROJECT_STATUSES)[number];
@@ -200,6 +202,25 @@ export function ProjectForm({
               onChange={(e) => update("rightsDurationEn", e.target.value)}
               className={inputClass}
               placeholder="8 months"
+              required
+            />
+          </Field>
+          <Field label="Sector de industria">
+            <input
+              value={values.industrySector}
+              onChange={(e) => update("industrySector", e.target.value)}
+              className={inputClass}
+              placeholder="telefonia, belleza, alimentos…"
+            />
+          </Field>
+          <Field label="Duración campaña (meses)">
+            <input
+              type="number"
+              min={1}
+              max={120}
+              value={values.rightsDurationMonths}
+              onChange={(e) => update("rightsDurationMonths", Number(e.target.value))}
+              className={inputClass}
               required
             />
           </Field>

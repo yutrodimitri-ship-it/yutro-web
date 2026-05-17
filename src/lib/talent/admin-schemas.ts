@@ -82,6 +82,8 @@ export const projectInputSchema = z.object({
   exclusivityHelpEn: z.string().min(1).max(500),
   maxTalents: z.number().int().min(1).max(50),
   maxExclusive: z.number().int().min(0).max(50),
+  industrySector: z.string().max(100).default(""),
+  rightsDurationMonths: z.number().int().min(1).max(120).default(12),
   startDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "ISO date yyyy-mm-dd"),
   blockedTalentCodes: z.array(z.string().max(16)).default([]),
   status: z.enum(PROJECT_STATUSES),

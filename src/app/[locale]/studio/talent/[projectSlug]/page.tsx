@@ -1,75 +1,335 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
   getAvailableTalents,
   getProjectBySlug,
 } from "@/lib/talent/data-source";
-import { ProjectHeader } from "@/components/studio/talent/ProjectHeader";
-import { ProjectStats } from "@/components/studio/talent/ProjectStats";
-import { TalentGrid } from "@/components/studio/talent/TalentGrid";
+import { LandingCovers } from "@/components/studio/talent/LandingCovers";
 import type { Locale } from "@/types/talent";
 
-/**
- * Pantalla 2 — Catalogo del proyecto.
- *
- * Server component. CastingProvider + ToastProvider viven en el layout padre
- * `[projectSlug]/layout.tsx` para preservar el estado entre catalogo, detalle
- * y casting durante la navegacion.
- */
-export default async function ProjectCatalogPage({
+export default async function ProjectLandingPage({
   params,
 }: {
   params: Promise<{ locale: string; projectSlug: string }>;
 }) {
   const { locale: rawLocale, projectSlug } = await params;
   const locale: Locale = rawLocale === "en" ? "en" : "es";
+
   const project = await getProjectBySlug(projectSlug);
   if (!project) notFound();
 
   const talents = await getAvailableTalents(project);
-  const clientName = clientToWatermark(project.client);
-  const watermarkDate = formatWatermarkDate(project.startDate);
-  const startDateLabel = formatStartDate(project.startDate, locale);
+  const featured = talents.slice(0, 6);
+  const total = talents.length;
+
+  const catalogHref = `/${rawLocale}/studio/talent/${projectSlug}/catalog`;
+  const castingHref = `/${rawLocale}/studio/talent/${projectSlug}/casting`;
+
+  const bands = [
+    {
+      num: "N° 01",
+      title: "Navega como un",
+      em: "libro.",
+      desc: "Un grid de talentos indexados por arquetipo y tipo de licencia. Alterna entre vista editorial y vista de datos.",
+    },
+    {
+      num: "N° 02",
+      title: "Lee un perfil",
+      em: "completo.",
+      desc: "Ficha técnica, fotos de firma, capacidad de movimiento. Todo lo que un productor necesita en una sola página.",
+    },
+    {
+      num: "N° 03",
+      title: "Selecciona con",
+      em: "cantidad.",
+      desc: "Arma tu shortlist y asigna cantidades por uso. Envía la selección directamente a tu productor.",
+    },
+    {
+      num: "N° 04",
+      title: "Derechos,",
+      em: "resueltos.",
+      desc: "Territorios despejados, ventanas de uso claras. Sin misterios de derechos al momento de entrega.",
+    },
+  ];
 
   return (
-    <div className="space-y-12">
-      <ProjectHeader
-        project={project}
-        locale={locale}
-        startDateLabel={startDateLabel}
-      />
-      <ProjectStats
-        available={talents.length}
-        locale={locale}
-        projectSlug={project.slug}
-      />
-      <TalentGrid
-        talents={talents}
-        locale={locale}
-        clientName={clientName}
-        watermarkDate={watermarkDate}
-        projectSlug={project.slug}
-      />
+    <div className="px-6 pb-20 sm:px-10" style={{ color: "var(--talent-ink)" }}>
+
+      {/* ── Eyebrow bar ─────────────────────────────────────── */}
+      <div
+        className="flex flex-wrap items-baseline gap-x-8 gap-y-2 border-t py-3"
+        style={{ borderColor: "var(--talent-ink)" }}
+      >
+        {[
+          { label: "Volumen", value: "01 · 2026" },
+          { label: "Para", value: project.client },
+          { label: "Catálogo", value: `${total} talentos digitales` },
+        ].map((col) => (
+          <div
+            key={col.label}
+            className="font-mono text-[11px] uppercase tracking-[0.18em]"
+          >
+            <span className="mb-1 block" style={{ color: "var(--talent-ink-mute)" }}>
+              {col.label}
+            </span>
+            {col.value}
+          </div>
+        ))}
+      </div>
+
+      {/* ── Hero ────────────────────────────────────────────── */}
+      <section className="grid min-h-[calc(100vh-200px)] items-end gap-8 py-14 lg:grid-cols-[1.2fr_0.9fr]">
+        {/* Left — headline */}
+        <h1
+          style={{
+            fontFamily: "var(--font-heading)",
+            fontWeight: 800,
+            fontSize: "clamp(56px, 9vw, 158px)",
+            lineHeight: 0.88,
+            letterSpacing: "-0.035em",
+            color: "var(--talent-ink)",
+            margin: 0,
+          }}
+        >
+          Un roster de<br />
+          talentos<br />
+          digitales,<br />
+          seleccionados<br />
+          como una{" "}
+          <em style={{ fontStyle: "italic", color: "var(--accent)", fontWeight: "inherit" }}>
+            revista.
+          </em>
+        </h1>
+
+        {/* Right — description + CTAs */}
+        <div className="flex flex-col gap-5 pb-2">
+          <p
+            className="font-mono text-[11px] uppercase tracking-[0.18em]"
+            style={{ color: "var(--talent-ink-mute)" }}
+          >
+            Yutro Estudio — Casting House
+          </p>
+          <p
+            className="leading-relaxed"
+            style={{
+              fontSize: "clamp(14px, 1.4vw, 17px)",
+              color: "var(--talent-ink-dim)",
+              maxWidth: "46ch",
+            }}
+          >
+            Creamos talentos digitales listos para campaña, contrato y
+            continuidad. Navega el roster, selecciona con cantidad y briefia
+            a tu productor en una sola vista.
+          </p>
+
+          <div className="flex flex-wrap gap-3 pt-1">
+            <Link
+              href={catalogHref}
+              className="inline-flex items-center gap-2 px-5 py-3 font-mono text-[11px] uppercase tracking-[0.14em] transition-colors"
+              style={{
+                background: "var(--talent-ink)",
+                color: "var(--talent-bg)",
+                border: "1px solid var(--talent-ink)",
+              }}
+            >
+              Abrir el Catálogo <span style={{ opacity: 0.6 }}>↗</span>
+            </Link>
+            <Link
+              href={castingHref}
+              className="inline-flex items-center gap-2 px-5 py-3 font-mono text-[11px] uppercase tracking-[0.14em]"
+              style={{
+                color: "var(--talent-ink)",
+                border: "1px solid var(--talent-line)",
+              }}
+            >
+              Ver selección
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Marquee ─────────────────────────────────────────── */}
+      <div
+        className="overflow-hidden border-y py-4"
+        style={{ borderColor: "var(--talent-ink)" }}
+      >
+        <div
+          className="flex gap-10 whitespace-nowrap"
+          style={{
+            fontFamily: "var(--font-heading)",
+            fontWeight: 800,
+            fontSize: "clamp(28px, 4vw, 52px)",
+            letterSpacing: "-0.025em",
+            lineHeight: 1,
+            color: "var(--talent-ink)",
+          }}
+        >
+          {["Editorial", "·", "Couture", "·", "Street", "·", "Heritage", "·", "Athleisure", "·", "Cyber", "·", "Brutalist", "·"].map(
+            (word, i) => (
+              <span key={i} className="shrink-0">{word}</span>
+            )
+          )}
+          <span className="shrink-0">
+            <em style={{ fontStyle: "italic", color: "var(--accent)" }}>Romántico</em>
+          </span>
+        </div>
+      </div>
+
+      {/* ── 4 Bands ─────────────────────────────────────────── */}
+      <div
+        className="grid grid-cols-1 border-b sm:grid-cols-2 lg:grid-cols-4"
+        style={{ borderColor: "var(--talent-line)" }}
+      >
+        {bands.map((band, i) => (
+          <div
+            key={i}
+            className="px-5 pb-8 pt-6"
+            style={{
+              borderLeft: i === 0 ? "none" : "1px solid var(--talent-line)",
+            }}
+          >
+            <p
+              className="font-mono text-[10.5px] uppercase tracking-[0.18em]"
+              style={{ color: "var(--talent-ink-mute)" }}
+            >
+              {band.num}
+            </p>
+            <h3
+              className="mb-3 mt-1.5"
+              style={{
+                fontFamily: "var(--font-heading)",
+                fontWeight: 800,
+                fontSize: "clamp(18px, 2vw, 26px)",
+                lineHeight: 1.05,
+                letterSpacing: "-0.02em",
+                color: "var(--talent-ink)",
+              }}
+            >
+              {band.title}{" "}
+              <em style={{ fontStyle: "italic", color: "var(--accent)", fontWeight: "inherit" }}>
+                {band.em}
+              </em>
+            </h3>
+            <p
+              style={{
+                fontSize: "clamp(13px, 1.1vw, 14.5px)",
+                color: "var(--talent-ink-dim)",
+                margin: 0,
+                maxWidth: "32ch",
+                lineHeight: 1.5,
+              }}
+            >
+              {band.desc}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      {/* ── Featured covers ─────────────────────────────────── */}
+      <section className="pt-10">
+        <div
+          className="mb-8 flex items-baseline justify-between border-b pb-4"
+          style={{ borderColor: "var(--talent-ink)" }}
+        >
+          <h2
+            style={{
+              fontFamily: "var(--font-heading)",
+              fontWeight: 800,
+              fontSize: "clamp(24px, 3vw, 36px)",
+              letterSpacing: "-0.025em",
+              lineHeight: 1,
+              margin: 0,
+              color: "var(--talent-ink)",
+            }}
+          >
+            Los covers de{" "}
+            <em style={{ fontStyle: "italic", color: "var(--accent)", fontWeight: "inherit" }}>
+              esta edición.
+            </em>
+          </h2>
+          <span
+            className="hidden font-mono text-[11px] uppercase tracking-[0.14em] sm:block"
+            style={{ color: "var(--talent-ink-mute)" }}
+          >
+            Selección del Estudio · {featured.length} de {total}
+          </span>
+        </div>
+
+        <LandingCovers
+          talents={featured}
+          locale={locale}
+          projectSlug={projectSlug}
+          catalogHref={catalogHref}
+        />
+      </section>
+
+      {/* ── Bottom CTA ──────────────────────────────────────── */}
+      <section
+        className="mt-10 grid items-end gap-6 border-t pb-2 pt-8 sm:grid-cols-[1fr_auto]"
+        style={{ borderColor: "var(--talent-ink)" }}
+      >
+        <h2
+          style={{
+            fontFamily: "var(--font-heading)",
+            fontWeight: 800,
+            fontSize: "clamp(28px, 4vw, 56px)",
+            letterSpacing: "-0.03em",
+            lineHeight: 1,
+            margin: 0,
+            maxWidth: "18ch",
+            color: "var(--talent-ink)",
+          }}
+        >
+          Abre el catálogo y comienza el{" "}
+          <em style={{ fontStyle: "italic", color: "var(--accent)", fontWeight: "inherit" }}>
+            casting.
+          </em>
+        </h2>
+
+        <div className="flex flex-wrap gap-3">
+          <Link
+            href={catalogHref}
+            className="inline-flex items-center gap-2 px-5 py-3 font-mono text-[11px] uppercase tracking-[0.14em] transition-colors"
+            style={{
+              background: "var(--talent-ink)",
+              color: "var(--talent-bg)",
+              border: "1px solid var(--talent-ink)",
+            }}
+          >
+            Entrar al Catálogo
+          </Link>
+          <Link
+            href={castingHref}
+            className="inline-flex items-center gap-2 px-5 py-3 font-mono text-[11px] uppercase tracking-[0.14em]"
+            style={{
+              color: "var(--talent-ink)",
+              border: "1px solid var(--talent-line)",
+            }}
+          >
+            Ver casting cart
+          </Link>
+        </div>
+      </section>
+
+      {/* ── Footer ──────────────────────────────────────────── */}
+      <div
+        className="mt-10 flex items-center justify-between border-t pt-5 pb-2"
+        style={{ borderColor: "var(--talent-line)" }}
+      >
+        <span
+          className="font-mono text-[10px] uppercase tracking-[0.18em]"
+          style={{ color: "var(--talent-ink-mute)" }}
+        >
+          Yutro Estudio — Casting House
+        </span>
+        <a
+          href="/"
+          className="font-mono text-[10px] uppercase tracking-[0.18em] transition-opacity hover:opacity-60"
+          style={{ color: "var(--talent-ink-mute)" }}
+        >
+          yutro.cl ↗
+        </a>
+      </div>
     </div>
   );
-}
-
-/** "BBDO Chile" → "BBDO" para el watermark. */
-function clientToWatermark(client: string): string {
-  return client.split(" ")[0]?.toUpperCase() || client.toUpperCase();
-}
-
-/** ISO yyyy-mm-dd → "30·04·26" (compacto editorial). */
-function formatWatermarkDate(iso: string): string {
-  const [y, m, d] = iso.split("-");
-  return `${d}·${m}·${y.slice(2)}`;
-}
-
-/** ISO yyyy-mm-dd → "30/04/2026" (es) o "04/30/2026" (en). */
-function formatStartDate(iso: string, locale: Locale): string {
-  const date = new Date(`${iso}T00:00:00`);
-  return new Intl.DateTimeFormat(locale === "es" ? "es-CL" : "en-US", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  }).format(date);
 }

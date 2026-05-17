@@ -8,9 +8,9 @@
  * El feature flag se evalua por-llamada (no en module-load) para soportar
  * tests que cambian el env entre runs.
  */
-import { and, eq, isNull } from "drizzle-orm";
+import { and, eq, isNull, ne } from "drizzle-orm";
 import { db } from "@/db";
-import { talents, talentProjects, talentProjectAccess } from "@/db/schema";
+import { castingSubmissions, talents, talentProjects, talentProjectAccess, users } from "@/db/schema";
 import {
   TALENTS as MOCK_TALENTS,
   PROJECTS as MOCK_PROJECTS,
@@ -110,6 +110,75 @@ export async function getAvailableTalents(
     .map(rowToTalent);
 }
 
+export async function getUsersForProject(
+  projectSlug: string
+): Promise<{ email: string; name: string }[]> {
+  if (!isDbEnabled()) return [];
+  const rows = await db
+    .select({
+      email: talentProjectAccess.userEmail,
+      name: users.name,
+    })
+    .from(talentProjectAccess)
+    .leftJoin(users, eq(users.email, talentProjectAccess.userEmail))
+    .where(
+      and(
+        eq(talentProjectAccess.projectSlug, projectSlug),
+        isNull(talentProjectAccess.revokedAt)
+      )
+    );
+  return rows.map((r) => ({ email: r.email, name: r.name ?? r.email }));
+}
+
+export async function getBlockedTalentsForProject(
+  project: ProjectConfig
+): Promise<string[]> {
+  if (!isDbEnabled()) return [];
+
+  const rows = await db
+    .select({
+      exclusives: castingSubmissions.exclusives,
+      projectStartDate: talentProjects.startDate,
+      rightsDurationMonths: talentProjects.rightsDurationMonths,
+      exclusivityMode: talentProjects.exclusivityMode,
+      industrySector: talentProjects.industrySector,
+    })
+    .from(castingSubmissions)
+    .innerJoin(talentProjects, eq(talentProjects.slug, castingSubmissions.projectSlug))
+    .where(
+      and(
+        eq(castingSubmissions.status, "confirmed"),
+        ne(castingSubmissions.projectSlug, project.slug),
+        ne(talentProjects.exclusivityMode, "none")
+      )
+    );
+
+  const projectStart = new Date(`${project.startDate}T00:00:00`);
+  const projectEnd = addMonths(projectStart, project.rightsDurationMonths);
+
+  const blocked = new Set<string>();
+  for (const row of rows) {
+    const approvedStart = new Date(`${row.projectStartDate}T00:00:00`);
+    const approvedEnd = addMonths(approvedStart, row.rightsDurationMonths);
+
+    if (approvedStart >= projectEnd || approvedEnd <= projectStart) continue;
+
+    if (row.exclusivityMode === "total") {
+      for (const code of row.exclusives) blocked.add(code);
+    } else if (row.exclusivityMode === "category" && row.industrySector === project.industrySector && project.industrySector !== "") {
+      for (const code of row.exclusives) blocked.add(code);
+    }
+  }
+
+  return [...blocked];
+}
+
+function addMonths(date: Date, months: number): Date {
+  const d = new Date(date);
+  d.setMonth(d.getMonth() + months);
+  return d;
+}
+
 export async function getTalentByCode(
   code: string
 ): Promise<Talent | undefined> {
@@ -168,6 +237,8 @@ function rowToProject(row: ProjectRow): ProjectConfig {
     exclusivityHelp: { es: row.exclusivityHelpEs, en: row.exclusivityHelpEn },
     maxTalents: row.maxTalents,
     maxExclusive: row.maxExclusive,
+    industrySector: row.industrySector,
+    rightsDurationMonths: row.rightsDurationMonths,
     startDate: row.startDate,
     blockedTalentCodes: row.blockedTalentCodes,
     status: row.status as ProjectStatus,

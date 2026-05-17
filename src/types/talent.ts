@@ -67,6 +67,10 @@ export interface ProjectConfig {
   exclusivityHelp: LocaleString;
   maxTalents: number;
   maxExclusive: number;
+  /** Sector de industria del cliente (ej: "telefonia", "belleza"). */
+  industrySector: string;
+  /** Duración en meses para calcular ventana de exclusividad. */
+  rightsDurationMonths: number;
   /** ISO date (yyyy-mm-dd). */
   startDate: string;
   /** Talent codes excluidos para este proyecto (ya en otra campana, etc.). */

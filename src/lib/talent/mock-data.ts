@@ -670,6 +670,8 @@ export const PROJECT_SAMSUNG: ProjectConfig = {
   },
   maxTalents: 10,
   maxExclusive: 3,
+  industrySector: "telefonia",
+  rightsDurationMonths: 12,
   startDate: "2026-04-30",
   // 8 codes bloqueados — ya estan en otras campanas o reservados
   blockedTalentCodes: [
