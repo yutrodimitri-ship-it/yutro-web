@@ -52,25 +52,17 @@ for (const t of TALENTS) {
 // Project
 const p = PROJECT_SAMSUNG;
 lines.push(
-  `INSERT INTO talent_projects (slug, name, client, contact_email, contact_name, market, rights_duration_es, rights_duration_en, exclusivity_mode, exclusivity_category_es, exclusivity_category_en, exclusivity_help_es, exclusivity_help_en, max_talents, max_exclusive, start_date, blocked_talent_codes, status) VALUES (` +
+  `INSERT INTO talent_projects (slug, name, client, market, category_es, max_talents, max_exclusive, rights_duration_months, start_date, status) VALUES (` +
     [
       quote(p.slug),
       quote(p.name),
       quote(p.client),
-      quote(p.contactEmail),
-      quote(p.contactName),
       quote(p.market),
-      quote(p.rightsDuration.es),
-      quote(p.rightsDuration.en),
-      quote(p.exclusivityMode),
-      quote(p.exclusivityCategory?.es ?? null),
-      quote(p.exclusivityCategory?.en ?? null),
-      quote(p.exclusivityHelp.es),
-      quote(p.exclusivityHelp.en),
+      quote(p.categoryEs),
       String(p.maxTalents),
       String(p.maxExclusive),
+      String(p.rightsDurationMonths),
       quote(p.startDate),
-      jsonbArr(p.blockedTalentCodes),
       quote(p.status),
     ].join(", ") +
     `) ON CONFLICT (slug) DO NOTHING;`
