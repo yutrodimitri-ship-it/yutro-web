@@ -37,8 +37,9 @@ yarn-error.log*
 # secrets
 /secrets/
 
-# drizzle migrations (generated)
-/drizzle/
+# drizzle migrations: track SQL + journal/snapshots so they apply to all envs
+# (the previous /drizzle/ blanket-ignore contradicted the already-tracked
+#  0000-0003 migrations and left new ones invisible to git status)
 
 # vercel
 .vercel
