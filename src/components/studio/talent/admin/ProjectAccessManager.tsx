@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Loader2, Plus, X } from "lucide-react";
+import { ConfirmDialog } from "@/components/studio/ConfirmDialog";
 
 interface AccessRow {
   id: string;
@@ -22,6 +23,7 @@ export function ProjectAccessManager({
   const [newEmail, setNewEmail] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const [pendingRevoke, setPendingRevoke] = useState<string | null>(null);
 
   async function handleGrant(e: React.FormEvent) {
     e.preventDefault();
@@ -42,8 +44,8 @@ export function ProjectAccessManager({
     startTransition(() => router.refresh());
   }
 
-  async function handleRevoke(email: string) {
-    if (!confirm(`¿Revocar acceso de ${email}?`)) return;
+  async function executeRevoke(email: string) {
+    setPendingRevoke(null);
     const res = await fetch(`/api/studio/talent/admin/projects/${slug}/access`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
@@ -111,7 +113,7 @@ export function ProjectAccessManager({
               </span>
               <button
                 type="button"
-                onClick={() => handleRevoke(a.email)}
+                onClick={() => setPendingRevoke(a.email)}
                 className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.1em] text-red-300 hover:text-red-200"
               >
                 <X className="h-3 w-3" />
@@ -142,6 +144,14 @@ export function ProjectAccessManager({
           </ul>
         </details>
       )}
+      <ConfirmDialog
+        open={!!pendingRevoke}
+        message={`¿Revocar acceso de ${pendingRevoke ?? ""}?`}
+        onConfirm={() => { if (pendingRevoke) void executeRevoke(pendingRevoke); }}
+        onCancel={() => setPendingRevoke(null)}
+        danger
+        confirmLabel="Revocar"
+      />
     </section>
   );
 }

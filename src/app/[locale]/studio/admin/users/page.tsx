@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Users, Plus, CreditCard, Power, PowerOff, Trash2, ShieldCheck, ShieldOff } from "lucide-react";
+import { Plus, Power, PowerOff, Trash2, ShieldCheck, ShieldOff, FolderCog } from "lucide-react";
 import { Toast } from "@/components/studio/Toast";
 import { ConfirmDialog } from "@/components/studio/ConfirmDialog";
 
@@ -10,32 +10,65 @@ interface User {
   email: string;
   name: string;
   role: string;
-  credits: number;
   isActive: boolean;
   canAccessIntel: boolean;
   createdAt: string;
+  projects: string[];
+}
+
+interface Project {
+  slug: string;
+  name: string;
+  client: string;
+  status: string;
 }
 
 export default function AdminUsersPage() {
   const [usersList, setUsersList] = useState<User[]>([]);
+  const [projectsList, setProjectsList] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [showCreate, setShowCreate] = useState(false);
-  const [creditsModal, setCreditsModal] = useState<User | null>(null);
+  const [createSelectedSlugs, setCreateSelectedSlugs] = useState<string[]>([]);
+  const [editAccessUser, setEditAccessUser] = useState<User | null>(null);
+  const [editSelectedSlugs, setEditSelectedSlugs] = useState<string[]>([]);
   const [createError, setCreateError] = useState("");
+  const [editError, setEditError] = useState("");
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
   const [deleteDialog, setDeleteDialog] = useState<User | null>(null);
 
-  const fetchUsers = useCallback(async () => {
-    const res = await fetch("/api/studio/admin/users");
-    if (res.ok) setUsersList(await res.json());
+  const fetchAll = useCallback(async () => {
+    const [usersRes, projectsRes] = await Promise.all([
+      fetch("/api/studio/admin/users"),
+      fetch("/api/studio/talent/admin/projects"),
+    ]);
+    if (usersRes.ok) setUsersList(await usersRes.json());
+    if (projectsRes.ok) setProjectsList(await projectsRes.json());
     setLoading(false);
   }, []);
 
-  useEffect(() => { fetchUsers(); }, [fetchUsers]);
+  useEffect(() => { fetchAll(); }, [fetchAll]);
+
+  const activeProjects = projectsList.filter((p) => p.status === "active");
+
+  function openCreate() {
+    setCreateSelectedSlugs([]);
+    setCreateError("");
+    setShowCreate(true);
+  }
+
+  function toggleCreateSlug(slug: string) {
+    setCreateSelectedSlugs((prev) =>
+      prev.includes(slug) ? prev.filter((s) => s !== slug) : [...prev, slug]
+    );
+  }
 
   async function handleCreate(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setCreateError("");
+    if (createSelectedSlugs.length === 0) {
+      setCreateError("Selecciona al menos un proyecto");
+      return;
+    }
     const form = new FormData(e.currentTarget);
     const res = await fetch("/api/studio/admin/users", {
       method: "POST",
@@ -44,35 +77,49 @@ export default function AdminUsersPage() {
         email: form.get("email"),
         password: form.get("password"),
         name: form.get("name"),
-        credits: Number(form.get("credits")) || 0,
+        projectSlugs: createSelectedSlugs,
       }),
     });
     if (res.ok) {
       setShowCreate(false);
-      setCreateError("");
-      setToast({ message: "Usuario creado", type: "success" });
-      fetchUsers();
+      setToast({ message: "Usuario creado y asignado", type: "success" });
+      fetchAll();
     } else {
       const data = await res.json().catch(() => ({}));
       setCreateError(data.error || "Error al crear usuario");
     }
   }
 
-  async function handleAddCredits(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    if (!creditsModal) return;
-    const form = new FormData(e.currentTarget);
-    const res = await fetch(`/api/studio/admin/users/${creditsModal.id}/credits`, {
-      method: "POST",
+  function openEditAccess(user: User) {
+    setEditAccessUser(user);
+    setEditSelectedSlugs(user.projects);
+    setEditError("");
+  }
+
+  function toggleEditSlug(slug: string) {
+    setEditSelectedSlugs((prev) =>
+      prev.includes(slug) ? prev.filter((s) => s !== slug) : [...prev, slug]
+    );
+  }
+
+  async function saveEditAccess() {
+    if (!editAccessUser) return;
+    if (editSelectedSlugs.length === 0) {
+      setEditError("El usuario debe tener al menos un proyecto");
+      return;
+    }
+    const res = await fetch(`/api/studio/admin/users/${editAccessUser.id}/access`, {
+      method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ amount: Number(form.get("amount")) }),
+      body: JSON.stringify({ projectSlugs: editSelectedSlugs }),
     });
     if (res.ok) {
-      setCreditsModal(null);
-      setToast({ message: "Créditos agregados", type: "success" });
-      fetchUsers();
+      setEditAccessUser(null);
+      setToast({ message: "Acceso actualizado", type: "success" });
+      fetchAll();
     } else {
-      setToast({ message: "Error al agregar créditos", type: "error" });
+      const data = await res.json().catch(() => ({}));
+      setEditError(data.error || "Error al actualizar acceso");
     }
   }
 
@@ -84,7 +131,7 @@ export default function AdminUsersPage() {
   async function executeDelete(user: User) {
     setDeleteDialog(null);
     const res = await fetch(`/api/studio/admin/users/${user.id}`, { method: "DELETE" });
-    if (res.ok) { setToast({ message: "Usuario eliminado", type: "success" }); fetchUsers(); }
+    if (res.ok) { setToast({ message: "Usuario eliminado", type: "success" }); fetchAll(); }
     else setToast({ message: "Error al eliminar", type: "error" });
   }
 
@@ -97,7 +144,7 @@ export default function AdminUsersPage() {
     if (res.ok) {
       setToast({ message: `Usuario ${user.isActive ? "desactivado" : "activado"}`, type: "success" });
     }
-    fetchUsers();
+    fetchAll();
   }
 
   async function toggleIntel(user: User) {
@@ -109,7 +156,7 @@ export default function AdminUsersPage() {
     if (res.ok) {
       setToast({ message: `Acceso Intel ${user.canAccessIntel ? "revocado" : "habilitado"}`, type: "success" });
     }
-    fetchUsers();
+    fetchAll();
   }
 
   if (loading) {
@@ -124,8 +171,10 @@ export default function AdminUsersPage() {
           <p className="text-sm text-white/40">{usersList.length} usuarios registrados</p>
         </div>
         <button
-          onClick={() => setShowCreate(true)}
-          className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+          onClick={openCreate}
+          disabled={activeProjects.length === 0}
+          className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+          title={activeProjects.length === 0 ? "Crea un proyecto activo primero" : undefined}
         >
           <Plus className="h-4 w-4" />
           Crear usuario
@@ -140,7 +189,7 @@ export default function AdminUsersPage() {
               <th className="px-4 py-3 text-left font-medium">Nombre</th>
               <th className="px-4 py-3 text-left font-medium">Email</th>
               <th className="px-4 py-3 text-left font-medium">Rol</th>
-              <th className="px-4 py-3 text-right font-medium">Creditos</th>
+              <th className="px-4 py-3 text-left font-medium">Proyectos</th>
               <th className="px-4 py-3 text-center font-medium">Estado</th>
               <th className="px-4 py-3 text-center font-medium">Intel</th>
               <th className="px-4 py-3 text-right font-medium">Acciones</th>
@@ -160,7 +209,21 @@ export default function AdminUsersPage() {
                     {user.role}
                   </span>
                 </td>
-                <td className="px-4 py-3 text-right font-mono">{user.credits}</td>
+                <td className="px-4 py-3">
+                  {user.role === "admin" ? (
+                    <span className="text-xs text-white/30">—</span>
+                  ) : user.projects.length === 0 ? (
+                    <span className="text-xs italic text-white/30">Sin acceso</span>
+                  ) : (
+                    <div className="flex flex-wrap gap-1">
+                      {user.projects.map((slug) => (
+                        <span key={slug} className="rounded bg-white/[0.06] px-1.5 py-0.5 font-mono text-[10px] text-white/60">
+                          {slug}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </td>
                 <td className="px-4 py-3 text-center">
                   <span className={`inline-block h-2 w-2 rounded-full ${user.isActive ? "bg-green-500" : "bg-red-500"}`} />
                 </td>
@@ -179,13 +242,15 @@ export default function AdminUsersPage() {
                 </td>
                 <td className="px-4 py-3 text-right">
                   <div className="flex items-center justify-end gap-1">
-                    <button
-                      onClick={() => setCreditsModal(user)}
-                      className="rounded-lg p-1.5 text-white/40 hover:bg-white/[0.04] hover:text-white"
-                      title="Agregar creditos"
-                    >
-                      <CreditCard className="h-4 w-4" />
-                    </button>
+                    {user.role !== "admin" && (
+                      <button
+                        onClick={() => openEditAccess(user)}
+                        className="rounded-lg p-1.5 text-white/40 hover:bg-white/[0.04] hover:text-white"
+                        title="Editar acceso a proyectos"
+                      >
+                        <FolderCog className="h-4 w-4" />
+                      </button>
+                    )}
                     <button
                       onClick={() => handleDelete(user)}
                       className="rounded-lg p-1.5 text-white/40 hover:bg-destructive/10 hover:text-destructive"
@@ -210,8 +275,8 @@ export default function AdminUsersPage() {
 
       {/* Create user modal */}
       {showCreate && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={() => setShowCreate(false)}>
-          <div className="w-full max-w-md rounded-xl bg-[#1a1a1a] p-6 shadow-lg" onClick={(e) => e.stopPropagation()}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={() => setShowCreate(false)}>
+          <div className="w-full max-w-lg rounded-xl bg-[#1a1a1a] p-6 shadow-lg" onClick={(e) => e.stopPropagation()}>
             <h2 className="mb-4 text-lg font-semibold">Crear usuario</h2>
             <form onSubmit={handleCreate} className="space-y-4">
               {createError && (
@@ -230,8 +295,24 @@ export default function AdminUsersPage() {
                 <input id="admin-password" name="password" type="password" required minLength={8} className="w-full rounded-lg border border-[#333] bg-[#141414] px-3 py-2 text-sm text-white outline-none focus:ring-2 focus:ring-primary/50" />
               </div>
               <div className="space-y-2">
-                <label htmlFor="admin-credits" className="text-sm font-medium">Creditos iniciales</label>
-                <input id="admin-credits" name="credits" type="number" defaultValue={10} min={0} className="w-full rounded-lg border border-[#333] bg-[#141414] px-3 py-2 text-sm text-white outline-none focus:ring-2 focus:ring-primary/50" />
+                <label className="text-sm font-medium">Proyectos asignados <span className="text-white/40">(al menos uno)</span></label>
+                <div className="max-h-56 space-y-1 overflow-y-auto rounded-lg border border-[#333] bg-[#0a0a0a] p-2">
+                  {activeProjects.map((p) => (
+                    <label key={p.slug} className="flex cursor-pointer items-center gap-2 rounded px-2 py-1.5 hover:bg-white/[0.04]">
+                      <input
+                        type="checkbox"
+                        checked={createSelectedSlugs.includes(p.slug)}
+                        onChange={() => toggleCreateSlug(p.slug)}
+                        className="h-4 w-4 accent-primary"
+                      />
+                      <span className="text-[13px] font-medium text-white/80">{p.name}</span>
+                      <span className="font-mono text-[10px] text-white/30">{p.client}</span>
+                    </label>
+                  ))}
+                </div>
+                <p className="font-mono text-[10px] text-white/30">
+                  {createSelectedSlugs.length} seleccionado{createSelectedSlugs.length === 1 ? "" : "s"}
+                </p>
               </div>
               <div className="flex justify-end gap-3">
                 <button type="button" onClick={() => setShowCreate(false)} className="rounded-lg px-4 py-2 text-sm text-white/40 hover:bg-white/[0.04]">
@@ -246,31 +327,46 @@ export default function AdminUsersPage() {
         </div>
       )}
 
-      {/* Add credits modal */}
-      {creditsModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={() => setCreditsModal(null)}>
-          <div className="w-full max-w-sm rounded-xl bg-[#1a1a1a] p-6 shadow-lg" onClick={(e) => e.stopPropagation()}>
-            <h2 className="mb-1 text-lg font-semibold">Agregar creditos</h2>
+      {/* Edit access modal */}
+      {editAccessUser && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={() => setEditAccessUser(null)}>
+          <div className="w-full max-w-lg rounded-xl bg-[#1a1a1a] p-6 shadow-lg" onClick={(e) => e.stopPropagation()}>
+            <h2 className="mb-1 text-lg font-semibold">Editar acceso a proyectos</h2>
             <p className="mb-4 text-sm text-white/40">
-              {creditsModal.name} — {creditsModal.credits} creditos actuales
+              {editAccessUser.name} — {editAccessUser.email}
             </p>
-            <form onSubmit={handleAddCredits} className="space-y-4">
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Cantidad</label>
-                <input name="amount" type="number" required min={1} defaultValue={10} className="w-full rounded-lg border border-[#333] bg-[#141414] px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/50" />
-              </div>
-              <div className="flex justify-end gap-3">
-                <button type="button" onClick={() => setCreditsModal(null)} className="rounded-lg px-4 py-2 text-sm text-white/40 hover:bg-white/[0.04]">
-                  Cancelar
-                </button>
-                <button type="submit" className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90">
-                  Agregar
-                </button>
-              </div>
-            </form>
+            {editError && (
+              <div className="mb-3 rounded-lg bg-destructive/10 px-4 py-3 text-sm text-destructive">{editError}</div>
+            )}
+            <div className="max-h-72 space-y-1 overflow-y-auto rounded-lg border border-[#333] bg-[#0a0a0a] p-2">
+              {activeProjects.map((p) => (
+                <label key={p.slug} className="flex cursor-pointer items-center gap-2 rounded px-2 py-1.5 hover:bg-white/[0.04]">
+                  <input
+                    type="checkbox"
+                    checked={editSelectedSlugs.includes(p.slug)}
+                    onChange={() => toggleEditSlug(p.slug)}
+                    className="h-4 w-4 accent-primary"
+                  />
+                  <span className="text-[13px] font-medium text-white/80">{p.name}</span>
+                  <span className="font-mono text-[10px] text-white/30">{p.client}</span>
+                </label>
+              ))}
+            </div>
+            <p className="mt-2 font-mono text-[10px] text-white/30">
+              {editSelectedSlugs.length} proyecto{editSelectedSlugs.length === 1 ? "" : "s"}. Los quitados quedan revocados (no se eliminan).
+            </p>
+            <div className="mt-4 flex justify-end gap-3">
+              <button onClick={() => setEditAccessUser(null)} className="rounded-lg px-4 py-2 text-sm text-white/40 hover:bg-white/[0.04]">
+                Cancelar
+              </button>
+              <button onClick={saveEditAccess} className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90">
+                Guardar
+              </button>
+            </div>
           </div>
         </div>
       )}
+
       {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
 
       <ConfirmDialog
