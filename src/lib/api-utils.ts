@@ -1,7 +1,4 @@
 import { NextResponse } from "next/server";
-import { db } from "@/db";
-import { generations } from "@/db/schema";
-import { eq, and } from "drizzle-orm";
 import { z } from "zod";
 import { timingSafeEqual } from "crypto";
 
@@ -10,16 +7,6 @@ export const uuidSchema = z.string().uuid();
 export function safeCompare(a: string, b: string): boolean {
   if (a.length !== b.length) return false;
   return timingSafeEqual(Buffer.from(a), Buffer.from(b));
-}
-
-export async function verifyGenerationOwnership(generationId: string, userId: string) {
-  if (!uuidSchema.safeParse(generationId).success) return null;
-  const [gen] = await db
-    .select({ id: generations.id })
-    .from(generations)
-    .where(and(eq(generations.id, generationId), eq(generations.userId, userId)))
-    .limit(1);
-  return gen;
 }
 
 export function handleApiError(e: unknown): NextResponse {
