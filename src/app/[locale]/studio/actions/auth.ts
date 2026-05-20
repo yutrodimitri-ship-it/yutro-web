@@ -43,23 +43,27 @@ export async function loginAction(
       .where(eq(users.email, email.toLowerCase()))
       .limit(1);
   } catch (err) {
-    // Diagnostic logging — the generic "Failed query" we see in Vercel
-    // runtime logs hides the actual postgres error. Expose it here so
-    // we can see what's actually failing (RLS? prepared statement? SSL?).
+    // TEMPORARY DIAGNOSTIC: expose the underlying postgres error to the
+    // user so we can read it from the login form (Vercel runtime logs
+    // truncate the message). REVERT THIS once root cause is identified.
     const e = err as Error & {
       code?: string;
       detail?: string;
       cause?: unknown;
     };
+    const causeErr = e.cause as
+      | (Error & { code?: string; detail?: string })
+      | undefined;
+    const debugMsg = `DEBUG ${e.code ?? "?"} | ${e.message.slice(0, 120)} | cause:${causeErr?.code ?? "?"}:${causeErr?.message?.slice(0, 120) ?? "?"}`;
     console.error("[loginAction] db.select(users) failed", {
       message: e.message,
       code: e.code,
       detail: e.detail,
-      causeMessage: (e.cause as Error | undefined)?.message,
-      causeCode: (e.cause as { code?: string } | undefined)?.code,
+      causeMessage: causeErr?.message,
+      causeCode: causeErr?.code,
       stack: e.stack?.split("\n").slice(0, 5).join(" | "),
     });
-    throw err;
+    return { error: debugMsg };
   }
 
   if (!user || !user.isActive) {
