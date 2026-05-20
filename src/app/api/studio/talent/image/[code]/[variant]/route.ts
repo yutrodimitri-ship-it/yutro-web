@@ -1,12 +1,8 @@
 import { NextResponse } from "next/server";
 import * as Sentry from "@sentry/nextjs";
-import { and, eq, isNull } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { db } from "@/db";
-import {
-  talentProjectAccess,
-  talentProjects,
-  talents,
-} from "@/db/schema";
+import { talentProjects, talents } from "@/db/schema";
 import { verifySession } from "@/lib/auth";
 import {
   buildKey,
@@ -15,6 +11,7 @@ import {
 } from "@/lib/talent/r2-client";
 import { applyWatermark } from "@/lib/talent/watermark";
 import { logAuditEventServer } from "@/lib/talent/audit-log-server";
+import { hasProjectAccess } from "@/lib/talent/access-check";
 
 /**
  * GET /api/studio/talent/image/[code]/[variant]
@@ -56,21 +53,9 @@ export async function GET(
     );
   }
 
-  const userEmail = session.email.toLowerCase();
-
   // Ownership check: usuario tiene acceso vigente a este proyecto
-  const [access] = await db
-    .select({ id: talentProjectAccess.id })
-    .from(talentProjectAccess)
-    .where(
-      and(
-        eq(talentProjectAccess.projectSlug, projectSlug),
-        eq(talentProjectAccess.userEmail, userEmail),
-        isNull(talentProjectAccess.revokedAt)
-      )
-    )
-    .limit(1);
-  if (!access) {
+  // (admin bypassea por rol — coherente con TalentLayout).
+  if (!(await hasProjectAccess(session, projectSlug))) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 

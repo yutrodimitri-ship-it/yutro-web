@@ -1,9 +1,7 @@
 import { NextResponse } from "next/server";
 import { verifySession } from "@/lib/auth";
-import {
-  getProjectBySlug,
-  userHasTalentAccess,
-} from "@/lib/talent/data-source";
+import { getProjectBySlug } from "@/lib/talent/data-source";
+import { hasProjectAccess } from "@/lib/talent/access-check";
 
 /**
  * GET /api/studio/talent/projects/[slug]
@@ -37,8 +35,10 @@ export async function GET(
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
-  const hasAccess = await userHasTalentAccess(session.email);
-  if (!hasAccess) {
+  // Per-project ownership + admin bypass (más estricto que el chequeo
+  // global anterior, que aceptaba cualquier user con acceso a CUALQUIER
+  // proyecto).
+  if (!(await hasProjectAccess(session, slug))) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
