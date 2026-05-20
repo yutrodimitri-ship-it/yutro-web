@@ -1,6 +1,17 @@
 /**
- * Script de uso único: resetea la contraseña de un usuario admin.
- * Uso: npx tsx scripts/reset-password.ts
+ * Resetea la contraseña de un usuario.
+ *
+ * Uso (PowerShell):
+ *   $env:RESET_PASSWORD="NuevaClaveSegura"; npx tsx scripts/reset-password.ts
+ *
+ * Uso (bash):
+ *   RESET_PASSWORD="NuevaClaveSegura" npx tsx scripts/reset-password.ts
+ *
+ * Opcional:
+ *   RESET_EMAIL="otro@email.com"   (default: yutrodimitri@gmail.com)
+ *
+ * NUNCA hardcodear la password en este archivo — quedaría expuesta en el
+ * historial de git aunque después se borre.
  */
 import "dotenv/config";
 import { drizzle } from "drizzle-orm/node-postgres";
@@ -10,9 +21,16 @@ import { eq } from "drizzle-orm";
 import { users } from "../src/db/schema";
 
 const EMAIL = process.env.RESET_EMAIL ?? "yutrodimitri@gmail.com";
-const NEW_PASSWORD = process.env.RESET_PASSWORD ?? "yutro2026!";
+const NEW_PASSWORD = process.env.RESET_PASSWORD;
 
 async function main() {
+  if (!NEW_PASSWORD || NEW_PASSWORD.length < 8) {
+    console.error("❌  RESET_PASSWORD requerido (mínimo 8 caracteres).");
+    console.error("    Ejemplo (PowerShell):");
+    console.error("      $env:RESET_PASSWORD=\"MiClave123\"; npx tsx scripts/reset-password.ts");
+    process.exit(1);
+  }
+
   const connectionString = process.env.DATABASE_URL;
   if (!connectionString) {
     console.error("❌  DATABASE_URL no configurado en .env.local");
@@ -41,9 +59,9 @@ async function main() {
   }
 
   console.log(`✅  Contraseña actualizada para ${result[0].email} (${result[0].role})`);
-  console.log(`    Email:    ${EMAIL}`);
-  console.log(`    Password: ${NEW_PASSWORD}`);
-  console.log(`\n    → http://localhost:3000/es/studio/login`);
+  console.log(`    Email: ${EMAIL}`);
+  console.log(`    → http://localhost:3000/es/studio/login`);
+  // No imprimimos la password — el caller ya la conoce porque la pasó.
 
   await pool.end();
 }
