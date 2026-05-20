@@ -4,7 +4,6 @@ import { useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
 import { CTAButton } from "@/components/shared/CTAButton";
 import { FadeInOnScroll } from "@/components/animations/FadeInOnScroll";
-import { TextReveal } from "@/components/animations/TextReveal";
 
 const FRAME_COUNT = 60;
 

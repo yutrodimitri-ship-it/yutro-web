@@ -1,0 +1,3157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YUTRO — Inteligencia Competitiva</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700;1,800;1,900&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+<script>
+// ============================================================
+//  YUTRO — Inteligencia Competitiva
+//  Fuente: Levantamiento Competencia YUTRO.md · Mayo 2026
+//  Para actualizar: editar los arrays/objetos de cada sección
+// ============================================================
+
+const DASHBOARD_DATA = {
+
+  meta: {
+    actualizacion: "Mayo 2026",
+    proxima_revision: "Agosto 2026",
+    responsable: "Gonzalo Arévalo / YUTRO",
+    version: "2.0"
+  },
+
+  // ══════════════════════════════════════════════════════
+  // PERFIL PROPIO — YUTRO
+  // ══════════════════════════════════════════════════════
+  yutro: {
+    web: "yutro.cl",
+    tagline: "Creamos con IA / Audiovisual production powered by artificial intelligence",
+    instagram_personal: "@milivoy_",
+    instagram_marca: "@yutro_ia",
+    seguidores_personal: 1169,
+    marca_paraguas: "VRYP – Art & AI Solutions",
+    subproducto: "YUTRO.studio — avatares fotorrealistas con IA (sesiones en minutos)",
+    idiomas: ["Español", "Inglés"],
+    servicios: [
+      "Imágenes hiperrealistas",
+      "Animación & Storytelling",
+      "Producción audiovisual con IA",
+      "3D & Motion Graphics",
+      "Post-Producción & FX",
+      "Consistencia visual de marca"
+    ],
+    clientes: ["Super Pollo", "Mochilas Head", "Santander (Smusic)", "Paris Electro", "Sprim", "Falabella", "Carozzi", "Copec/Mobil", "Frutos de Chile", "MG Motors"],
+    fortalezas: [
+      "Cartera de clientes grandes y reconocidos (Santander, Falabella, Paris)",
+      "Único con web bilingüe (ES/EN) — apunta a mercado internacional",
+      "YUTRO.studio como producto de entrada (B2C y B2B)",
+      "Identidad de marca sólida (naranja + tipografía fuerte)",
+      "203 publicaciones en Instagram — el más activo en contenido propio"
+    ],
+    brechas: [
+      "Audiencia IG de marca (@yutro_ia) menor vs competidores",
+      "Audio/Sonido IA — Neosonic y Raio lo ofrecen, YUTRO no",
+      "Casos de éxito con métricas públicas — Neosonic los muestra, YUTRO no"
+    ]
+  },
+
+  // ══════════════════════════════════════════════════════
+  // COMPETIDORES — TODOS LOS SEGMENTOS
+  // ══════════════════════════════════════════════════════
+  competidores: [
+
+    // ── ESTUDIOS / PRODUCTORAS IA ─────────────────────
+    {
+      nombre: "Neoart.ai / Neosonic",
+      handle: "@neoart.ai + @neosonic.cl",
+      tipo: "Estudio IA puro",
+      segmento: "Estudio",
+      pais: "CL",
+      amenaza: 10,
+      ig_seguidores: 86700,
+      ig_publicaciones: 218,
+      web: "neosonic.cl",
+      fundador: "Rodrigo Mardones",
+      propuesta: "Innovación y creatividad para proyectos que marcan la diferencia",
+      especialidad: "Video IA hiperrealista + Audio/Música IA + Avatares. Combo visual+sonoro único.",
+      servicios: ["Video IA hiperrealista", "Avatares/influencers digitales", "Modelos digitales para marcas", "Audio/Voz/Música IA"],
+      clientes: ["Becker (Diez Diez)", "CHV (Amor a Ciegas)", "Mega (Siempre Juntos)", "Teletón 2024", "Bilz y Pap Pop", "Caldo de Gallina Gourmet"],
+      diferenciacion: "Único que combina IA visual + audio/música. Virales comprobados (2.4M vistas).",
+      virales: ["Felipe Camiroaga → 1.7M vistas TikTok", "John Lennon tributo → 2.4M IG / 1.2M TikTok"],
+      canales: ["Instagram", "TikTok", "Web"],
+      precio_rango: "Alto",
+      modelo: "B2B agencias + productoras (Trópico, Feels, Porta)",
+      observacion: "74x más seguidores que YUTRO. Trabajan como subcontratistas de agencias grandes. El mayor peligro del mercado.",
+      oportunidad_yutro: "Diferenciación en dirección de arte y CGI. YUTRO puede atacar el nicho de calidad artística vs volumen viral."
+    },
+    {
+      nombre: "IA Films",
+      handle: "@iafilms10x",
+      tipo: "Estudio IA puro",
+      segmento: "Estudio",
+      pais: "LATAM",
+      amenaza: 7,
+      ig_seguidores: 4063,
+      ig_publicaciones: 83,
+      web: "ia-films.com",
+      fundador: "Studio GoodLife",
+      propuesta: "We create e-motions by IA / La primera productora IA de Sudamérica",
+      especialidad: "Comerciales IA, concept development, virtual production & VFX",
+      servicios: ["AI-Generated Commercials", "AI Concept Development & Visualization", "Virtual Production & VFX"],
+      clientes: [],
+      diferenciacion: "Claim agresivo 'primera productora IA de Sudamérica'. Web en inglés, posicionamiento internacional.",
+      canales: ["Instagram", "Web"],
+      precio_rango: "Medio-alto",
+      modelo: "Directo al cliente",
+      observacion: "Apuntan a mercado sudamericano e internacional. Claim que compite con YUTRO.cl.",
+      oportunidad_yutro: "YUTRO puede disputar el claim 'primera productora IA' con sus clientes de mayor perfil."
+    },
+    {
+      nombre: "Raio Studios (rAio)",
+      handle: "@raio.studios",
+      tipo: "Estudio IA puro",
+      segmento: "Estudio",
+      pais: "CL",
+      amenaza: 8,
+      ig_seguidores: 1627,
+      ig_publicaciones: 0,
+      web: "raiostudios.cl",
+      fundador: "Ideas del Pacífico",
+      propuesta: "Tu primer toolkit de contenidos",
+      especialidad: "Video IA + Podcasts + Avatares + Sonoro. La cartera de clientes más impresionante.",
+      servicios: ["Spots TV / Animatics / Videoclips", "Avatares e Influencers Digitales", "Motion graphics y postproducción", "Podcasts de ficción", "Noticieros con voces sintéticas", "Branded podcasts / Jingles"],
+      clientes: ["Metro", "Winpy", "KEM", "Entel", "Colo-Colo", "Sky", "Sevilla FC", "The Weeknd ft Don Carter", "JugaBet", "Betano", "Cinépolis", "Pirakids"],
+      diferenciacion: "Portafolio de marcas nacionales e internacionales. Combo visual+sonoro. Estructura corporativa.",
+      canales: ["Web", "WhatsApp directo (+56 9 9965 7200)", "Instagram"],
+      precio_rango: "Alto",
+      modelo: "B2B directo a marcas grandes",
+      observacion: "Paradoja: 1,627 seguidores con 0 publicaciones en IG. Fuerte offline/B2B, casi inexistente en redes. Oportunidad de YUTRO en presencia digital.",
+      oportunidad_yutro: "Instagram de Raio es un cadáver. YUTRO puede superarlos en presencia digital fácilmente."
+    },
+    {
+      nombre: "Not-Artificial Studio",
+      handle: "—",
+      tipo: "Estudio IA puro",
+      segmento: "Estudio",
+      pais: "CL",
+      amenaza: 5,
+      ig_seguidores: 0,
+      ig_publicaciones: 0,
+      web: "notartificial.cl",
+      fundador: "Andrés Boubet Neumann",
+      propuesta: "Creatividad real, potenciada por IA",
+      especialidad: "Estudio creativo + productora audiovisual. +20 años en publicidad.",
+      servicios: ["Imágenes/música/audio/video con IA", "Moda / lookbooks", "Visualización arquitectónica", "Personajes / Avatares (Kaila & Rob)"],
+      clientes: ["Proyecto Lefevre (moda)", "Proyecto Volt (bebidas energéticas)", "Proyecto Berlín (arquitectura)"],
+      diferenciacion: "+20 años en publicidad como diferenciador. 'Not-Artificial' juega con el escepticismo hacia la IA.",
+      canales: ["LinkedIn", "Referidos"],
+      precio_rango: "Alto",
+      modelo: "Clientes corporativos conservadores",
+      observacion: "Sin Instagram activo. Fuerte en clientes tradicionales que desconfían de 'solo IA'.",
+      oportunidad_yutro: "YUTRO puede atacar a clientes más progresivos. Not-Artificial apunta al mercado conservador."
+    },
+    {
+      nombre: "Antídoto 56",
+      handle: "—",
+      tipo: "VFX + IA",
+      segmento: "Estudio",
+      pais: "CL",
+      amenaza: 6,
+      ig_seguidores: 0,
+      ig_publicaciones: 0,
+      web: "antidoto56.com",
+      propuesta: "Estudio de Postproducción — Animación Digital 3D - VFX - AI Motion Graphics",
+      especialidad: "VFX/postproducción preexistente que incorpora IA. Técnicamente el más sólido.",
+      servicios: ["Animación Digital 3D", "VFX", "AI Motion Graphics", "IA Generativa imagen/video", "Postproducción"],
+      clientes: ["Flixbus (internacional)", "Humano Seguros"],
+      diferenciacion: "Credibilidad técnica de VFX tradicional + IA. Sitio más robusto (FAQ, Blog, Reels).",
+      canales: ["Web", "Reels"],
+      precio_rango: "Alto",
+      modelo: "B2B corporativo e internacional",
+      observacion: "Estudio VFX que incorpora IA — pueden ser más lentos en adoptar workflows nativos IA. Posible socio.",
+      oportunidad_yutro: "YUTRO nació en IA — más ágil. Antídoto 56 arrastra procesos tradicionales."
+    },
+    {
+      nombre: "The Chinatown AI",
+      handle: "@thechinatown.ai / @mr_chainus",
+      tipo: "Estudio early stage",
+      segmento: "Estudio",
+      pais: "CL",
+      amenaza: 4,
+      ig_seguidores: 266,
+      ig_publicaciones: 14,
+      web: "chinatownai.com",
+      fundador: "Cristian Rojas Vergaray (@mr_chainus) — 888 seg. · 1,146 publicaciones (muy activo)",
+      propuesta: "Ideas potenciadas con AI · Creatividad + IA + Automatización",
+      especialidad: "Contenido visual que impacta. Misma geografía (Santiago). Fundador muy activo en redes.",
+      servicios: ["Creatividad IA", "Automatización de contenido", "Freelance IA"],
+      clientes: [],
+      diferenciacion: "Branding llamativo (logo rojo asiático). @mr_chainus tiene 1,146 posts — uno de los freelancers más activos del mercado.",
+      canales: ["Instagram", "Web"],
+      precio_rango: "Medio",
+      modelo: "Fundador-marca personal + estudio",
+      observacion: "Cristian Rojas Vergaray (@mr_chainus) opera tanto como freelancer independiente como fundador de The Chinatown AI. Muy activo en contenido.",
+      oportunidad_yutro: "Su alta actividad en IG puede ganarle visibilidad rápido. Monitorear en 6-12 meses — podrían escalar."
+    },
+
+    // ── COMPETIDORES A MONITOREAR (Sección 9) ──────────
+    {
+      nombre: "Naura Studio",
+      handle: "@naura.studioo",
+      tipo: "Estudio emergente",
+      segmento: "A monitorear",
+      pais: "CL",
+      amenaza: 3,
+      ig_seguidores: 0,
+      ig_publicaciones: 0,
+      web: "—",
+      propuesta: "La mejor productora IA",
+      especialidad: "Emergente",
+      servicios: [],
+      clientes: [],
+      diferenciacion: "—",
+      canales: ["Instagram"],
+      precio_rango: "Desconocido",
+      modelo: "—",
+      observacion: "A monitorear. Emergente.",
+      oportunidad_yutro: "—"
+    },
+    {
+      nombre: "Latencia Estudio",
+      handle: "@latencia.estudio",
+      tipo: "Laboratorio creativo",
+      segmento: "A monitorear",
+      pais: "CL",
+      amenaza: 3,
+      ig_seguidores: 0,
+      ig_publicaciones: 0,
+      web: "—",
+      propuesta: "Laboratorio creativo IA",
+      especialidad: "Laboratorio creativo IA",
+      servicios: [],
+      clientes: [],
+      diferenciacion: "—",
+      canales: ["Instagram"],
+      precio_rango: "Desconocido",
+      modelo: "—",
+      observacion: "A monitorear.",
+      oportunidad_yutro: "—"
+    },
+
+    // ── FREELANCERS Y CREADORES INDIVIDUALES ───────────
+    {
+      nombre: "Pampisman",
+      handle: "@pampisman",
+      tipo: "Mega creador de contenido",
+      segmento: "Creador",
+      pais: "CL",
+      amenaza: 5,
+      ig_seguidores: 738000,
+      ig_publicaciones: 408,
+      web: "nowadaystalent.com (agencia)",
+      propuesta: "Creador masivo de contenido IA en español",
+      especialidad: "Contenido viral sobre IA generativa, tutoriales, demos",
+      servicios: ["Contenido IA viral", "Educación IA"],
+      clientes: [],
+      diferenciacion: "738K seguidores — cada post mueve el mercado. Gestionado por Nowadays Talent Agency.",
+      canales: ["Instagram", "TikTok"],
+      precio_rango: "Influencer",
+      modelo: "Audiencia B2C → colaboraciones de marca",
+      observacion: "No compite en B2B. Forma el gusto del mercado. Genera demanda que YUTRO puede capturar.",
+      oportunidad_yutro: "YUTRO ejecuta lo que pampisman enseña. Potencial colaboración."
+    },
+    {
+      nombre: "Raúl Padilla / Vive de lo Tuyo",
+      handle: "@vivedelotuyo",
+      tipo: "Creador medio",
+      segmento: "Creador",
+      pais: "LATAM",
+      amenaza: 8,
+      ig_seguidores: 55000,
+      ig_publicaciones: 420,
+      web: "—",
+      propuesta: "IA Generativa aplicada a contenidos para creadores y negocios",
+      especialidad: "Educación sobre IA creativa. +43M views. YT 10K subs.",
+      servicios: ["Educación IA creativa", "Consultoría para creadores"],
+      clientes: [],
+      diferenciacion: "+43M views. Apunta explícitamente a 'creadores y negocios'.",
+      canales: ["Instagram", "YouTube"],
+      precio_rango: "Variable",
+      modelo: "Audiencia propia → monetización",
+      observacion: "El más relevante como competidor directo de este segmento. Educa al mercado sobre IA generativa creativa.",
+      oportunidad_yutro: "YUTRO puede competir desde la perspectiva del practitioner (hace proyectos reales), no del teórico."
+    },
+    {
+      nombre: "Jotavix",
+      handle: "@jotavix",
+      tipo: "Creador medio",
+      segmento: "Creador",
+      pais: "CL",
+      amenaza: 5,
+      ig_seguidores: 25000,
+      ig_publicaciones: 142,
+      web: "—",
+      propuesta: "IA Generativa — contenido educativo/creativo",
+      especialidad: "Divulgador IA generativa con comunidad consolidada",
+      servicios: ["Educación IA"],
+      clientes: [],
+      diferenciacion: "Influye en cómo el mercado chileno entiende la IA creativa.",
+      canales: ["Instagram"],
+      precio_rango: "Variable",
+      modelo: "Audiencia → posible pivote a servicios",
+      observacion: "Divulga IA — podría pivotar a servicios. A monitorear.",
+      oportunidad_yutro: "YUTRO puede aparecer en el radar de la audiencia de Jotavix como ejecutor."
+    },
+    {
+      nombre: "Mario Kaizen",
+      handle: "@mariokaizen",
+      tipo: "Creador medio",
+      segmento: "Creador",
+      pais: "CL",
+      amenaza: 7,
+      ig_seguidores: 22000,
+      ig_publicaciones: 63,
+      web: "—",
+      propuesta: "Avatares de IA 🥷 / Avatar Growth™ — +1000 leads en 30 días",
+      especialidad: "Avatares IA para marca personal. Escala de leads con avatar.",
+      servicios: ["Avatares IA para marca personal", "Avatar Growth™"],
+      clientes: [],
+      diferenciacion: "Propuesta de negocio clara: avatar IA = leads. Mismo nicho que YUTRO.studio.",
+      canales: ["Instagram"],
+      precio_rango: "Medio",
+      modelo: "Educación → venta de sistema Avatar Growth",
+      observacion: "El más amenazante en el nicho de avatares. YUTRO.studio compite directamente.",
+      oportunidad_yutro: "YUTRO puede diferenciarse en calidad artística del avatar vs escala de leads."
+    },
+    {
+      nombre: "Artefisual",
+      handle: "@artefisual",
+      tipo: "Creador técnico",
+      segmento: "Creador",
+      pais: "CL",
+      amenaza: 2,
+      ig_seguidores: 12000,
+      ig_publicaciones: 80,
+      web: "—",
+      propuesta: "Animaciones y efectos visuales con código",
+      especialidad: "Código + animaciones. Audiencia developer/técnica.",
+      servicios: ["Animaciones con código", "Efectos visuales técnicos"],
+      clientes: [],
+      diferenciacion: "Enfoque técnico/código — diferente al mercado creativo de YUTRO.",
+      canales: ["Instagram"],
+      precio_rango: "Variable",
+      modelo: "Audiencia técnica",
+      observacion: "Competencia baja. Nicho diferente (developer, no marketing).",
+      oportunidad_yutro: "Posible aliado/proveedor técnico para proyectos complejos."
+    },
+
+    // ── INFLUENCERS IA ─────────────────────────────────
+    {
+      nombre: "Josefa Sorel (influencer IA)",
+      handle: "@joseeefasorel",
+      tipo: "Influencer IA",
+      segmento: "Influencer IA",
+      pais: "CL",
+      amenaza: 5,
+      ig_seguidores: 55000,
+      ig_publicaciones: 0,
+      web: "—",
+      propuesta: "Influencer IA chilena con podcast 'La Vida Con Josefa'",
+      especialidad: "Influencer IA operada por Studio Aberrante",
+      servicios: [],
+      clientes: [],
+      diferenciacion: "55K seguidores + podcast propio. Primer caso de éxito de influencer IA chilena en medios.",
+      canales: ["Instagram"],
+      precio_rango: "N/A",
+      modelo: "Activo de Studio Aberrante",
+      observacion: "Creada y operada por @studioaberrante. Valida que el modelo influencer IA funciona en Chile.",
+      oportunidad_yutro: "YUTRO.studio puede crear personajes similares para marcas."
+    },
+
+    // ── MICRO-ESTUDIOS Y FREELANCERS TÉCNICOS ──────────
+    {
+      nombre: "Studio Aberrante",
+      handle: "@studioaberrante",
+      tipo: "Micro-estudio influencers IA",
+      segmento: "Estudio",
+      pais: "CL",
+      amenaza: 6,
+      ig_seguidores: 1780,
+      ig_publicaciones: 25,
+      web: "—",
+      fundador: "Francisco Aguirre (ex fotógrafo/influencer)",
+      propuesta: "100% AI Production Studio. Not real. Not normal. Film · Campaigns · Influencers · Photo.",
+      especialidad: "Creación y operación de influencers IA como activo propio (no servicio)",
+      servicios: ["Influencers IA", "Campañas 100% IA", "Fotografía IA"],
+      clientes: [],
+      diferenciacion: "Modelo único: crea el personaje y lo opera como activo. No vende servicios, vende el personaje.",
+      canales: ["Instagram", "Medios (24horas.cl, adinfluence.cl)", "Walmart Chile entrevistas"],
+      precio_rango: "Alto (activo de marca)",
+      modelo: "IP propia de influencers IA → monetización",
+      observacion: "Competencia directa con modelo distinto: YUTRO hace avatares como servicio; Aberrante crea el avatar y lo opera como activo propio.",
+      oportunidad_yutro: "YUTRO.studio tiene base técnica para crear personajes propios como activos."
+    },
+    {
+      nombre: "Ro CGI",
+      handle: "@ro_cgi",
+      tipo: "Freelancer técnico",
+      segmento: "Freelancer",
+      pais: "CL",
+      amenaza: 4,
+      ig_seguidores: 2029,
+      ig_publicaciones: 236,
+      web: "—",
+      propuesta: "3D / IA / Lighting Artist — ex Epic Games/Quixel (7 años)",
+      especialidad: "3D CGI hiperrealista. Background técnico sólido en industria AAA.",
+      servicios: ["3D CGI", "IA + 3D", "Lighting"],
+      clientes: [],
+      diferenciacion: "7 años en Epic Games/Quixel — credibilidad técnica excepcional en 3D/CGI.",
+      canales: ["Instagram"],
+      precio_rango: "Freelance",
+      modelo: "Freelancer directo",
+      observacion: "Background técnico más sólido del segmento. Si escala audiencia, amenaza directa en 3D/CGI.",
+      oportunidad_yutro: "Posible aliado/proveedor para proyectos que requieran 3D de alta calidad."
+    },
+    {
+      nombre: "Blue Panther Lab",
+      handle: "@bluepanther.lab",
+      tipo: "Micro-agencia",
+      segmento: "Freelancer",
+      pais: "CL",
+      amenaza: 3,
+      ig_seguidores: 20,
+      ig_publicaciones: 0,
+      web: "—",
+      propuesta: "Sistemas automatizados de contenido con IA para marcas — sin editores ni agencias",
+      especialidad: "Automatización de contenido para marcas. Early stage.",
+      servicios: ["Automatización de contenido IA"],
+      clientes: [],
+      diferenciacion: "Pitch de automatización sin equipo humano.",
+      canales: ["Instagram"],
+      precio_rango: "Variable",
+      modelo: "B2B marcas",
+      observacion: "Early stage. Propuesta similar a YUTRO pero sin marca ni portfolio.",
+      oportunidad_yutro: "YUTRO tiene ventaja masiva de portafolio y clientes establecidos."
+    },
+
+    // ── AGENCIAS CON IA INTERNO ────────────────────────
+    {
+      nombre: "Raven",
+      handle: "—",
+      tipo: "Agencia digital IA",
+      segmento: "Agencia",
+      pais: "CL",
+      amenaza: 9,
+      ig_seguidores: 0,
+      ig_publicaciones: 0,
+      web: "raven.inc",
+      propuesta: "AI-driven performance + consulting",
+      especialidad: "Performance marketing IA. Trabaja con Walmart, Santander, Entel.",
+      servicios: ["Performance marketing IA", "Consultoría IA", "Producción de contenido IA"],
+      clientes: ["Walmart Chile", "Santander", "Entel"],
+      diferenciacion: "Mismos clientes objetivo que YUTRO. Expansión a Miami y Medio Oriente.",
+      canales: ["LinkedIn", "Web"],
+      precio_rango: "Alto",
+      modelo: "B2B clientes grandes",
+      observacion: "Si Raven ofrece producción de contenido IA, YUTRO enfrenta competencia directa en los mejores clientes del mercado.",
+      oportunidad_yutro: "Raven es performance, no arte. YUTRO puede ser el brazo creativo de Raven."
+    },
+    {
+      nombre: "Wiwo",
+      handle: "@wiwo.ai",
+      tipo: "Neo-agencia startup IA",
+      segmento: "Agencia",
+      pais: "CL",
+      amenaza: 7,
+      ig_seguidores: 0,
+      ig_publicaciones: 0,
+      web: "meetwiwo.com",
+      propuesta: "Neo-Agencia IA — acelerada por NVIDIA. Sustituye servicios de marketing con IA.",
+      especialidad: "Creatividad + datos + IA en un solo equipo autónomo. Automatización total.",
+      servicios: ["Marketing digital IA", "Automatización", "Performance"],
+      clientes: ["E-commerce", "Marcas Chile/LATAM"],
+      diferenciacion: "Respaldo NVIDIA. Cobertura en Diario Financiero y La Tercera. Ambición de unicornio.",
+      canales: ["LinkedIn", "Twitter/X", "Web", "PR en medios"],
+      precio_rango: "Medio-alto",
+      modelo: "B2B startups y marcas",
+      observacion: "Performance-focused, no arte. Diferente posicionamiento a YUTRO.",
+      oportunidad_yutro: "YUTRO = calidad visual y dirección de arte. Wiwo = flujos de datos y conversiones."
+    },
+    {
+      nombre: "Lazotea",
+      handle: "—",
+      tipo: "Agencia creativa IA",
+      segmento: "Agencia",
+      pais: "CL",
+      amenaza: 7,
+      ig_seguidores: 0,
+      ig_publicaciones: 0,
+      web: "lazotea.com",
+      propuesta: "Agencia creativa IA. Ideas frescas, estratégicas y memorables.",
+      especialidad: "Consultoría estratégica + producción IA con Mr.Fox IA + podcast industria publicitaria",
+      servicios: ["Producción IA (Mr.Fox IA)", "Consultoría de marca", "Paid Media (SEM/Display)", "Marketing de contenido", "Podcast 'Dios Salve a la Publicidad'"],
+      clientes: ["Marcas medianas", "Agencias de publicidad"],
+      diferenciacion: "Credibilidad en industria publicitaria. Podcast como voz de la industria. Voz cultural.",
+      canales: ["LinkedIn", "Instagram", "Podcast", "Eventos"],
+      precio_rango: "Alto",
+      modelo: "B2B agencias y marcas medianas",
+      observacion: "Lazotea habla con la industria, YUTRO produce. Posible alianza estratégica.",
+      oportunidad_yutro: "Alianza: Lazotea lleva clientes publicitarios, YUTRO ejecuta la producción IA."
+    },
+    {
+      nombre: "McCann Chile (IA Lab)",
+      handle: "@mccannchile",
+      tipo: "Multinacional con IA Lab",
+      segmento: "Agencia",
+      pais: "CL",
+      amenaza: 6,
+      ig_seguidores: 0,
+      ig_publicaciones: 0,
+      web: "mccann.cl",
+      propuesta: "Agencia creativa global con IA Lab interno",
+      especialidad: "Producción IA para grandes cuentas. Alianza con [Ai]magination.",
+      servicios: ["Contenido generativo con brand safety", "Arte + IA para grandes marcas"],
+      clientes: ["Multinacionales", "Cuentas globales"],
+      diferenciacion: "Head of Art: Marcial Flores Varas. IA Lab interno. Red global McCann Worldgroup.",
+      canales: ["LinkedIn", "Premiaciones", "PR"],
+      precio_rango: "Premium",
+      modelo: "Interno + subcontratistas",
+      observacion: "McCann convierte producción IA en capacidad interna. Oportunidad: YUTRO puede ser su brazo creativo externo.",
+      oportunidad_yutro: "Posicionarse como proveedor especializado para agencias multinacionales."
+    },
+    {
+      nombre: "Trends Group / Trends IA",
+      handle: "—",
+      tipo: "Agencia comunicación + IA",
+      segmento: "Agencia",
+      pais: "CL",
+      amenaza: 6,
+      ig_seguidores: 0,
+      ig_publicaciones: 0,
+      web: "trendsgroup.cl",
+      propuesta: "Comunicación + Marketing + IA. Sección 'Trends IA' para producción audiovisual.",
+      especialidad: "Comunicaciones estratégicas + producción audiovisual IA integradas.",
+      servicios: ["Comunicación corporativa", "Producción audiovisual IA", "Marketing digital"],
+      clientes: ["Marcas y eventos Chile"],
+      diferenciacion: "Integración de comunicaciones + producción IA en un mismo equipo.",
+      canales: ["LinkedIn", "Web"],
+      precio_rango: "Medio-alto",
+      modelo: "B2B corporativo",
+      observacion: "Producción audiovisual IA = territorio directo de YUTRO. Vigilar evolución.",
+      oportunidad_yutro: "YUTRO puede ser el proveedor técnico de producción IA para Trends Group."
+    },
+    {
+      nombre: "Hi Marketing",
+      handle: "@himarketing.cl",
+      tipo: "Agencia digital performance",
+      segmento: "Agencia",
+      pais: "CL",
+      amenaza: 3,
+      ig_seguidores: 0,
+      ig_publicaciones: 0,
+      web: "hi-marketing.cl",
+      propuesta: "Funnels + IA + automatizaciones para PyMEs Chile",
+      especialidad: "Performance marketing con IA integrada. No es arte.",
+      servicios: ["Funnels", "IA para performance", "Automatizaciones"],
+      clientes: ["PyMEs Chile"],
+      diferenciacion: "Enfocado en conversiones y resultados de ventas.",
+      canales: ["LinkedIn", "Meta Ads", "Google Ads", "Web"],
+      precio_rango: "Medio",
+      modelo: "B2B PyMEs",
+      observacion: "Enfocado en performance, no en arte. Bajo solapamiento con YUTRO.",
+      oportunidad_yutro: "YUTRO puede ser proveedor de contenido creativo para los clientes de Hi Marketing."
+    },
+    {
+      nombre: "IndustrIA",
+      handle: "—",
+      tipo: "Educación / Consultoría IA",
+      segmento: "Ecosistema",
+      pais: "CL",
+      amenaza: 2,
+      ig_seguidores: 0,
+      ig_publicaciones: 0,
+      web: "industria.cl",
+      propuesta: "Capacitación empresas en IA audiovisual. Chile Creativo + CORFO/CRTIC.",
+      especialidad: "Workshop gratuito de IA aplicada a creación audiovisual. 2 versiones realizadas.",
+      servicios: ["Capacitación IA audiovisual", "Consultoría de adopción"],
+      clientes: ["Profesionales audiovisuales", "Grandes empresas"],
+      diferenciacion: "Financiado por CORFO. Forma futuros competidores de YUTRO.",
+      canales: ["LinkedIn", "Eventos presenciales"],
+      precio_rango: "Variable (tiene gratuito)",
+      modelo: "Capacitación institucional",
+      observacion: "No competidor directo — sus alumnos se convierten en clientes o futuros competidores de YUTRO.",
+      oportunidad_yutro: "Los profesionales que pasan por IndustrIA necesitarán proveedores de producción IA. YUTRO puede ser su referente."
+    },
+
+    // ── NUEVOS ACTORES INCORPORADOS ──────────────────────
+    {
+      nombre: "Pictor Agency",
+      handle: "@pictoragency",
+      tipo: "Agencia producción visual IA",
+      segmento: "Agencia",
+      pais: "CL",
+      amenaza: 4,
+      ig_seguidores: 0,
+      ig_publicaciones: 0,
+      web: "—",
+      propuesta: "Producción visual IA — escalando capacidad interna",
+      especialidad: "Diseño y producción visual con IA. Contratando Senior diseñador IA.",
+      servicios: ["Producción visual IA", "Diseño gráfico IA"],
+      clientes: [],
+      diferenciacion: "En proceso activo de escalar equipo IA interno — señal de inversión real en el segmento.",
+      canales: ["Instagram"],
+      precio_rango: "Medio",
+      modelo: "Agencia",
+      observacion: "Señal de alerta: contratar Senior diseñador IA y practicante indica crecimiento rápido planificado.",
+      oportunidad_yutro: "YUTRO puede posicionarse ante sus clientes como el estudio de producción creativa IA que Pictor usa o referencia."
+    },
+    {
+      nombre: "Creativa.ai",
+      handle: "—",
+      tipo: "Agencia creativa IA",
+      segmento: "Agencia",
+      pais: "España / LATAM",
+      amenaza: 5,
+      ig_seguidores: 0,
+      ig_publicaciones: 0,
+      web: "creativa.ai",
+      propuesta: "Videos publicitarios + influencers virtuales IA para marcas",
+      especialidad: "Creación de influencers virtuales IA y contenido publicitario. Operan en Chile desde Barcelona.",
+      servicios: ["Videos publicitarios IA", "Influencers virtuales IA", "Contenido para marcas"],
+      clientes: ["Marcas España / LATAM"],
+      diferenciacion: "Doble especialización: producción audiovisual + influencers virtuales como producto. Presencia iberoamericana.",
+      canales: ["Web", "LinkedIn"],
+      precio_rango: "Medio-alto",
+      modelo: "Agencia remota LATAM",
+      observacion: "Opera desde España pero tiene clientes en Chile y LATAM. Territorio directo en influencers IA.",
+      oportunidad_yutro: "YUTRO tiene ventaja local — conocimiento del mercado chileno, idioma y cultura. Competir en velocidad de entrega y contexto local."
+    },
+    {
+      nombre: "BBDO Chile + DDB Chile",
+      handle: "—",
+      tipo: "Multinacional con IA en desarrollo",
+      segmento: "Agencia",
+      pais: "CL",
+      amenaza: 5,
+      ig_seguidores: 0,
+      ig_publicaciones: 0,
+      web: "bbdo.cl",
+      propuesta: "Modelo híbrido ATL + data/IA. Capacidades IA en construcción (Omnicom post-fusión).",
+      especialidad: "Publicidad masiva + integración IA progresiva. Álvaro Becker como referente.",
+      servicios: ["Publicidad ATL", "Campañas digitales", "Estrategia IA (en desarrollo)"],
+      clientes: ["Grandes marcas nacionales e internacionales"],
+      diferenciacion: "Estructura global, budget masivo y cartera de clientes premium. Si internalizan producción IA, compiten con YUTRO en el mismo segmento.",
+      canales: ["LinkedIn", "Referidos", "Pitch directo"],
+      precio_rango: "Alto",
+      modelo: "Agencia multinacional",
+      observacion: "No hay evidencia de producción IA propia en CL aún. Amenaza latente a 12-24 meses si concretan capacidad interna.",
+      oportunidad_yutro: "Posicionarse como proveedor creativo IA para BBDO/DDB antes de que lo internalicen. Ser su brazo de producción IA."
+    },
+    {
+      nombre: "Gen-iA",
+      handle: "—",
+      tipo: "Agencia IA empresas creativas",
+      segmento: "Agencia",
+      pais: "CL",
+      amenaza: 4,
+      ig_seguidores: 0,
+      ig_publicaciones: 0,
+      web: "gen-ia.cl",
+      propuesta: "IA para empresas creativas chilenas",
+      especialidad: "Consultoría e implementación IA para industria creativa.",
+      servicios: ["Consultoría IA", "Implementación workflows IA", "Capacitación empresas creativas"],
+      clientes: [],
+      diferenciacion: "Foco en el segmento creativo empresarial — más consultoría que producción directa.",
+      canales: ["Web", "LinkedIn"],
+      precio_rango: "Medio",
+      modelo: "B2B consultoría",
+      observacion: "A monitorear — si pivotan a producción, solapamiento directo con YUTRO.",
+      oportunidad_yutro: "Posible alianza: Gen-iA vende estrategia, YUTRO ejecuta la producción."
+    },
+    {
+      nombre: "IA+VFX (@render_viafx)",
+      handle: "@render_viafx",
+      tipo: "Freelancer / Micro-agencia",
+      segmento: "Freelancer",
+      pais: "CL",
+      amenaza: 2,
+      ig_seguidores: 97,
+      ig_publicaciones: 0,
+      web: "—",
+      propuesta: "Agencia creativa de videos con IA · IA+VFX para impactar en redes",
+      especialidad: "Videos con IA y VFX para redes sociales.",
+      servicios: ["Videos IA para RRSS", "VFX", "Contenido creativo"],
+      clientes: [],
+      diferenciacion: "Combinación IA + VFX en formato micro-agencia. Early stage.",
+      canales: ["Instagram"],
+      precio_rango: "Bajo-medio",
+      modelo: "Freelancer",
+      observacion: "Early stage. Bajo alcance actual pero propuesta bien definida.",
+      oportunidad_yutro: "Sin amenaza inmediata. Posible colaborador técnico en proyectos VFX."
+    },
+    {
+      nombre: "Milo Art Director",
+      handle: "@milo.art.director",
+      tipo: "Director de arte individual",
+      segmento: "Freelancer",
+      pais: "CL",
+      amenaza: 3,
+      ig_seguidores: 0,
+      ig_publicaciones: 0,
+      web: "—",
+      propuesta: "Dirección de arte individual con IA",
+      especialidad: "Dirección de arte y producción visual con IA. Perfil individual.",
+      servicios: ["Dirección de arte IA", "Producción visual"],
+      clientes: [],
+      diferenciacion: "Compite en el mismo territorio que YUTRO: dirección de arte + IA. Sin estructura de estudio.",
+      canales: ["Instagram"],
+      precio_rango: "Bajo-medio",
+      modelo: "Freelancer",
+      observacion: "Mismo posicionamiento de dirección de arte que YUTRO pero como freelancer individual — menor capacidad de entrega.",
+      oportunidad_yutro: "YUTRO diferencia con cartera de clientes grandes y estructura de estudio. Milo apunta a proyectos más pequeños."
+    }
+  ],
+
+  // ══════════════════════════════════════════════════════
+  // DATOS DE MERCADO
+  // ══════════════════════════════════════════════════════
+  mercado: {
+    metricas_clave: [
+      { label: "Empresas CL usando IA", valor: "+60%", fuente: "Entel Digital / CENIA 2025" },
+      { label: "Grandes empresas con IA", valor: "+80%", fuente: "Entel Digital / CENIA 2025" },
+      { label: "PyMEs que incorporaron IA", valor: "70%", fuente: "Entel Digital / CENIA 2025" },
+      { label: "Chile ranking LATAM adopción IA", valor: "1° lugar", fuente: "HubSpot LATAM 2025 — 73/100 pts" },
+      { label: "Empresas en fase 'transformadora'", valor: "+50%", fuente: "Entel Digital / CENIA 2025" },
+      { label: "Empresas que usarán IA generativa 2024-25", valor: "49%", fuente: "Emol / AmCham 2024" },
+      { label: "Inversión digital Chile 2025", valor: "$1.98B USD", fuente: "InPulse Digital 2025 (+5.4%)" },
+      { label: "Penetración internet Chile", valor: "94.1%", fuente: "InPulse Digital 2025" },
+      { label: "Participación digital en publicidad CL", valor: "54%", fuente: "IAB Chile 2026 (de 51.1% en 2023)" },
+      { label: "Crecimiento video IA global", valor: "+140% YoY", fuente: "Grand View Research 2026" },
+      { label: "Video IA del total publi video 2027", valor: "30%", fuente: "Grand View Research" },
+      { label: "Reducción costo producción con IA", valor: "90-95%", fuente: "Novoads.ai LATAM 2026" }
+    ],
+    sectores_demandantes: [
+      { sector: "Retail / E-commerce", demanda: 9, fase: "Activa", descripcion: "Necesidad masiva de imágenes de producto sin sesión fotográfica. Lifestyle IA. Contenido masivo adaptado." },
+      { sector: "Banca y Finanzas", demanda: 8, fase: "Activa", descripcion: "Santander (cliente YUTRO) · BancoEstado + PyMEs · Raven trabaja con Santander. Campañas visuales personalizadas." },
+      { sector: "Agencias de Publicidad", demanda: 8, fase: "Activa", descripcion: "McCann, BBDO, Grey, DDB buscan proveedores IA creativos. Producción visual rápida · Animatics · Spots IA." },
+      { sector: "Marcas FMCG", demanda: 8, fase: "Activa", descripcion: "Entel, Nestlé, Coca-Cola Chile, Carozzi. Contenido de producto · Campañas visuales estacionales." },
+      { sector: "Automotriz", demanda: 7, fase: "Activa", descripcion: "Toyota, Nissan, Chevrolet, Hyundai, MG Motors (cliente YUTRO). Visualizaciones · Lifestyle · Configuradores." },
+      { sector: "Entretenimiento / Deportes", demanda: 8, fase: "Activa", descripcion: "Colo-Colo, Sevilla FC, SKY, CHV, Mega. Gráfica deportiva · Avatares · Contenido fan." },
+      { sector: "Startups / SaaS", demanda: 9, fase: "Activa", descripcion: "Alto volumen, bajo presupuesto → IA como única opción. UGC ads, demos de producto." },
+      { sector: "Gobierno / Sector Público", demanda: 6, fase: "Creciente", descripcion: "MercadoPúblico licitación 1733-2-LE26 · Fundación Imagen de Chile. Producción audiovisual institucional." },
+      { sector: "Inmobiliaria", demanda: 7, fase: "Creciente", descripcion: "Ambientes 3D hiperrealistas · Avatares de vendedores · Tours virtuales. Not-Artificial menciona sector." },
+      { sector: "Moda y Lifestyle", demanda: 7, fase: "Creciente", descripcion: "Influencers IA moda (Josefa Sorel) · Shooting IA · Lookbooks. Trends IA para desfiles." },
+      { sector: "Educación / EdTech", demanda: 6, fase: "Emergente", descripcion: "CORFO IndustrIA financia formación. Contenido educativo animado con IA." },
+      { sector: "Salud", demanda: 5, fase: "Emergente", descripcion: "Alta necesidad con presupuestos limitados. Comunicación visual médica · Campañas prevención IA." },
+      { sector: "PyMEs (todos los rubros)", demanda: 7, fase: "Creciente", descripcion: "BancoEstado educa PyMEs en IA. 70% ya usan alguna IA. Necesitan contenido visual asequible." }
+    ],
+    senales_demanda: [
+      { tipo: "Licitación pública", descripcion: "MercadoPúblico 1733-2-LE26: 'Servicio Integral de Producción Audiovisual, Diseño Gráfico y Gestión de Contenidos Digitales'", monto: "A confirmar", estado: "Activa", relevancia: "Alta" },
+      { tipo: "Licitación pública", descripcion: "Fundación Imagen de Chile — 'Buscamos proveedor para servicio de realización de productos audiovisuales' (LinkedIn 2025)", monto: "Alto", estado: "Adjudicada 2025", relevancia: "Alta" },
+      { tipo: "Job posting", descripcion: "Workana: 'Diseñador Creativo con IA para Contenido Visual de E-commerce' — empresa Chile, pago CLP", monto: "$500K–$2M CLP", estado: "Reciente", relevancia: "Alta" },
+      { tipo: "Señal de mercado", descripcion: "+1.000 empleos IA en LinkedIn Chile — empresas prefieren contratar interno vs tercerizar", monto: "Variable", estado: "Tendencia", relevancia: "Media — YUTRO debe mostrar ROI claro" },
+      { tipo: "Señal de mercado", descripcion: "Pictor Agency buscando practicante y Senior diseñador IA — escalando capacidad interna", monto: "—", estado: "Activa", relevancia: "Media" },
+      { tipo: "Alianza / oportunidad", descripcion: "McCann IA Lab busca proveedores de producción IA para sus cuentas globales", monto: "Alto", estado: "Oportunidad", relevancia: "Muy alta" },
+      { tipo: "Señal de mercado", descripcion: "Congreso Chileno del Marketing + BancoEstado — charlas sobre IA generativa para MiPYMEs", monto: "—", estado: "Activa", relevancia: "Media" }
+    ],
+    perfiles_compradores: [
+      {
+        tipo: "A — Marca Grande (B2B Directo)",
+        rol: "Gerente de Marketing / Brand Manager (+50 empleados)",
+        busca: "Reducir costos de producción 40-70% sin bajar calidad",
+        decide: "Por recomendación, casos de éxito con métricas, credibilidad del proveedor",
+        barrera: "Desconfianza en IA ('¿la calidad es suficiente?'), procesos de aprobación internos",
+        como_llegar: "LinkedIn, referidos, pitches con casos reales (Santander, Falabella)"
+      },
+      {
+        tipo: "B — Agencia de Publicidad (B2B Intermediario)",
+        rol: "Director Creativo / Producer de agencia",
+        busca: "Proveedor confiable que ejecute sin supervisión constante, en tiempo record",
+        decide: "Prueba de concepto, velocidad de respuesta, precio competitivo",
+        barrera: "'¿Puede mantener el estilo de marca?' / '¿Cuánto control tengo?'",
+        como_llegar: "Networking industria publicitaria, eventos (Effie, FIAP), alianza con Lazotea"
+      },
+      {
+        tipo: "C — PyME (B2C / YUTRO.studio)",
+        rol: "Dueño de negocio e-commerce / tienda online / marca personal",
+        busca: "Fotos de producto o avatar sin costo de producción tradicional",
+        decide: "Precio, velocidad, facilidad de uso, ver ejemplos",
+        barrera: "Desconoce la tecnología, duda de la calidad para su producto específico",
+        como_llegar: "Instagram, TikTok, Google, referencias de otros emprendedores"
+      },
+      {
+        tipo: "D — Sector Público (Licitaciones)",
+        rol: "Jefe de comunicaciones de ministerio, municipio o corporación pública",
+        busca: "Proveedor con experiencia comprobable, precio dentro de presupuesto",
+        decide: "Proceso formal de licitación en MercadoPúblico / ChileCompra",
+        barrera: "Procesos burocráticos lentos, requiere RUT, boletas, facturas, garantías",
+        como_llegar: "Registro en ChileCompra, alertas de licitaciones audiovisuales"
+      }
+    ],
+    barreras_adopcion: [
+      { barrera: "Falta de capacitación sobre IA", nivel: "40%", solucion: "Ofrecer onboarding incluido, demostración práctica antes de contratar" },
+      { barrera: "Falta de gobernanza/políticas internas", nivel: "40%", solucion: "Entregar contratos con cláusulas de derechos de imagen y propiedad intelectual claras" },
+      { barrera: "Resistencia al cambio", nivel: "Media", solucion: "Mostrar casos comparativos antes/después con métricas de ahorro" },
+      { barrera: "Dudas de calidad", nivel: "Alta", solucion: "Portfolio detallado por industria — no genérico" },
+      { barrera: "Presupuesto limitado (PyMEs)", nivel: "Alta en PyMEs", solucion: "YUTRO.studio como entrada de bajo costo → upgrade a servicio completo" }
+    ],
+    tendencias_2026: [
+      { tendencia: "Short Form Video", impacto: 10, descripcion: "TikTok, Reels, Shorts — #1 tendencia IAB Chile 2026. Demanda masiva de contenido vertical IA.", fuente: "IAB Chile 2026" },
+      { tendencia: "Social SEO", impacto: 8, descripcion: "Búsquedas en TikTok/Instagram superando Google en menores de 35. Social media como motor de búsqueda.", fuente: "IAB Chile 2026" },
+      { tendencia: "IA Generativa (mainstream)", impacto: 10, descripcion: "De tendencia emergente a pieza estructural del marketing. Ya no es diferenciador: es el estándar.", fuente: "IAB Chile 2026" },
+      { tendencia: "Influencers & Creators", impacto: 9, descripcion: "Creadores IA y digitales → formato nativo, no publicidad. Influencers IA como activos de marca.", fuente: "IAB Chile 2026" },
+      { tendencia: "Social Commerce", impacto: 7, descripcion: "Venta directa desde redes sociales sin salir de la app. TikTok Shop, Instagram Shopping.", fuente: "IAB Chile 2026" },
+      { tendencia: "Automatización de contenido", impacto: 8, descripcion: "Pipelines automatizados para escalar producción. n8n, Make, flujos IA para producción masiva.", fuente: "Mercado LATAM" },
+      { tendencia: "Audio branding / Voz IA", impacto: 7, descripcion: "Voces sintéticas propias, podcasts corporativos, noticieros IA. Identidad sonora automatizada.", fuente: "Mercado LATAM" },
+      { tendencia: "Retail Media", impacto: 7, descripcion: "Cencosud Media, Falabella, MercadoLibre como plataformas de publicidad. Contenido IA para retail media.", fuente: "IAB Chile 2026" }
+    ],
+    oportunidad_mercado: {
+      hoy: "Mercado capturado por los primeros 5-8 actores (Neosonic, Raio, YUTRO, etc.)",
+      en_12_meses: "Segunda ola de compradores: PyMEs, sector público, moda, inmobiliaria",
+      en_24_meses: "Consolidación — estudios sin diferenciación clara serán commoditizados",
+      conclusion: "Ventana de oportunidad para YUTRO: los próximos 12-18 meses son críticos para posicionarse antes de la commoditización."
+    }
+  },
+
+  // ══════════════════════════════════════════════════════
+  // PRECIOS POR CATEGORÍA DE SERVICIO
+  // Fuente: novoads.ai, cuartoenfoque.com, LATAM 2026
+  // Valores en USD
+  // ══════════════════════════════════════════════════════
+  precios: [
+    {
+      categoria: "Video Publicitario",
+      icono: "🎬",
+      descripcion: "Videos para redes, TV, corporativos y demos de producto",
+      items: [
+        { tipo: "UGC / Testimonial", tradicional_min: 500, tradicional_max: 3000, ia_min: 5, ia_max: 50, yutro_min: 200, yutro_max: 600, tiempo_trad: "1-2 semanas", tiempo_ia: "5 minutos" },
+        { tipo: "Demo de producto", tradicional_min: 1000, tradicional_max: 5000, ia_min: 10, ia_max: 80, yutro_min: 300, yutro_max: 800, tiempo_trad: "2-3 semanas", tiempo_ia: "15 minutos" },
+        { tipo: "Comercial de TV (30s)", tradicional_min: 10000, tradicional_max: 50000, ia_min: 50, ia_max: 500, yutro_min: 800, yutro_max: 3000, tiempo_trad: "4-8 semanas", tiempo_ia: "1-2 horas" },
+        { tipo: "Video para redes sociales", tradicional_min: 300, tradicional_max: 2000, ia_min: 5, ia_max: 30, yutro_min: 150, yutro_max: 500, tiempo_trad: "3-7 días", tiempo_ia: "5 minutos" },
+        { tipo: "Video explicativo / animado", tradicional_min: 2000, tradicional_max: 8000, ia_min: 20, ia_max: 150, yutro_min: 400, yutro_max: 1200, tiempo_trad: "3-5 semanas", tiempo_ia: "30 minutos" },
+        { tipo: "Video corporativo institucional", tradicional_min: 3000, tradicional_max: 15000, ia_min: 30, ia_max: 200, yutro_min: 500, yutro_max: 1500, tiempo_trad: "3-6 semanas", tiempo_ia: "1 hora" },
+        { tipo: "Pack mensual contenido IA (8-20 piezas)", tradicional_min: 3000, tradicional_max: 12000, ia_min: 100, ia_max: 500, yutro_min: 500, yutro_max: 1500, tiempo_trad: "Mensual", tiempo_ia: "Semanal" }
+      ]
+    },
+    {
+      categoria: "Animación de Personajes",
+      icono: "🎭",
+      descripcion: "2D, 3D, motion graphics y animación con IA asistida",
+      items: [
+        { tipo: "Motion graphics por minuto", tradicional_min: 800, tradicional_max: 2500, ia_min: 200, ia_max: 800, yutro_min: 400, yutro_max: 1200, tiempo_trad: "1-2 semanas", tiempo_ia: "1-3 días" },
+        { tipo: "Animación 2D personajes (por min)", tradicional_min: 1500, tradicional_max: 4000, ia_min: 400, ia_max: 1200, yutro_min: 600, yutro_max: 2000, tiempo_trad: "2-3 semanas", tiempo_ia: "2-5 días" },
+        { tipo: "Animación 3D CGI (por min)", tradicional_min: 3000, tradicional_max: 10000, ia_min: 800, ia_max: 3000, yutro_min: 1500, yutro_max: 4000, tiempo_trad: "4-8 semanas", tiempo_ia: "1-2 semanas" },
+        { tipo: "Whiteboard / Scribing (por min)", tradicional_min: 500, tradicional_max: 1500, ia_min: 100, ia_max: 400, yutro_min: 250, yutro_max: 700, tiempo_trad: "1-2 semanas", tiempo_ia: "1-2 días" }
+      ]
+    },
+    {
+      categoria: "Lip Sync & Doblaje",
+      icono: "🗣️",
+      descripcion: "Sincronía labial y localización multiidioma con IA",
+      items: [
+        { tipo: "Lip sync básico (1-2 min de video)", tradicional_min: 300, tradicional_max: 1000, ia_min: 100, ia_max: 400, yutro_min: 300, yutro_max: 700, tiempo_trad: "3-5 días", tiempo_ia: "30 min" },
+        { tipo: "Doblaje a 1 idioma por video", tradicional_min: 500, tradicional_max: 2000, ia_min: 200, ia_max: 800, yutro_min: 400, yutro_max: 900, tiempo_trad: "1 semana", tiempo_ia: "1-2 horas" },
+        { tipo: "Pack multiidioma (3 idiomas)", tradicional_min: 1500, tradicional_max: 6000, ia_min: 500, ia_max: 1500, yutro_min: 800, yutro_max: 2000, tiempo_trad: "2-3 semanas", tiempo_ia: "1 día" }
+      ]
+    },
+    {
+      categoria: "Avatares & Portavoces IA",
+      icono: "🤖",
+      descripcion: "Avatares digitales, portavoces de marca e influencers IA",
+      items: [
+        { tipo: "Avatar genérico SaaS (uso plataforma)", tradicional_min: 0, tradicional_max: 0, ia_min: 10, ia_max: 120, yutro_min: 80, yutro_max: 300, tiempo_trad: "N/A", tiempo_ia: "Inmediato" },
+        { tipo: "Avatar semi-personalizado (setup)", tradicional_min: 2000, tradicional_max: 8000, ia_min: 200, ia_max: 800, yutro_min: 500, yutro_max: 2000, tiempo_trad: "2-4 semanas", tiempo_ia: "2-5 días" },
+        { tipo: "Avatar customizado con licencia (IP exclusiva)", tradicional_min: 5000, tradicional_max: 20000, ia_min: 1500, ia_max: 8000, yutro_min: 2000, yutro_max: 6000, tiempo_trad: "1-2 meses", tiempo_ia: "1-2 semanas" },
+        { tipo: "Influencer IA completo como activo de marca", tradicional_min: 0, tradicional_max: 0, ia_min: 5000, ia_max: 50000, yutro_min: 3000, yutro_max: 15000, tiempo_trad: "N/A", tiempo_ia: "2-4 semanas" }
+      ]
+    },
+    {
+      categoria: "Voz & Voice Cloning",
+      icono: "🎙️",
+      descripcion: "Locución IA, clonación de voz y podcasts corporativos",
+      items: [
+        { tipo: "Locución IA por pieza de contenido", tradicional_min: 50, tradicional_max: 500, ia_min: 5, ia_max: 30, yutro_min: 80, yutro_max: 300, tiempo_trad: "1-3 días", tiempo_ia: "Minutos" },
+        { tipo: "Podcast corporativo (por episodio)", tradicional_min: 500, tradicional_max: 2000, ia_min: 50, ia_max: 200, yutro_min: 200, yutro_max: 600, tiempo_trad: "1 semana", tiempo_ia: "2-4 horas" },
+        { tipo: "Noticiero corporativo (suscripción mensual)", tradicional_min: 2000, tradicional_max: 8000, ia_min: 200, ia_max: 800, yutro_min: 500, yutro_max: 1500, tiempo_trad: "Semanal", tiempo_ia: "Automatizado" },
+        { tipo: "Clonación voz personalizada (setup)", tradicional_min: 1000, tradicional_max: 5000, ia_min: 50, ia_max: 300, yutro_min: 300, yutro_max: 800, tiempo_trad: "2-4 semanas", tiempo_ia: "1-3 días" }
+      ]
+    },
+    {
+      categoria: "Imágenes IA",
+      icono: "🖼️",
+      descripcion: "Fotografía de producto, storyboards, conceptos y campañas",
+      items: [
+        { tipo: "Pack 10 imágenes concepto/campaña", tradicional_min: 500, tradicional_max: 3000, ia_min: 20, ia_max: 100, yutro_min: 200, yutro_max: 500, tiempo_trad: "1-2 semanas", tiempo_ia: "2-4 horas" },
+        { tipo: "Storyboard animatic (20 frames)", tradicional_min: 800, tradicional_max: 3000, ia_min: 100, ia_max: 400, yutro_min: 500, yutro_max: 1200, tiempo_trad: "1-2 semanas", tiempo_ia: "1 día" },
+        { tipo: "Fotografía IA de producto (pack 20 shots)", tradicional_min: 2000, tradicional_max: 8000, ia_min: 50, ia_max: 200, yutro_min: 400, yutro_max: 900, tiempo_trad: "2-5 días (sesión)", tiempo_ia: "2-4 horas" },
+        { tipo: "Visual campaña (hero image)", tradicional_min: 500, tradicional_max: 5000, ia_min: 30, ia_max: 150, yutro_min: 300, yutro_max: 700, tiempo_trad: "3-7 días", tiempo_ia: "2-3 horas" },
+        { tipo: "Render 3D de producto (por imagen)", tradicional_min: 500, tradicional_max: 3000, ia_min: 100, ia_max: 500, yutro_min: 300, yutro_max: 1000, tiempo_trad: "3-5 días", tiempo_ia: "4-8 horas" }
+      ]
+    },
+    {
+      categoria: "Automatizaciones de Contenido",
+      icono: "⚙️",
+      descripcion: "Pipelines, flujos automáticos y sistemas de producción en escala",
+      items: [
+        { tipo: "Sistema automatización básico (setup)", tradicional_min: 2000, tradicional_max: 8000, ia_min: 300, ia_max: 1500, yutro_min: 800, yutro_max: 2500, tiempo_trad: "2-4 semanas", tiempo_ia: "3-7 días" },
+        { tipo: "Pipeline de contenido automatizado (completo)", tradicional_min: 5000, tradicional_max: 20000, ia_min: 800, ia_max: 5000, yutro_min: 2000, yutro_max: 6000, tiempo_trad: "1-2 meses", tiempo_ia: "1-3 semanas" },
+        { tipo: "Mantenimiento mensual de flujos", tradicional_min: 500, tradicional_max: 2000, ia_min: 200, ia_max: 800, yutro_min: 300, yutro_max: 900, tiempo_trad: "Mensual", tiempo_ia: "Mensual" },
+        { tipo: "Agente de voz corporativo (desarrollo)", tradicional_min: 5000, tradicional_max: 20000, ia_min: 1000, ia_max: 5000, yutro_min: 1500, yutro_max: 5000, tiempo_trad: "2-3 meses", tiempo_ia: "2-4 semanas" }
+      ]
+    }
+  ],
+
+  // ══════════════════════════════════════════════════════
+  // TENDENCIAS GOOGLE Y PLATAFORMAS
+  // ══════════════════════════════════════════════════════
+  tendencias_google: {
+    terminos_alza: [
+      { termino: "inteligencia artificial publicidad", tendencia: 92, descripcion: "Marcas buscando aplicar IA en campañas publicitarias. Búsqueda B2B alta.", geo: "CL" },
+      { termino: "video con IA", tendencia: 90, descripcion: "Búsqueda masiva de cómo producir video con IA, especialmente en LATAM. Crecimiento sostenido.", geo: "CL" },
+      { termino: "IA generativa Chile", tendencia: 85, descripcion: "Búsquedas de proveedores, capacitaciones y herramientas IA en Chile.", geo: "CL" },
+      { termino: "avatar IA", tendencia: 82, descripcion: "Interés creciente en portavoces y avatares digitales. Negocios y creadores.", geo: "CL" },
+      { termino: "automatización marketing", tendencia: 78, descripcion: "Demanda de flujos automáticos de contenido. Empresas buscando escalar producción.", geo: "CL" },
+      { termino: "animación IA", tendencia: 72, descripcion: "Producción de personajes y animación asistida por IA. Crecimiento en agencias.", geo: "CL" },
+      { termino: "lip sync IA", tendencia: 70, descripcion: "Doblaje y sincronía labial con IA como búsqueda de negocio. LATAM.", geo: "LATAM" },
+      { termino: "podcast con voz IA", tendencia: 65, descripcion: "Podcasts corporativos con voz sintética. Emergente en Chile.", geo: "CL" },
+      { termino: "fotografía producto IA", tendencia: 60, descripcion: "E-commerce buscando fotografía sin sesión de estudio. Tendencia emergente.", geo: "CL" },
+      { termino: "influencer IA Chile", tendencia: 58, descripcion: "Tras Josefa Sorel y Amanda Navarro en medios. Interés en crear avatares.", geo: "CL" }
+    ],
+    fuentes_busqueda_2026: [
+      { plataforma: "Google", porcentaje: 45, nota: "Aún dominante pero en caída sostenida en menores de 35" },
+      { plataforma: "TikTok / Instagram", porcentaje: 30, nota: "Social SEO: jóvenes buscan directamente en redes" },
+      { plataforma: "YouTube", porcentaje: 15, nota: "Tutoriales y casos de uso de herramientas IA" },
+      { plataforma: "LinkedIn", porcentaje: 8, nota: "Búsqueda B2B de proveedores y servicios creativos IA" },
+      { plataforma: "ChatGPT / IA", porcentaje: 2, nota: "Consultas directas a LLMs sobre proveedores (creciendo)" }
+    ]
+  },
+
+  // ══════════════════════════════════════════════════════
+  // ESTRATEGIAS DE COMPETIDORES — ANÁLISIS DETALLADO
+  // ══════════════════════════════════════════════════════
+  estrategias_competidores: [
+    {
+      empresa: "Neoart.ai / Neosonic",
+      canal_principal: "Instagram personal (@neoart.ai)",
+      contenido_tipo: "Virales de personajes históricos / celebrities con voz IA. Tributos emocionales.",
+      frecuencia: "Alta (2-4 posts/semana)",
+      cta_principal: "DM en Instagram / contacto web",
+      fortaleza: "86K seguidores personales distribuyen el contenido orgánicamente. Virales comprobados (2.4M vistas).",
+      debilidad: "Muy dependiente de la figura personal de Rodrigo Mardones. Contenido viral ≠ ventas B2B.",
+      diferencia_yutro: "YUTRO puede diferenciarse en calidad artística y dirección de arte — Neosonic prioriza el viral."
+    },
+    {
+      empresa: "Raio Studios",
+      canal_principal: "Web + WhatsApp directo",
+      contenido_tipo: "Portfolio de marcas reconocidas (Metro, Entel, Colo-Colo). Brochure digital descargable.",
+      frecuencia: "Evergreen (portafolio permanente, sin contenido nuevo en IG)",
+      cta_principal: "Brochure Digital + WhatsApp +56 9 9965 7200",
+      fortaleza: "Portfolio de marcas reconocidas genera credibilidad instantánea. Cierre directo sin nurturing.",
+      debilidad: "0 publicaciones en Instagram. No genera nuevo tráfico orgánico. Depende de referencias.",
+      diferencia_yutro: "YUTRO puede superarlos en presencia digital activa y generación de leads orgánicos."
+    },
+    {
+      empresa: "Lazotea",
+      canal_principal: "LinkedIn + Podcast 'Dios Salve a la Publicidad'",
+      contenido_tipo: "Artículos de opinión, consultoría de marca, casos de agencia publicitaria.",
+      frecuencia: "Semanal en LinkedIn, podcast quincenal",
+      cta_principal: "Reunión estratégica gratuita / consulta",
+      fortaleza: "Voz en la industria publicitaria. Los directores de marketing los conocen y confían.",
+      debilidad: "Más consultoría que producción. Poco contenido visual directo de resultado IA.",
+      diferencia_yutro: "YUTRO muestra el resultado final. Lazotea vende el proceso de consultoría."
+    },
+    {
+      empresa: "Studio Aberrante",
+      canal_principal: "Instagram + Medios de comunicación",
+      contenido_tipo: "Demos de influencers IA en acción. Josefa Sorel como caso de éxito viral.",
+      frecuencia: "Media (con apariciones en medios como amplificador)",
+      cta_principal: "DM en Instagram / cobertura en medios",
+      fortaleza: "El influencer IA se vende a sí mismo. Apariciones en 24horas.cl y adinfluence.cl.",
+      debilidad: "Modelo de negocio nicho. No escala a producción masiva fácilmente.",
+      diferencia_yutro: "YUTRO hace el video como servicio. Aberrante vende el personaje como activo."
+    },
+    {
+      empresa: "@pampisman",
+      canal_principal: "Instagram Reels + Nowadays Talent Agency",
+      contenido_tipo: "Tutoriales virales sobre herramientas IA, demos espectaculares, before/after.",
+      frecuencia: "Alta (3-5 reels/semana)",
+      cta_principal: "Link en bio / colaboraciones de marca gestionadas por agencia",
+      fortaleza: "738K seguidores. Genera demanda masiva. Forma futuros compradores del mercado.",
+      debilidad: "No ofrece servicios de producción directamente. Es educador, no productor.",
+      diferencia_yutro: "YUTRO ejecuta lo que pampisman enseña. Potencial colaboración de contenido."
+    },
+    {
+      empresa: "Wiwo",
+      canal_principal: "LinkedIn + PR en medios tech",
+      contenido_tipo: "Casos de automatización, growth hacking, resultados de performance marketing.",
+      frecuencia: "Alta en LinkedIn (diario/bi-diario)",
+      cta_principal: "Demo del producto / free trial",
+      fortaleza: "Respaldo NVIDIA + aparición en medios genera credibilidad tech y startup.",
+      debilidad: "No tiene propuesta de arte. El resultado visual no es su fuerte.",
+      diferencia_yutro: "YUTRO = calidad visual y dirección de arte. Wiwo = flujos de datos y conversiones."
+    },
+    {
+      empresa: "Raven",
+      canal_principal: "LinkedIn + Relaciones con grandes cuentas",
+      contenido_tipo: "Cases de performance marketing, expansión internacional, noticias de empresa.",
+      frecuencia: "Media en LinkedIn",
+      cta_principal: "Reunión ejecutiva / RFP",
+      fortaleza: "Trabaja directamente con Walmart, Santander, Entel. Expansión a Miami y Medio Oriente.",
+      debilidad: "Enfocado en performance, no en producción creativa de alta calidad.",
+      diferencia_yutro: "YUTRO puede ser el brazo creativo de Raven — no su competidor."
+    }
+  ],
+
+  // ══════════════════════════════════════════════════════
+  // MATRIZ DE SERVICIOS — YUTRO vs COMPETIDORES
+  // ══════════════════════════════════════════════════════
+  matriz_servicios: {
+    servicios: [
+      "Imágenes hiperrealistas IA",
+      "Video/Comerciales con IA",
+      "Avatares / Influencers Digitales",
+      "3D & Motion Graphics",
+      "VFX / Postproducción",
+      "Producto B2C (Studio/App)",
+      "Audio / Música / Sonido IA",
+      "Podcasts con voces sintéticas",
+      "Web en inglés",
+      "Clientes grandes comprobados"
+    ],
+    actores: [
+      { nombre: "YUTRO", servicios: [true, true, true, true, true, true, false, false, true, true] },
+      { nombre: "Neosonic", servicios: [true, true, true, false, false, false, true, true, false, true] },
+      { nombre: "IA Films", servicios: [true, true, false, false, true, false, false, false, true, false] },
+      { nombre: "Raio Studios", servicios: [true, true, true, true, true, false, true, true, false, true] },
+      { nombre: "Not-Artificial", servicios: [true, true, true, false, false, false, true, false, false, false] },
+      { nombre: "Antídoto 56", servicios: [true, true, false, true, true, false, false, false, true, true] }
+    ]
+  },
+
+  // ══════════════════════════════════════════════════════
+  // ESTRATEGIA Y PLAN RECOMENDADO YUTRO
+  // ══════════════════════════════════════════════════════
+  estrategia_yutro: {
+    posicionamiento: "Estudio de producción IA de autor — calidad broadcast, velocidad IA, identidad de marca. No 'hacemos IA': creamos con IA desde la dirección de arte.",
+    diferenciadores_clave: [
+      "Único con background de Director de Arte (no solo 'tech IA')",
+      "Único con producto B2C propio (YUTRO.studio)",
+      "Web bilingüe ES/EN → mercado regional abierto",
+      "Clientes de primer nivel: Santander, Falabella, Paris, MG Motors"
+    ],
+    canales_prioritarios: [
+      { canal: "Instagram Reels (@milivoy_ + @yutro_ia)", prioridad: 10, accion: "Demos de resultado: 'antes/después', process videos, casos reales. Activar @yutro_ia urgente.", frecuencia: "5x/semana" },
+      { canal: "WhatsApp Business", prioridad: 9, accion: "CTA principal en todas las plataformas. Catálogo de servicios. Respuesta < 2 horas.", frecuencia: "Siempre activo" },
+      { canal: "LinkedIn", prioridad: 8, accion: "Cases con métricas, artículos de opinión sobre IA en producción. Canal B2B.", frecuencia: "3x/semana" },
+      { canal: "TikTok", prioridad: 7, accion: "Contenido viral sobre IA creativa, tutoriales rápidos, demos de herramientas.", frecuencia: "3x/semana" },
+      { canal: "YouTube (Shorts + Long)", prioridad: 6, accion: "Behind the scenes, tutoriales de proceso, demos de producción completa.", frecuencia: "2x/semana" }
+    ],
+    formatos_ganadores: [
+      "Antes/Después con el mismo brief (producción tradicional vs YUTRO IA)",
+      "Time-lapse de producción: 8 horas condensadas en 60 segundos",
+      "Pack de redes completo generado en 1 día — mostrar el proceso",
+      "Reacción de cliente al ver su video IA por primera vez",
+      "Comparativa de costo: 'esto costaría $X con agencia — YUTRO lo hizo en $Y'"
+    ],
+    acciones_corto_plazo: [
+      "Documentar métricas de proyectos (views, alcance, resultados) y publicarlos como casos de éxito",
+      "Activar @yutro_ia con estrategia de contenido — actualmente @milivoy_ lleva todo el peso solo",
+      "Posicionarse explícitamente como 'estudio de dirección de arte con IA' — nadie más usa ese ángulo"
+    ],
+    acciones_mediano_plazo: [
+      "Evaluar alianza con estudio de audio/sonido IA (complementa sin competir con Raio/Neosonic)",
+      "Escalar YUTRO.studio con modelo freemium o suscripción mensual",
+      "Atacar el mercado de agencias como proveedor de producción IA (modelo Neosonic con Trópico/Feels)"
+    ],
+    acciones_largo_plazo: [
+      "Expansión regional — web en inglés ya está, falta el contenido y estrategia de adquisición",
+      "Certificaciones o partners (Adobe, Midjourney, RunwayML) para diferenciar credibilidad técnica",
+      "Crear un personaje IA propio como activo de marca (validado por Studio Aberrante)"
+    ],
+    gaps_oportunidad: [
+      { gap: "Fotografía IA de productos", descripcion: "Nadie la ofrece especializado en Chile. E-commerce necesita esto urgente.", demanda: "Alta" },
+      { gap: "Doblaje multiidioma", descripcion: "Expansión regional sin re-producción. Mercado LATAM sin cobertura.", demanda: "Media-Alta" },
+      { gap: "Podcasts corporativos automatizados", descripcion: "Mercado corporativo sin competidor especializado en Chile.", demanda: "Media-Alta" },
+      { gap: "UGC con actores digitales", descripcion: "Performance marketing, eCommerce. Mayor ROI en paid media.", demanda: "Muy Alta" },
+      { gap: "Música / jingles IA", descripcion: "Nadie especializado en Chile. Marcas necesitan identidad sonora.", demanda: "Media" },
+      { gap: "CGI / Visualización 3D de productos", descripcion: "Automotriz, inmobiliaria, tecnología. Alto ticket, bajo competidor.", demanda: "Media" },
+      { gap: "Motion graphics automatizados", descripcion: "Titulaciones, lower thirds, plantillas dinámicas. Broadcasting y streaming.", demanda: "Alta" }
+    ]
+  }
+};
+
+</script>
+<style>
+  /* ═══════════════════════════════════════════════
+     YUTRO — DESIGN SYSTEM  |  YUTRO Estudio
+     Warm cream editorial × Archivo 800 × #ff7404
+     ══════════════════════════════════════════════ */
+  :root {
+    --bg:           oklch(0.95 0.018 77);   /* warm cream paper */
+    --bg2:          oklch(0.97 0.012 75);   /* elevated surface */
+    --bg3:          oklch(0.91 0.020 77);   /* sunken surface */
+    --border:       oklch(0.84 0.016 77);   /* warm divider */
+    --border-strong: oklch(0.70 0.018 77);
+    --accent:       #ff7404;
+    --accent2:      #ff7404;
+    --accent3:      #ff9a3c;
+    --green:        #1a7a4a;
+    --yellow:       #b45309;
+    --red:          #c0392b;
+    --blue:         #2563b0;
+    --text:         oklch(0.13 0 0);        /* near-black ink */
+    --text2:        oklch(0.42 0 0);        /* secondary */
+    --text3:        oklch(0.60 0 0);        /* muted */
+    --card:         oklch(0.97 0.012 75);
+    --card-border:  oklch(0.84 0.016 77);
+    --glow:         rgba(255,116,4,0.08);
+    --glow-strong:  rgba(255,116,4,0.15);
+
+    --display: "Archivo", "Helvetica Neue", system-ui, sans-serif;
+    --mono:    "JetBrains Mono", ui-monospace, "SF Mono", monospace;
+    --sans:    "Inter", system-ui, sans-serif;
+  }
+
+<style>
+  /* ═══════════════════════════════════════════════
+     YUTRO — DESIGN SYSTEM  |  Estudio Edition
+     Warm cream × Archivo 800 × #ff7404 editorial
+     ══════════════════════════════════════════════ */
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* Display font for headings */
+  h1, h2, h3,
+  .logo-text, .page-title, .comp-name,
+  .est-header, .precio-cat-header,
+  .stat-value, .card-value, .tend-num {
+    font-family: var(--display);
+  }
+
+  /* ─── SECTION ENTRANCE ANIMATION ──────────────── */
+  @keyframes yutroFadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* LAYOUT */
+  .layout { display: flex; min-height: 100vh; }
+  .sidebar {
+    width: 228px;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    position: fixed; top: 0; left: 0; height: 100vh;
+    display: flex; flex-direction: column; z-index: 100;
+  }
+  .main { margin-left: 228px; flex: 1; }
+
+  /* ─── SIDEBAR ──────────────────────────────────── */
+  .sidebar-logo {
+    padding: 24px 20px 20px;
+    border-bottom: 2px solid var(--text);
+  }
+
+  .logo-text {
+    font-family: var(--display);
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+    color: var(--text);
+    line-height: 1;
+  }
+  .logo-y { color: var(--accent); font-style: italic; }
+
+  .logo-sub {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--text3);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-top: 6px;
+    font-weight: 500;
+  }
+
+  .sidebar-nav { padding: 8px 0; flex: 1; overflow-y: auto; }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 20px;
+    cursor: pointer;
+    color: var(--text3);
+    font-size: 12px;
+    font-weight: 500;
+    border-left: 2px solid transparent;
+    transition: color .12s, background .12s, border-color .12s;
+    letter-spacing: -0.005em;
+  }
+  .nav-item:hover {
+    color: var(--text);
+    background: var(--bg3);
+    border-left-color: var(--border-strong);
+  }
+  .nav-item.active {
+    color: var(--bg);
+    background: var(--text);
+    border-left-color: var(--accent);
+    font-weight: 600;
+  }
+
+  .nav-icon { font-size: 14px; width: 18px; text-align: center; flex-shrink: 0; }
+
+  .sidebar-meta {
+    padding: 14px 20px;
+    border-top: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--text3);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  /* ─── HEADER ───────────────────────────────────── */
+  .page-header {
+    padding: 32px 36px 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 24px;
+  }
+  .page-title {
+    font-family: var(--display);
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    color: var(--text);
+    line-height: 0.95;
+  }
+  .page-title em { font-style: italic; color: var(--accent); }
+  .page-subtitle {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    margin-top: 8px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--accent);
+    color: #fff;
+    border: 0;
+    padding: 5px 12px;
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  /* ─── SECTIONS ─────────────────────────────────── */
+  .section { display: none; padding: 28px 36px 56px; }
+  .section.active {
+    display: block;
+    animation: yutroFadeUp .22s ease;
+  }
+
+  /* ─── GRIDS ────────────────────────────────────── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; background: var(--border); }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); }
+
+  /* ─── CARD ─────────────────────────────────────── */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    padding: 20px;
+    transition: border-color .15s;
+  }
+  .card:hover { border-color: var(--accent); }
+  .card-title {
+    font-family: var(--mono);
+    font-size: 9.5px;
+    font-weight: 500;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    margin-bottom: 8px;
+  }
+  .card-value {
+    font-family: var(--display);
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+  .card-desc { font-size: 12px; color: var(--text2); margin-top: 4px; }
+  .card h3 {
+    font-family: var(--display);
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    margin-bottom: 12px;
+  }
+
+  /* ─── STAT CARDS ───────────────────────────────── */
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    padding: 20px;
+    transition: border-color .15s;
+  }
+  .stat-card:hover { border-color: var(--accent); }
+  .stat-value {
+    font-family: var(--display);
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--accent);
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+  .stat-label { font-size: 12px; color: var(--text2); margin-top: 8px; }
+  .stat-source {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--text3);
+    margin-top: 4px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  /* ─── SECTION TITLE ────────────────────────────── */
+  .section-title {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 500;
+    margin: 36px 0 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--text3);
+    border-top: 1px solid var(--border);
+    padding-top: 14px;
+  }
+  .section-title::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+  .section-title::after { display: none; }
+
+  /* ─── TABLE ────────────────────────────────────── */
+  .table-wrap { overflow-x: auto; border: 1px solid var(--card-border); }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th {
+    background: var(--bg3);
+    color: var(--text3);
+    font-family: var(--mono);
+    font-size: 9.5px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 2px solid var(--text);
+  }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--bg3); }
+
+  /* ─── AMENAZA BAR ──────────────────────────────── */
+  .amenaza-bar { display: flex; align-items: center; gap: 8px; }
+  .bar-track { flex: 1; height: 4px; background: var(--border); overflow: hidden; min-width: 80px; }
+  .bar-fill { height: 100%; transition: width .4s ease; }
+  .bar-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+    width: 20px;
+    text-align: right;
+  }
+
+  /* ─── TAGS ─────────────────────────────────────── */
+  .tag {
+    display: inline-block;
+    padding: 2px 7px;
+    font-family: var(--mono);
+    font-size: 9.5px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .tag-red    { background: rgba(180,40,40,.08);  color: #a03030; border: 1px solid rgba(180,40,40,.25); }
+  .tag-yellow { background: rgba(160,100,0,.08);  color: #8a5800; border: 1px solid rgba(160,100,0,.2); }
+  .tag-green  { background: rgba(20,100,60,.08);  color: #1a6040; border: 1px solid rgba(20,100,60,.2); }
+  .tag-blue   { background: rgba(30,80,160,.08);  color: #1a4fa0; border: 1px solid rgba(30,80,160,.2); }
+  .tag-purple { background: rgba(255,116,4,.10);  color: var(--accent); border: 1px solid rgba(255,116,4,.3); }
+
+  /* ─── COMPETIDOR CARD ──────────────────────────── */
+  .comp-card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: border-color .15s;
+  }
+  .comp-card:hover { border-color: var(--accent); }
+  .comp-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+  .comp-name {
+    font-family: var(--display);
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+  }
+  .comp-tipo {
+    font-family: var(--mono);
+    font-size: 9.5px;
+    color: var(--text3);
+    margin-top: 3px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .comp-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+  .comp-body { font-size: 12px; color: var(--text2); line-height: 1.6; }
+  .comp-obs {
+    font-size: 11px;
+    color: var(--text3);
+    background: var(--bg3);
+    padding: 8px 10px;
+    border-left: 3px solid var(--accent);
+    margin-top: 4px;
+  }
+
+  /* ─── PRECIO CATEGORY ──────────────────────────── */
+  .precio-cat { background: var(--card); border: 1px solid var(--card-border); margin-bottom: 20px; overflow: hidden; }
+  .precio-cat-header {
+    padding: 14px 20px;
+    background: var(--bg3);
+    border-bottom: 2px solid var(--text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--display);
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  .precio-cat table { font-size: 12px; }
+  .precio-cat th, .precio-cat td { padding: 8px 14px; }
+  .price-trad  { color: var(--red);    font-weight: 600; }
+  .price-ia    { color: var(--green);  font-weight: 600; }
+  .price-yutro { color: var(--accent); font-family: var(--display); font-weight: 800; }
+
+  /* ─── TENDENCIA ROW ────────────────────────────── */
+  .tend-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .tend-item:last-child { border-bottom: none; }
+  .tend-icon { font-size: 18px; width: 28px; text-align: center; }
+  .tend-label {
+    font-family: var(--display);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    flex: 1;
+  }
+  .tend-desc { font-size: 12px; color: var(--text2); }
+  .tend-bar { width: 120px; height: 4px; background: var(--border); overflow: hidden; }
+  .tend-fill { height: 100%; background: var(--accent); }
+  .tend-num {
+    font-family: var(--display);
+    font-size: 14px;
+    font-weight: 900;
+    color: var(--accent);
+    width: 32px;
+    text-align: right;
+    letter-spacing: -0.02em;
+  }
+
+  /* ─── ESTRATEGIA CARD ──────────────────────────── */
+  .est-card { background: var(--card); border: 1px solid var(--card-border); padding: 18px; }
+  .est-header {
+    font-family: var(--display);
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .est-row { display: flex; gap: 8px; margin-bottom: 8px; font-size: 12px; }
+  .est-key {
+    font-family: var(--mono);
+    font-size: 9.5px;
+    color: var(--text3);
+    min-width: 120px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding-top: 1px;
+  }
+  .est-val { color: var(--text2); flex: 1; }
+  .est-highlight { background: rgba(20,100,60,.06); border: 1px solid rgba(20,100,60,.18); padding: 8px 10px; font-size: 12px; color: #1a6040; }
+  .est-warn { background: rgba(160,100,0,.06); border: 1px solid rgba(160,100,0,.18); padding: 8px 10px; font-size: 12px; color: #8a5800; }
+  .est-action {
+    background: rgba(255,116,4,.06);
+    border: 1px solid rgba(255,116,4,.2);
+    padding: 8px 10px;
+    font-size: 12px;
+    color: var(--accent);
+    margin-top: 8px;
+  }
+
+  /* ─── CHANNEL PRIORITY ─────────────────────────── */
+  .ch-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .ch-item:last-child { border-bottom: none; }
+  .ch-name {
+    font-family: var(--display);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    min-width: 160px;
+  }
+  .ch-bar { flex: 1; height: 4px; background: var(--border); overflow: hidden; }
+  .ch-fill { height: 100%; background: var(--accent); }
+  .ch-freq {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    min-width: 100px;
+    text-align: right;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .ch-accion { font-size: 12px; color: var(--text2); margin-top: 4px; }
+
+  /* ─── GAP CARDS ────────────────────────────────── */
+  .gap-item { background: var(--bg3); border: 1px solid var(--border); padding: 12px 14px; font-size: 13px; display: flex; align-items: flex-start; gap: 8px; }
+  .gap-icon { color: var(--accent); font-size: 14px; }
+  .gap-list { display: flex; flex-direction: column; gap: 8px; }
+
+  /* ─── CHARTS ───────────────────────────────────── */
+  .chart-container { position: relative; padding: 20px; background: var(--card); border: 1px solid var(--card-border); }
+
+  /* ─── FILTROS ───────────────────────────────────── */
+  .filters { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+  .filter-btn {
+    padding: 5px 12px;
+    border: 1px solid var(--border-strong);
+    background: var(--bg2);
+    color: var(--text3);
+    font-family: var(--mono);
+    font-size: 9.5px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all .12s;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .filter-btn:hover { border-color: var(--text); color: var(--text); }
+  .filter-btn.active { background: var(--text); border-color: var(--text); color: var(--bg); }
+
+  /* ─── SEÑALES DEMANDA ──────────────────────────── */
+  .senal-item {
+    display: flex; gap: 14px; padding: 14px;
+    background: var(--card); border: 1px solid var(--card-border);
+    margin-bottom: 8px; transition: border-color .12s;
+  }
+  .senal-item:hover { border-color: var(--accent); }
+  .senal-icon { font-size: 18px; }
+  .senal-body { flex: 1; }
+  .senal-tipo {
+    font-family: var(--mono);
+    font-size: 9.5px;
+    font-weight: 500;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+  }
+  .senal-desc { font-size: 13px; margin-top: 3px; color: var(--text); }
+  .senal-meta { display: flex; gap: 12px; margin-top: 6px; font-size: 11px; color: var(--text3); }
+  .senal-estado { font-weight: 600; font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .senal-estado.activa { color: var(--green); }
+  .senal-estado.oportunidad { color: var(--accent); }
+
+  /* ─── SCROLLBAR ─────────────────────────────────── */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg3); }
+  ::-webkit-scrollbar-thumb { background: var(--border-strong); }
+  ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+  /* ─── TOOLTIP ───────────────────────────────────── */
+  .chartjs-tooltip { border-radius: 0 !important; }
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-text"><span class="logo-y">Y</span>UTRO</div>
+      <div class="logo-sub">Inteligencia Competitiva</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-item active" onclick="showSection('competidores')">
+        <span class="nav-icon">🏢</span> Competidores
+      </div>
+      <div class="nav-item" onclick="showSection('mercado')">
+        <span class="nav-icon">📊</span> Mercado
+      </div>
+      <div class="nav-item" onclick="showSection('precios')">
+        <span class="nav-icon">💰</span> Precios
+      </div>
+      <div class="nav-item" onclick="showSection('tarifario')">
+        <span class="nav-icon">🧾</span> Tarifario
+      </div>
+      <div class="nav-item" onclick="showSection('tendencias')">
+        <span class="nav-icon">📈</span> Tendencias
+      </div>
+      <div class="nav-item" onclick="showSection('estrategias')">
+        <span class="nav-icon">🎯</span> Estrategias
+      </div>
+      <div class="nav-item" onclick="showSection('yutro')">
+        <span class="nav-icon">⚡</span> YUTRO Plan
+      </div>
+      <div class="nav-item" onclick="showSection('marketing-ia')" style="border-top:1px solid var(--border);margin-top:8px;padding-top:16px">
+        <span class="nav-icon">🚀</span> Marketing IA
+      </div>
+    </nav>
+    <div class="sidebar-meta">
+      🗓️ Actualización: <strong>Mayo 2026</strong><br>
+      Próxima revisión: Agosto 2026
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- SECCIÓN: COMPETIDORES -->
+    <!-- ══════════════════════════════════════════ -->
+    <section id="sec-competidores" class="section active">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Mapa de Competidores</h1>
+          <p class="page-subtitle">Actores del ecosistema IA creativa Chile — actualizado Mayo 2026</p>
+        </div>
+        <span class="badge">🇨🇱 Chile</span>
+      </div>
+
+      <!-- Radar chart -->
+      <div class="section-title">Vista Global de Amenazas</div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">Nivel de Amenaza por Actor</div>
+          <canvas id="chartAmenaza" height="200"></canvas>
+        </div>
+        <div class="card">
+          <div class="card-title">Distribución por Tipo</div>
+          <canvas id="chartTipos" height="200"></canvas>
+        </div>
+      </div>
+
+      <!-- Tabla resumen -->
+      <div class="section-title">Tabla de Competidores</div>
+      <div class="filters" id="filtros-comp">
+        <button class="filter-btn active" onclick="filterComp('todos', this)">Todos</button>
+        <button class="filter-btn" onclick="filterComp('Estudio', this)">Estudios IA</button>
+        <button class="filter-btn" onclick="filterComp('Agencia', this)">Agencias</button>
+        <button class="filter-btn" onclick="filterComp('Creador', this)">Creadores</button>
+        <button class="filter-btn" onclick="filterComp('Freelancer', this)">Freelancers</button>
+        <button class="filter-btn" onclick="filterComp('Influencer IA', this)">Influencers IA</button>
+      </div>
+      <div class="table-wrap">
+        <table id="tabla-competidores">
+          <thead>
+            <tr>
+              <th>Empresa / Handle</th>
+              <th>Tipo</th>
+              <th>IG Seguidores</th>
+              <th>Amenaza</th>
+              <th>Especialidad</th>
+              <th>Canales</th>
+              <th>Precio</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-competidores"></tbody>
+        </table>
+      </div>
+
+      <!-- Cards de competidores -->
+      <div class="section-title">Fichas Detalladas</div>
+      <div class="grid-2" id="cards-competidores"></div>
+    </section>
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- SECCIÓN: MERCADO -->
+    <!-- ══════════════════════════════════════════ -->
+    <section id="sec-mercado" class="section">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Análisis de Mercado</h1>
+          <p class="page-subtitle">Tamaño, demanda y sectores compradores — Chile 2026</p>
+        </div>
+        <span class="badge">📊 IAB Chile 2026</span>
+      </div>
+
+      <!-- KPIs -->
+      <div class="section-title">Métricas Clave</div>
+      <div id="kpis-mercado" class="grid-3"></div>
+
+      <!-- Sectores -->
+      <div class="section-title">Demanda por Sector</div>
+      <div class="grid-2">
+        <div class="card">
+          <canvas id="chartSectores" height="250"></canvas>
+        </div>
+        <div class="card">
+          <div class="card-title">Tendencias 2026 — Impacto en YUTRO</div>
+          <div id="lista-tendencias"></div>
+        </div>
+      </div>
+
+      <!-- Perfiles de compradores -->
+      <div class="section-title">Perfiles del Comprador Tipo</div>
+      <div class="grid-2" id="perfiles-compradores"></div>
+
+      <!-- Barreras adopción -->
+      <div class="section-title">Barreras de Adopción — Por Qué Todavía No Compran</div>
+      <div class="table-wrap" style="margin-bottom:20px">
+        <table id="tabla-barreras">
+          <thead><tr><th>Barrera</th><th>Nivel afectación</th><th>Cómo YUTRO la neutraliza</th></tr></thead>
+          <tbody id="tbody-barreras"></tbody>
+        </table>
+      </div>
+
+      <!-- Señales de demanda -->
+      <div class="section-title">Señales de Demanda Real — Documentadas</div>
+      <div id="senales-demanda"></div>
+
+      <!-- Timeline de mercado -->
+      <div class="section-title">Ventana de Oportunidad</div>
+      <div id="timeline-mercado"></div>
+    </section>
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- SECCIÓN: PRECIOS -->
+    <!-- ══════════════════════════════════════════ -->
+    <section id="sec-precios" class="section">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Tarifario de Mercado</h1>
+          <p class="page-subtitle">Tradicional vs IA vs posicionamiento YUTRO — todos los valores en USD</p>
+        </div>
+        <span class="badge">💲 USD 2026</span>
+      </div>
+
+      <div class="section-title">Comparativa General por Categoría</div>
+      <div class="card" style="margin-bottom:20px">
+        <canvas id="chartPrecios" height="180"></canvas>
+      </div>
+
+      <div class="section-title">Desglose por Categoría de Servicio</div>
+      <div id="tablas-precios"></div>
+    </section>
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- SECCIÓN: TARIFARIO -->
+    <!-- ══════════════════════════════════════════ -->
+    <section id="sec-tarifario" class="section">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">🧾 Tarifario YUTRO — Análisis vs. Mercado</h1>
+          <p class="page-subtitle">Comparativa de tus precios reales vs. mercado IA LATAM 2026 (CLP y USD)</p>
+        </div>
+        <div style="background:var(--surface2);border-radius:10px;padding:10px 16px;font-size:12px;color:var(--text-muted)">
+          Todos los valores en CLP · TC ref: $950/USD · Mayo 2026
+        </div>
+      </div>
+
+      <!-- Resumen ejecutivo -->
+      <div class="grid-4" id="tarifario-summary"></div>
+
+      <!-- Tabla completa -->
+      <div class="section-title">Análisis Item por Item</div>
+      <div class="card" style="padding:0;overflow:hidden">
+        <table id="tabla-tarifario" style="width:100%;border-collapse:collapse;font-size:12px">
+          <thead>
+            <tr style="background:var(--surface2)">
+              <th style="padding:10px 14px;text-align:left;color:var(--text-muted);font-weight:600">Categoría / Servicio</th>
+              <th style="padding:10px 14px;text-align:right;color:var(--text-muted);font-weight:600">YUTRO (CLP)</th>
+              <th style="padding:10px 14px;text-align:right;color:var(--text-muted);font-weight:600">Mercado IA (CLP)</th>
+              <th style="padding:10px 14px;text-align:center;color:var(--text-muted);font-weight:600">Posición</th>
+              <th style="padding:10px 14px;text-align:left;color:var(--text-muted);font-weight:600">Observación</th>
+            </tr>
+          </thead>
+          <tbody id="tarifario-tbody"></tbody>
+        </table>
+      </div>
+
+      <!-- Items faltantes -->
+      <div class="section-title">Servicios No Tarifados — Oportunidades de Precio</div>
+      <div class="grid-2" id="tarifario-missing"></div>
+    </section>
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- SECCIÓN: TENDENCIAS -->
+    <!-- ══════════════════════════════════════════ -->
+    <section id="sec-tendencias" class="section">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Tendencias & Google Trends</h1>
+          <p class="page-subtitle">Qué está buscando el mercado — señales digitales Chile 2026</p>
+        </div>
+        <span class="badge">📡 Live data</span>
+      </div>
+
+      <!-- Términos en alza -->
+      <div class="section-title">Términos en Alza — Búsquedas IA Chile</div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">Interés relativo de búsqueda (índice 0-100)</div>
+          <div id="lista-trends"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Dónde buscan los clientes en 2026</div>
+          <canvas id="chartFuentesBusqueda" height="220"></canvas>
+        </div>
+      </div>
+
+      <!-- Tendencias de industria -->
+      <div class="section-title">Tendencias Estructurales 2026 — IAB Chile</div>
+      <div class="grid-2" id="cards-tendencias"></div>
+
+      <!-- Google Trends links -->
+      <div class="section-title">Explorar en Google Trends — Chile (últimos 12 meses)</div>
+      <div class="card">
+        <p style="color:var(--text-muted);font-size:0.85rem;margin-bottom:1.2rem;">
+          Google Trends no permite incrustar su gráfico en sitios externos. Haz clic en cualquier término para abrirlo directamente en Google Trends con el filtro Chile aplicado.
+        </p>
+        <div id="gt-links-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:0.75rem;"></div>
+      </div>
+
+      <!-- Análisis detallado por término -->
+      <div class="section-title">Análisis Detallado por Término — Contexto Chile 2025–2026</div>
+      <div id="gt-analysis"></div>
+    </section>
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- SECCIÓN: ESTRATEGIAS -->
+    <!-- ══════════════════════════════════════════ -->
+    <section id="sec-estrategias" class="section">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Estrategias de Competidores</h1>
+          <p class="page-subtitle">Cómo llegan a sus clientes — canales, formatos y puntos de contacto</p>
+        </div>
+      </div>
+
+      <div class="section-title">Análisis por Empresa</div>
+      <div id="cards-estrategias" class="grid-2"></div>
+
+      <!-- Comparativa canales -->
+      <div class="section-title">Canales de Adquisición — Mapa Comparativo</div>
+      <div class="card">
+        <canvas id="chartCanales" height="200"></canvas>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- SECCIÓN: YUTRO PLAN -->
+    <!-- ══════════════════════════════════════════ -->
+    <section id="sec-yutro" class="section">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">⚡ YUTRO — Plan de Acción</h1>
+          <p class="page-subtitle">Posicionamiento, canales prioritarios y gaps de oportunidad</p>
+        </div>
+      </div>
+
+      <!-- Posicionamiento -->
+      <div class="section-title">Posicionamiento Estratégico</div>
+      <div class="card" style="border-left: 4px solid var(--accent); padding: 24px;">
+        <div style="font-size:18px; font-weight:700; color:var(--accent3); margin-bottom:8px;">
+          "Estudio de producción IA de autor"
+        </div>
+        <div style="font-size:14px; color:var(--text2); line-height:1.6;" id="posicionamiento-text"></div>
+      </div>
+
+      <!-- Canales prioritarios -->
+      <div class="section-title">Canales Prioritarios (por impacto)</div>
+      <div class="card" id="canales-yutro"></div>
+
+      <!-- Formatos ganadores + Gaps -->
+      <div class="section-title">Formatos de Contenido Ganadores</div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">Tipos de contenido con mayor conversión</div>
+          <div id="formatos-list" style="margin-top:8px; display:flex; flex-direction:column; gap:8px;"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Gaps de oportunidad — sin competidor claro en CL</div>
+          <div id="gaps-list" style="margin-top:8px;"></div>
+        </div>
+      </div>
+
+      <!-- Plan de acciones por plazo -->
+      <div class="section-title">Plan de Acciones por Plazo</div>
+      <div class="grid-3" id="acciones-plazos"></div>
+
+      <!-- Diferenciadores clave -->
+      <div class="section-title">Diferenciadores Clave YUTRO</div>
+      <div class="grid-2" id="diferenciadores"></div>
+
+      <!-- Principio de precio -->
+      <div class="section-title">Principio de Precio YUTRO</div>
+      <div class="card" style="background: linear-gradient(135deg, rgba(255,107,0,.08), rgba(255,140,26,.03)); border-color: rgba(255,107,0,.25);">
+        <p style="font-size:16px; line-height:1.7; color:var(--text);">
+          El cliente no paga por Midjourney — <strong>paga por saber qué pedir, cómo hacerlo funcionar y garantía de resultado.</strong><br>
+          No competir en precio de herramienta. <strong>Competir en calidad de criterio creativo, velocidad de entrega y resultado de negocio.</strong>
+        </p>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════ -->
+    <!-- MARKETING IA — Generador de Prompts Estratégicos  -->
+    <!-- ══════════════════════════════════════════════════ -->
+    <section id="sec-marketing-ia" class="section">
+      <div class="section-title">🚀 Marketing IA — Centro de Estrategia</div>
+
+      <!-- Explicación de cómo funciona -->
+      <div class="card" style="background:linear-gradient(135deg,rgba(251,146,60,.08),rgba(249,115,22,.03));border-color:rgba(251,146,60,.3);margin-bottom:24px;">
+        <div style="display:flex;align-items:flex-start;gap:16px;">
+          <div style="font-size:32px;flex-shrink:0;">⚡</div>
+          <div>
+            <div style="font-weight:700;font-size:15px;color:var(--accent);margin-bottom:6px;">Cómo usar este generador</div>
+            <p style="color:var(--text-muted);line-height:1.7;margin:0;">
+              Cada botón genera un <strong style="color:var(--text);">prompt estratégico</strong> pre-cargado con datos reales de YUTRO
+              (competidores, precios, brechas, tendencias). Haz clic → se copia al portapapeles → pega en Claude Code → ejecuta
+              <code style="background:rgba(255,255,255,.1);padding:2px 6px;border-radius:4px;color:var(--accent);">/marketing-skills</code>
+              o <code style="background:rgba(255,255,255,.1);padding:2px 6px;border-radius:4px;color:var(--accent);">/gtm-strategy</code>
+              para activar las skills instaladas con contexto completo de tu negocio.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats rápidos -->
+      <div id="mia-stats" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:28px;"></div>
+
+      <!-- Grid de acciones por categoría -->
+      <div id="mia-grid"></div>
+
+      <!-- Toast de confirmación -->
+      <div id="mia-toast" style="position:fixed;bottom:32px;right:32px;background:var(--accent);color:#000;padding:12px 20px;border-radius:8px;font-weight:700;font-size:14px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:9999;">
+        ✅ Prompt copiado — pega en Claude Code
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+// ─── NAVEGACIÓN ────────────────────────────────────
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('sec-' + id).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+// ─── COLOR UTILS ──────────────────────────────────
+function amenazaColor(n) {
+  if (n >= 8) return '#ef4444';
+  if (n >= 6) return '#f59e0b';
+  if (n >= 4) return '#3b82f6';
+  return '#10b981';
+}
+function amenazaTag(n) {
+  if (n >= 9) return '<span class="tag tag-red">Muy Alta</span>';
+  if (n >= 7) return '<span class="tag tag-red">Alta</span>';
+  if (n >= 5) return '<span class="tag tag-yellow">Media-alta</span>';
+  if (n >= 3) return '<span class="tag tag-blue">Media</span>';
+  return '<span class="tag tag-green">Baja</span>';
+}
+function precioTag(p) {
+  const map = { 'Alto': 'tag-red', 'Medio-alto': 'tag-yellow', 'Medio': 'tag-blue', 'Premium': 'tag-purple', 'Influencer': 'tag-green', 'Influencer / variable': 'tag-green', 'Freelance': 'tag-green', 'Variable': 'tag-blue' };
+  return `<span class="tag ${map[p]||'tag-blue'}">${p}</span>`;
+}
+function fmtNum(n) {
+  if (!n) return '—';
+  if (n >= 1000000) return (n/1000000).toFixed(1)+'M';
+  if (n >= 1000) return (n/1000).toFixed(0)+'K';
+  return n.toString();
+}
+
+const D = DASHBOARD_DATA;
+
+// ─── COMPETIDORES ─────────────────────────────────
+function renderCompetidores() {
+  // Tabla
+  const tbody = document.getElementById('tbody-competidores');
+  tbody.innerHTML = D.competidores.map(c => `
+    <tr data-tipo="${c.tipo}" data-segmento="${c.segmento}">
+      <td>
+        <strong>${c.nombre}</strong><br>
+        <small style="color:var(--text3)">${c.handle && c.handle !== '—' ? c.handle : c.web}</small>
+      </td>
+      <td><span style="font-size:11px;color:var(--text2)">${c.tipo}</span></td>
+      <td style="font-weight:600;color:var(--accent3)">${fmtNum(c.ig_seguidores)}</td>
+      <td>
+        <div class="amenaza-bar">
+          <div class="bar-track"><div class="bar-fill" style="width:${c.amenaza*10}%;background:${amenazaColor(c.amenaza)}"></div></div>
+          <span class="bar-num" style="color:${amenazaColor(c.amenaza)}">${c.amenaza}</span>
+        </div>
+      </td>
+      <td style="max-width:180px;font-size:11px;color:var(--text2)">${c.especialidad.substring(0,80)}${c.especialidad.length>80?'…':''}</td>
+      <td>${c.canales.slice(0,3).map(ch => `<span class="tag tag-blue" style="margin:1px 2px;font-size:10px">${ch}</span>`).join('')}</td>
+      <td>${precioTag(c.precio_rango)}</td>
+    </tr>
+  `).join('');
+
+  // Cards — sólo los que no son "A monitorear"
+  const cards = document.getElementById('cards-competidores');
+  cards.innerHTML = D.competidores.filter(c => c.segmento !== 'A monitorear').map(c => `
+    <div class="comp-card">
+      <div class="comp-header">
+        <div>
+          <div class="comp-name">${c.nombre}</div>
+          <div class="comp-tipo">${c.tipo} · ${c.pais} ${c.ig_seguidores ? '· IG: '+fmtNum(c.ig_seguidores) : ''}</div>
+        </div>
+        <div>${amenazaTag(c.amenaza)}</div>
+      </div>
+      <div class="comp-tags">
+        ${c.canales.map(ch => `<span class="tag tag-blue" style="font-size:10px">${ch}</span>`).join('')}
+        ${precioTag(c.precio_rango)}
+      </div>
+      <div class="comp-body">
+        <strong>Especialidad:</strong> ${c.especialidad}<br>
+        <strong>Diferenciación:</strong> ${c.diferenciacion}
+      </div>
+      <div class="comp-obs">${c.observacion}</div>
+    </div>
+  `).join('');
+
+  // Chart amenaza — top 12 por amenaza, excluyendo "A monitorear"
+  const topComp = [...D.competidores]
+    .filter(c => c.segmento !== 'A monitorear')
+    .sort((a,b) => b.amenaza - a.amenaza)
+    .slice(0, 12);
+  const labels = topComp.map(c => c.nombre.length > 16 ? c.nombre.substring(0,16)+'…' : c.nombre);
+  const valores = topComp.map(c => c.amenaza);
+  const colors = valores.map(amenazaColor);
+  new Chart(document.getElementById('chartAmenaza'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Nivel de amenaza (0-10)',
+        data: valores,
+        backgroundColor: colors.map(c => c + '44'),
+        borderColor: colors,
+        borderWidth: 2,
+        borderRadius: 6
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false }, tooltip: {
+        callbacks: { afterLabel: ctx => topComp[ctx.dataIndex].observacion }
+      }},
+      scales: {
+        y: { min: 0, max: 10, grid: { color: '#2a2a3a' }, ticks: { color: '#64748b' } },
+        x: { grid: { display: false }, ticks: { color: '#94a3b8', font: { size: 10 }, maxRotation: 30 } }
+      }
+    }
+  });
+
+  // Chart segmentos
+  const segCount = {};
+  D.competidores.filter(c => c.segmento !== 'A monitorear').forEach(c => {
+    segCount[c.segmento] = (segCount[c.segmento]||0) + 1;
+  });
+  new Chart(document.getElementById('chartTipos'), {
+    type: 'doughnut',
+    data: {
+      labels: Object.keys(segCount),
+      datasets: [{
+        data: Object.values(segCount),
+        backgroundColor: ['#FF6B00','#ef4444','#3b82f6','#10b981','#f59e0b','#FF8C1A','#06b6d4'],
+        borderWidth: 0,
+        hoverOffset: 8
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'right', labels: { color: '#94a3b8', font: { size: 11 }, boxWidth: 12 } }
+      }
+    }
+  });
+}
+
+// ─── FILTRO COMPETIDORES ──────────────────────────
+function filterComp(seg, btn) {
+  document.querySelectorAll('#filtros-comp .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('#tabla-competidores tbody tr').forEach(tr => {
+    const match = seg === 'todos' || tr.dataset.segmento === seg;
+    tr.style.display = match ? '' : 'none';
+  });
+}
+
+// ─── MERCADO ──────────────────────────────────────
+function renderMercado() {
+  // KPIs
+  const kpis = document.getElementById('kpis-mercado');
+  kpis.innerHTML = D.mercado.metricas_clave.map(m => `
+    <div class="stat-card">
+      <div class="stat-value">${m.valor}</div>
+      <div class="stat-label">${m.label}</div>
+      <div class="stat-source">📌 ${m.fuente}</div>
+    </div>
+  `).join('');
+
+  // Chart sectores — color by fase
+  const sectores = D.mercado.sectores_demandantes;
+  const faseColor = { 'Activa':'rgba(16,185,129,.4)', 'Creciente':'rgba(255,107,0,.4)', 'Emergente':'rgba(245,158,11,.4)' };
+  const faseBorder = { 'Activa':'#10b981', 'Creciente':'#FF6B00', 'Emergente':'#f59e0b' };
+  new Chart(document.getElementById('chartSectores'), {
+    type: 'bar',
+    data: {
+      labels: sectores.map(s => s.sector),
+      datasets: [{
+        label: 'Demanda (1-10)',
+        data: sectores.map(s => s.demanda),
+        backgroundColor: sectores.map(s => faseColor[s.fase]||'rgba(255,107,0,.3)'),
+        borderColor: sectores.map(s => faseBorder[s.fase]||'#FF6B00'),
+        borderWidth: 2,
+        borderRadius: 6
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      plugins: { legend: { display: false }, tooltip: {
+        callbacks: { afterLabel: ctx => sectores[ctx.dataIndex].descripcion }
+      }},
+      scales: {
+        x: { min: 0, max: 10, grid: { color: '#2a2a3a' }, ticks: { color: '#64748b' } },
+        y: { grid: { display: false }, ticks: { color: '#94a3b8', font: { size: 11 } } }
+      }
+    }
+  });
+
+  // Tendencias
+  const lista = document.getElementById('lista-tendencias');
+  lista.innerHTML = D.mercado.tendencias_2026.map(t => `
+    <div class="tend-item">
+      <div style="flex:1">
+        <div class="tend-label">${t.tendencia}</div>
+        <div class="tend-desc">${t.descripcion}</div>
+      </div>
+      <div class="tend-bar"><div class="tend-fill" style="width:${t.impacto*10}%"></div></div>
+      <div class="tend-num">${t.impacto}/10</div>
+    </div>
+  `).join('');
+
+  // Perfiles de compradores
+  const iconosComp = ['🏢','🎨','🛍️','🏛️'];
+  const colores = ['rgba(59,130,246,.1)','rgba(255,107,0,.1)','rgba(16,185,129,.1)','rgba(245,158,11,.1)'];
+  const borders = ['rgba(59,130,246,.3)','rgba(255,107,0,.3)','rgba(16,185,129,.3)','rgba(245,158,11,.3)'];
+  const perfiles = document.getElementById('perfiles-compradores');
+  perfiles.innerHTML = D.mercado.perfiles_compradores.map((p, i) => `
+    <div class="card" style="background:${colores[i]};border-color:${borders[i]}">
+      <div style="font-size:24px;margin-bottom:8px">${iconosComp[i]}</div>
+      <div style="font-size:14px;font-weight:700;margin-bottom:6px">${p.tipo}</div>
+      <div style="font-size:12px;color:var(--text3);margin-bottom:10px">${p.rol}</div>
+      <div class="est-row"><span class="est-key">Busca:</span><span class="est-val">${p.busca}</span></div>
+      <div class="est-row"><span class="est-key">Decide por:</span><span class="est-val">${p.decide}</span></div>
+      <div class="est-row"><span class="est-key">Barrera:</span><span class="est-val" style="color:var(--yellow)">${p.barrera}</span></div>
+      <div class="est-action" style="margin-top:8px">📍 ${p.como_llegar}</div>
+    </div>
+  `).join('');
+
+  // Barreras de adopción
+  const tbody = document.getElementById('tbody-barreras');
+  tbody.innerHTML = D.mercado.barreras_adopcion.map(b => `
+    <tr>
+      <td><strong>${b.barrera}</strong></td>
+      <td><span class="tag tag-yellow">${b.nivel}</span></td>
+      <td style="font-size:12px;color:var(--text2)">${b.solucion}</td>
+    </tr>
+  `).join('');
+
+  // Señales de demanda
+  const iconos = { 'Licitación pública':'📄', 'Job posting':'💼', 'Señal de mercado':'📡', 'Alianza / oportunidad':'🤝' };
+  const senales = document.getElementById('senales-demanda');
+  senales.innerHTML = D.mercado.senales_demanda.map(s => `
+    <div class="senal-item">
+      <div class="senal-icon">${iconos[s.tipo]||'📌'}</div>
+      <div class="senal-body">
+        <div class="senal-tipo">${s.tipo} · Relevancia: <strong style="color:${s.relevancia==='Muy alta'?'#10b981':s.relevancia==='Alta'?'#FF8C1A':'#f59e0b'}">${s.relevancia}</strong></div>
+        <div class="senal-desc">${s.descripcion}</div>
+        <div class="senal-meta">
+          <span>💲 ${s.monto}</span>
+          <span class="senal-estado ${s.estado==='Activa'||s.estado==='Oportunidad'?'activa':'oportunidad'}">${s.estado}</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  // Timeline de oportunidad
+  const tm = document.getElementById('timeline-mercado');
+  const op = D.mercado.oportunidad_mercado;
+  tm.innerHTML = `
+    <div style="display:flex;gap:16px;flex-wrap:wrap">
+      <div class="card" style="flex:1;min-width:200px;border-left:4px solid #10b981">
+        <div style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">HOY</div>
+        <div style="font-size:13px;color:var(--text)">${op.hoy}</div>
+      </div>
+      <div class="card" style="flex:1;min-width:200px;border-left:4px solid #FF6B00">
+        <div style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">EN 12 MESES</div>
+        <div style="font-size:13px;color:var(--text)">${op.en_12_meses}</div>
+      </div>
+      <div class="card" style="flex:1;min-width:200px;border-left:4px solid #ef4444">
+        <div style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">EN 24 MESES</div>
+        <div style="font-size:13px;color:var(--text)">${op.en_24_meses}</div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:12px;background:rgba(255,107,0,.06);border-color:rgba(255,107,0,.25)">
+      <strong style="color:var(--accent3)">⚡ Conclusión:</strong> <span style="font-size:13px">${op.conclusion}</span>
+    </div>
+  `;
+}
+
+// ─── PRECIOS ──────────────────────────────────────
+function renderPrecios() {
+  // Chart comparativa general
+  const cats = D.precios;
+  const labels = cats.map(c => c.categoria);
+  const avgTrad = cats.map(c => {
+    const vals = c.items.filter(i => i.tradicional_max > 0);
+    if (!vals.length) return 0;
+    return vals.reduce((a,i) => a + (i.tradicional_min + i.tradicional_max)/2, 0) / vals.length;
+  });
+  const avgIA = cats.map(c => {
+    const vals = c.items;
+    return vals.reduce((a,i) => a + (i.ia_min + i.ia_max)/2, 0) / vals.length;
+  });
+  const avgYutro = cats.map(c => {
+    const vals = c.items;
+    return vals.reduce((a,i) => a + (i.yutro_min + i.yutro_max)/2, 0) / vals.length;
+  });
+
+  new Chart(document.getElementById('chartPrecios'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        { label: 'Tradicional (promedio USD)', data: avgTrad, backgroundColor: 'rgba(239,68,68,.3)', borderColor: '#ef4444', borderWidth: 2, borderRadius: 4 },
+        { label: 'IA herramienta (promedio USD)', data: avgIA, backgroundColor: 'rgba(16,185,129,.3)', borderColor: '#10b981', borderWidth: 2, borderRadius: 4 },
+        { label: 'YUTRO (posicionamiento USD)', data: avgYutro, backgroundColor: 'rgba(255,107,0,.3)', borderColor: '#FF6B00', borderWidth: 2, borderRadius: 4 }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { labels: { color: '#94a3b8', font: { size: 12 } } } },
+      scales: {
+        y: { type: 'logarithmic', grid: { color: '#2a2a3a' }, ticks: { color: '#64748b', callback: v => '$'+v } },
+        x: { grid: { display: false }, ticks: { color: '#94a3b8', font: { size: 11 } } }
+      }
+    }
+  });
+
+  // Tablas por categoría
+  const cont = document.getElementById('tablas-precios');
+  cont.innerHTML = D.precios.map(cat => `
+    <div class="precio-cat">
+      <div class="precio-cat-header">${cat.icono} ${cat.categoria}
+        <span style="font-size:11px;font-weight:400;color:var(--text3);margin-left:8px">${cat.descripcion}</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Tipo / Servicio</th>
+            <th style="color:#fca5a5">🔴 Tradicional (USD)</th>
+            <th style="color:#6ee7b7">🟢 IA herramienta (USD)</th>
+            <th style="color:var(--accent3)">⚡ YUTRO (USD)</th>
+            <th>Ahorro vs trad.</th>
+            <th>Tiempo YUTRO</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${cat.items.map(item => {
+            const tradMid = item.tradicional_max > 0 ? (item.tradicional_min + item.tradicional_max) / 2 : null;
+            const yutroMid = (item.yutro_min + item.yutro_max) / 2;
+            const ahorro = tradMid ? Math.round((1 - yutroMid/tradMid)*100) : null;
+            return `<tr>
+              <td><strong>${item.tipo}</strong></td>
+              <td class="price-trad">${item.tradicional_max > 0 ? '$'+item.tradicional_min.toLocaleString()+' – $'+item.tradicional_max.toLocaleString() : '—'}</td>
+              <td class="price-ia">$${item.ia_min} – $${item.ia_max}</td>
+              <td class="price-yutro">$${item.yutro_min.toLocaleString()} – $${item.yutro_max.toLocaleString()}</td>
+              <td>${ahorro !== null ? `<span class="tag tag-green">-${ahorro}%</span>` : '—'}</td>
+              <td style="font-size:11px;color:var(--text3)">${item.tiempo_ia||'—'}</td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>
+    </div>
+  `).join('');
+}
+
+// ─── TENDENCIAS ───────────────────────────────────
+function renderTendencias() {
+  // Lista trends
+  const lista = document.getElementById('lista-trends');
+  lista.innerHTML = D.tendencias_google.terminos_alza.map(t => `
+    <div class="tend-item">
+      <div style="flex:1">
+        <div class="tend-label">"${t.termino}"</div>
+        <div class="tend-desc">${t.descripcion}</div>
+      </div>
+      <div class="tend-bar"><div class="tend-fill" style="width:${t.tendencia}%"></div></div>
+      <div class="tend-num">${t.tendencia}</div>
+    </div>
+  `).join('');
+
+  // Chart fuentes búsqueda
+  const fuentes = D.tendencias_google.fuentes_busqueda_2026;
+  new Chart(document.getElementById('chartFuentesBusqueda'), {
+    type: 'pie',
+    data: {
+      labels: fuentes.map(f => f.plataforma),
+      datasets: [{
+        data: fuentes.map(f => f.porcentaje),
+        backgroundColor: ['#FF6B00','#ef4444','#f59e0b','#3b82f6','#10b981'],
+        borderWidth: 0,
+        hoverOffset: 8
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'bottom', labels: { color: '#94a3b8', font: { size: 11 }, boxWidth: 12 } },
+        tooltip: {
+          callbacks: { label: ctx => `${ctx.label}: ${ctx.parsed}% — ${fuentes[ctx.dataIndex].nota}` }
+        }
+      }
+    }
+  });
+
+  // Cards tendencias industria
+  const iconos_tend = ['📹','🔍','🤖','👥','🛒','⚙️','🎙️','🌐'];
+  // Google Trends links
+  const gtGrid = document.getElementById('gt-links-grid');
+  if (gtGrid) {
+    gtGrid.innerHTML = D.tendencias_google.terminos_alza.map(t => {
+      const q = encodeURIComponent(t.termino);
+      const url = `https://trends.google.com/trends/explore?q=${q}&geo=CL&date=today%2012-m&hl=es`;
+      const pct = t.tendencia;
+      const color = pct >= 80 ? 'var(--accent3)' : pct >= 60 ? 'var(--accent)' : 'var(--accent2)';
+      return `
+        <a href="${url}" target="_blank" rel="noopener" style="
+          display:block; background:var(--surface2); border-radius:10px;
+          padding:14px 16px; text-decoration:none; border:1px solid var(--border);
+          transition:border-color .2s, transform .15s;
+        " onmouseover="this.style.borderColor=color;this.style.transform='translateY(-2px)'"
+           onmouseout="this.style.borderColor='var(--border)';this.style.transform='none'">
+          <div style="font-size:13px;font-weight:700;color:var(--text1);margin-bottom:6px">${t.termino}</div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+            <div class="bar-track" style="flex:1;height:6px">
+              <div class="bar-fill" style="width:${pct}%;background:${color};height:6px;border-radius:3px"></div>
+            </div>
+            <span style="font-size:12px;font-weight:700;color:${color}">${pct}</span>
+          </div>
+          <div style="font-size:11px;color:var(--text-muted)">${t.descripcion}</div>
+          <div style="font-size:10px;color:var(--accent);margin-top:6px">↗ Abrir en Google Trends</div>
+        </a>`;
+    }).join('');
+  }
+
+  const cards = document.getElementById('cards-tendencias');
+  cards.innerHTML = D.mercado.tendencias_2026.map((t, i) => `
+    <div class="card">
+      <div style="font-size:24px; margin-bottom:8px">${iconos_tend[i]||'📌'}</div>
+      <div style="font-size:14px; font-weight:700; margin-bottom:6px">${t.tendencia}</div>
+      <div style="font-size:12px; color:var(--text2); margin-bottom:10px">${t.descripcion}</div>
+      <div style="display:flex; align-items:center; gap:8px">
+        <div class="bar-track" style="flex:1"><div class="bar-fill" style="width:${t.impacto*10}%;background:var(--accent)"></div></div>
+        <span style="font-size:13px; font-weight:700; color:var(--accent3)">${t.impacto}/10</span>
+      </div>
+    </div>
+  `).join('');
+
+  // Análisis detallado por término
+  const GT_ANALYSIS = [
+    {
+      termino: '"inteligencia artificial publicidad"',
+      indice: 92,
+      momentum: 'Muy Alto',
+      color: 'var(--accent3)',
+      icono: '📣',
+      contexto_chile: 'El paid media ya representa más del 50% de la inversión publicitaria digital en Chile (2025). Las marcas chilenas buscan activamente proveedores de creatividades IA para testear múltiples variantes de anuncios rápido.',
+      dato_clave: 'Una empresa de educación en Santiago redujo 20% su CAC integrando IA en remarketing dinámico + WhatsApp automatizado.',
+      fuente: 'Muller & Pérez / IAB Chile 2026',
+      oportunidad_yutro: 'Posicionarse como proveedor de creatividades IA para campañas paid media. Paquetes de variantes A/B para Meta Ads y Google PMax.',
+      estado_mercado: 'Activo — presupuestos asignados',
+      accion: 'Ofrecer packs de "10 variantes de ad" con IA'
+    },
+    {
+      termino: '"video con IA"',
+      indice: 90,
+      momentum: 'Muy Alto',
+      color: 'var(--accent3)',
+      icono: '🎬',
+      contexto_chile: 'Búsqueda masiva en LATAM de cómo producir video con IA. IAB Chile 2026 confirma el short-form video como canal principal de descubrimiento de marca.',
+      dato_clave: 'Agencias que integran IA en video reportan +30% conversión y -40% costos de producción (Infobae / ILIA 2025).',
+      fuente: 'IAB Chile 2026 / Infobae / ILIA 2025 (CEPAL)',
+      oportunidad_yutro: 'YUTRO ES la respuesta a esta búsqueda. Crear contenido SEO y tutoriales que respondan exactamente "video con IA" para capturar esta demanda orgánica.',
+      estado_mercado: 'Activo — crecimiento sostenido',
+      accion: 'SEO: artículos y Reels con keyword "video con IA Chile"'
+    },
+    {
+      termino: '"IA generativa Chile"',
+      indice: 85,
+      momentum: 'Alto',
+      color: 'var(--accent3)',
+      icono: '🇨🇱',
+      contexto_chile: 'Chile lidera adopción de IA en LATAM junto a Brasil y Uruguay (ILIA 2025). La inversión digital en Chile creció de 51.1% a 54% del gasto en medios entre 2023 y 2025.',
+      dato_clave: 'Empresas buscan proveedores IA locales — preferencia por proveedor con dominio del español y contexto cultural chileno.',
+      fuente: 'ILIA 2025 (CEPAL) / IAB Chile 2026',
+      oportunidad_yutro: 'Capitalizar el liderazgo chileno en IA: YUTRO como referente local. Mencionar en bio y materiales "estudio IA chileno" para diferenciarse de herramientas globales.',
+      estado_mercado: 'Creciente — ecosistema en formación',
+      accion: 'Posicionarse como "el estudio IA generativo de Chile"'
+    },
+    {
+      termino: '"avatar IA"',
+      indice: 82,
+      momentum: 'Alto',
+      color: 'var(--accent3)',
+      icono: '🤖',
+      contexto_chile: 'Interés creciente en portavoces y avatares digitales desde empresas y creadores. Meta desarrolla avatar que replica apariencia y voz (Financial Times 2025).',
+      dato_clave: 'Primeros casos de avatares corporativos en LATAM: Norwood (Xicoia) como personaje digital protagonista de serie. Uso en accesibilidad y webs institucionales.',
+      fuente: 'Financial Times 2025 / Infobae / Xicoia',
+      oportunidad_yutro: 'Ofrecer "portavoz IA" corporativo: avatar que habla por la marca en videos, redes, e-learning. Precio accesible vs agencias internacionales. Segmento B2B con alta disposición a pagar.',
+      estado_mercado: 'Emergente — primeros adoptantes',
+      accion: 'Crear demo de portavoz corporativo IA para prospectos B2B'
+    },
+    {
+      termino: '"automatización marketing"',
+      indice: 78,
+      momentum: 'Alto',
+      color: 'var(--accent)',
+      icono: '⚙️',
+      contexto_chile: 'IAB Chile 2026: automatización deja de ser diferencial y se convierte en condición estructural para competir. WhatsApp Business + IA para nurturing B2B es tendencia activa.',
+      dato_clave: 'Empresas chilenas buscan escalar producción de contenido sin escalar equipo. Demanda de flujos automáticos: brief → video → publicación.',
+      fuente: 'IAB Chile 2026 / Muller & Pérez 2025',
+      oportunidad_yutro: 'Ofrecer automatización de producción de contenido como servicio: flujo n8n/Make que genera variantes de video, subtítulos y adapta formatos automáticamente por plataforma.',
+      estado_mercado: 'Activo — decisión en C-level',
+      accion: 'Demostrar flujo automatizado: 1 brief → 5 piezas en 24h'
+    },
+    {
+      termino: '"animación IA"',
+      indice: 72,
+      momentum: 'Medio-Alto',
+      color: 'var(--accent)',
+      icono: '✨',
+      contexto_chile: 'Producción de personajes y animación asistida por IA en crecimiento en agencias. Short-form content exige animación ágil y de bajo costo.',
+      dato_clave: 'Costo animación tradicional: USD 500–7.000/min. Con IA: USD 0.50–30/min. La brecha de precio es el driver de adopción más fuerte.',
+      fuente: 'Análisis YUTRO / Levantamiento competencia 2026',
+      oportunidad_yutro: 'Ofrecer animación 2D/motion IA para marcas que necesitan contenido animado frecuente (RRSS) a precio de herramienta pero con criterio creativo de estudio.',
+      estado_mercado: 'Creciente — aún pocos proveedores locales',
+      accion: 'Paquete mensual de animaciones IA para RRSS'
+    },
+    {
+      termino: '"lip sync IA"',
+      indice: 70,
+      momentum: 'Medio-Alto',
+      color: 'var(--accent)',
+      icono: '🎙️',
+      contexto_chile: 'Doblaje y sincronía labial con IA es búsqueda de negocio emergente en LATAM. Traductores freelance y estudios tradicionales buscan actualizar su oferta.',
+      dato_clave: 'Lip sync IA reduce costos de doblaje hasta 90% vs estudio tradicional. Abre mercado para marcas que antes no podían doblar su contenido.',
+      fuente: 'Análisis YUTRO / comunidad traductores LATAM',
+      oportunidad_yutro: 'Servicio de doblaje IA para marcas multinacionales en Chile y para creadores que quieren versionar contenido en inglés/portugués. Mercado escasamente atendido localmente.',
+      estado_mercado: 'Emergente — sin líder claro en CL',
+      accion: 'Lanzar servicio "dobla tu video al inglés con IA" para exportadores'
+    },
+    {
+      termino: '"podcast con voz IA"',
+      indice: 65,
+      momentum: 'Medio',
+      color: 'var(--accent2)',
+      icono: '🎧',
+      contexto_chile: 'Podcasts corporativos con voz sintética emergiendo en Chile. Empresas buscan producir audio-contenido sin locutor ni estudio.',
+      dato_clave: 'El podcast corporativo crece como canal B2B. Voz IA reduce costo de producción de $300–800 USD/episodio a menos de $30 con calidad aceptable.',
+      fuente: 'Análisis de mercado 2026 / tendencias contenido B2B',
+      oportunidad_yutro: 'Newsletter de audio + podcast de marca IA para empresas B2B que quieren posicionamiento de thought leadership sin equipo de producción interno.',
+      estado_mercado: 'Emergente — baja competencia',
+      accion: 'Ofrecer "podcast de marca" IA como add-on a servicios actuales'
+    },
+    {
+      termino: '"laboratorio producción IA"',
+      indice: 62,
+      momentum: 'Medio',
+      color: 'var(--accent2)',
+      icono: '🔬',
+      contexto_chile: 'Startups chilenas lanzan iniciativas para abordar adopción IA en producción. Ecosistema local IndustrIA + academia empujan adopción corporativa.',
+      dato_clave: 'Cumbre IA Chile 2026 activa. Ecosistema de capacitación y consultoría IA en expansión en Santiago.',
+      fuente: 'MAS Minería & Energía / anda.cl / cumbre-ia.cl 2026',
+      oportunidad_yutro: 'Posicionarse como "laboratorio" de producción IA: talleres, demos y pilotos para empresas. Ingresar al ecosistema con charlas y presencia en eventos como Cumbre IA Chile.',
+      estado_mercado: 'Naciente — ecosystem builders activos',
+      accion: 'Participar en Cumbre IA Chile y ofrecer workshops corporativos'
+    },
+    {
+      termino: '"contenido generativo marca"',
+      indice: 58,
+      momentum: 'Emergente',
+      color: 'var(--accent2)',
+      icono: '🌱',
+      contexto_chile: 'Social commerce e influencer marketing profesionalizado son tendencias IAB Chile 2026. Marcas buscan contenido generativo para social selling.',
+      dato_clave: 'IAB Chile 2026: social commerce donde "inspiración y transacción ocurren en un mismo flujo". Marcas necesitan volumen de contenido generativo para esto.',
+      fuente: 'IAB Chile 2026',
+      oportunidad_yutro: 'Ofrecer packs de contenido generativo para social selling: imágenes de producto, videos cortos y assets UGC-style con IA para campañas de e-commerce.',
+      estado_mercado: 'Emergente — alto potencial 2026–2027',
+      accion: 'Crear caso de éxito con marca de e-commerce chilena'
+    }
+  ];
+
+  const analysisEl = document.getElementById('gt-analysis');
+  if (analysisEl) {
+    analysisEl.innerHTML = GT_ANALYSIS.map(a => `
+      <div class="card" style="margin-bottom:1rem;border-left:3px solid ${a.color}">
+        <div style="display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap">
+          <div style="font-size:28px;flex-shrink:0">${a.icono}</div>
+          <div style="flex:1;min-width:200px">
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px">
+              <span style="font-size:14px;font-weight:700;color:var(--text1)">${a.termino}</span>
+              <span style="font-size:11px;background:${a.color}22;color:${a.color};padding:2px 8px;border-radius:20px;font-weight:700">${a.momentum}</span>
+              <span style="font-size:11px;color:var(--text-muted)">Índice ${a.indice}/100</span>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:10px">
+              <div>
+                <div style="font-size:10px;text-transform:uppercase;color:var(--text-muted);letter-spacing:.05em;margin-bottom:4px">Contexto Chile</div>
+                <div style="font-size:12px;color:var(--text2);line-height:1.5">${a.contexto_chile}</div>
+              </div>
+              <div>
+                <div style="font-size:10px;text-transform:uppercase;color:var(--text-muted);letter-spacing:.05em;margin-bottom:4px">Dato clave</div>
+                <div style="font-size:12px;color:var(--accent3);font-weight:600;line-height:1.5">${a.dato_clave}</div>
+              </div>
+              <div>
+                <div style="font-size:10px;text-transform:uppercase;color:var(--text-muted);letter-spacing:.05em;margin-bottom:4px">Oportunidad YUTRO</div>
+                <div style="font-size:12px;color:var(--text2);line-height:1.5">${a.oportunidad_yutro}</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;margin-top:12px;flex-wrap:wrap">
+              <span style="font-size:11px;background:var(--surface2);padding:4px 10px;border-radius:6px;color:var(--text-muted)">📊 ${a.fuente}</span>
+              <span style="font-size:11px;background:var(--surface2);padding:4px 10px;border-radius:6px;color:var(--text2)">🏪 ${a.estado_mercado}</span>
+              <span style="font-size:11px;background:${a.color}22;color:${a.color};padding:4px 10px;border-radius:6px;font-weight:600">⚡ ${a.accion}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+}
+
+// ─── ESTRATEGIAS ──────────────────────────────────
+function renderEstrategias() {
+  const cards = document.getElementById('cards-estrategias');
+  cards.innerHTML = D.estrategias_competidores.map(e => `
+    <div class="est-card">
+      <div class="est-header" style="font-size:15px; font-weight:700; margin-bottom:12px">🏢 ${e.empresa}</div>
+      <div class="est-row"><span class="est-key">Canal principal</span><span class="est-val"><strong>${e.canal_principal}</strong></span></div>
+      <div class="est-row"><span class="est-key">Contenido</span><span class="est-val">${e.contenido_tipo}</span></div>
+      <div class="est-row"><span class="est-key">Frecuencia</span><span class="est-val">${e.frecuencia}</span></div>
+      <div class="est-row"><span class="est-key">CTA principal</span><span class="est-val">${e.cta_principal}</span></div>
+      <div class="est-highlight" style="margin-top:8px">✅ ${e.fortaleza}</div>
+      <div class="est-warn" style="margin-top:6px">⚠️ ${e.debilidad}</div>
+      <div class="est-action">⚡ YUTRO: ${e.diferencia_yutro}</div>
+    </div>
+  `).join('');
+
+  // Chart canales radar
+  const empresas = D.estrategias_competidores.map(e => e.empresa);
+  const canalMap = { Instagram: [], LinkedIn: [], YouTube: [], TikTok: [], Web: [], WhatsApp: [] };
+  D.estrategias_competidores.forEach(e => {
+    const canalPri = e.canal_principal;
+    Object.keys(canalMap).forEach(ch => {
+      canalMap[ch].push(canalPri.includes(ch) ? 8 : (e.contenido_tipo.includes(ch) ? 5 : 2));
+    });
+  });
+
+  new Chart(document.getElementById('chartCanales'), {
+    type: 'bar',
+    data: {
+      labels: empresas,
+      datasets: Object.entries(canalMap).map(([ch, vals], i) => ({
+        label: ch,
+        data: vals,
+        backgroundColor: ['rgba(239,68,68,.5)','rgba(59,130,246,.5)','rgba(245,158,11,.5)','rgba(20,184,166,.5)','rgba(255,107,0,.5)','rgba(16,185,129,.5)'][i],
+        borderRadius: 3,
+        borderSkipped: false
+      }))
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { labels: { color: '#94a3b8', font: { size: 11 } } } },
+      scales: {
+        x: { stacked: true, grid: { display: false }, ticks: { color: '#94a3b8' } },
+        y: { stacked: true, display: false }
+      }
+    }
+  });
+}
+
+// ─── YUTRO PLAN ───────────────────────────────────
+function renderYutro() {
+  const plan = D.estrategia_yutro;
+  document.getElementById('posicionamiento-text').textContent = plan.posicionamiento;
+
+  // Canales
+  const canales = document.getElementById('canales-yutro');
+  canales.innerHTML = plan.canales_prioritarios.map(c => `
+    <div class="ch-item">
+      <div style="flex:1">
+        <div class="ch-name">${c.canal}</div>
+        <div class="ch-accion">${c.accion}</div>
+      </div>
+      <div class="ch-bar" style="min-width:120px"><div class="ch-fill" style="width:${c.prioridad*10}%"></div></div>
+      <div style="font-size:13px;font-weight:700;color:var(--accent3);min-width:32px;text-align:right">${c.prioridad}/10</div>
+      <div class="ch-freq">${c.frecuencia}</div>
+    </div>
+  `).join('');
+
+  // Formatos ganadores
+  const formatos = document.getElementById('formatos-list');
+  const emojiFmt = ['🎬','⏱️','📦','😲','💲'];
+  formatos.innerHTML = plan.formatos_ganadores.map((f, i) => `
+    <div class="gap-item"><span>${emojiFmt[i]||'✅'}</span><span>${f}</span></div>
+  `).join('');
+
+  // Gaps con nivel de demanda
+  const gaps = document.getElementById('gaps-list');
+  const demandaColor = { 'Muy Alta':'#10b981', 'Alta':'#FF6B00', 'Media-Alta':'#3b82f6', 'Media':'#f59e0b' };
+  gaps.innerHTML = plan.gaps_oportunidad.map(g => `
+    <div class="gap-item" style="flex-direction:column;gap:4px;align-items:flex-start">
+      <div style="display:flex;align-items:center;gap:8px;width:100%">
+        <span class="gap-icon">🚀</span>
+        <strong style="font-size:13px">${g.gap}</strong>
+        <span style="margin-left:auto;font-size:11px;font-weight:700;color:${demandaColor[g.demanda]||'#94a3b8'}">${g.demanda}</span>
+      </div>
+      <div style="font-size:11px;color:var(--text3);padding-left:26px">${g.descripcion}</div>
+    </div>
+  `).join('');
+
+  // Acciones por plazo
+  const acciones = document.getElementById('acciones-plazos');
+  const plazos = [
+    { label: '0–3 meses', color: '#10b981', border: 'rgba(16,185,129,.3)', items: plan.acciones_corto_plazo },
+    { label: '3–6 meses', color: '#FF6B00', border: 'rgba(255,107,0,.3)', items: plan.acciones_mediano_plazo },
+    { label: '6–12 meses', color: '#f59e0b', border: 'rgba(245,158,11,.3)', items: plan.acciones_largo_plazo }
+  ];
+  acciones.innerHTML = plazos.map(p => `
+    <div class="card" style="border-top:3px solid ${p.color}">
+      <div style="font-size:12px;font-weight:700;color:${p.color};text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">${p.label}</div>
+      ${p.items.map(a => `
+        <div style="display:flex;gap:8px;margin-bottom:8px;font-size:12px;color:var(--text2)">
+          <span style="color:${p.color};flex-shrink:0">▸</span>
+          <span>${a}</span>
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
+
+  // Diferenciadores clave
+  const difs = document.getElementById('diferenciadores');
+  const emojiDif = ['🎨','🛠️','🌐','🏆'];
+  difs.innerHTML = plan.diferenciadores_clave.map((d, i) => `
+    <div class="card" style="display:flex;gap:12px;align-items:flex-start">
+      <span style="font-size:22px">${emojiDif[i]||'⚡'}</span>
+      <span style="font-size:13px;color:var(--text)">${d}</span>
+    </div>
+  `).join('');
+}
+
+// ─── TARIFARIO ────────────────────────────────────
+function renderTarifario() {
+  const TC = 950; // CLP per USD
+
+  const items = [
+    // [categoria, servicio, desde_clp, hasta_clp, mkt_usd_min, mkt_usd_max, estado, observacion]
+    // estado: 'bajo' | 'competitivo' | 'alto' | 'revisar'
+    ['Consultoría', 'Arquitectura de Prompting de Texto', 210000, 500000, 300, 800, 'competitivo', 'Rango correcto para el mercado LATAM. Considerar subir el piso a $300K CLP.'],
+    ['Consultoría', 'Consultoría Técnica de Flujo IA', 400000, 400000, 600, 1500, 'bajo', 'Precio fijo bajo para consultoría técnica especializada. El mercado cobra 1.5–3.5x más.'],
+    ['Consultoría', 'Entrenamiento Modelo IA (LoRA)', 800000, 1200000, 800, 2000, 'competitivo', 'Bien posicionado. Podrías subir el techo a $1.5M CLP para proyectos complejos.'],
+    ['Storyboards', 'Storyboards Visuales IA (2K)', 600000, 900000, 300, 600, 'alto', 'Precio alto vs. mercado IA puro. Justificado si incluyes arte y concepto, no solo generación.'],
+    ['Storyboards', 'Animatics y Visualización Previa', 500000, 3300000, 500, 3500, 'competitivo', 'Rango amplio bien calibrado. El techo compite con producción tradicional.'],
+    ['Imágenes', 'Optimización Unitaria / Upscale', 115000, 350000, 120, 400, 'competitivo', 'Precio correcto para trabajo técnico puntual.'],
+    ['Imágenes', 'Pack Básico de Imágenes Base', 500000, 1800000, 400, 1500, 'competitivo', 'Ligeramente alto en el techo. Revisar si el pack define claramente la cantidad de piezas.'],
+    ['Imágenes', 'Imágenes OOH/DOOH', 1660000, 2930000, 1500, 4000, 'competitivo', 'Bien posicionado para el segmento. OOH justifica precios altos por derechos y adaptaciones.'],
+    ['Imágenes', 'Catálogos Fotorrealistas Masivos', 2200000, 3900000, 2000, 5000, 'competitivo', 'Precio competitivo. Para volúmenes grandes (+50 imágenes) considera precio unitario descendente.'],
+    ['Imágenes', 'Generación IA + Retoque Digital', 2640000, 2640000, 1500, 3000, 'alto', 'Precio fijo alto. Evalúa si es precio de lista o de proyecto; la fijación única puede alejar clientes.'],
+    ['Imágenes', 'Adaptación Formatos Verticales', 100000, 230000, 200, 500, 'bajo', 'Muy por debajo del mercado. Este trabajo toma tiempo real de edición — subir a $250K–$450K CLP.'],
+    ['Packs Híbridos', 'Micro Packs (Imágenes + Videos)', 550000, 800000, 500, 1200, 'competitivo', 'Buen punto de entrada. Clarificar la cantidad de piezas en el nombre del pack.'],
+    ['Packs Híbridos', 'Packs Medianos/Grandes (Reels/Cápsulas)', 1500000, 2500000, 1500, 3500, 'competitivo', 'Precio correcto para el segmento medio de agencias y marcas.'],
+    ['Packs Híbridos', 'Intervención / Narrativa / Animación', 3500000, 3500000, 2500, 5000, 'competitivo', 'Precio fijo competitivo para proyectos de animación narrativa. Considera rangos en vez de fijo.'],
+    ['Animación & Lip Sync', 'Setup Inicial Personaje 3D (Lip Sync)', 880000, 1540000, 800, 2500, 'competitivo', 'Rango correcto para el mercado. El setup es un cobro único que genera recurrencia.'],
+    ['Animación & Lip Sync', 'Producción Clips Personaje (Acting + Voz)', 1045000, 6655000, 1000, 7000, 'competitivo', 'Rango muy amplio — dificulta presupuesto. Considera paquetes por duración (15s/30s/60s).'],
+    ['Video Comercial', 'Escena / Toma Suelta IA', 300000, 300000, 400, 800, 'bajo', 'Precio fijo bajo. Una toma IA profesional justifica $400K–$600K CLP mínimo.'],
+    ['Video Comercial', 'Cápsulas Verticales 15–30s', 1000000, 1200000, 800, 2000, 'competitivo', 'Precio correcto para el mercado chileno. Considera versión "express" con menor precio.'],
+    ['Video Comercial', 'Cápsulas Masivas Campaña (10–30 u.)', 4200000, 7200000, 4000, 8000, 'competitivo', 'Bien calibrado para producción masiva. Asegura definir SLA de entrega en el contrato.'],
+    ['Video Comercial', 'Videos Testeo Interfaz/Producto (12–21 u.)', 1800000, 4350000, 2000, 5000, 'competitivo', 'Precio adecuado para UI testing video. Ligeramente bajo en el piso — subir a $2M CLP.'],
+    ['Video Comercial', 'Comercial / TVC 15–30s', 2428571, 5082000, 2000, 8000, 'competitivo', 'Muy bien posicionado. YUTRO ofrece calidad TVC a precio IA — este es tu argumento de venta.'],
+    ['Video Comercial', 'Comercial / TVC 60s', 6440000, 13420000, 5000, 15000, 'competitivo', 'Excelente posicionamiento. El techo supera algunas productoras tradicionales — cuídalo con casos de éxito.'],
+    ['Video Comercial', 'Reinterpretación IA Video Referencial (20s)', 1000000, 1500000, 800, 2000, 'competitivo', 'Precio correcto para trabajo creativo sobre referencia existente.'],
+    ['Video Comercial', 'Video Larga Duración (2 min)', 3205882, 4705882, 3000, 6000, 'competitivo', 'Bien calibrado. Para documentales corporativos o casos de uso, podrías subir el techo.'],
+    ['Video Comercial', 'Campaña Híbrida Compleja (IA + Filmación)', 4200000, 4200000, 3500, 8000, 'bajo', 'El piso para campañas híbridas complejas está bien, pero el precio fijo limita proyectos grandes. Definir por tramos.'],
+    ['FOOH & VFX', 'Producción FOOH 3D (Integración sobre video)', 2550000, 2550000, 1500, 5000, 'competitivo', 'Precio competitivo para FOOH. Este servicio es escaso en Chile — puedes cobrar premium.'],
+    ['FOOH & VFX', 'Gestión / Edición Final FOOH', 400000, 450000, 400, 800, 'bajo', 'La edición final de FOOH es crítica y justifica $600K–$900K CLP. Precio actual subestima el trabajo.'],
+    ['FOOH & VFX', 'Jornada Grabación FOOH (Apoyo)', 600000, 600000, 600, 1200, 'bajo', 'Precio de piso para una jornada de producción. Con dirección IA incluida, justifica $900K–$1.2M CLP.'],
+    ['FOOH & VFX', 'Transiciones IA (Interior → IA Exterior)', 935000, 990000, 800, 1500, 'competitivo', 'Bien posicionado para este efecto específico. Considera "pack de transiciones" como add-on.'],
+    ['FOOH & VFX', 'VFX Puntuales / Postproducción Compleja', 200000, 600000, 500, 2000, 'bajo', 'Precio muy bajo para VFX profesional. El mercado cobra 2.5–3x más. Subir piso a $500K CLP.'],
+    ['FOOH & VFX', 'Paquetes VFX Completos (6+ efectos)', 1200000, 1200000, 1000, 3000, 'bajo', 'Para 6+ efectos, $1.2M CLP fijo es insuficiente. Considerar $1.8M–$2.5M CLP o precio por efecto.'],
+    ['FOOH & VFX', 'Montaje y Sincronización Estándar', 350000, 550000, 400, 900, 'bajo', 'Precio bajo para postproducción. Subir a $500K–$800K CLP según complejidad.'],
+    ['Audio & Sonido', 'Locución Profesional (IA o Humana)', 250000, 380000, 200, 600, 'competitivo', 'Precio correcto. La locución humana justifica el techo. Diferenciar precio IA vs. humana.'],
+    ['Audio & Sonido', 'Música Original / Adaptación', 138571, 420000, 300, 1500, 'bajo', 'Precio de piso muy bajo ($146 USD). Música original IA de calidad justifica $400K–$800K CLP mínimo.'],
+    ['Audio & Sonido', 'Entregables en Formatos Adicionales', 100000, 100000, 200, 400, 'bajo', 'Precio fijo demasiado bajo. Este trabajo tiene valor real — subir a $200K–$350K CLP.'],
+    ['Plataformas Web IA', 'Desarrollo Integral (Setup + Landing + Flujo)', 2000000, 4750000, 5000, 15000, 'bajo', 'Muy por debajo del mercado. Desarrollo web + IA interactiva vale $5K–$15K USD. Subir techo significativamente.'],
+    ['Plataformas Web IA', 'Tráfico y Servidor Cloud', 1650000, 7700000, 1500, 8000, 'competitivo', 'Rango adecuado para infraestructura cloud. Considerar modelo recurrente mensual.'],
+    ['Modelado 3D', 'Creación y Preparación Personajes 3D', 1800000, 1800000, 1500, 4000, 'bajo', 'Precio fijo en el piso del mercado. Para personajes complejos o con rigging, subir a $2.5M–$3.5M CLP.'],
+  ];
+
+  const MISSING = [
+    { servicio: 'Avatar / Portavoz Digital Corporativo', demanda: 'Alta', mercado_clp: '$1.9M–$7.6M CLP', razon: 'Ningún competidor tiene precio público en CL. Mario Kaizen cobra por "Avatar Growth™". Alta demanda B2B emergente.' },
+    { servicio: 'UGC-Style Content Pack IA (10–20 piezas)', demanda: 'Muy Alta', mercado_clp: '$760K–$2.85M CLP', razon: 'Tendencia #1 en paid media 2026. Marcas necesitan variantes UGC-style para Meta Ads y TikTok. Nadie lo ofrece formateado en CL.' },
+    { servicio: 'Podcast Corporativo con Voz IA (por episodio)', demanda: 'Media', mercado_clp: '$285K–$855K CLP', razon: 'Emergente en B2B Chile. Raio Studios lo ofrece como audio branded content. YUTRO no tiene precio definido.' },
+    { servicio: 'Doblaje / Lip Sync Multiidioma (inglés o portugués)', demanda: 'Media-Alta', mercado_clp: '$475K–$2.375M CLP', razon: 'Exportadores chilenos necesitan doblar contenido. Costo de doblaje tradicional 5–10x mayor. Nadie ofrece esto en CL como servicio.' },
+    { servicio: 'Pack Mensual Contenido RRSS IA (suscripción)', demanda: 'Alta', mercado_clp: '$760K–$2.375M CLP/mes', razon: 'Modelo recurrente que genera estabilidad de ingresos. IAB Chile 2026: marcas buscan escalabilidad de contenido. Ningún competidor tiene suscripción.' },
+    { servicio: 'E-Learning: Módulo Video IA (por unidad)', demanda: 'Media', mercado_clp: '$570K–$1.9M CLP', razon: 'Sector educación es uno de los 13 sectores demandantes activos. Módulos de video IA para capacitación corporativa o e-learning.' },
+    { servicio: 'Pack Ads Retargeting IA (Meta/TikTok/YouTube)', demanda: 'Alta', mercado_clp: '$475K–$1.425M CLP', razon: 'Con el auge del paid media, las marcas necesitan variantes de ads para retargeting. Producción rápida con IA — diferenciador clave.' },
+    { servicio: 'Informe / Presentación Corporativa IA Visual', demanda: 'Media', mercado_clp: '$380K–$1.14M CLP', razon: 'Tendencia emergente: presentaciones y pitch decks con elementos IA generativos. Ningún competidor lo tiene como item.' },
+  ];
+
+  // Summary stats
+  const underpriced = items.filter(i => i[6] === 'bajo').length;
+  const competitive = items.filter(i => i[6] === 'competitivo').length;
+  const overpriced = items.filter(i => i[6] === 'alto').length;
+
+  const summary = document.getElementById('tarifario-summary');
+  if (summary) {
+    summary.innerHTML = `
+      <div class="stat-card"><div class="stat-value" style="color:var(--accent3)">${items.length}</div><div class="stat-label">Items tarifados</div></div>
+      <div class="stat-card"><div class="stat-value" style="color:#10b981">${competitive}</div><div class="stat-label">Precio competitivo ✅</div></div>
+      <div class="stat-card"><div class="stat-value" style="color:#ef4444">${underpriced}</div><div class="stat-label">Precio bajo — subir 🔴</div></div>
+      <div class="stat-card"><div class="stat-value" style="color:#f59e0b">${overpriced}</div><div class="stat-label">Precio alto — revisar ⚠️</div></div>
+    `;
+  }
+
+  // Full table
+  const tbody = document.getElementById('tarifario-tbody');
+  if (tbody) {
+    let lastCat = '';
+    tbody.innerHTML = items.map(([cat, srv, desde, hasta, mktMin, mktMax, estado, obs]) => {
+      const mktClpMin = mktMin * TC;
+      const mktClpMax = mktMax * TC;
+      const catHeader = cat !== lastCat ? (lastCat = cat, `<tr style="background:var(--surface2)"><td colspan="5" style="padding:8px 14px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent)">${cat}</td></tr>`) : '';
+      lastCat = cat;
+      const badge = estado === 'competitivo'
+        ? `<span style="background:#10b98120;color:#10b981;padding:2px 8px;border-radius:12px;font-size:10px;font-weight:700">✅ Competitivo</span>`
+        : estado === 'bajo'
+        ? `<span style="background:#ef444420;color:#ef4444;padding:2px 8px;border-radius:12px;font-size:10px;font-weight:700">🔴 Subir precio</span>`
+        : `<span style="background:#f59e0b20;color:#f59e0b;padding:2px 8px;border-radius:12px;font-size:10px;font-weight:700">⚠️ Revisar</span>`;
+      const fmtClp = n => n >= 1000000
+        ? `$${(n/1000000).toFixed(1)}M`
+        : `$${(n/1000).toFixed(0)}K`;
+      const yutro = desde === hasta ? fmtClp(desde) : `${fmtClp(desde)}–${fmtClp(hasta)}`;
+      const mkt = mktClpMin === mktClpMax ? fmtClp(mktClpMin) : `${fmtClp(mktClpMin)}–${fmtClp(mktClpMax)}`;
+      return `${catHeader}<tr style="border-bottom:1px solid var(--border);transition:background .1s" onmouseover="this.style.background='var(--surface2)'" onmouseout="this.style.background=''">
+        <td style="padding:10px 14px;color:var(--text1);font-weight:500">${srv}</td>
+        <td style="padding:10px 14px;text-align:right;color:var(--accent3);font-family:monospace;white-space:nowrap">${yutro}</td>
+        <td style="padding:10px 14px;text-align:right;color:var(--text-muted);font-family:monospace;white-space:nowrap">${mkt}</td>
+        <td style="padding:10px 14px;text-align:center">${badge}</td>
+        <td style="padding:10px 14px;color:var(--text-muted);font-size:11px;line-height:1.4">${obs}</td>
+      </tr>`;
+    }).join('');
+  }
+
+  // Missing items
+  const missingEl = document.getElementById('tarifario-missing');
+  if (missingEl) {
+    missingEl.innerHTML = MISSING.map(m => {
+      const demColor = m.demanda === 'Muy Alta' ? 'var(--accent3)' : m.demanda === 'Alta' ? 'var(--accent)' : 'var(--accent2)';
+      return `<div class="card" style="border-left:3px solid ${demColor}">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+          <div style="font-size:13px;font-weight:700;color:var(--text1)">${m.servicio}</div>
+          <span style="background:${demColor}22;color:${demColor};padding:2px 8px;border-radius:12px;font-size:10px;font-weight:700;white-space:nowrap;margin-left:8px">Demanda ${m.demanda}</span>
+        </div>
+        <div style="font-size:12px;color:var(--accent3);font-weight:600;margin-bottom:6px">Mercado estimado: ${m.mercado_clp}</div>
+        <div style="font-size:11px;color:var(--text-muted);line-height:1.5">${m.razon}</div>
+      </div>`;
+    }).join('');
+  }
+}
+
+// ─── MARKETING IA ────────────────────────────────
+function renderMarketingIA() {
+
+  // Stats rápidos
+  const stats = [
+    { label: 'Skills instaladas', value: '2', icon: '🧠', color: '#f59e0b' },
+    { label: 'Prompts disponibles', value: '10', icon: '⚡', color: '#3b82f6' },
+    { label: 'Servicios YUTRO', value: '38', icon: '🎯', color: '#10b981' },
+    { label: 'Competidores', value: '12', icon: '🔍', color: '#8b5cf6' },
+  ];
+  const statsEl = document.getElementById('mia-stats');
+  statsEl.innerHTML = stats.map(s => `
+    <div class="card" style="text-align:center;padding:16px;border-color:${s.color}33;">
+      <div style="font-size:26px;margin-bottom:4px;">${s.icon}</div>
+      <div style="font-size:24px;font-weight:800;color:${s.color};">${s.value}</div>
+      <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">${s.label}</div>
+    </div>
+  `).join('');
+
+  // Categorías y acciones
+  const categorias = [
+    {
+      cat: '📱 Contenido & Redes',
+      skill: '/marketing-skills',
+      color: '#f59e0b',
+      acciones: [
+        {
+          titulo: 'Estrategia de Contenido Instagram',
+          icono: '📸',
+          desc: 'Plan mensual de contenido para @yutro_ia y @milivoy_ con pilares, formatos y CTAs',
+          buildPrompt: () => {
+            const comps = DASHBOARD_DATA.competidores.slice(0,5).map(c=>`${c.handle} (${c.seguidores} seg.)`).join(', ');
+            const servicios = DASHBOARD_DATA.yutro.servicios.join(', ');
+            return `Actúa como estratega de contenido B2B/B2C especializado en IA creativa.
+
+CONTEXTO YUTRO:
+- Marca: YUTRO.cl — producción audiovisual con IA (imágenes, animación, 3D, avatares)
+- Cuentas: @yutro_ia (marca) y @milivoy_ (personal, 1.169 seg.)
+- Clientes actuales: Santander, Falabella, Paris, Carozzi, Copec, MG Motors
+- Servicios: ${servicios}
+- Competidores principales en Instagram: ${comps}
+
+TAREA:
+Crea un plan de contenido para Instagram para los próximos 30 días con:
+1. 4 pilares de contenido (educativo, inspiracional, social proof, CTA)
+2. Calendario editorial semanal (frecuencia óptima)
+3. Formatos recomendados (Reels vs Posts vs Stories vs Carruseles)
+4. 5 ideas de contenido específicas que aprovechen los trends de IA detectados (CGI, LUT, AI Motion)
+5. CTAs orientados a cerrar leads B2B (empresas medianas/grandes)
+
+Usa datos reales del sector IA Chile 2026. Sé específico y accionable.`;
+          }
+        },
+        {
+          titulo: 'Guión Reel Viral — IA Creativa',
+          icono: '🎬',
+          desc: 'Guión hook-cuerpo-CTA para Reel de 30-60 seg que muestre diferenciación vs. competencia',
+          buildPrompt: () => `Actúa como copywriter especializado en contenido video para redes sociales B2B.
+
+CONTEXTO:
+- Marca: YUTRO.cl — "Creamos con IA"
+- Diferenciación clave: No vendemos herramientas, vendemos criterio creativo + resultado de negocio
+- Competidores que debemos superar en contenido: @thechinatown.ai, @iavfx__, @render_viafx
+- Público objetivo: Directores de marketing en empresas medianas/grandes Chile
+
+TAREA:
+Crea 3 guiones alternativos para Reels de 30-60 segundos:
+1. Guión de TRANSFORMACIÓN (antes/después de usar IA en producción)
+2. Guión de CREDIBILIDAD (clientes reales + resultados)
+3. Guión de PROVOCACIÓN (mito vs. realidad sobre IA creativa)
+
+Cada guión: hook (primeros 3 seg), desarrollo, CTA final. Incluye indicaciones visuales y texto de pantalla.`
+        },
+      ]
+    },
+    {
+      cat: '💼 Estrategia B2B & GTM',
+      skill: '/gtm-strategy',
+      color: '#3b82f6',
+      acciones: [
+        {
+          titulo: 'Plan GTM — Avatar Corporativo YUTRO.studio',
+          icono: '🎯',
+          desc: 'Go-to-Market completo para el producto YUTRO.studio (avatares fotorrealistas)',
+          buildPrompt: () => {
+            const brechas = ['Imágenes IA para RRSS desde $38K/unidad (mercado $95K)',
+              'Video con IA desde $570K (mercado $950K)', 'Avatares corporativos desde $190K (mercado $285K)'];
+            return `Actúa como estratega de GTM con experiencia en SaaS y servicios creativos B2B.
+
+PRODUCTO: YUTRO.studio — avatares fotorrealistas con IA (sesiones en minutos, no horas)
+
+CONTEXTO DE MERCADO:
+- Competidores directos en avatares IA Chile: @thechinatown.ai, IA Films, Pictor Agency
+- Precios de mercado: avatares corporativos $285.000–$570.000 CLP por sesión
+- Precio YUTRO actual: desde $190.000 CLP (brecha de subprecio detectada)
+- Clientes potenciales: startups para perfiles LinkedIn, empresas para onboarding, agencias para creatividades
+- Brechas de precio detectadas (subprecio): ${brechas.join(' | ')}
+
+TAREA — Plan GTM completo:
+1. Segmentación y ICP (Ideal Customer Profile) para YUTRO.studio
+2. Propuesta de valor diferenciada vs. competencia
+3. Canal de adquisición prioritario (¿LinkedIn? ¿Instagram? ¿Referidos?)
+4. Estrategia de precios (¿subir a $285K? ¿paquetes?)
+5. Métricas de éxito (MRR objetivo mes 3)
+6. Hoja de ruta 90 días con hitos específicos
+
+Sé concreto con números y plazos. Usa el contexto chileno.`;
+          }
+        },
+        {
+          titulo: 'Secuencia Email B2B — Outreach a Grandes Marcas',
+          icono: '📧',
+          desc: 'Secuencia de 5 emails para prospectar clientes tipo Falabella, Copec, retail/banca',
+          buildPrompt: () => `Actúa como especialista en outbound B2B y copywriting de email.
+
+EMPRESA: YUTRO.cl — producción audiovisual con IA
+CLIENTES ACTUALES (social proof): Santander, Falabella, Paris Electro, Carozzi, MG Motors, Copec/Mobil
+TARGET: Directores de Marketing / Brand Managers en empresas con facturación +$1B CLP
+
+VENTAJAS COMPETITIVAS:
+- Velocidad: entregamos en días, no semanas
+- Costo: 30-40% menos que producción tradicional
+- Escala: múltiples piezas por sesión vs. shoot tradicional
+- Bilingüe: único con web ES/EN en Chile (apunta internacional)
+
+TAREA:
+Crea secuencia de 5 emails de outbound B2B:
+- Email 1: Cold (hook con insight industria, no pitch)
+- Email 2: Follow-up 3 días después (case study breve)
+- Email 3: Follow-up 7 días (oferta de valor concreta, sin presión)
+- Email 4: Breakup email (escasez suave)
+- Email 5: Reactivación en 30 días
+
+Asunto: testeable A/B. Cuerpo: máx 120 palabras cada uno. Tono: ejecutivo, directo, sin jerga.`
+        },
+        {
+          titulo: 'Propuesta Comercial Ganadora',
+          icono: '📄',
+          desc: 'Template de propuesta para proyectos $1M+ CLP con estructura que cierra',
+          buildPrompt: () => {
+            const tarifas = [
+              'Video producción completa: $1.425.000–$2.850.000 CLP',
+              'Campaña integral IA: $2.375.000–$4.750.000 CLP',
+              'Retainer mensual: $570.000–$1.900.000 CLP'
+            ];
+            return `Actúa como consultor de ventas B2B especializado en servicios creativos de alto ticket.
+
+EMPRESA: YUTRO.cl
+SERVICIOS PREMIUM (tarifas reales): ${tarifas.join(' | ')}
+CLIENTES REFERENCIA: Santander, Falabella, Paris, Carozzi, MG Motors
+
+TAREA:
+Crea un template de propuesta comercial para proyectos sobre $1.000.000 CLP con:
+1. Portada ejecutiva (qué problema resuelve YUTRO)
+2. Diagnóstico del cliente (sección a personalizar)
+3. Solución propuesta con entregables específicos
+4. Timeline de ejecución (por etapas)
+5. Inversión (tabla con opciones: básico / recomendado / premium)
+6. Garantías y condiciones
+7. Próximos pasos (call to action claro)
+
+Incluye lenguaje de ROI. El tomador de decisión es un Director o Gerente de Marketing.`;
+          }
+        },
+      ]
+    },
+    {
+      cat: '📊 Análisis & Posicionamiento',
+      skill: '/marketing-skills',
+      color: '#10b981',
+      acciones: [
+        {
+          titulo: 'Análisis SEO & Posicionamiento Web',
+          icono: '🔎',
+          desc: 'Estrategia SEO para yutro.cl enfocada en keywords de IA creativa Chile',
+          buildPrompt: () => {
+            const compsWeb = DASHBOARD_DATA.competidores.filter(c=>c.web).map(c=>c.web).join(', ');
+            return `Actúa como especialista SEO con experiencia en mercados creativos y tech B2B.
+
+SITIO: yutro.cl (bilingüe ES/EN — ventaja diferencial)
+COMPETIDORES CON WEB: ${compsWeb}
+CATEGORÍA: Producción audiovisual con IA — Chile
+
+TENDENCIAS DETECTADAS (Google Trends Chile 2026):
+- "IA generativa para marketing" — índice 95, momentum alto
+- "video con inteligencia artificial" — índice 88, crecimiento +67%
+- "avatares corporativos IA" — índice 72, nicho sin competencia fuerte
+
+TAREA:
+1. Lista de 20 keywords prioritarias (mezcla: head, long-tail, local)
+2. Arquitectura de contenido SEO (páginas que crear/optimizar)
+3. 5 ideas de blog posts con potencial de posicionamiento rápido
+4. Estrategia de backlinks (qué medios/directorios apuntar en Chile)
+5. Quick wins técnicos (metadatos, schema, velocidad)
+
+Prioriza keywords con intención comercial alta y competencia baja.`;
+          }
+        },
+        {
+          titulo: 'Análisis Competitivo Profundo',
+          icono: '🏆',
+          desc: 'Mapa de debilidades de los 5 principales competidores y cómo atacarlas',
+          buildPrompt: () => {
+            const top5 = DASHBOARD_DATA.competidores.slice(0,5).map(c=>
+              `${c.handle}: ${c.seguidores} seg., amenaza ${c.amenaza}/10, ${c.debilidades?.[0]||'sin debilidad registrada'}`
+            ).join('\n');
+            return `Actúa como analista de inteligencia competitiva especializado en el sector creativo/agencias IA.
+
+TOP 5 COMPETIDORES DE YUTRO EN CHILE:
+${top5}
+
+POSICIÓN DE YUTRO:
+- @yutro_ia: 1.169 seguidores, cliente grandes (Santander, Falabella), bilingüe
+- Fortaleza: criterio creativo + velocidad + cartera de grandes marcas
+- Debilidad actual: menor volumen de publicaciones que competidores más pequeños
+
+TAREA:
+Para cada uno de los 5 competidores:
+1. Brecha de oportunidad (qué no están haciendo que YUTRO puede capitalizar)
+2. Debilidad explotable en contenido (argumento de venta YUTRO vs. ese competidor)
+3. Segmento de cliente que no están atendiendo bien
+
+Luego: 3 movimientos estratégicos prioritarios para YUTRO en los próximos 60 días.`;
+          }
+        },
+      ]
+    },
+    {
+      cat: '💰 Pricing & Crecimiento',
+      skill: '/gtm-strategy',
+      color: '#8b5cf6',
+      acciones: [
+        {
+          titulo: 'Estrategia de Subida de Precios',
+          icono: '📈',
+          desc: 'Plan para subir precios de servicios subvalorados sin perder clientes actuales',
+          buildPrompt: () => `Actúa como consultor de pricing para agencias creativas y servicios B2B.
+
+CONTEXTO YUTRO — BRECHAS DE PRECIO DETECTADAS:
+- Imágenes IA para RRSS: cobro actual $38K/u vs. mercado $95K/u (subprecio 60%)
+- Video con IA: cobro $570K vs. mercado $950K (subprecio 40%)
+- Animación 2D: cobro $570K vs. mercado $1.140K (subprecio 50%)
+- Motion graphics: cobro $475K vs. mercado $760K (subprecio 37%)
+- Reels con IA: cobro $285K vs. mercado $475K (subprecio 40%)
+
+CLIENTES ACTUALES (que no debemos perder): Santander, Falabella, Paris, Carozzi, MG Motors
+
+TAREA:
+1. Estrategia de transición de precios sin pérdida de clientes (cronograma 6 meses)
+2. Argumentario de valor para justificar subida con cada segmento
+3. Qué servicios subir primero (orden estratégico)
+4. Cómo estructurar paquetes para anclar precio alto (precio ancla, precio real, precio premium)
+5. Script de conversación para informar subida de precios a cliente recurrente
+
+El objetivo es llegar al 80% del precio de mercado en 6 meses.`,
+        },
+      ]
+    },
+  ];
+
+  const grid = document.getElementById('mia-grid');
+  grid.innerHTML = categorias.map(cat => `
+    <div style="margin-bottom:32px;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+        <div style="height:3px;width:24px;background:${cat.color};border-radius:2px;"></div>
+        <span style="font-weight:700;font-size:14px;color:var(--text);">${cat.cat}</span>
+        <span style="margin-left:auto;font-size:11px;padding:3px 10px;background:${cat.color}22;color:${cat.color};border-radius:20px;border:1px solid ${cat.color}44;">${cat.skill}</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;">
+        ${cat.acciones.map((a,i) => `
+          <div class="card" style="cursor:pointer;transition:transform .15s,border-color .15s;border-color:${cat.color}33;"
+               onmouseover="this.style.transform='translateY(-2px)';this.style.borderColor='${cat.color}99';"
+               onmouseout="this.style.transform='';this.style.borderColor='${cat.color}33';"
+               onclick="copiarPrompt(this, '${cat.cat.replace(/'/g,"\\'")}','${a.titulo.replace(/'/g,"\\'")}', ${cat.acciones.indexOf(a)}, window._miaAcciones['${cat.cat}'])">
+            <div style="display:flex;align-items:flex-start;gap:12px;">
+              <div style="font-size:28px;flex-shrink:0;">${a.icono}</div>
+              <div style="flex:1;">
+                <div style="font-weight:700;font-size:14px;color:var(--text);margin-bottom:4px;">${a.titulo}</div>
+                <div style="font-size:12px;color:var(--text-muted);line-height:1.5;">${a.desc}</div>
+              </div>
+            </div>
+            <div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+              <span style="font-size:11px;color:${cat.color};">📋 Copiar prompt</span>
+              <span style="font-size:10px;color:var(--text-muted);">→ pega en Claude Code</span>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+
+  // Almacenar funciones build en window para acceso desde onclick
+  window._miaAcciones = {};
+  categorias.forEach(cat => {
+    window._miaAcciones[cat.cat] = cat.acciones.map(a => a.buildPrompt);
+  });
+}
+
+function copiarPrompt(el, catNombre, titulo, idx, buildFns) {
+  const prompt = buildFns[idx]();
+  navigator.clipboard.writeText(prompt).then(() => {
+    const toast = document.getElementById('mia-toast');
+    toast.textContent = `✅ Prompt "${titulo}" copiado — pega en Claude Code`;
+    toast.style.opacity = '1';
+    setTimeout(() => { toast.style.opacity = '0'; }, 3000);
+  }).catch(() => {
+    // Fallback si clipboard API no está disponible
+    const ta = document.createElement('textarea');
+    ta.value = prompt;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    const toast = document.getElementById('mia-toast');
+    toast.textContent = `✅ Prompt copiado — pega en Claude Code`;
+    toast.style.opacity = '1';
+    setTimeout(() => { toast.style.opacity = '0'; }, 3000);
+  });
+}
+
+// ─── INIT ─────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  renderCompetidores();
+  renderMercado();
+  renderPrecios();
+  renderTarifario();
+  renderTendencias();
+  renderEstrategias();
+  renderYutro();
+  renderMarketingIA();
+});
+</script>
+</body>
+</html>

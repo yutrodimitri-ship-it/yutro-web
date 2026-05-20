@@ -84,7 +84,7 @@ export function FadeInOnScroll({
       className={className}
       initial={getInitial(resolvedVariant)}
       whileInView={getAnimate(resolvedVariant)}
-      viewport={{ once: false, margin: "-80px" }}
+      viewport={{ once: true, margin: "-80px" }}
       transition={{ duration, delay, ease: [0.25, 0.1, 0.25, 1] }}
     >
       {children}
