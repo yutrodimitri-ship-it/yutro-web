@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Plus, Power, PowerOff, Trash2, ShieldCheck, ShieldOff, FolderCog } from "lucide-react";
+import { Plus, Power, PowerOff, Trash2, ShieldCheck, ShieldOff, FolderCog, KeyRound } from "lucide-react";
 import { Toast } from "@/components/studio/Toast";
 import { ConfirmDialog } from "@/components/studio/ConfirmDialog";
 
@@ -35,6 +35,10 @@ export default function AdminUsersPage() {
   const [editError, setEditError] = useState("");
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
   const [deleteDialog, setDeleteDialog] = useState<User | null>(null);
+  const [pwUser, setPwUser] = useState<User | null>(null);
+  const [pwValue, setPwValue] = useState("");
+  const [pwError, setPwError] = useState("");
+  const [pwSaving, setPwSaving] = useState(false);
 
   // Re-fetch helper used by action handlers (create/edit/delete).
   const fetchAll = useCallback(async () => {
@@ -274,6 +278,17 @@ export default function AdminUsersPage() {
                       </button>
                     )}
                     <button
+                      onClick={() => {
+                        setPwUser(user);
+                        setPwValue("");
+                        setPwError("");
+                      }}
+                      className="rounded-lg p-1.5 text-white/40 hover:bg-white/[0.04] hover:text-white"
+                      title="Resetear contraseña"
+                    >
+                      <KeyRound className="h-4 w-4" />
+                    </button>
+                    <button
                       onClick={() => handleDelete(user)}
                       className="rounded-lg p-1.5 text-white/40 hover:bg-destructive/10 hover:text-destructive"
                       title="Eliminar"
@@ -383,6 +398,72 @@ export default function AdminUsersPage() {
               </button>
               <button onClick={saveEditAccess} className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90">
                 Guardar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Reset password modal */}
+      {pwUser && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={() => setPwUser(null)}>
+          <div className="w-full max-w-md rounded-xl bg-[#1a1a1a] p-6 shadow-lg" onClick={(e) => e.stopPropagation()}>
+            <h2 className="mb-1 text-lg font-semibold">Resetear contraseña</h2>
+            <p className="mb-4 text-sm text-white/40">
+              {pwUser.name} — {pwUser.email}
+            </p>
+            {pwError && (
+              <div className="mb-3 rounded-lg bg-destructive/10 px-4 py-3 text-sm text-destructive">{pwError}</div>
+            )}
+            <div className="space-y-2">
+              <label htmlFor="pw-new" className="text-sm font-medium">Nueva contraseña</label>
+              <input
+                id="pw-new"
+                type="text"
+                autoFocus
+                value={pwValue}
+                onChange={(e) => setPwValue(e.target.value)}
+                placeholder="Mínimo 8 caracteres"
+                className="w-full rounded-lg border border-[#333] bg-[#141414] px-3 py-2 text-sm text-white outline-none focus:ring-2 focus:ring-primary/50"
+              />
+              <p className="font-mono text-[10px] text-white/30">
+                La contraseña se setea inmediatamente. Compártesela al usuario por canal seguro.
+              </p>
+            </div>
+            <div className="mt-4 flex justify-end gap-3">
+              <button
+                onClick={() => setPwUser(null)}
+                disabled={pwSaving}
+                className="rounded-lg px-4 py-2 text-sm text-white/40 hover:bg-white/[0.04] disabled:opacity-50"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={async () => {
+                  if (pwValue.length < 8) {
+                    setPwError("Mínimo 8 caracteres");
+                    return;
+                  }
+                  setPwSaving(true);
+                  setPwError("");
+                  const res = await fetch(`/api/studio/admin/users/${pwUser.id}/password`, {
+                    method: "PATCH",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ password: pwValue }),
+                  });
+                  setPwSaving(false);
+                  if (res.ok) {
+                    setPwUser(null);
+                    setToast({ message: "Contraseña actualizada", type: "success" });
+                  } else {
+                    const data = await res.json().catch(() => ({}));
+                    setPwError(data.error || "Error al actualizar contraseña");
+                  }
+                }}
+                disabled={pwSaving || pwValue.length < 8}
+                className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+              >
+                {pwSaving ? "Guardando..." : "Setear contraseña"}
               </button>
             </div>
           </div>

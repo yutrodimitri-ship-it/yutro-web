@@ -166,8 +166,11 @@ export function StudioSidebar({ locale, role, userName }: StudioSidebarProps) {
         </div>
       )}
 
-      {/* Back to site */}
-      <div className="px-3 mt-[900px] mb-1">
+      {/* Back to site — mt-auto pushes this + the nav block to the bottom
+          of the sidebar regardless of whether the talent project context
+          block is shown above. Keeps layout consistent across admin and
+          catalog routes. */}
+      <div className="px-3 mt-auto mb-1">
         <a
           href={`/${locale}`}
           className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] text-white/40 transition-colors hover:bg-white/[0.04] hover:text-white/70"

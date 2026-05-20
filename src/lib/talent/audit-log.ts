@@ -32,7 +32,8 @@ export type AuditEventType =
   | "admin_nda_revoked"
   | "admin_submission_status_changed"
   | "admin_submission_email_resent"
-  | "admin_talent_released";
+  | "admin_talent_released"
+  | "admin_password_reset";
 
 export interface AuditContext {
   userEmail: string;
