@@ -1,21 +1,15 @@
 /**
- * Yutro Studio Talent — fuente de datos dual-mode.
+ * Yutro Studio Talent — fuente de datos.
  *
- * - `USE_DB_TALENT=true` → consulta Postgres via Drizzle
- * - `USE_DB_TALENT=false` (default) → lee desde mock-data.ts (Fase 1)
- *
- * El shape devuelto (`Talent`, `ProjectConfig`) es identico en ambos modos.
- * El feature flag se evalua por-llamada (no en module-load) para soportar
- * tests que cambian el env entre runs.
+ * Lee siempre desde Postgres vía Drizzle. El módulo está en Fase 3 (producción),
+ * el modo "mock" que existía en Fase 1 (lectura desde `mock-data.ts`) fue
+ * retirado. `mock-data.ts` queda como fuente para los scripts de seed
+ * (`scripts/dump-talent-seed-sql.ts`, `src/db/seed-talent.ts`), pero ningún
+ * code-path de runtime lo usa.
  */
 import { and, eq, isNull, ne } from "drizzle-orm";
 import { db } from "@/db";
 import { castingSubmissions, talents, talentProjects, talentProjectAccess, users } from "@/db/schema";
-import {
-  TALENTS as MOCK_TALENTS,
-  PROJECTS as MOCK_PROJECTS,
-  TALENT_CLIENT_EMAILS as MOCK_EMAILS,
-} from "./mock-data";
 import type {
   ProjectConfig,
   ProjectStatus,
@@ -26,16 +20,11 @@ import type {
   TalentStatus,
 } from "@/types/talent";
 
-function isDbEnabled(): boolean {
-  return process.env.USE_DB_TALENT === "true";
-}
-
 // ── Helpers async ─────────────────────────────────────────────
 
 export async function getProjectBySlug(
   slug: string
 ): Promise<ProjectConfig | undefined> {
-  if (!isDbEnabled()) return MOCK_PROJECTS.find((p) => p.slug === slug);
   const [row] = await db
     .select()
     .from(talentProjects)
@@ -49,8 +38,6 @@ export async function userHasTalentAccess(
 ): Promise<boolean> {
   if (!email) return false;
   const lower = email.toLowerCase();
-  if (!isDbEnabled()) return MOCK_EMAILS.map((e) => e.toLowerCase()).includes(lower);
-
   const [row] = await db
     .select({ id: talentProjectAccess.id })
     .from(talentProjectAccess)
@@ -69,11 +56,6 @@ export async function getProjectsForUser(
 ): Promise<ProjectConfig[]> {
   if (!email) return [];
   const lower = email.toLowerCase();
-
-  if (!isDbEnabled()) {
-    if (!MOCK_EMAILS.map((e) => e.toLowerCase()).includes(lower)) return [];
-    return MOCK_PROJECTS.filter((p) => p.status === "active");
-  }
 
   const rows = await db
     .select({ project: talentProjects })
@@ -111,8 +93,6 @@ export interface CommittedTalent {
 }
 
 export async function getCommittedTalents(): Promise<CommittedTalent[]> {
-  if (!isDbEnabled()) return [];
-
   const rows = await db
     .select({
       submissionId: castingSubmissions.id,
@@ -164,7 +144,6 @@ export async function getCommittedTalents(): Promise<CommittedTalent[]> {
 
 /** Todos los proyectos activos del sistema (para el rol admin). */
 export async function getAllActiveProjects(): Promise<ProjectConfig[]> {
-  if (!isDbEnabled()) return MOCK_PROJECTS.filter((p) => p.status === "active");
   const rows = await db
     .select()
     .from(talentProjects)
@@ -175,9 +154,9 @@ export async function getAllActiveProjects(): Promise<ProjectConfig[]> {
 export async function getAvailableTalents(
   project: ProjectConfig
 ): Promise<Talent[]> {
-  const list = isDbEnabled()
-    ? (await db.select().from(talents).where(eq(talents.isActive, true))).map(rowToTalent)
-    : [...MOCK_TALENTS];
+  const list = (
+    await db.select().from(talents).where(eq(talents.isActive, true))
+  ).map(rowToTalent);
 
   // Seed estable por día + proyecto: el orden cambia cada día pero es consistente durante la sesión.
   const today = new Date().toISOString().slice(0, 10); // yyyy-mm-dd
@@ -279,7 +258,6 @@ function balancedShuffle(items: Talent[], seed: number): Talent[] {
 export async function getUsersForProject(
   projectSlug: string
 ): Promise<{ email: string; name: string }[]> {
-  if (!isDbEnabled()) return [];
   const rows = await db
     .select({
       email: talentProjectAccess.userEmail,
@@ -310,8 +288,6 @@ export async function getUsersForProject(
 export async function getBlockedTalentsForProject(
   project: ProjectConfig
 ): Promise<string[]> {
-  if (!isDbEnabled()) return [];
-
   const rows = await db
     .select({
       shortlist: castingSubmissions.shortlist,
@@ -363,8 +339,6 @@ export async function getBlockedTalentsForProject(
 export async function getAssignedTalentsForProject(
   projectSlug: string
 ): Promise<string[]> {
-  if (!isDbEnabled()) return [];
-
   const rows = await db
     .select({ exclusives: castingSubmissions.exclusives })
     .from(castingSubmissions)
@@ -391,7 +365,6 @@ function addMonths(date: Date, months: number): Date {
 export async function getTalentByCode(
   code: string
 ): Promise<Talent | undefined> {
-  if (!isDbEnabled()) return MOCK_TALENTS.find((t) => t.code === code);
   const [row] = await db
     .select()
     .from(talents)
