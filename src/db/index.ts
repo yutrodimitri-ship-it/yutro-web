@@ -1,33 +1,34 @@
-import { drizzle } from "drizzle-orm/node-postgres";
-import pg from "pg";
+import { drizzle } from "drizzle-orm/postgres-js";
+import postgres from "postgres";
 import * as schema from "./schema";
 
-const pool = new pg.Pool({
-  connectionString: process.env.DATABASE_URL,
+// Use `postgres` (postgres-js) instead of `pg` (node-postgres) because
+// drizzle's `pg` adapter relies on the extended query protocol with named
+// prepared statements. Supabase's pooler (Supavisor) — even on port 5432
+// in session mode — multiplexes backend connections, and named prepared
+// statements collide across that multiplexing. The result is a generic
+// "Failed query: select..." error on parallel queries from cold lambdas
+// in production.
+//
+// `postgres-js` with `prepare: false` uses the simple query protocol and
+// avoids prepared statements entirely. This is the configuration that
+// Drizzle's own docs recommend for Supabase + Vercel.
+//
+// See: https://orm.drizzle.team/docs/connect-supabase
+const queryClient = postgres(process.env.DATABASE_URL!, {
+  prepare: false,
+  // Pool sizing for serverless. Vercel Fluid Compute may run several
+  // concurrent invocations sharing this module. 10 connections is a
+  // reasonable budget against Supavisor's per-project limit.
   max: 10,
-  idleTimeoutMillis: 30_000,
-  connectionTimeoutMillis: 15_000,
-  keepAlive: true,
-  ssl: { rejectUnauthorized: false },
+  idle_timeout: 30,
+  connect_timeout: 15,
+  // SSL through pgbouncer/Supavisor needs `rejectUnauthorized: false`
+  // equivalent — `prefer` enables SSL but skips cert validation.
+  ssl: "prefer",
 });
 
-// Disable prepared statements for Supabase transaction mode pooler (port 6543).
-//
-// `options=-c plan_cache_mode=...` doesn't work via pgbouncer because the
-// transaction pooler multiplexes backend connections; startup options are
-// dropped or applied to the wrong backend. Setting it per-connection here
-// runs the SET against the actual session pg.Pool just acquired, BEFORE
-// drizzle issues any query, so the prepared-statement collision is avoided.
-//
-// A failed SET is non-fatal — log and continue. Without this, drizzle's
-// prepared statements collide across multiplexed backends and we get the
-// generic "Failed query: select..." error on every DB call.
-pool.on("connect", (client) => {
-  client
-    .query("SET plan_cache_mode = 'force_custom_plan'")
-    .catch((err) => {
-      console.error("[db] SET plan_cache_mode failed:", err);
-    });
+export const db = drizzle(queryClient, {
+  schema,
+  logger: process.env.NODE_ENV === "development",
 });
-
-export const db = drizzle(pool, { schema, logger: process.env.NODE_ENV === "development" });
