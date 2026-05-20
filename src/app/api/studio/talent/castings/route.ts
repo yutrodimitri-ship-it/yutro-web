@@ -1,11 +1,10 @@
 import { NextResponse } from "next/server";
 import * as Sentry from "@sentry/nextjs";
 import { z } from "zod";
-import { and, eq, isNull } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import {
   castingSubmissions,
-  talentProjectAccess,
   talentProjects,
   users,
 } from "@/db/schema";
@@ -14,6 +13,7 @@ import { checkRateLimit } from "@/lib/rate-limit";
 import { castingIdempotencyKey } from "@/lib/talent/idempotency";
 import { sendCastingNotification } from "@/lib/talent/email";
 import { logAuditEventServer } from "@/lib/talent/audit-log-server";
+import { hasProjectAccess } from "@/lib/talent/access-check";
 
 /**
  * POST /api/studio/talent/castings
@@ -70,19 +70,8 @@ export async function POST(request: Request) {
   const { projectSlug, shortlist, exclusives } = parsed.data;
   const userEmail = session.email.toLowerCase();
 
-  // Acceso al proyecto
-  const [access] = await db
-    .select({ id: talentProjectAccess.id })
-    .from(talentProjectAccess)
-    .where(
-      and(
-        eq(talentProjectAccess.projectSlug, projectSlug),
-        eq(talentProjectAccess.userEmail, userEmail),
-        isNull(talentProjectAccess.revokedAt)
-      )
-    )
-    .limit(1);
-  if (!access) {
+  // Acceso al proyecto — admin bypassea (coherente con TalentLayout).
+  if (!(await hasProjectAccess(session, projectSlug))) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 

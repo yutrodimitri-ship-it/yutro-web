@@ -2,8 +2,9 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { and, eq, isNull } from "drizzle-orm";
 import { db } from "@/db";
-import { ndaAcceptances, talentProjectAccess } from "@/db/schema";
+import { ndaAcceptances } from "@/db/schema";
 import { verifySession } from "@/lib/auth";
+import { hasProjectAccess } from "@/lib/talent/access-check";
 
 /**
  * NDA endpoints — fuente de verdad legal.
@@ -75,19 +76,8 @@ export async function POST(request: Request) {
   const userEmail = session.email.toLowerCase();
   const { projectSlug } = parsed.data;
 
-  // Ownership
-  const [access] = await db
-    .select({ id: talentProjectAccess.id })
-    .from(talentProjectAccess)
-    .where(
-      and(
-        eq(talentProjectAccess.projectSlug, projectSlug),
-        eq(talentProjectAccess.userEmail, userEmail),
-        isNull(talentProjectAccess.revokedAt)
-      )
-    )
-    .limit(1);
-  if (!access) {
+  // Ownership — admin bypassea por rol (coherente con TalentLayout).
+  if (!(await hasProjectAccess(session, projectSlug))) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 

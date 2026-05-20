@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { and, eq, isNull } from "drizzle-orm";
 import { db } from "@/db";
-import { talentAccessLogs, talentProjectAccess } from "@/db/schema";
+import { talentAccessLogs } from "@/db/schema";
 import { verifySession } from "@/lib/auth";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { hasProjectAccess } from "@/lib/talent/access-check";
 
 /**
  * POST /api/studio/talent/audit
@@ -81,18 +81,8 @@ export async function POST(request: Request) {
   const { type, projectSlug, talentCode, payload } = parsed.data;
 
   // Ownership: no logear eventos de proyectos a los que no tiene acceso
-  const [access] = await db
-    .select({ id: talentProjectAccess.id })
-    .from(talentProjectAccess)
-    .where(
-      and(
-        eq(talentProjectAccess.projectSlug, projectSlug),
-        eq(talentProjectAccess.userEmail, session.email.toLowerCase()),
-        isNull(talentProjectAccess.revokedAt)
-      )
-    )
-    .limit(1);
-  if (!access) {
+  // (admin bypassea por rol — coherente con TalentLayout).
+  if (!(await hasProjectAccess(session, projectSlug))) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
