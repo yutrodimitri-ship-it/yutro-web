@@ -23,9 +23,21 @@ const queryClient = postgres(process.env.DATABASE_URL!, {
   max: 10,
   idle_timeout: 30,
   connect_timeout: 15,
-  // SSL through pgbouncer/Supavisor needs `rejectUnauthorized: false`
-  // equivalent — `prefer` enables SSL but skips cert validation.
-  ssl: "prefer",
+  // Supabase pooler requires SSL but its cert is signed by AWS RDS CA,
+  // which Node doesn't trust by default. `rejectUnauthorized: false`
+  // encrypts the connection but skips chain validation.
+  ssl: { rejectUnauthorized: false },
+  // Last-resort diagnostic: surface the underlying postgres error to
+  // server logs so we can read it. postgres-js otherwise wraps errors
+  // in a generic message that drizzle then re-wraps as "Failed query".
+  onnotice: (notice) => console.warn("[pg-notice]", notice),
+  debug: process.env.NODE_ENV === "production"
+    ? (_conn, query, params, types) => {
+        if (process.env.PG_DEBUG === "1") {
+          console.log("[pg-debug]", { query, params, types });
+        }
+      }
+    : undefined,
 });
 
 export const db = drizzle(queryClient, {
