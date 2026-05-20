@@ -66,7 +66,7 @@ export default async function ProjectLayout({
           >
             <div
               data-talent="project"
-              className="studio-talent -mx-6 -mt-6 sm:-mx-10 sm:-mt-10 md:-mt-10"
+              className="studio-talent -mx-6 -mt-6 -mb-6 min-h-screen sm:-mx-10 sm:-mt-10 sm:-mb-10 md:-mt-10"
             >
               {children}
             </div>

@@ -14,34 +14,9 @@ export default async function TalentRootPage({
 
   const isAdmin = session.role === "admin";
   // Admin ve todos los proyectos activos; cliente solo los asignados a su email.
-  let projects;
-  try {
-    projects = isAdmin
-      ? await getAllActiveProjects()
-      : await getProjectsForUser(session.email);
-  } catch (err) {
-    const e = err as Error & { code?: string; detail?: string; cause?: unknown };
-    const c = e.cause as (Error & { code?: string; detail?: string }) | undefined;
-    return (
-      <div className="mx-auto w-full max-w-3xl px-4 py-16 sm:px-6">
-        <p className="text-[11px] font-mono uppercase tracking-[0.18em] text-white/30 mb-3">
-          DEBUG TALENT ROUTE
-        </p>
-        <h1 className="mb-4 text-2xl font-bold text-white">DB query failed</h1>
-        <pre className="whitespace-pre-wrap break-all rounded bg-red-950/30 p-4 text-xs text-red-300 border border-red-900/50">
-isAdmin: {String(isAdmin)}
-session.email: {session.email}
-code: {e.code ?? "?"}
-message: {e.message}
-cause.code: {c?.code ?? "?"}
-cause.message: {c?.message ?? "?"}
-cause.detail: {c?.detail ?? "?"}
-stack:
-{e.stack?.split("\n").slice(0, 8).join("\n")}
-        </pre>
-      </div>
-    );
-  }
+  const projects = isAdmin
+    ? await getAllActiveProjects()
+    : await getProjectsForUser(session.email);
 
   if (projects.length === 0) {
     return (
