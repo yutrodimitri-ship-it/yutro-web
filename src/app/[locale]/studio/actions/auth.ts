@@ -28,18 +28,39 @@ export async function loginAction(
     return { error: "Demasiados intentos. Intenta de nuevo en unos minutos." };
   }
 
-  const [user] = await db
-    .select({
-      id: users.id,
-      email: users.email,
-      passwordHash: users.passwordHash,
-      name: users.name,
-      role: users.role,
-      isActive: users.isActive,
-    })
-    .from(users)
-    .where(eq(users.email, email.toLowerCase()))
-    .limit(1);
+  let user;
+  try {
+    [user] = await db
+      .select({
+        id: users.id,
+        email: users.email,
+        passwordHash: users.passwordHash,
+        name: users.name,
+        role: users.role,
+        isActive: users.isActive,
+      })
+      .from(users)
+      .where(eq(users.email, email.toLowerCase()))
+      .limit(1);
+  } catch (err) {
+    // Diagnostic logging — the generic "Failed query" we see in Vercel
+    // runtime logs hides the actual postgres error. Expose it here so
+    // we can see what's actually failing (RLS? prepared statement? SSL?).
+    const e = err as Error & {
+      code?: string;
+      detail?: string;
+      cause?: unknown;
+    };
+    console.error("[loginAction] db.select(users) failed", {
+      message: e.message,
+      code: e.code,
+      detail: e.detail,
+      causeMessage: (e.cause as Error | undefined)?.message,
+      causeCode: (e.cause as { code?: string } | undefined)?.code,
+      stack: e.stack?.split("\n").slice(0, 5).join(" | "),
+    });
+    throw err;
+  }
 
   if (!user || !user.isActive) {
     return { error: "Credenciales inválidas" };
