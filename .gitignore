@@ -62,3 +62,5 @@ next-env.d.ts
 # Playwright + vitest reports
 /playwright-report/
 /test-results/
+
+.vercel
