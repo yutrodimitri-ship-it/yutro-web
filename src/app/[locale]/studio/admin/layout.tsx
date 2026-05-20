@@ -12,7 +12,7 @@ export default async function AdminLayout({
   const { locale } = await params;
 
   if (!session || session.role !== "admin") {
-    redirect(`/${locale}/studio/dashboard`);
+    redirect(`/${locale}/studio`);
   }
 
   return <>{children}</>;

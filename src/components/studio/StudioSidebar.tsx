@@ -1,17 +1,16 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useParams } from "next/navigation";
-import { Users, LogOut, Menu, X, ExternalLink, Library, ClipboardList } from "lucide-react";
+import { Users, LogOut, Menu, X, ClipboardList, Library, Lock } from "lucide-react";
 import { logoutAction } from "@/app/[locale]/studio/actions/auth";
 
 interface StudioSidebarProps {
   locale: string;
   role: string;
   userName?: string;
-  credits?: number;
-  showTalentLink?: boolean;
 }
 
 interface SidebarLink {
@@ -19,7 +18,6 @@ interface SidebarLink {
   label: string;
   icon: typeof Users;
   variant?: "default" | "talent";
-  exactPrefix?: string;
 }
 
 interface TalentProjectCtx {
@@ -29,7 +27,7 @@ interface TalentProjectCtx {
   otherUsers: { email: string; name: string }[];
 }
 
-export function StudioSidebar({ locale, role, userName, showTalentLink }: StudioSidebarProps) {
+export function StudioSidebar({ locale, role, userName }: StudioSidebarProps) {
   const pathname = usePathname();
   const params = useParams();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -55,19 +53,7 @@ export function StudioSidebar({ locale, role, userName, showTalentLink }: Studio
       .catch(() => setTalentCtx(null));
   }, [projectSlug]);
 
-  const isTalentLabel = locale === "en" ? "Talent Library" : "Catálogo Talent";
-
   const links: SidebarLink[] = [];
-
-  if (showTalentLink) {
-    links.push({
-      href: `${base}/talent`,
-      label: isTalentLabel,
-      icon: Library,
-      variant: "talent",
-      exactPrefix: `${base}/talent/admin`,
-    });
-  }
 
   if (role === "admin") {
     links.push({ href: `${base}/admin`, label: "Admin", icon: Users });
@@ -77,14 +63,21 @@ export function StudioSidebar({ locale, role, userName, showTalentLink }: Studio
       icon: ClipboardList,
       variant: "talent",
     });
+    links.push({
+      href: `${base}/talent/admin/locks`,
+      label: "Comprometidos",
+      icon: Lock,
+      variant: "talent",
+    });
+    links.push({
+      href: `${base}/talent`,
+      label: "Catálogo",
+      icon: Library,
+      variant: "talent",
+    });
   }
 
-  const logoHref =
-    role === "admin"
-      ? `${base}/talent/admin`
-      : showTalentLink
-      ? `${base}/talent`
-      : base;
+  const logoHref = role === "admin" ? `${base}/talent/admin` : `${base}/talent`;
 
   const sidebarContent = (
     <>
@@ -130,7 +123,7 @@ export function StudioSidebar({ locale, role, userName, showTalentLink }: Studio
               <p className="mb-2 text-[9px] font-medium uppercase tracking-[0.22em] text-white/25">
                 También con acceso
               </p>
-              <div className="flex flex-col gap-1.5">
+              <div className="mb-4 flex flex-col gap-1.5">
                 {talentCtx.otherUsers.map((u) => (
                   <div key={u.email} className="flex items-center gap-2">
                     <span
@@ -143,21 +136,47 @@ export function StudioSidebar({ locale, role, userName, showTalentLink }: Studio
               </div>
             </>
           )}
+
+          {/* Cerrar sesión — al final del bloque, baja con los correos */}
+          <form action={logoutAction} className="mt-2">
+            <input type="hidden" name="locale" value={locale} />
+            <button
+              type="submit"
+              className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-white/30 transition-colors hover:text-white/60"
+            >
+              <LogOut className="h-3 w-3" strokeWidth={2} />
+              Cerrar sesión
+            </button>
+          </form>
         </div>
       )}
 
-      {/* Navigation */}
+      {/* Back to site */}
+      <div className="px-3 mt-[900px] mb-1">
+        <a
+          href={`/${locale}`}
+          className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] text-white/40 transition-colors hover:bg-white/[0.04] hover:text-white/70"
+        >
+          <Image
+            src="/favicon.svg"
+            alt=""
+            width={18}
+            height={18}
+            className="shrink-0"
+          />
+          yutro.cl
+        </a>
+      </div>
+
+      {/* Navigation — solo admin tiene links de navegación.
+          Solo se marca activo el link cuyo href sea el match más largo del pathname. */}
       <nav className="flex-1 space-y-0.5 px-3 py-4">
         {links.map((link) => {
-          let isActive: boolean;
-          if (link.exactPrefix) {
-            isActive =
-              pathname.startsWith(link.href) &&
-              !pathname.startsWith(link.exactPrefix);
-          } else {
-            isActive = pathname.startsWith(link.href);
-          }
-
+          const longestMatch = links
+            .map((l) => l.href)
+            .filter((h) => pathname.startsWith(h))
+            .sort((a, b) => b.length - a.length)[0];
+          const isActive = link.href === longestMatch;
           const isTalent = link.variant === "talent";
           const activeIconClass = isActive
             ? isTalent
@@ -182,39 +201,22 @@ export function StudioSidebar({ locale, role, userName, showTalentLink }: Studio
         })}
       </nav>
 
-      {/* Back to site */}
-      <div className="px-3 mb-1">
-        <a
-          href={`/${locale}`}
-          className="flex items-center gap-3 rounded-lg px-3 py-2 text-[13px] text-white/30 transition-colors hover:bg-white/[0.04] hover:text-white/50"
-        >
-          <ExternalLink className="h-[16px] w-[16px]" />
-          yutro.cl
-        </a>
-      </div>
-
-      {/* User & Logout */}
-      <div className="border-t border-[#1e1e1e] px-3 py-3">
-        <div className="flex items-center justify-between rounded-lg px-3 py-2">
-          <div className="flex items-center gap-2.5">
-            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white/[0.08] text-xs font-semibold text-white/50">
-              {userName?.charAt(0)?.toUpperCase() || "U"}
-            </div>
-            <span className="text-[13px] text-white/40">{userName}</span>
-          </div>
+      {/* Footer logout — solo cuando NO hay contexto de proyecto (admin) */}
+      {!talentCtx && (
+        <div className="border-t border-[#1e1e1e] px-6 py-4">
+          <div className="text-[11px] text-white/40 mb-2">{userName}</div>
           <form action={logoutAction}>
             <input type="hidden" name="locale" value={locale} />
             <button
               type="submit"
-              className="rounded-md p-1.5 text-white/20 transition-colors hover:text-white/50"
-              title="Cerrar sesión"
-              aria-label="Cerrar sesión"
+              className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-white/30 transition-colors hover:text-white/60"
             >
-              <LogOut className="h-3.5 w-3.5" />
+              <LogOut className="h-3 w-3" strokeWidth={2} />
+              Cerrar sesión
             </button>
           </form>
         </div>
-      </div>
+      )}
     </>
   );
 

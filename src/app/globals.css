@@ -153,9 +153,9 @@ body::after {
   --secondary-foreground: oklch(0.145 0 0);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
-  /* Accent: dorado #d9b478 — uso EXCLUSIVO del modulo Studio Talent (badges, watermarks, toggles) */
-  --accent: oklch(0.78 0.08 75);
-  --accent-soft: oklch(0.78 0.08 75 / 0.12);
+  /* Accent: naranja YUTRO — uso EXCLUSIVO del modulo Studio Talent */
+  --accent: oklch(0.68 0.21 42);
+  --accent-soft: oklch(0.68 0.21 42 / 0.10);
   --accent-foreground: oklch(0.145 0 0);
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
@@ -195,9 +195,9 @@ body::after {
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.22 0 0);
   --muted-foreground: oklch(0.708 0 0);
-  /* Accent dorado en dark — exclusivo Studio Talent */
-  --accent: oklch(0.78 0.08 75);
-  --accent-soft: oklch(0.78 0.08 75 / 0.12);
+  /* Accent: naranja YUTRO — uso EXCLUSIVO del modulo Studio Talent */
+  --accent: oklch(0.68 0.21 42);
+  --accent-soft: oklch(0.68 0.21 42 / 0.10);
   --accent-foreground: oklch(0.145 0 0);
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
@@ -240,26 +240,30 @@ body::after {
    especificos del modulo Talent. NO redefine colores nuevos.
    ───────────────────────────────────────────────────────────── */
 .studio-talent {
-  /* Surfaces propias del modulo (mas oscuras que el resto del studio) */
-  --talent-bg: oklch(0.135 0 0);          /* #0a0a0a */
-  --talent-bg-elev: oklch(0.18 0 0);      /* #131313 */
-  --talent-bg-elev-2: oklch(0.205 0 0);   /* #1a1a1a */
+  /* Surfaces — warm cream editorial */
+  --talent-bg: oklch(0.95 0.018 77);
+  --talent-bg-elev: oklch(0.97 0.012 75);
+  --talent-bg-elev-2: oklch(0.91 0.020 77);
 
-  /* Ink — aliases con tonalidad calida coherente con el dorado */
-  --talent-ink: oklch(0.95 0.012 75);
-  --talent-ink-dim: oklch(0.6 0.012 70);
-  --talent-ink-mute: oklch(0.38 0.012 70);
-  --talent-line: oklch(0.27 0.005 70);
+  /* Ink */
+  --talent-ink: oklch(0.13 0 0);
+  --talent-ink-dim: oklch(0.42 0 0);
+  --talent-ink-mute: oklch(0.60 0 0);
+  --talent-line: oklch(0.84 0.016 77);
+  --talent-line-strong: oklch(0.70 0.018 77);
 
-  /* Aliases al accent global — NO redefinir, apuntar al token oficial */
+  /* Accent — brand orange */
   --talent-accent: var(--accent);
   --talent-accent-soft: var(--accent-soft);
   --talent-accent-line: oklch(from var(--accent) l c h / 0.4);
 
+  /* Override heading font: Archivo 800 dentro del módulo Talent */
+  --font-heading: var(--font-display);
+
   /* Status */
-  --talent-danger: oklch(0.65 0.13 25);
-  --talent-danger-soft: oklch(0.65 0.13 25 / 0.15);
-  --talent-success: oklch(0.7 0.07 145);
+  --talent-danger: oklch(0.50 0.18 25);
+  --talent-danger-soft: oklch(0.50 0.18 25 / 0.12);
+  --talent-success: oklch(0.40 0.12 145);
 
   background: var(--talent-bg);
   color: var(--talent-ink);
@@ -268,23 +272,56 @@ body::after {
 }
 
 .studio-talent .talent-display {
-  font-family: var(--font-heading), serif;
-  font-weight: 300;
-  letter-spacing: -0.02em;
+  font-family: var(--font-display), "Archivo", system-ui, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 0.95;
 }
 
 .studio-talent .talent-display em {
   font-style: italic;
-  font-weight: 400;
+  font-weight: 800;
   color: var(--talent-accent);
 }
 
 .studio-talent .talent-mono {
-  font-family: ui-monospace, "SFMono-Regular", Menlo, "Cascadia Code", monospace;
-  font-weight: 400;
+  font-family: var(--font-jetbrains), "JetBrains Mono", ui-monospace, monospace;
+  font-weight: 500;
   font-size: 11px;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
+}
+
+/* ── Portrait editorial — stripe placeholder ─────────────────────────
+   Warm-cream tints que armonizan con el fondo paper.
+   --sand / --sand-2 son usados por Portrait.tsx */
+.studio-talent {
+  --sand:   oklch(0.86 0.030 75);
+  --sand-2: oklch(0.74 0.045 70);
+}
+.studio-talent [data-tint="warm"]   { --sand: oklch(0.86 0.045 70); --sand-2: oklch(0.70 0.060 60); }
+.studio-talent [data-tint="cool"]   { --sand: oklch(0.85 0.020 220); --sand-2: oklch(0.66 0.025 220); }
+.studio-talent [data-tint="bronze"] { --sand: oklch(0.78 0.075 55); --sand-2: oklch(0.58 0.080 45); }
+.studio-talent [data-tint="rose"]   { --sand: oklch(0.85 0.040 25); --sand-2: oklch(0.66 0.060 20); }
+.studio-talent [data-tint="moss"]   { --sand: oklch(0.84 0.038 130); --sand-2: oklch(0.66 0.050 130); }
+.studio-talent [data-tint="slate"]  { --sand: oklch(0.80 0.005 70); --sand-2: oklch(0.58 0.005 70); }
+.studio-talent [data-tint="dusk"]   { --sand: oklch(0.78 0.030 290); --sand-2: oklch(0.58 0.040 290); }
+.studio-talent [data-tint="ochre"]  { --sand: oklch(0.82 0.075 80); --sand-2: oklch(0.62 0.090 70); }
+
+/* Detail-head responsive panel separator */
+.studio-talent .talent-detail-left {
+  border-bottom: 1px solid var(--talent-line);
+  padding-bottom: 32px;
+}
+@media (min-width: 1024px) {
+  .studio-talent .talent-detail-left {
+    border-bottom: none;
+    padding-bottom: 32px;
+  }
+  .studio-talent .talent-detail-right {
+    border-left: 1px solid var(--talent-line);
+    padding-left: 24px;
+  }
 }
 
 /* Focus ring dorado para todos los focusables dentro del modulo Talent */
@@ -304,7 +341,7 @@ body::after {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Skeleton shimmer dorado para los loading.tsx del modulo Talent */
+/* Skeleton shimmer para los loading.tsx del modulo Talent */
 .talent-skeleton::after {
   content: "";
   position: absolute;
@@ -312,7 +349,7 @@ body::after {
   background: linear-gradient(
     90deg,
     transparent 0%,
-    color-mix(in oklch, var(--accent) 8%, transparent) 50%,
+    color-mix(in oklch, white 40%, transparent) 50%,
     transparent 100%
   );
   animation: talent-shimmer 1.6s ease-in-out infinite;
