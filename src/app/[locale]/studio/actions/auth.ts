@@ -28,43 +28,18 @@ export async function loginAction(
     return { error: "Demasiados intentos. Intenta de nuevo en unos minutos." };
   }
 
-  let user;
-  try {
-    [user] = await db
-      .select({
-        id: users.id,
-        email: users.email,
-        passwordHash: users.passwordHash,
-        name: users.name,
-        role: users.role,
-        isActive: users.isActive,
-      })
-      .from(users)
-      .where(eq(users.email, email.toLowerCase()))
-      .limit(1);
-  } catch (err) {
-    // TEMPORARY DIAGNOSTIC: expose the underlying postgres error to the
-    // user so we can read it from the login form (Vercel runtime logs
-    // truncate the message). REVERT THIS once root cause is identified.
-    const e = err as Error & {
-      code?: string;
-      detail?: string;
-      cause?: unknown;
-    };
-    const causeErr = e.cause as
-      | (Error & { code?: string; detail?: string })
-      | undefined;
-    const debugMsg = `DEBUG ${e.code ?? "?"} | ${e.message.slice(0, 120)} | cause:${causeErr?.code ?? "?"}:${causeErr?.message?.slice(0, 120) ?? "?"}`;
-    console.error("[loginAction] db.select(users) failed", {
-      message: e.message,
-      code: e.code,
-      detail: e.detail,
-      causeMessage: causeErr?.message,
-      causeCode: causeErr?.code,
-      stack: e.stack?.split("\n").slice(0, 5).join(" | "),
-    });
-    return { error: debugMsg };
-  }
+  const [user] = await db
+    .select({
+      id: users.id,
+      email: users.email,
+      passwordHash: users.passwordHash,
+      name: users.name,
+      role: users.role,
+      isActive: users.isActive,
+    })
+    .from(users)
+    .where(eq(users.email, email.toLowerCase()))
+    .limit(1);
 
   if (!user || !user.isActive) {
     return { error: "Credenciales inválidas" };
