@@ -17,30 +17,13 @@ export default async function ProjectLandingPage({
   const { locale: rawLocale, projectSlug } = await params;
   const locale: Locale = rawLocale === "en" ? "en" : "es";
 
-  // TEMP diagnostic: capture the underlying postgres error if any of these
-  // server-side queries fail, so we can read it from runtime logs.
-  let project;
-  let talents, exclusiveBlockedCodes, assignedCodes;
-  try {
-    project = await getProjectBySlug(projectSlug);
-    if (!project) notFound();
-    [talents, exclusiveBlockedCodes, assignedCodes] = await Promise.all([
-      getAvailableTalents(project),
-      getBlockedTalentsForProject(project),
-      getAssignedTalentsForProject(project.slug),
-    ]);
-  } catch (err) {
-    const e = err as Error & { code?: string; severity?: string; detail?: string; routine?: string };
-    console.error("[talent/landing] db query failed", {
-      message: e.message,
-      code: e.code,
-      severity: e.severity,
-      detail: e.detail,
-      routine: e.routine,
-      stack: e.stack?.split("\n").slice(0, 6).join(" | "),
-    });
-    throw err;
-  }
+  const project = await getProjectBySlug(projectSlug);
+  if (!project) notFound();
+  const [talents, exclusiveBlockedCodes, assignedCodes] = await Promise.all([
+    getAvailableTalents(project),
+    getBlockedTalentsForProject(project),
+    getAssignedTalentsForProject(project.slug),
+  ]);
   const unavailable = new Set([...exclusiveBlockedCodes, ...assignedCodes]);
   const featured = talents.filter((t) => !unavailable.has(t.code)).slice(0, 6);
   const total = talents.length - unavailable.size;
