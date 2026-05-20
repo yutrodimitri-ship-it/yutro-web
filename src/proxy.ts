@@ -38,9 +38,8 @@ export async function proxy(request: NextRequest) {
     }
 
     if (isLoginPage && authenticated) {
-      // Already logged in, redirect to dashboard
       return NextResponse.redirect(
-        new URL(`/${locale}/studio/dashboard`, request.url)
+        new URL(`/${locale}/studio`, request.url)
       );
     }
 
@@ -50,6 +49,10 @@ export async function proxy(request: NextRequest) {
       );
     }
   }
+
+  // Pass nonce to request headers so Next.js can extract it via headers()
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("x-nonce", nonce);
 
   // Skip i18n for studio, api, static files, and generated assets (icon, apple-icon, sitemap, robots)
   if (
@@ -63,7 +66,9 @@ export async function proxy(request: NextRequest) {
     pathname === "/sitemap.xml" ||
     pathname === "/robots.txt"
   ) {
-    const response = NextResponse.next();
+    const response = NextResponse.next({
+      request: { headers: requestHeaders },
+    });
     applySecurityHeaders(response, nonce, isDev);
 
     // Prevent indexing of studio and api routes
@@ -73,10 +78,6 @@ export async function proxy(request: NextRequest) {
 
     return response;
   }
-
-  // Pass nonce to request headers so Next.js can extract it
-  const requestHeaders = new Headers(request.headers);
-  requestHeaders.set("x-nonce", nonce);
 
   const response = intlMiddleware(request);
   applySecurityHeaders(response, nonce, isDev);
@@ -95,7 +96,9 @@ function applySecurityHeaders(
   // Content Security Policy with nonce
   const csp = [
     "default-src 'self'",
-    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'${isDev ? " 'unsafe-eval'" : ""}`,
+    isDev
+      ? `script-src 'self' 'unsafe-inline' 'unsafe-eval'`
+      : `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'`,
     `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`,
     "connect-src 'self' https://*.sanity.io https://cdn.sanity.io https://*.supabase.co https://comfy.yutro.cl",
     "frame-src 'self' https://www.youtube.com https://player.vimeo.com",

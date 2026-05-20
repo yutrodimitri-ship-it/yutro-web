@@ -3,7 +3,6 @@
 import { useTranslations } from "next-intl";
 import { Container } from "@/components/shared/Container";
 import { CTAButton } from "@/components/shared/CTAButton";
-import { TextReveal } from "@/components/animations/TextReveal";
 import { FadeInOnScroll } from "@/components/animations/FadeInOnScroll";
 import { Parallax } from "@/components/animations/Parallax";
 

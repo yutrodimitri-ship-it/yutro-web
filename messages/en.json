@@ -67,88 +67,238 @@
     "contactDescription": "Get in touch with YUTRO. Tell us about your project."
   },
   "studio": {
-    "sidebar": {
-      "dashboard": "Dashboard",
-      "createAvatar": "Create Avatar",
-      "history": "History",
-      "admin": "Admin",
-      "credits": "Credits",
-      "backToSite": "yutro.cl",
-      "logout": "Sign out"
-    },
-    "login": {
-      "title": "Sign in",
-      "email": "Email",
-      "password": "Password",
-      "submit": "Sign in",
-      "submitting": "Signing in...",
-      "backToSite": "Back to yutro.cl",
-      "error": "Invalid credentials",
-      "rateLimited": "Too many attempts. Please try again in a few minutes."
-    },
-    "dashboard": {
-      "greeting": "Hello, {name}",
-      "welcome": "Welcome to your AI avatar studio",
-      "credits": "Available credits",
-      "generated": "Avatars generated",
-      "recent": "Recent",
-      "viewAll": "View all",
-      "empty": "You don't have any avatars yet.",
-      "createFirst": "Create your first",
-      "start": "Start"
-    },
-    "generate": {
-      "title": "Create Avatar",
-      "subtitle": "Configure your character's features",
-      "step1Tab": "1. Demographics",
-      "step2Tab": "2. Features (optional)",
-      "gender": "Gender",
-      "ageRange": "Age range",
-      "ethnicity": "Ethnicity / Features",
-      "hairColor": "Hair color",
-      "hairTexture": "Texture",
-      "hairCut": "Haircut",
-      "eyeColor": "Eye color",
-      "skinTone": "Skin tone",
-      "wardrobeTitle": "Choose wardrobe",
-      "yourAvatar": "Your avatar",
-      "generatePortrait": "Generate Portrait",
-      "regenerate": "Regenerate",
-      "finishNoWardrobe": "Finish without wardrobe",
-      "chooseWardrobe": "Choose wardrobe",
-      "applyWardrobe": "Apply wardrobe",
-      "changeWardrobe": "Change wardrobe",
-      "finishNoSession": "Finish without session",
-      "photoSession": "Photo session",
-      "completed": "Avatar completed",
-      "confirmCredit": "1 credit will be deducted. Continue?",
-      "viewHistory": "View in history",
-      "createAnother": "Create another avatar",
-      "connectionError": "Connection error with server"
-    },
-    "loader": {
-      "step1Title": "Generating base portrait",
-      "step2Title": "Applying wardrobe — {preset}",
-      "step3Title": "Generating photo session — 9 poses"
-    },
-    "history": {
-      "title": "History",
-      "generations": "generations",
-      "empty": "You don't have any generations yet.",
-      "createFirst": "Create your first avatar",
-      "previous": "Previous",
-      "next": "Next"
-    },
-    "results": {
-      "portrait": "Portrait",
-      "wardrobe": "Wardrobe",
-      "session": "Session",
-      "download": "Download",
-      "zoom": "Zoom"
-    },
     "banner": {
-      "description": "Create photorealistic avatars with AI. Generate characters, dress them and get complete photo sessions in minutes.",
-      "cta": "Go to Studio"
+      "description": "Access Yutro's curated digital talent catalog. Browse, license and brief your producer in a single view.",
+      "cta": "Access the Catalog"
+    },
+    "talent": {
+      "placeholders": {
+        "catalog": "The catalog ships next sprint. Here you'll see the talents available for your project, filters by gender/age/category, and a live count of your casting.",
+        "detail": "The detail view ships next sprint. Here you'll see the full talent profile, studio and lifestyle galleries, and the action to add them to your casting.",
+        "casting": "The confirmation screen ships next sprint. Here you'll review your selection, mark exclusives and confirm license terms."
+      },
+      "common": {
+        "brand": "Yutro Estudio",
+        "submarca": "Talent",
+        "back": "Back",
+        "backToHub": "Back to hub",
+        "backToCatalog": "Back to catalog",
+        "comingSoon": "Coming soon",
+        "confidential": "Confidential",
+        "configuredByStudio": "Configured by Yutro Estudio",
+        "rightClickBlocked": "Images are property of Yutro Estudio.",
+        "addToCasting": "Add to casting",
+        "alreadyAdded": "Already in your casting",
+        "removeFromCasting": "Remove from casting",
+        "spotsFull": "Slots full",
+        "exclusive": "Exclusive",
+        "available": "Available",
+        "inCampaign": "In campaign",
+        "reserved": "Reserved"
+      },
+      "catalog": {
+        "metaProject": "Active project · {client} · Starts {date}",
+        "title": "Casting {projectName}",
+        "subtitle": "Catalog filtered for your project. Showing only talents available for {category} campaigns during your campaign window.",
+        "subtitleNoCategory": "Catalog filtered for your project. Showing only talents available for the campaign window.",
+        "stats": {
+          "available": "Available",
+          "shortlist": "Your casting",
+          "exclusive": "Exclusivity"
+        },
+        "filters": {
+          "label": "Filter:",
+          "all": "All",
+          "men": "Men",
+          "women": "Women",
+          "20s": "20s",
+          "30s": "30s",
+          "40s": "40s",
+          "50s": "50s+",
+          "categories": {
+            "corporativo": "Corporate",
+            "lifestyle": "Aspirational lifestyle",
+            "familiar": "Family",
+            "urbano": "Urban",
+            "senior": "Senior",
+            "oficios": "Trades",
+            "artistico": "Artistic",
+            "profesional": "Professional"
+          }
+        },
+        "card": {
+          "addToCasting": "Add to casting",
+          "removeFromCasting": "Remove from casting",
+          "fullCapacity": "Slots full"
+        },
+        "toast": {
+          "fullCapacity": "Slots full. Your project includes {max} talents.",
+          "exclusiveFull": "Your project allows up to {max} exclusive talents."
+        },
+        "viewCasting": "View my casting",
+        "noResults": "No talents match the current filters."
+      },
+      "detail": {
+        "back": "Back to catalog",
+        "spec": {
+          "phenotype": "Phenotype",
+          "origin": "Origin",
+          "ageRange": "Age range",
+          "archetype": "Archetype",
+          "tone": "Commercial tone",
+          "market": "Market",
+          "status": "Status"
+        },
+        "status": {
+          "available": "Available",
+          "inCampaign": "In campaign",
+          "reserved": "Reserved"
+        },
+        "suggestedUses": "Suggested uses",
+        "physicalTags": "Physical traits",
+        "usageProfile": {
+          "label": "Use profile",
+          "castingRef": "Casting ref",
+          "lifestyle": "Lifestyle",
+          "editorial": "Editorial",
+          "directCampaign": "Direct campaign"
+        },
+        "actions": {
+          "add": "Add to casting",
+          "alreadyIn": "Already in your casting",
+          "full": "Slots full",
+          "back": "Back"
+        },
+        "gallery": {
+          "label": "Gallery",
+          "studio": "Studio gallery",
+          "lifestyle": "Lifestyle",
+          "compCard": "Comp Card",
+          "editorial": "Editorial",
+          "compCardLabel": "Casting reference",
+          "lifestyleLabel": "Lifestyle in context",
+          "editorialLabel": "Creative editorial",
+          "lifestyleLabels": {
+            "urban": "Urban",
+            "social": "Social",
+            "home": "Home",
+            "active": "Active"
+          }
+        },
+        "thumbs": {
+          "casting": "Casting",
+          "studio": "Studio",
+          "lateral": "Side"
+        }
+      },
+      "casting": {
+        "subtitle": "Final step · Licensing confirmation",
+        "title": "Your casting",
+        "intro": "Review the selected talents and define license terms. Mark individually which ones require exclusivity for your campaign. The studio will confirm availability and send a tailored quote within 24 business hours.",
+        "empty": {
+          "title": "Your casting is empty",
+          "description": "Go back to the catalog and add talents that match your campaign.",
+          "cta": "Go to catalog"
+        },
+        "license": {
+          "title": "License terms",
+          "configuredBy": "Configured by Yutro Estudio",
+          "market": "Market",
+          "duration": "Rights duration",
+          "exclusivity": "Campaign exclusivity",
+          "modes": {
+            "none": "No exclusivity",
+            "category": "By category ({category})",
+            "total": "Total campaign exclusivity"
+          },
+          "helpCategory": "Mark below which talents need exclusive lock for the {category} category.",
+          "helpNone": "No exclusivity: talents stay free for simultaneous use in other campaigns.",
+          "helpTotal": "Total exclusivity: marked talents are fully locked from the market for the agreed duration."
+        },
+        "summary": {
+          "selected": "Selected talents",
+          "exclusive": "Exclusive talents"
+        },
+        "toggle": {
+          "exclusive": "Exclusive",
+          "disabledTitle": "Exclusive cap reached"
+        },
+        "actions": {
+          "submit": "Confirm selection",
+          "submitting": "Sending…",
+          "remove": "Remove"
+        },
+        "toast": {
+          "submitSuccess": "✓ Selection confirmed. {selected} talents · {exclusive} exclusive. — Yutro Estudio",
+          "submitError": "Something went wrong sending your selection. Try again in a moment.",
+          "exclusiveFull": "Your project allows up to {max} exclusive talents.",
+          "needAtLeastOne": "Add at least one talent before confirming."
+        },
+        "submitted": {
+          "title": "✓ Received",
+          "body": "The studio will get back to you within 24 business hours."
+        },
+        "confirm": {
+          "title": "Confirm your selection?",
+          "body": "You're about to send your casting to the studio. Review the details before confirming.",
+          "summaryProject": "Project",
+          "summarySelected": "Talents",
+          "summaryExclusive": "Exclusive",
+          "summaryDuration": "Duration",
+          "irreversible": "This action is final. Once submitted, the studio receives your selection by email and starts coordinating.",
+          "cancel": "Cancel",
+          "confirm": "Yes, send to studio"
+        }
+      },
+      "nda": {
+        "eyebrow": "Private access · Project session",
+        "title": "Confidentiality Agreement",
+        "subtitle": "Before accessing the {project} ({client}) catalog, you must accept the private viewing terms.",
+        "bullets": {
+          "confidential": "The information shown is confidential and property of VRYP ART & AI SOLUTIONS SPA.",
+          "noShare": "Do not reproduce, distribute, or disclose this information to third parties.",
+          "ipExclusive": "Digital talents are exclusive IP of the studio. The client acquires a license for the final pieces produced, not for the talent itself.",
+          "audit": "This session is registered with timestamp and IP for legal traceability.",
+          "watermark": "Images contain identifying watermarks with client name, date and talent code.",
+          "legal": "Misuse has legal consequences under Chilean Law 19.628 and applicable regulations."
+        },
+        "checkbox": "I have read and accept the private viewing terms.",
+        "accept": "Access catalog",
+        "cancel": "Cancel"
+      },
+      "welcome": {
+        "ariaLabel": "Project welcome screen",
+        "eyebrow": "Welcome · {client}",
+        "subtitle": "Catalog curated by Yutro Estudio",
+        "metaTalent": "Digital talent",
+        "totalExclusive": "Total exclusivity",
+        "noExclusive": "No exclusivity",
+        "continue": "Continue to catalog"
+      },
+      "error": {
+        "title": "Something went wrong",
+        "body": "There was an error loading this project. The Yutro Estudio team has been notified. Try again or go back to the hub.",
+        "retry": "Try again",
+        "backToHub": "Back to hub"
+      },
+      "admin": {
+        "hub": {
+          "title": "Talent Admin",
+          "subtitle": "Manage the catalog, projects and incoming selections.",
+          "talents": {
+            "title": "Talents",
+            "count": "{count} active"
+          },
+          "projects": {
+            "title": "Projects",
+            "count": "{count} active"
+          },
+          "submissions": {
+            "title": "Selections",
+            "count": "{count} pending"
+          }
+        }
+      }
     }
   }
 }

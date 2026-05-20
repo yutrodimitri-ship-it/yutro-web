@@ -14,24 +14,16 @@ export default async function StudioLayout({
   const { locale } = await params;
   const session = await verifySession();
 
-  let userName = "";
-  let credits = 0;
-
-  if (session) {
-    const [user] = await db
-      .select({ name: users.name, credits: users.credits })
-      .from(users)
-      .where(eq(users.id, session.userId))
-      .limit(1);
-    if (user) {
-      userName = user.name;
-      credits = user.credits;
-    }
-  }
-
   if (!session) {
     return <div className="h-screen bg-[#141414] text-white">{children}</div>;
   }
+
+  const [user] = await db
+    .select({ name: users.name })
+    .from(users)
+    .where(eq(users.id, session.userId))
+    .limit(1);
+  const userName = user?.name ?? "";
 
   return (
     <div className="flex h-screen bg-[#141414] text-white">
@@ -39,10 +31,9 @@ export default async function StudioLayout({
         locale={locale}
         role={session.role}
         userName={userName}
-        credits={credits}
       />
       <main className="flex-1 overflow-y-auto bg-[#141414]">
-        <div className="mx-auto max-w-5xl px-4 py-6 pt-16 sm:px-8 sm:py-10 md:pt-10">
+        <div className="px-6 py-6 pt-16 sm:px-10 sm:py-10 md:pt-10">
           {children}
         </div>
       </main>

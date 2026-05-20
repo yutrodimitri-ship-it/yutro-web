@@ -14,7 +14,7 @@ interface ContactEmailData {
 export async function sendContactEmail(data: ContactEmailData) {
   // Skip sending if no SMTP credentials (development)
   if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
-    // eslint-disable-next-line no-console
+     
     console.log("[DEV] Email skipped (no SMTP credentials):", data.subject);
     return { success: true, dev: true };
   }
