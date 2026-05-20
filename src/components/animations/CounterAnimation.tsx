@@ -33,7 +33,9 @@ export function Counter({
     damping: 30,
     mass: 1,
   });
-  const [display, setDisplay] = useState("0");
+  // Animated readout. When the user prefers reduced motion we skip the
+  // spring entirely and derive the value directly — no effect needed.
+  const [animated, setAnimated] = useState("0");
 
   useEffect(() => {
     if (isInView) {
@@ -42,15 +44,14 @@ export function Counter({
   }, [isInView, value, motionValue]);
 
   useEffect(() => {
-    if (prefersReduced) {
-      setDisplay(String(value));
-      return;
-    }
+    if (prefersReduced) return; // derived synchronously below
     const unsubscribe = spring.on("change", (v) => {
-      setDisplay(String(Math.round(v)));
+      setAnimated(String(Math.round(v)));
     });
     return unsubscribe;
-  }, [spring, prefersReduced, value]);
+  }, [spring, prefersReduced]);
+
+  const display = prefersReduced ? String(value) : animated;
 
   return (
     <span ref={ref} className={className}>

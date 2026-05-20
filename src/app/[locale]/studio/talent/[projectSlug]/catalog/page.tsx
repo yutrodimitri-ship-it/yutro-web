@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
   getAssignedTalentsForProject,
@@ -101,13 +102,13 @@ export default async function ProjectCatalogPage({
         >
           Yutro Estudio — Casting House
         </span>
-        <a
+        <Link
           href="/"
           className="font-mono text-[10px] uppercase tracking-[0.18em] transition-opacity hover:opacity-60"
           style={{ color: "var(--talent-ink-mute)" }}
         >
           yutro.cl ↗
-        </a>
+        </Link>
       </div>
     </div>
   );

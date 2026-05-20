@@ -18,21 +18,33 @@ export default function ContactPage() {
   const [csrfToken, setCsrfToken] = useState("");
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
-  const fetchCsrf = useCallback(async () => {
+  // Called from event handlers (submit errors) to rotate the token. Safe to
+  // call from useEffect too, since the setState lives inside the .then().
+  const refreshCsrf = useCallback(async () => {
     try {
       const res = await fetch("/api/csrf");
-      if (res.ok) {
-        const data = await res.json();
-        setCsrfToken(data.csrfToken);
-      }
+      if (!res.ok) return;
+      const data = await res.json();
+      setCsrfToken(data.csrfToken);
     } catch {
-      // Silent fail — will be caught at submit time
+      // Silent — surfaced at submit time if missing.
     }
   }, []);
 
+  // Initial token fetch — setState is inside the async callback, not the
+  // synchronous effect body, satisfying react-hooks/set-state-in-effect.
   useEffect(() => {
-    fetchCsrf();
-  }, [fetchCsrf]);
+    let cancelled = false;
+    fetch("/api/csrf")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (!cancelled && data) setCsrfToken(data.csrfToken);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -81,12 +93,12 @@ export default function ContactPage() {
         setErrorMsg(data?.error || t("error"));
         setStatus("error");
         // Refresh CSRF token after failure
-        fetchCsrf();
+        refreshCsrf();
       }
     } catch {
       setErrorMsg(t("error"));
       setStatus("error");
-      fetchCsrf();
+      refreshCsrf();
     }
   };
 

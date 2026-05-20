@@ -36,6 +36,7 @@ export default function AdminUsersPage() {
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
   const [deleteDialog, setDeleteDialog] = useState<User | null>(null);
 
+  // Re-fetch helper used by action handlers (create/edit/delete).
   const fetchAll = useCallback(async () => {
     const [usersRes, projectsRes] = await Promise.all([
       fetch("/api/studio/admin/users"),
@@ -46,7 +47,28 @@ export default function AdminUsersPage() {
     setLoading(false);
   }, []);
 
-  useEffect(() => { fetchAll(); }, [fetchAll]);
+  // Initial load — setStates live inside .then() callbacks, not the
+  // synchronous effect body, so the rule react-hooks/set-state-in-effect
+  // is satisfied even though it's the same logic as fetchAll.
+  useEffect(() => {
+    let cancelled = false;
+    Promise.all([
+      fetch("/api/studio/admin/users"),
+      fetch("/api/studio/talent/admin/projects"),
+    ])
+      .then(async ([usersRes, projectsRes]) => {
+        if (cancelled) return;
+        if (usersRes.ok) setUsersList(await usersRes.json());
+        if (projectsRes.ok) setProjectsList(await projectsRes.json());
+        setLoading(false);
+      })
+      .catch(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const activeProjects = projectsList.filter((p) => p.status === "active");
 

@@ -352,13 +352,13 @@ export default async function ProjectLandingPage({
         >
           Yutro Estudio — Casting House
         </span>
-        <a
+        <Link
           href="/"
           className="font-mono text-[10px] uppercase tracking-[0.18em] transition-opacity hover:opacity-60"
           style={{ color: "var(--talent-ink-mute)" }}
         >
           yutro.cl ↗
-        </a>
+        </Link>
       </div>
     </div>
   );

@@ -8,7 +8,6 @@ import {
   useMemo,
   useReducer,
   useRef,
-  useState,
 } from "react";
 import type { CastingState } from "@/types/talent";
 import { castingReducer, EMPTY_STATE } from "./casting-reducer";
@@ -32,8 +31,6 @@ interface ProjectLimits {
 interface CastingContextValue {
   state: CastingState;
   limits: ProjectLimits;
-  /** True cuando termino la hidratacion desde sessionStorage. */
-  hydrated: boolean;
   /** True cuando shortlist alcanzo maxTalents. */
   isFull: boolean;
   /** True cuando exclusives alcanzo maxExclusive. */
@@ -57,6 +54,33 @@ interface CastingProviderProps {
   children: React.ReactNode;
 }
 
+/**
+ * Lee sessionStorage de forma sincrónica al montar el provider. SSR-safe:
+ * en server retorna EMPTY_STATE, en client lee el snapshot. El layout
+ * tiene suppressHydrationWarning, así que un mismatch transitorio en la
+ * primera pintada no genera warning.
+ */
+function initFromStorage(storageKey: string): CastingState {
+  if (typeof window === "undefined") return EMPTY_STATE;
+  try {
+    const raw = window.sessionStorage.getItem(storageKey);
+    if (!raw) return EMPTY_STATE;
+    const parsed = JSON.parse(raw) as {
+      shortlist?: unknown;
+      exclusives?: unknown;
+    };
+    const shortlist = Array.isArray(parsed.shortlist)
+      ? parsed.shortlist.filter((c): c is string => typeof c === "string")
+      : [];
+    const exclusives = Array.isArray(parsed.exclusives)
+      ? parsed.exclusives.filter((c): c is string => typeof c === "string")
+      : [];
+    return { shortlist, exclusives: new Set(exclusives) };
+  } catch {
+    return EMPTY_STATE;
+  }
+}
+
 export function CastingProvider({
   projectSlug,
   maxTalents,
@@ -64,38 +88,23 @@ export function CastingProvider({
   children,
 }: CastingProviderProps) {
   const storageKey = `casting:${projectSlug}`;
-  const [state, dispatch] = useReducer(castingReducer, EMPTY_STATE);
-  const [hydrated, setHydrated] = useState(false);
-  const hydratedRef = useRef(false);
+  // useReducer's third arg is a lazy initializer (runs once, before paint).
+  const [state, dispatch] = useReducer(
+    castingReducer,
+    storageKey,
+    initFromStorage
+  );
+  // Skip the very first persist tick to avoid overwriting freshly-hydrated
+  // data with itself (a harmless no-op, but spares a sessionStorage write).
+  const firstRunRef = useRef(true);
 
-  // Hidrata desde sessionStorage al montar
+  // Persiste cada cambio.
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    try {
-      const raw = window.sessionStorage.getItem(storageKey);
-      if (raw) {
-        const parsed = JSON.parse(raw) as {
-          shortlist?: unknown;
-          exclusives?: unknown;
-        };
-        const shortlist = Array.isArray(parsed.shortlist)
-          ? parsed.shortlist.filter((c): c is string => typeof c === "string")
-          : [];
-        const exclusives = Array.isArray(parsed.exclusives)
-          ? parsed.exclusives.filter((c): c is string => typeof c === "string")
-          : [];
-        dispatch({ type: "HYDRATE", payload: { shortlist, exclusives } });
-      }
-    } catch {
-      // sessionStorage indisponible o corrupto — empezar limpio
+    if (firstRunRef.current) {
+      firstRunRef.current = false;
+      return;
     }
-    hydratedRef.current = true;
-    setHydrated(true);
-  }, [storageKey]);
-
-  // Persiste cada cambio (solo despues de hidratar para no pisar datos)
-  useEffect(() => {
-    if (!hydratedRef.current || typeof window === "undefined") return;
+    if (typeof window === "undefined") return;
     try {
       window.sessionStorage.setItem(
         storageKey,
@@ -165,7 +174,6 @@ export function CastingProvider({
     () => ({
       state,
       limits,
-      hydrated,
       isFull,
       isExclusiveFull,
       isInShortlist,
@@ -180,7 +188,6 @@ export function CastingProvider({
     [
       state,
       limits,
-      hydrated,
       isFull,
       isExclusiveFull,
       isInShortlist,

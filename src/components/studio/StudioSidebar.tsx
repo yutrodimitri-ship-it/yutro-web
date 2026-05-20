@@ -31,7 +31,12 @@ export function StudioSidebar({ locale, role, userName }: StudioSidebarProps) {
   const pathname = usePathname();
   const params = useParams();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [talentCtx, setTalentCtx] = useState<TalentProjectCtx | null>(null);
+  // Cache the fetched context alongside the slug it belongs to, so we can
+  // derive (rather than reset-in-effect) when the user navigates away.
+  const [talentCtxState, setTalentCtxState] = useState<{
+    slug: string;
+    ctx: TalentProjectCtx;
+  } | null>(null);
 
   const base = `/${locale}/studio`;
 
@@ -43,15 +48,25 @@ export function StudioSidebar({ locale, role, userName }: StudioSidebarProps) {
       : null;
 
   useEffect(() => {
-    if (!projectSlug) {
-      setTalentCtx(null);
-      return;
-    }
-    fetch(`/api/studio/talent/${projectSlug}/context`)
+    if (!projectSlug) return;
+    const ac = new AbortController();
+    fetch(`/api/studio/talent/${projectSlug}/context`, { signal: ac.signal })
       .then((r) => (r.ok ? r.json() : null))
-      .then((data) => setTalentCtx(data ?? null))
-      .catch(() => setTalentCtx(null));
+      .then((data) => {
+        if (data) setTalentCtxState({ slug: projectSlug, ctx: data });
+      })
+      .catch(() => {
+        /* aborted or network error — keep stale data; derived value handles it */
+      });
+    return () => ac.abort();
   }, [projectSlug]);
+
+  // Only show context if the cached slug matches the current route. This
+  // replaces a synchronous setState(null) in the effect on slug change.
+  const talentCtx =
+    projectSlug && talentCtxState?.slug === projectSlug
+      ? talentCtxState.ctx
+      : null;
 
   const links: SidebarLink[] = [];
 
