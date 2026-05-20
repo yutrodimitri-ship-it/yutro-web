@@ -5,6 +5,7 @@ import { requireAdmin } from "@/lib/auth";
 import { and, eq, inArray, isNull } from "drizzle-orm";
 import { z } from "zod";
 import { logAuditEventServer } from "@/lib/talent/audit-log-server";
+import { diffAccessChanges } from "@/lib/talent/access-diff";
 
 export const dynamic = "force-dynamic";
 
@@ -43,30 +44,16 @@ export async function PATCH(
       return NextResponse.json({ error: "Uno o más proyectos no existen" }, { status: 422 });
     }
 
-    const targetSet = new Set(data.projectSlugs);
-
     // Estado actual: todas las rows del user (incl. revocadas)
     const existing = await db
       .select()
       .from(talentProjectAccess)
       .where(eq(talentProjectAccess.userEmail, email));
 
-    const existingActiveSet = new Set(
-      existing.filter((r) => r.revokedAt === null).map((r) => r.projectSlug)
+    const { toCreate, toReactivate, toRevoke } = diffAccessChanges(
+      existing,
+      data.projectSlugs
     );
-
-    const toRevoke: string[] = [];
-    const toReactivate: typeof existing = [];
-    const toCreate: string[] = [];
-
-    for (const slug of targetSet) {
-      const row = existing.find((r) => r.projectSlug === slug);
-      if (!row) toCreate.push(slug);
-      else if (row.revokedAt !== null) toReactivate.push(row);
-    }
-    for (const slug of existingActiveSet) {
-      if (!targetSet.has(slug)) toRevoke.push(slug);
-    }
 
     await db.transaction(async (tx) => {
       if (toCreate.length) {

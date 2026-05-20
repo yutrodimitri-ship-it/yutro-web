@@ -5,6 +5,7 @@ import { db } from "@/db";
 import { castingSubmissions } from "@/db/schema";
 import { verifySession } from "@/lib/auth";
 import { logAuditEventServer } from "@/lib/talent/audit-log-server";
+import { releaseTalent } from "@/lib/talent/release-talent";
 
 export const dynamic = "force-dynamic";
 
@@ -50,18 +51,17 @@ export async function PATCH(
     );
   }
 
-  const newShortlist = submission.shortlist.filter((c) => c !== talentCode);
-  const newExclusives = submission.exclusives.filter((c) => c !== talentCode);
-
-  // Si la shortlist queda vacía, marcamos el casting como rechazado
-  const willEmpty = newShortlist.length === 0;
+  const { shortlist, exclusives, castingEmptied } = releaseTalent(
+    { shortlist: submission.shortlist, exclusives: submission.exclusives },
+    talentCode
+  );
 
   await db
     .update(castingSubmissions)
     .set({
-      shortlist: newShortlist,
-      exclusives: newExclusives,
-      ...(willEmpty
+      shortlist,
+      exclusives,
+      ...(castingEmptied
         ? { status: "rejected", reviewedAt: new Date(), reviewedBy: session.userId }
         : {}),
     })
@@ -73,14 +73,14 @@ export async function PATCH(
     talentCode,
     payload: {
       submissionId: id,
-      castingEmptied: willEmpty,
+      castingEmptied,
     },
   });
 
   return NextResponse.json({
     ok: true,
-    shortlist: newShortlist,
-    exclusives: newExclusives,
-    castingEmptied: willEmpty,
+    shortlist,
+    exclusives,
+    castingEmptied,
   });
 }
