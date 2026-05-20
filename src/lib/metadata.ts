@@ -21,8 +21,6 @@ export function createMetadata({
   noIndex?: boolean;
 }): Metadata {
   const url = `${SITE_URL}/${locale}${path}`;
-  const altLocale = locale === "es" ? "en" : "es";
-  const altUrl = `${SITE_URL}/${altLocale}${path}`;
   const ogImage = image || `${SITE_URL}/api/og?title=${encodeURIComponent(title)}&locale=${locale}`;
 
   return {

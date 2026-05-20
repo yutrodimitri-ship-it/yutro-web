@@ -6,7 +6,7 @@ interface ProjectHeaderProps {
   startDateLabel: string;
 }
 
-export function ProjectHeader({ project, locale, startDateLabel }: ProjectHeaderProps) {
+export function ProjectHeader({ project, startDateLabel }: ProjectHeaderProps) {
   return (
     <div className="flex flex-col gap-3">
       {/* Eyebrow */}

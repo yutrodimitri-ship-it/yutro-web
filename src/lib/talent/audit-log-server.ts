@@ -23,7 +23,7 @@ export async function logAuditEventServer(
   params: ServerAuditParams
 ): Promise<void> {
   if (process.env.NODE_ENV !== "production") {
-    // eslint-disable-next-line no-console
+     
     console.log(`[AUDIT:server] ${type}`, {
       ...params,
       timestamp: new Date().toISOString(),
@@ -41,7 +41,7 @@ export async function logAuditEventServer(
     });
   } catch (err) {
     // No bloqueamos el flow del usuario por un fallo de logging.
-    // eslint-disable-next-line no-console
+     
     console.error("[audit:server-failed]", err);
   }
 }

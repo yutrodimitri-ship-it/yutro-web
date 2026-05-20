@@ -23,7 +23,7 @@ export default function ProjectErrorPage({ error, reset }: ErrorPageProps) {
   const hubHref = `/${locale}/studio`;
 
   useEffect(() => {
-    // eslint-disable-next-line no-console
+     
     console.error("[talent:error]", error);
   }, [error]);
 

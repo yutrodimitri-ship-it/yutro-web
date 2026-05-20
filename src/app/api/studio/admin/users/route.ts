@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db";
 import { users, talentProjectAccess, talentProjects } from "@/db/schema";
 import { requireAdmin, hashPassword } from "@/lib/auth";
-import { and, desc, eq, inArray, isNull } from "drizzle-orm";
+import { and, desc, inArray, isNull } from "drizzle-orm";
 import { z } from "zod";
 import { logAuditEventServer } from "@/lib/talent/audit-log-server";
 

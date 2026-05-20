@@ -9,7 +9,6 @@ import { TalentSessionProvider } from "@/lib/talent/talent-session-context";
 import { logAuditEventServer } from "@/lib/talent/audit-log-server";
 import { ToastProvider } from "@/components/studio/talent/Toast";
 import { NdaGate } from "@/components/studio/talent/NdaGate";
-import type { Locale } from "@/types/talent";
 
 export default async function ProjectLayout({
   children,
@@ -19,7 +18,6 @@ export default async function ProjectLayout({
   params: Promise<{ locale: string; projectSlug: string }>;
 }) {
   const { locale: rawLocale, projectSlug } = await params;
-  const locale: Locale = rawLocale === "en" ? "en" : "es";
 
   const session = await verifySession();
   if (!session) redirect(`/${rawLocale}/studio/login`);

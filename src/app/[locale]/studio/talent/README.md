@@ -1,30 +1,30 @@
 # Yutro Studio Talent — Módulo
 
-Plataforma privada de licenciamiento de talento digital. Conceptualmente
-"casa de talento digital" (modelo IMG/Elite/The Society) para personajes
-100% sintéticos generados con IA y propios de Yutro.
+Plataforma privada de licenciamiento de talento digital sintético. Los
+talentos son personajes 100% generados con IA y propiedad de Yutro; el
+cliente arma su casting, marca exclusividades y firma términos de licencia.
 
-**Estado actual:** Fase 1 (Mock). Todo el catálogo es estático en código.
-**Cliente piloto:** Samsung (vía BBDO Chile), proyecto `samsung-galaxy-q1-2026`.
+**Estado:** Fase 3 (producción). El módulo es la única superficie de
+`/studio` — el pipeline de generación de avatares fue retirado.
 
 ---
 
-## Resumen del flujo
+## Flujo de usuario
 
 ```
-Login → Hub /studio
-          ├── Mis Avatares       → /studio/dashboard         (existente, NO se toca)
-          └── Catálogo Talent    → /studio/talent/[projectSlug]
-                                    ├── (modal NDA primera vez)
-                                    ├── (welcome splash primera vez)
-                                    ├── Catálogo (filtros + grid)
-                                    ├── Detalle (/talent/[code])
-                                    └── Casting (/casting)
+/studio (redirect según rol)
+  ├── admin  → /studio/talent/admin
+  └── client → /studio/talent
+                └── (sin proyecto) → /studio/talent (mensaje sin acceso)
+                └── (con proyecto) → /studio/talent/[projectSlug]
+                                      ├── NDA gate (primera vez por sesión)
+                                      ├── Catálogo + filtros
+                                      ├── Detalle del talento (/talent/[code])
+                                      └── Confirmación de casting (/casting)
 ```
 
-**Decisión clave:** la plataforma NUNCA genera contenido. Es un mostrario
-estático. El admin sube los 30 talentos previamente; el cliente solo arma su
-casting y confirma términos de licencia.
+Acceso por proyecto se controla en `talent_project_access` (granted/revoked
+por admin). Un usuario puede tener acceso a múltiples proyectos.
 
 ---
 
@@ -32,207 +32,142 @@ casting y confirma términos de licencia.
 
 ```
 src/
-├── types/
-│   └── talent.ts                    Tipos del dominio (Talent, ProjectConfig, CastingState)
+├── types/talent.ts                     Tipos del dominio
 │
 ├── lib/talent/
-│   ├── mock-data.ts                 30 talentos + 1 proyecto + helpers
-│   ├── portrait-svg.ts              Generador SVG abstracto (placeholder Fase 1)
-│   ├── casting-context.tsx          Context + reducer del shortlist (sessionStorage)
-│   ├── talent-session-context.tsx   Provee userEmail + projectSlug a hooks
-│   └── audit-log.ts                 Logger console (placeholder Fase 2 → DB)
+│   ├── data-source.ts                  Reads/writes de DB (drizzle)
+│   ├── mock-data.ts                    Fallback dev sin DB (no usado en prod)
+│   ├── admin-schemas.ts                Zod schemas + enums (categorías, industrias)
+│   ├── audit-log.ts (client)
+│   ├── audit-log-server.ts             Persiste a talent_access_logs
+│   ├── casting-context.tsx             Reducer + sessionStorage del shortlist
+│   ├── talent-session-context.tsx
+│   ├── image-variants.ts               Resolver de /talents-webp paths
+│   ├── portrait-svg.ts                 Placeholder SVG si falta la imagen
+│   └── email.ts                        Resend wrapper para casting confirmations
 │
 ├── components/studio/talent/
-│   ├── StudioHubCard.tsx            Card del hub /studio
-│   ├── TalentPlaceholder.tsx        Pantalla "Próximamente"
-│   ├── Toast.tsx                    Toast custom + useToast hook
-│   ├── Portrait.tsx                 Render del SVG con bloqueo click derecho/drag
-│   ├── WatermarkOverlay.tsx         Filigrana diagonal sobre cada imagen
-│   ├── ProjectHeader.tsx            Header del catálogo (server)
-│   ├── ProjectStats.tsx             3 contadores X/N + link "Ver mi casting"
-│   ├── FilterChips.tsx              13 chips (género/edad/categoría)
-│   ├── TalentCard.tsx               Card 3:4 con todos los estados (Opción C)
-│   ├── TalentGrid.tsx               Grid responsive + filtros + stagger
-│   ├── TalentGallery.tsx            3 thumbs cuadrados estudio/lifestyle
-│   ├── TalentDetail.tsx             Pantalla 3 completa (60/40 + spec grid)
-│   ├── ExclusiveToggle.tsx          Switch custom 28x16 con spring
-│   ├── SelectedItem.tsx             Item de la lista en /casting
-│   ├── EmptyState.tsx               Borde dashed + CTA reusable
-│   ├── LicenseTerms.tsx             Panel sticky read-only + submit
-│   ├── CastingPageClient.tsx        Pantalla 4 wrapper client
-│   ├── NdaModal.tsx                 Modal click-wrap del NDA
-│   ├── NdaGate.tsx                  Gate que muestra el modal según sessionStorage
-│   ├── WelcomeOverlay.tsx           Splash de bienvenida (3.5s + skip)
-│   ├── WelcomeGate.tsx              Gate del welcome según sessionStorage
-│   └── TalentSkeleton.tsx           Skeletons compartidos para loading.tsx
+│   │   (vista cliente)
+│   ├── CastingPageClient.tsx
+│   ├── ConfirmSubmitModal.tsx
+│   ├── EmptyState.tsx
+│   ├── ExclusiveToggle.tsx
+│   ├── FilterChips.tsx                 11 chips (género/edad/categoría)
+│   ├── LandingCovers.tsx               Hero del proyecto en /studio/talent
+│   ├── LicenseTerms.tsx
+│   ├── NdaGate.tsx + NdaModal.tsx
+│   ├── Portrait.tsx                    Card con bloqueo de click derecho/drag
+│   ├── ProjectHeader.tsx
+│   ├── ProjectStats.tsx
+│   ├── SelectedItem.tsx
+│   ├── TalentCard.tsx
+│   ├── TalentDetail.tsx                Pantalla 3 con bio, editorial score, etc.
+│   ├── TalentGallery.tsx               Comp Card / Lifestyle / Editorial tabs
+│   ├── TalentGrid.tsx
+│   ├── TalentImage.tsx
+│   ├── TalentSkeleton.tsx
+│   ├── Toast.tsx
+│   │
+│   └── admin/                          (vista admin)
+│       ├── AdminTable.tsx
+│       ├── BulkUpload.tsx
+│       ├── DeleteProjectButton.tsx
+│       ├── DeleteTalentButton.tsx
+│       ├── LocksTable.tsx              Comprometidos cross-project
+│       ├── ProjectAccessManager.tsx    Grant/revoke acceso por email
+│       ├── ProjectForm.tsx
+│       ├── ProjectNdaManager.tsx
+│       ├── ProjectSubmissionsPanel.tsx
+│       └── TalentForm.tsx
 │
 └── app/[locale]/studio/talent/
-    ├── layout.tsx                   Guard de acceso al módulo (TALENT_CLIENT_EMAILS)
-    ├── page.tsx                     Redirect al primer proyecto activo
+    ├── layout.tsx                      Guard: client/admin con acceso al módulo
+    ├── page.tsx                        Sin proyecto → mensaje · Con proyecto → redirect
     ├── [projectSlug]/
-    │   ├── layout.tsx               TalentSessionProvider + CastingProvider + ToastProvider + NdaGate + WelcomeGate
-    │   ├── loading.tsx              Catalog skeleton
-    │   ├── error.tsx                Error boundary del proyecto
-    │   ├── page.tsx                 Pantalla 2 catálogo
-    │   ├── talent/[code]/
-    │   │   ├── loading.tsx          Detail skeleton
-    │   │   └── page.tsx             Pantalla 3 detalle
-    │   └── casting/
-    │       ├── loading.tsx          Casting skeleton
-    │       └── page.tsx             Pantalla 4 casting
-    └── README.md                    Este archivo
+    │   ├── layout.tsx                  TalentSessionProvider + CastingProvider + NdaGate
+    │   ├── page.tsx                    Landing del proyecto (LandingCovers)
+    │   ├── catalog/page.tsx            Catálogo filtrado
+    │   ├── talent/[code]/page.tsx      Detalle
+    │   └── casting/page.tsx            Confirmación
+    └── admin/
+        ├── page.tsx                    Hub admin
+        ├── locks/page.tsx              Tabla de bloqueos cruzados
+        ├── projects/{[slug],new,page}
+        ├── submissions/{[id],page}
+        └── talents/{[code],[code]/upload,new,page}
 ```
 
 ---
 
-## Estados de datos
+## Modelo de datos
 
-### Flujo en Fase 1 (mock)
+Tablas Postgres (drizzle):
 
-```
-mock-data.ts (30 talentos + Samsung)
-   ↓
-ProjectLayout (lee proyecto, monta CastingProvider)
-   ↓
-CastingProvider (state: shortlist + exclusives)
-   ↓ (sessionStorage `casting:samsung-galaxy-q1-2026`)
-   ↓
-[ TalentCard | TalentDetail | SelectedItem | LicenseTerms ]
-   useCasting() → state + actions
-```
+| Tabla | Propósito |
+|---|---|
+| `talents` | Roster curado. Incluye bio_{es,en}, editorial_score (0-5), category, gender, ageRange, phenotype, archetype, market, suggestedUses, hue/sat para el placeholder |
+| `talent_projects` | Briefs activos. Una sola industria (`category_es`), maxTalents, maxExclusive, rightsDurationMonths, startDate, status |
+| `talent_project_access` | Quién puede ver qué proyecto (email + projectSlug + grantedBy/grantedAt + revokedAt) |
+| `nda_acceptances` | NDA firmado por email × proyecto |
+| `casting_submissions` | Casting confirmado por un cliente |
+| `talent_access_logs` | Audit trail completo (todos los eventos de la app) |
 
-### Persistencia del state
+Migraciones SQL en [drizzle/](../../../../../drizzle/) — ver
+[drizzle/README.md](../../../../../drizzle/README.md) para el flujo manual de aplicación.
 
-| Storage Key | Contenido | Lifecycle |
+---
+
+## Persistencia client-side
+
+| Storage key | Contenido | Lifecycle |
 |---|---|---|
-| `casting:${projectSlug}` | shortlist + exclusives | Por sesión (no localStorage) |
-| `nda:accepted:${projectSlug}` | ISO timestamp | Por sesión |
-| `welcome:seen:${projectSlug}` | ISO timestamp | Por sesión |
+| `casting:${projectSlug}` | shortlist + exclusivos | sessionStorage |
+| `nda:accepted:${projectSlug}` | timestamp ISO | sessionStorage (se replica a DB al confirmar casting) |
 
-Cerrar la pestaña preserva todo. Cerrar el navegador completo limpia todo
-(comportamiento sessionStorage).
-
-### Audit log (Fase 1: console)
-
-Todos los eventos se loguean con prefix `[AUDIT]` en console:
-
-| Evento | Disparador | Datos |
-|---|---|---|
-| `session_start` | layout server-side al cargar | client, projectName |
-| `nda_accepted` | NdaGate al aceptar | — |
-| `welcome_seen` | WelcomeGate al dismiss | — |
-| `talent_viewed` | TalentDetail al mount | talentCode |
-| `talent_added` | TalentCard / TalentDetail | talentCode, source |
-| `talent_removed` | TalentCard / TalentDetail / CastingPageClient | talentCode, source |
-| `exclusive_toggled` | CastingPageClient | talentCode, isExclusive |
-| `casting_submitted` | LicenseTerms al confirm | talentCodes, exclusiveCodes, counts |
-
-**Fase 2:** reemplazar el cuerpo de `logAuditEvent` por POST a
-`/api/studio/talent/audit` que persiste en tabla `talent_access_logs`.
+Cerrar pestaña preserva. Cerrar navegador limpia.
 
 ---
 
-## Decisiones de diseño inamovibles
+## Audit log
 
-Heredadas del descubrimiento inicial. **NO cuestionar durante implementación.**
+Persistido en `talent_access_logs` vía `logAuditEventServer()`. Eventos:
 
-1. **State management:** React Context + useReducer (NO Zustand)
-2. **Persistencia casting:** sessionStorage (NO localStorage)
-3. **Tipografía:** Outfit + Plus Jakarta Sans (NO Fraunces, NO JetBrains Mono)
-4. **Mono:** `ui-monospace` del sistema vía `font-mono` de Tailwind
-5. **Color acento Talent:** dorado `oklch(0.78 0.08 75)` (#d9b478)
-6. **Naranja `--primary`:** marca Yutro global, NO se usa en Talent
-7. **i18n:** bilingüe ES + EN desde día 1 (`studio.talent.*`)
-8. **Dark mode:** forzado, sin toggle
-9. **Strangler Fig:** NO modificar login, dashboard, generate, history, admin
-10. **Modelo de negocio:** catálogo estático, NO generación en runtime
+| Evento | Disparador |
+|---|---|
+| `session_start` | Layout server-side |
+| `nda_accepted` | NdaModal submit |
+| `talent_viewed` | TalentDetail mount |
+| `talent_added` / `talent_removed` | TalentCard / TalentDetail |
+| `exclusive_toggled` | CastingPageClient |
+| `casting_submitted` | LicenseTerms |
+| `admin_access_granted` / `admin_access_revoked` | ProjectAccessManager / users page |
+| `talent_lock_released` | release-talent route |
 
 ---
 
-## Cómo navegar el módulo
+## Decisiones inamovibles
 
-### Como cliente (BBDO/Samsung)
+1. **State management:** Context + useReducer (no Zustand).
+2. **Persistencia casting:** sessionStorage, no localStorage.
+3. **Imágenes:** WebP en `/public/talents-webp/{code}/`. PNG masters quedan local + R2 backup, gitignorados.
+4. **Watermarks:** runtime via sharp en `/api/studio/talent/image/[code]/[variant]` (auth-gated). Nunca URL pública directa.
+5. **i18n:** bilingüe ES/EN desde el día 1 (`studio.talent.*`).
+6. **Surface:** cream paper editorial (light theme propio del módulo), accent naranja YUTRO (oklch 0.68 0.21 42).
+7. **Tipografía Talent:** Archivo 800 display + JetBrains Mono 500 caps.
+8. **Modelo de negocio:** catálogo estático curado, sin generación en runtime.
 
-1. `https://www.yutro.cl/es/studio/login` → ingresa con `test@bbdo.cl`
-2. Llega al hub `/studio` → ve 2 cards (Mis Avatares + Catálogo Talent)
-3. Click en "Catálogo Talent" → modal NDA bloquea hasta aceptar
-4. Después del NDA → splash de bienvenida (3.5s o skip)
-5. Catálogo con 22 talentos curados → filtra y selecciona hasta 10
-6. Click en card → detalle del talento con galerías
-7. "Ver mi casting" → confirma exclusividades + acepta términos read-only
-8. Submit → toast de confirmación + auditoría queda registrada
+---
 
-### Como dev de Yutro
+## Tests
 
 ```bash
-npm run dev
-# Login con test@bbdo.cl, milivoy@yutro.cl, o yutrodimitri@gmail.com
-# (los emails con acceso están en TALENT_CLIENT_EMAILS de mock-data.ts)
+npm test
 ```
 
-Para ver eventos de auditoría: abre devtools console y busca `[AUDIT]`.
+Cobertura actual:
+- `src/lib/talent/__tests__/casting-reducer.test.ts`
+- `src/lib/talent/__tests__/idempotency.test.ts`
 
----
-
-## Fase 1 vs Fase 2
-
-### Lo que es mock en Fase 1 (este sprint)
-
-- Los 30 talentos viven en `mock-data.ts`
-- Las imágenes son SVG generados con math (head/shoulders abstracto)
-- El audit log va a `console.log`
-- El submit del casting solo dispara un toast — no envía email ni guarda en DB
-- La verificación de acceso (`userHasTalentAccess`) es una lista hardcoded de emails
-- El NDA aceptado vive en sessionStorage (se pierde al cerrar navegador)
-
-### Lo que se conecta a backend en Fase 2
-
-- Tablas Drizzle: `talents`, `projects`, `casting_submissions`, `talent_access_logs`, `nda_acceptances`
-- `getProjectsForUser(email)` → query a `projects WHERE contact_email = ?`
-- `userHasTalentAccess(email)` → mismo query con count > 0
-- Imágenes: Cloudflare R2 + sharp para watermark dinámico server-side
-  - API route `/api/studio/talent/image/[code]/[variant]` con auth + watermark + audit log
-- `logAuditEvent` → POST a `/api/studio/talent/audit` con persistencia en DB
-- Submit del casting → POST a `/api/studio/talent/castings` que crea registro y notifica a Milivoy via Resend
-- Panel admin: CRUD de talentos, proyectos y bandeja de submissions
-
----
-
-## Cómo agregar un talento (Fase 2)
-
-> Placeholder — se completa cuando se construya el panel admin en Fase 2.
-
-Flujo previsto:
-1. Admin entra a `/studio/talent/admin/talents/new`
-2. Sube 8 imágenes con estructura: `profile.jpg`, `charsheet.jpg`,
-   `studio-1.jpg`, `studio-2.jpg`, `studio-3.jpg`, `lifestyle-1.jpg`,
-   `lifestyle-2.jpg`, `lifestyle-3.jpg`
-3. Llena metadatos (gender, ageRange, phenotype, archetype, category, etc.)
-4. Sistema procesa imágenes con sharp (resize a 1200px max + comprime)
-5. Sube a Cloudflare R2 bucket privado
-6. Inserta registro en tabla `talents`
-
----
-
-## Cómo crear un proyecto (Fase 2)
-
-> Placeholder — Fase 2.
-
-Flujo previsto:
-1. Admin entra a `/studio/talent/admin/projects/new`
-2. Configura: cliente, contacto email, fechas, market, exclusivityMode,
-   maxTalents, maxExclusive, blockedTalentCodes
-3. Sistema genera slug y guarda en tabla `projects` con status `pending`
-4. Cliente recibe email de invitación con link al proyecto
-5. Al primer login del cliente, status pasa a `active`
-6. Cuando el cliente hace submit del casting, llega a la bandeja de Milivoy
-
----
-
-## Compliance (Ley 19.628 Chile + LGPD)
-
-- **NDA digital click-wrap:** registro per-sesión en sessionStorage en Fase 1, persistente en DB en Fase 2.
-- **Watermarks legales:** cada imagen renderizada incluye `YUTRO ESTUDIO · {CLIENT} · {DATE} · {CODE}` diagonal.
-- **Audit log:** trazabilidad completa de quién vio qué y cuándo.
-- **No PII:** los talentos son 100% sintéticos, no derivados de personas reales identificables.
-- **Imágenes vía API route en Fase 2:** ninguna URL pública directa al storage.
+Pendiente (Fase 4):
+- Tests de `locks-reducer` y `release-talent` route
+- E2E Playwright del flujo casting → submission → admin lock release

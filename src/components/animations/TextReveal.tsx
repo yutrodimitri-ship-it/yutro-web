@@ -45,9 +45,12 @@ export function TextReveal({
       },
     });
 
+    // Snapshot the node at effect-run time so cleanup compares against the
+    // same trigger even if the ref points elsewhere by then.
+    const triggerNode = containerRef.current;
     return () => {
       ScrollTrigger.getAll().forEach((st) => {
-        if (st.trigger === containerRef.current) st.kill();
+        if (st.trigger === triggerNode) st.kill();
       });
     };
   }, [text, delay]);

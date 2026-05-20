@@ -68,7 +68,7 @@ export function FilterChips({ activeFilter, onFilterChange, availableFilters }: 
               paddingBottom: "2px",
             }}
           >
-            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            { }
             {(t as unknown as (k: string) => string)(chip.i18nPath)}
           </button>
         );

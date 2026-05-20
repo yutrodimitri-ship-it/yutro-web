@@ -141,7 +141,7 @@ ON CONFLICT (code) DO UPDATE SET
 }
 
 main().catch((err) => {
-  // eslint-disable-next-line no-console
+   
   console.error(err);
   process.exit(1);
 });

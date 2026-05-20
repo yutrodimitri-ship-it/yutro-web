@@ -60,19 +60,19 @@ async function main() {
     }
 
     const ratio = dirPng > 0 ? ((1 - dirWebp / dirPng) * 100).toFixed(0) : "0";
-    // eslint-disable-next-line no-console
+     
     console.log(`${dir}: ${pngs.length} files · ${fmt(dirPng)} → ${fmt(dirWebp)} (-${ratio}%)`);
   }
 
   const totalRatio = totalPng > 0 ? ((1 - totalWebp / totalPng) * 100).toFixed(0) : "0";
-  // eslint-disable-next-line no-console
+   
   console.log(`\n✅  ${count} archivos convertidos`);
-  // eslint-disable-next-line no-console
+   
   console.log(`    Total: ${fmt(totalPng)} → ${fmt(totalWebp)} (-${totalRatio}%)`);
 }
 
 main().catch((err) => {
-  // eslint-disable-next-line no-console
+   
   console.error(err);
   process.exit(1);
 });
