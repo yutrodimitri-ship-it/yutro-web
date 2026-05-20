@@ -1,24 +1,28 @@
 import { test, expect } from "@playwright/test";
-import { loginAs } from "./helpers/login";
+import { loginAsClient } from "./helpers/login";
+
+const PROJECT_SLUG = process.env.PLAYWRIGHT_PROJECT_SLUG ?? "libre";
 
 /**
  * Spec 3 — NDA persistente: la DB es la fuente de verdad.
  *
- * Pre-requisito: NDA del usuario debe estar revocado en DB antes de correr
- * este test (admin → /studio/talent/admin/projects/samsung-galaxy-q1-2026
- * → revoke NDA del email de testing). De lo contrario, el primer paso
- * salta.
+ * Después de aceptar el NDA, limpiar sessionStorage y recargar NO debe
+ * mostrar el modal de nuevo — el server-side fetch a /nda devuelve el
+ * accept persistido.
+ *
+ * Pre-requisito: el NDA del usuario debe estar revocado en DB antes de
+ * empezar (admin → /studio/talent/admin/projects/[slug] → revoke NDA del
+ * email de testing). Si ya está aceptado, el primer paso simplemente
+ * salta el modal.
  */
 test.describe("NDA persistencia", () => {
-  test("DB es fuente: limpiar sessionStorage no muestra modal otra vez", async ({
+  test("DB es la fuente: limpiar sessionStorage no muestra modal otra vez", async ({
     page,
     context,
   }) => {
-    await loginAs(page);
+    await loginAsClient(page);
+    await page.goto(`/es/studio/talent/${PROJECT_SLUG}`);
 
-    await page.goto("/es/studio/talent/samsung-galaxy-q1-2026");
-
-    // Si aparece NDA, aceptarlo
     const ndaAccept = page.getByRole("button", {
       name: /acceder al catálogo|enter the catalog/i,
     });
@@ -28,25 +32,24 @@ test.describe("NDA persistencia", () => {
       await ndaAccept.click();
     }
 
-    // Esperar a que el catalogo cargue (NDA aceptado)
+    // Esperar a que cargue el catálogo (NDA aceptado).
     await expect(page.locator("[data-talent='project']")).toBeVisible({
       timeout: 10_000,
     });
 
-    // Borrar sessionStorage
+    // Limpiar todo el estado client-side.
     await context.clearCookies({ name: "_cache" }).catch(() => undefined);
     await page.evaluate(() => window.sessionStorage.clear());
 
-    // Recargar — el modal NO debe re-aparecer porque DB tiene el accept
+    // Recargar: el modal NO debe volver porque la DB tiene el accept.
     await page.reload();
+    await page.waitForTimeout(2_000); // dar tiempo al GET /nda
 
     const ndaAcceptAfterReload = page.getByRole("button", {
       name: /acceder al catálogo|enter the catalog/i,
     });
-    // Esperar 2s para asegurar que el fetch GET /nda termino
-    await page.waitForTimeout(2_000);
-    expect(await ndaAcceptAfterReload.isVisible().catch(() => false)).toBe(
-      false
-    );
+    expect(
+      await ndaAcceptAfterReload.isVisible().catch(() => false)
+    ).toBe(false);
   });
 });

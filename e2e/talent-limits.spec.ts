@@ -1,18 +1,24 @@
 import { test, expect } from "@playwright/test";
-import { loginAs } from "./helpers/login";
+import { loginAsClient } from "./helpers/login";
+
+const PROJECT_SLUG = process.env.PLAYWRIGHT_PROJECT_SLUG ?? "libre";
+const MAX_TALENTS = Number(process.env.PLAYWRIGHT_PROJECT_MAX_TALENTS ?? "10");
 
 /**
- * Spec 2 — Limites de cupo respetados.
+ * Spec 2 — Cupos respetados.
  *
- * Verifica que el catalogo NO permite agregar mas de `maxTalents` (10) y
- * que toggle de exclusividad respeta `maxExclusive` (3) para Samsung.
+ * Agrega `MAX_TALENTS` talentos y verifica que la UI muestre el indicador
+ * "cupo completo" en la card del siguiente o vía toast.
+ *
+ * Pre-requisitos: el proyecto debe tener al menos MAX_TALENTS+1 talentos
+ * disponibles y MAX_TALENTS configurado igual al `max_talents` del row
+ * en `talent_projects`.
  */
 test.describe("Cupos respetados", () => {
-  test("max 10 talents en shortlist, max 3 exclusivos", async ({ page }) => {
-    await loginAs(page);
-    await page.goto("/es/studio/talent/samsung-galaxy-q1-2026");
+  test(`max ${MAX_TALENTS} talentos en shortlist`, async ({ page }) => {
+    await loginAsClient(page);
+    await page.goto(`/es/studio/talent/${PROJECT_SLUG}`);
 
-    // Aceptar NDA si aparece
     const ndaAccept = page.getByRole("button", {
       name: /acceder al catálogo|enter the catalog/i,
     });
@@ -21,25 +27,26 @@ test.describe("Cupos respetados", () => {
       if (await checkbox.isVisible()) await checkbox.check();
       await ndaAccept.click();
     }
-    const continueBtn = page.getByRole("button", {
-      name: /continuar al catálogo|continue to the catalog/i,
-    });
-    if (await continueBtn.isVisible().catch(() => false)) {
-      await continueBtn.click();
-    }
 
-    // Agregar 10 talents
+    // Llenar la shortlist al máximo.
     const addButtons = page.getByRole("button", {
       name: /agregar al casting|add to casting/i,
     });
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < MAX_TALENTS; i++) {
       await addButtons.nth(i).click({ force: true });
     }
 
-    // Intentar agregar uno mas: deberia ver "Cupo completo" o toast
-    // El boton del 11vo cambia a "Cupo completo" o emite toast
+    // El indicador "cupo completo" aparece en alguna parte de la UI:
+    // contador X/X en stats, badge en la card #11, o toast.
     await expect(
-      page.getByText(/cupo completo|full capacity|10 \/ 10/i).first()
+      page
+        .getByText(
+          new RegExp(
+            `cupo completo|full capacity|${MAX_TALENTS} ?/ ?${MAX_TALENTS}`,
+            "i"
+          )
+        )
+        .first()
     ).toBeVisible({ timeout: 5_000 });
   });
 });

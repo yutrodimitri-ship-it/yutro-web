@@ -1,24 +1,45 @@
 import type { Page } from "@playwright/test";
 
-const TEST_EMAIL =
-  process.env.PLAYWRIGHT_CLIENT_EMAIL ?? "test@bbdo.cl";
-const TEST_PASSWORD = process.env.PLAYWRIGHT_CLIENT_PASSWORD ?? "";
+const CLIENT_EMAIL =
+  process.env.PLAYWRIGHT_CLIENT_EMAIL ?? "test-client@yutro.cl";
+const CLIENT_PASSWORD = process.env.PLAYWRIGHT_CLIENT_PASSWORD ?? "";
+
+const ADMIN_EMAIL =
+  process.env.PLAYWRIGHT_ADMIN_EMAIL ?? "test-admin@yutro.cl";
+const ADMIN_PASSWORD = process.env.PLAYWRIGHT_ADMIN_PASSWORD ?? "";
 
 /**
- * Login utility para los tests E2E.
+ * Login helpers for the E2E suite.
  *
- * Pre-requisito: el usuario debe existir en la DB de testing con la
- * password en `PLAYWRIGHT_CLIENT_PASSWORD`. Para CI: seedea un usuario
- * fixed antes de correr los tests, o usa una DB resetada por ejecucion.
+ * Prerequisite — see `e2e/README.md`. The test users must exist in the
+ * target database with the credentials provided via env vars. Recommended
+ * setup uses a dedicated test environment, NOT production.
  */
-export async function loginAs(
-  page: Page,
-  email: string = TEST_EMAIL,
-  password: string = TEST_PASSWORD
-) {
+
+async function submitLogin(page: Page, email: string, password: string) {
   await page.goto("/es/studio/login");
   await page.getByLabel(/email/i).fill(email);
   await page.getByLabel(/contrase|password/i).fill(password);
   await page.getByRole("button", { name: /iniciar sesi|sign in/i }).click();
+  // /studio redirects by role; we just wait until we're no longer on /login
   await page.waitForURL(/\/es\/studio(?!\/login)/);
 }
+
+export async function loginAsClient(
+  page: Page,
+  email: string = CLIENT_EMAIL,
+  password: string = CLIENT_PASSWORD
+): Promise<void> {
+  await submitLogin(page, email, password);
+}
+
+export async function loginAsAdmin(
+  page: Page,
+  email: string = ADMIN_EMAIL,
+  password: string = ADMIN_PASSWORD
+): Promise<void> {
+  await submitLogin(page, email, password);
+}
+
+/** @deprecated Use loginAsClient(). Kept temporarily for spec compatibility. */
+export const loginAs = loginAsClient;
