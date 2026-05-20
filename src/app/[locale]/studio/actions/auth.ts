@@ -28,18 +28,29 @@ export async function loginAction(
     return { error: "Demasiados intentos. Intenta de nuevo en unos minutos." };
   }
 
-  const [user] = await db
-    .select({
-      id: users.id,
-      email: users.email,
-      passwordHash: users.passwordHash,
-      name: users.name,
-      role: users.role,
-      isActive: users.isActive,
-    })
-    .from(users)
-    .where(eq(users.email, email.toLowerCase()))
-    .limit(1);
+  let user;
+  try {
+    [user] = await db
+      .select({
+        id: users.id,
+        email: users.email,
+        passwordHash: users.passwordHash,
+        name: users.name,
+        role: users.role,
+        isActive: users.isActive,
+      })
+      .from(users)
+      .where(eq(users.email, email.toLowerCase()))
+      .limit(1);
+  } catch (err) {
+    // TEMP diagnostic 2nd round — login broke after data-source cleanup.
+    // Surface the real postgres error in the form so we can read it.
+    const e = err as Error & { code?: string; detail?: string; cause?: unknown };
+    const c = e.cause as (Error & { code?: string; detail?: string }) | undefined;
+    return {
+      error: `DEBUG2 ${e.code ?? "?"} | ${e.message.slice(0, 140)} | cause:${c?.code ?? "?"}:${c?.message?.slice(0, 140) ?? "?"}`,
+    };
+  }
 
   if (!user || !user.isActive) {
     return { error: "Credenciales inválidas" };
