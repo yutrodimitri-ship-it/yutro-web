@@ -17,7 +17,7 @@ export function SkeletonBox({ aspect, className = "", height }: SkeletonBoxProps
       style={{
         aspectRatio: aspect,
         height,
-        background: "color-mix(in oklch, white 4%, transparent)",
+        background: "color-mix(in oklch, black 7%, transparent)",
       }}
     />
   );
@@ -26,7 +26,7 @@ export function SkeletonBox({ aspect, className = "", height }: SkeletonBoxProps
 export function CatalogSkeleton() {
   return (
     <div className="space-y-12">
-      <header className="space-y-4 border-b pb-8" style={{ borderColor: "color-mix(in oklch, white 8%, transparent)" }}>
+      <header className="space-y-4 border-b pb-8" style={{ borderColor: "color-mix(in oklch, black 10%, transparent)" }}>
         <SkeletonBox className="w-1/3" height="14px" />
         <SkeletonBox className="w-2/3 max-w-xl" height="48px" />
         <SkeletonBox className="w-full max-w-md" height="20px" />
@@ -68,7 +68,7 @@ export function DetailSkeleton() {
           <SkeletonBox className="w-1/4" height="14px" />
           <SkeletonBox className="w-2/3" height="44px" />
           <SkeletonBox className="w-1/2" height="20px" />
-          <div className="grid grid-cols-2 gap-6 border-y py-7" style={{ borderColor: "color-mix(in oklch, white 8%, transparent)" }}>
+          <div className="grid grid-cols-2 gap-6 border-y py-7" style={{ borderColor: "color-mix(in oklch, black 10%, transparent)" }}>
             {Array.from({ length: 6 }).map((_, i) => (
               <div key={i} className="space-y-2">
                 <SkeletonBox className="w-1/2" height="11px" />

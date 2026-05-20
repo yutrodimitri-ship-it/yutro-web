@@ -45,7 +45,7 @@ export function CastingPageClient({ project, locale, catalog }: CastingPageClien
   } = useCasting();
   const session = useTalentSession();
   const toast = useToast();
-  const catalogHref = `/${locale}/studio/talent/${project.slug}`;
+  const catalogHref = `/${locale}/studio/talent/${project.slug}/catalog`;
 
   // Mapea codes a talents completos preservando el orden de seleccion
   const selectedTalents = useMemo(
@@ -89,42 +89,71 @@ export function CastingPageClient({ project, locale, catalog }: CastingPageClien
       };
 
   return (
-    <div className="space-y-12">
-      {/* Boton volver al catalogo */}
-      <Link
-        href={catalogHref}
-        className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.1em] text-white/40 transition-colors hover:text-white"
+    <div>
+      {/* ── sl-head ── */}
+      <div
+        className="grid items-end gap-6 border-b pb-5"
+        style={{
+          gridTemplateColumns: "1fr auto",
+          borderColor: "var(--talent-ink)",
+        }}
       >
-        <ArrowLeft className="h-3.5 w-3.5" strokeWidth={1.75} />
-        {tCommon("backToCatalog")}
-      </Link>
-
-      {/* Header */}
-      <header className="space-y-4">
-        <p
-          className="font-mono text-[11px] uppercase tracking-[0.18em]"
-          style={{ color: "var(--accent)" }}
+        <div>
+          <span
+            className="font-mono text-[11px] uppercase tracking-[0.18em]"
+            style={{ color: "var(--accent)" }}
+          >
+            {tCasting("subtitle")}
+          </span>
+          <h1
+            style={{
+              fontFamily: "var(--font-heading)",
+              fontWeight: 800,
+              margin: 0,
+              fontSize: "clamp(48px, 7vw, 96px)",
+              lineHeight: 0.92,
+              letterSpacing: "-0.035em",
+              color: "var(--talent-ink)",
+            }}
+          >
+            {renderTitleItalic(tCasting("title"))}
+          </h1>
+        </div>
+        <div
+          className="text-right font-mono text-[11px] uppercase tracking-[0.18em] shrink-0"
+          style={{ color: "var(--talent-ink-mute)" }}
         >
-          {tCasting("subtitle")}
-        </p>
-        <h1
-          className="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl"
-          style={{
-            fontFamily: "var(--font-heading)",
-            letterSpacing: "-0.02em",
-            lineHeight: 1.05,
-          }}
-        >
-          {renderTitleItalic(tCasting("title"))}
-        </h1>
-        <p className="max-w-[620px] text-base leading-relaxed text-white/55 sm:text-lg">
-          {tCasting("intro")}
-        </p>
-      </header>
+          {locale === "es" ? "Selección" : "Talents"}
+          <strong
+            className="block"
+            style={{
+              fontFamily: "var(--font-heading)",
+              fontWeight: 800,
+              fontSize: "clamp(36px, 5vw, 56px)",
+              lineHeight: 1,
+              color: "var(--talent-ink)",
+              letterSpacing: "-0.03em",
+            }}
+          >
+            {String(state.shortlist.length).padStart(2, "0")}
+          </strong>
+        </div>
+      </div>
 
-      {/* Layout: en mobile el panel terms va PRIMERO (info legal antes del CTA);
-          en lg se invierte para layout 1.5fr / 1fr con terms a la derecha. */}
-      <div className="flex flex-col gap-12 lg:grid lg:grid-cols-[1.5fr_1fr]">
+      {/* Volver al catálogo */}
+      <div className="pt-5 pb-2">
+        <Link
+          href={catalogHref}
+          className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.1em] transition-colors"
+          style={{ color: "var(--talent-ink-mute)" }}
+        >
+          <ArrowLeft className="h-3.5 w-3.5" strokeWidth={1.75} />
+          {tCommon("backToCatalog")}
+        </Link>
+      </div>
+
+      {/* ── sl-body — list + side panel ── */}
+      <div className="flex flex-col gap-10 pt-6 lg:grid lg:gap-12" style={{ gridTemplateColumns: "minmax(0,1fr) 340px" }}>
         {/* Lista — orden 2 en mobile, 1 en desktop */}
         <div className="order-2 min-w-0 lg:order-1">
           {selectedTalents.length === 0 ? (
@@ -132,7 +161,7 @@ export function CastingPageClient({ project, locale, catalog }: CastingPageClien
               title={tCasting("empty.title")}
               description={tCasting("empty.description")}
               ctaLabel={tCasting("empty.cta")}
-              ctaHref={`/${locale}/studio/talent/${project.slug}`}
+              ctaHref={`/${locale}/studio/talent/${project.slug}/catalog`}
             />
           ) : (
             <motion.ul

@@ -9,12 +9,14 @@
 export const VARIANTS = [
   "profile",
   "charsheet",
-  "studio-1",
-  "studio-2",
-  "studio-3",
-  "lifestyle-1",
-  "lifestyle-2",
-  "lifestyle-3",
+  "gallery-1",
+  "gallery-2",
+  "gallery-3",
+  "gallery-4",
+  "gallery-5",
+  "gallery-6",
+  "gallery-7",
+  "gallery-8",
 ] as const;
 
 export type ImageVariant = (typeof VARIANTS)[number];

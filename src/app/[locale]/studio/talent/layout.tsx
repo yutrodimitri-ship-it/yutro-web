@@ -22,7 +22,8 @@ export default async function TalentLayout({
   const session = await verifySession();
 
   if (!session) redirect(`/${locale}/studio/login`);
-  if (!(await userHasTalentAccess(session.email))) redirect(`/${locale}/studio`);
+  if (session.role !== "admin" && !(await userHasTalentAccess(session.email)))
+    redirect(`/${locale}/studio`);
 
   return <>{children}</>;
 }

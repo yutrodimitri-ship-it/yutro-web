@@ -27,11 +27,14 @@ export interface TalentFormValues {
   category: (typeof TALENT_CATEGORIES)[number];
   toneCommercialEs: string;
   toneCommercialEn: string;
+  bioEs: string;
+  bioEn: string;
   market: string[];
   suggestedUses: { es: string; en: string }[];
   status: (typeof TALENT_STATUSES)[number];
   hue: number;
   sat: number;
+  editorialScore: number;
   isActive: boolean;
 }
 
@@ -297,6 +300,24 @@ export function TalentForm({ initial, mode, onCancelHref }: TalentFormProps) {
                 required
               />
             </Field>
+            <Field label="Bio (ES) — texto narrativo">
+              <textarea
+                value={values.bioEs}
+                onChange={(e) => update("bioEs", e.target.value)}
+                className={`${inputClass} min-h-[120px] resize-y`}
+                placeholder="Personalidad, antecedentes, contexto cultural, signatura visual…"
+                maxLength={2000}
+              />
+            </Field>
+            <Field label="Bio (EN)">
+              <textarea
+                value={values.bioEn}
+                onChange={(e) => update("bioEn", e.target.value)}
+                className={`${inputClass} min-h-[120px] resize-y`}
+                placeholder="Personality, background, cultural context, visual signature…"
+                maxLength={2000}
+              />
+            </Field>
             <Field label="Mercado (CSV: CL,LATAM,US)">
               <input
                 value={values.market.join(",")}
@@ -375,6 +396,19 @@ export function TalentForm({ initial, mode, onCancelHref }: TalentFormProps) {
                 onChange={(e) => update("sat", Number(e.target.value))}
                 className="w-full"
               />
+            </Field>
+            <Field label={`Score editorial (0-5): ${values.editorialScore}`}>
+              <input
+                type="range"
+                min={0}
+                max={5}
+                value={values.editorialScore}
+                onChange={(e) => update("editorialScore", Number(e.target.value))}
+                className="w-full"
+              />
+              <p className="mt-1 font-mono text-[10px] text-white/30">
+                4 o 5 = ancla del catálogo (aparece en posiciones destacadas).
+              </p>
             </Field>
           </div>
         </Section>

@@ -88,8 +88,8 @@ export function NdaModal({
         transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
         className="relative w-full max-w-xl overflow-hidden"
         style={{
-          background: "#131313",
-          border: "1px solid color-mix(in oklch, white 10%, transparent)",
+          background: "var(--talent-bg-elev, #f7f4ef)",
+          border: "1px solid var(--talent-line, color-mix(in oklch, black 10%, transparent))",
           maxHeight: "calc(100vh - 80px)",
         }}
       >
@@ -110,8 +110,9 @@ export function NdaModal({
 
           <h2
             id="nda-title"
-            className="mb-2 text-2xl font-bold tracking-tight text-white sm:text-3xl"
+            className="mb-2 text-2xl font-bold tracking-tight sm:text-3xl"
             style={{
+              color: "var(--talent-ink, oklch(0.13 0 0))",
               fontFamily: "var(--font-heading)",
               letterSpacing: "-0.02em",
             }}
@@ -119,17 +120,17 @@ export function NdaModal({
             {t("title")}
           </h2>
 
-          <p className="mb-7 text-sm text-white/55">
+          <p className="mb-7 text-sm" style={{ color: "var(--talent-ink-dim, oklch(0.42 0 0))" }}>
             {t("subtitle", { project: projectName, client: clientName })}
           </p>
 
-          <ol className="mb-7 list-inside list-decimal space-y-2.5 text-sm leading-relaxed text-white/70 marker:text-[var(--accent)] marker:font-mono marker:text-[11px]">
+          <ol className="mb-7 list-inside list-decimal space-y-2.5 text-sm leading-relaxed marker:text-[var(--accent)] marker:font-mono marker:text-[11px]" style={{ color: "var(--talent-ink-dim, oklch(0.42 0 0))" }}>
             {bullets.map((b, i) => (
               <li key={i}>{b}</li>
             ))}
           </ol>
 
-          <label className="mb-7 flex cursor-pointer items-start gap-3 select-none text-sm text-white/70">
+          <label className="mb-7 flex cursor-pointer items-start gap-3 select-none text-sm" style={{ color: "var(--talent-ink-dim, oklch(0.42 0 0))" }}>
             <input
               type="checkbox"
               checked={accepted}
@@ -157,9 +158,10 @@ export function NdaModal({
             <button
               type="button"
               onClick={onCancel}
-              className="inline-flex items-center justify-center px-6 py-3.5 font-mono text-[11px] uppercase tracking-[0.12em] text-white/55 transition-colors hover:text-white"
+              className="inline-flex items-center justify-center px-6 py-3.5 font-mono text-[11px] uppercase tracking-[0.12em] transition-colors"
               style={{
-                border: "1px solid color-mix(in oklch, white 12%, transparent)",
+                color: "var(--talent-ink-mute, oklch(0.60 0 0))",
+                border: "1px solid var(--talent-line, color-mix(in oklch, black 12%, transparent))",
               }}
             >
               {t("cancel")}

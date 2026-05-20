@@ -20,6 +20,7 @@ interface TalentCardProps {
   watermarkDate: string;
   projectSlug: string;
   isExclusiveBlocked?: boolean;
+  isAssigned?: boolean;
 }
 
 export function TalentCard({
@@ -29,6 +30,7 @@ export function TalentCard({
   watermarkDate,
   projectSlug,
   isExclusiveBlocked = false,
+  isAssigned = false,
 }: TalentCardProps) {
   const tCard = useTranslations("studio.talent.catalog.card");
   const tToast = useTranslations("studio.talent.catalog.toast");
@@ -42,7 +44,8 @@ export function TalentCard({
   const isDisabled = isFull && !inShortlist;
   const detailHref = `/${locale}/studio/talent/${projectSlug}/talent/${talent.code}`;
 
-  if (isExclusiveBlocked) {
+  if (isExclusiveBlocked || isAssigned) {
+    const label = isAssigned ? "Asignado" : "Exclusivo";
     return (
       <div className="group flex flex-col" style={{ opacity: 0.45, pointerEvents: "none" }}>
         <div className="relative overflow-hidden" style={{ aspectRatio: "3 / 4", background: "var(--talent-bg-elev-2, oklch(0.91 0.012 77))", filter: "grayscale(100%)" }}>
@@ -54,9 +57,13 @@ export function TalentCard({
           >
             <span
               className="font-mono text-[9px] uppercase tracking-[0.18em] px-2 py-0.5"
-              style={{ background: "rgba(0,0,0,0.7)", color: "rgba(255,255,255,0.7)", border: "1px solid rgba(255,255,255,0.2)" }}
+              style={{
+                background: isAssigned ? "var(--accent)" : "rgba(0,0,0,0.7)",
+                color: isAssigned ? "var(--accent-foreground)" : "rgba(255,255,255,0.7)",
+                border: isAssigned ? "1px solid var(--accent)" : "1px solid rgba(255,255,255,0.2)",
+              }}
             >
-              Exclusivo
+              {label}
             </span>
           </div>
         </div>

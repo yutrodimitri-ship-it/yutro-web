@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 import { db } from "@/db";
-import { castingSubmissions, talentProjects } from "@/db/schema";
+import { castingSubmissions, talentProjects, users } from "@/db/schema";
 import { verifySession } from "@/lib/auth";
 import { sendCastingNotification } from "@/lib/talent/email";
 import { logAuditEventServer } from "@/lib/talent/audit-log-server";
@@ -49,18 +49,25 @@ export async function POST(
     );
   }
 
+  const [submitter] = await db
+    .select({ name: users.name })
+    .from(users)
+    .where(eq(users.email, submission.userEmail))
+    .limit(1);
+  const submitterName = submitter?.name ?? submission.userEmail.split("@")[0];
+
   try {
     await sendCastingNotification({
       projectName: project.name,
       projectClient: project.client,
       projectSlug: project.slug,
-      contactEmail: submission.userEmail,
-      contactName: project.contactName,
+      submitterEmail: submission.userEmail,
+      submitterName,
       shortlist: submission.shortlist,
       exclusives: submission.exclusives,
       market: project.market,
-      rightsDuration: project.rightsDurationEs,
-      exclusivityMode: project.exclusivityMode,
+      rightsDuration: `${project.rightsDurationMonths} meses`,
+      category: project.categoryEs,
       submissionId: submission.id,
       submittedAt: submission.submittedAt,
     });

@@ -47,11 +47,14 @@ export default async function AdminTalentEditPage({
     category: row.category as (typeof TALENT_CATEGORIES)[number],
     toneCommercialEs: row.toneCommercialEs,
     toneCommercialEn: row.toneCommercialEn,
+    bioEs: row.bioEs ?? "",
+    bioEn: row.bioEn ?? "",
     market: row.market,
     suggestedUses: row.suggestedUses,
     status: row.status as (typeof TALENT_STATUSES)[number],
     hue: row.hue,
     sat: row.sat,
+    editorialScore: row.editorialScore,
     isActive: row.isActive,
   };
 

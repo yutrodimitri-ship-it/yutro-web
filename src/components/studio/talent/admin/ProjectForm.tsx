@@ -4,30 +4,21 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import {
-  EXCLUSIVITY_MODES,
+  INDUSTRY_CATEGORIES,
   PROJECT_STATUSES,
+  RIGHTS_DURATION_OPTIONS,
 } from "@/lib/talent/admin-schemas";
 
 export interface ProjectFormValues {
   slug: string;
   name: string;
   client: string;
-  contactEmail: string;
-  contactName: string;
   market: string;
-  rightsDurationEs: string;
-  rightsDurationEn: string;
-  exclusivityMode: (typeof EXCLUSIVITY_MODES)[number];
-  exclusivityCategoryEs: string | null;
-  exclusivityCategoryEn: string | null;
-  exclusivityHelpEs: string;
-  exclusivityHelpEn: string;
+  categoryEs: string;
   maxTalents: number;
   maxExclusive: number;
-  industrySector: string;
   rightsDurationMonths: number;
   startDate: string; // yyyy-mm-dd
-  blockedTalentCodes: string[];
   status: (typeof PROJECT_STATUSES)[number];
 }
 
@@ -35,15 +26,12 @@ interface ProjectFormProps {
   initial: ProjectFormValues;
   mode: "create" | "edit";
   onCancelHref: string;
-  /** Lista de talents activos para el multi-select de blockedTalentCodes. */
-  talentOptions: { code: string; name: string }[];
 }
 
 export function ProjectForm({
   initial,
   mode,
   onCancelHref,
-  talentOptions,
 }: ProjectFormProps) {
   const router = useRouter();
   const [values, setValues] = useState<ProjectFormValues>(initial);
@@ -55,15 +43,6 @@ export function ProjectForm({
     val: ProjectFormValues[K]
   ) {
     setValues((v) => ({ ...v, [key]: val }));
-  }
-
-  function toggleBlocked(code: string) {
-    update(
-      "blockedTalentCodes",
-      values.blockedTalentCodes.includes(code)
-        ? values.blockedTalentCodes.filter((c) => c !== code)
-        : [...values.blockedTalentCodes, code]
-    );
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -145,25 +124,6 @@ export function ProjectForm({
               required
             />
           </Field>
-          <Field label="Contacto: nombre">
-            <input
-              value={values.contactName}
-              onChange={(e) => update("contactName", e.target.value)}
-              className={inputClass}
-              required
-            />
-          </Field>
-          <Field label="Contacto: email">
-            <input
-              type="email"
-              value={values.contactEmail}
-              onChange={(e) =>
-                update("contactEmail", e.target.value.toLowerCase())
-              }
-              className={inputClass}
-              required
-            />
-          </Field>
         </div>
       </Section>
 
@@ -178,6 +138,21 @@ export function ProjectForm({
               required
             />
           </Field>
+          <Field label="Categoría">
+            <select
+              value={values.categoryEs}
+              onChange={(e) => update("categoryEs", e.target.value)}
+              className={inputClass}
+              required
+            >
+              <option value="">— seleccionar —</option>
+              {INDUSTRY_CATEGORIES.map((c) => (
+                <option key={c} value={c}>
+                  {c}
+                </option>
+              ))}
+            </select>
+          </Field>
           <Field label="Inicio (yyyy-mm-dd)">
             <input
               type="date"
@@ -187,42 +162,19 @@ export function ProjectForm({
               required
             />
           </Field>
-          <Field label="Duración derechos (ES)">
-            <input
-              value={values.rightsDurationEs}
-              onChange={(e) => update("rightsDurationEs", e.target.value)}
-              className={inputClass}
-              placeholder="8 meses"
-              required
-            />
-          </Field>
-          <Field label="Duración derechos (EN)">
-            <input
-              value={values.rightsDurationEn}
-              onChange={(e) => update("rightsDurationEn", e.target.value)}
-              className={inputClass}
-              placeholder="8 months"
-              required
-            />
-          </Field>
-          <Field label="Sector de industria">
-            <input
-              value={values.industrySector}
-              onChange={(e) => update("industrySector", e.target.value)}
-              className={inputClass}
-              placeholder="telefonia, belleza, alimentos…"
-            />
-          </Field>
-          <Field label="Duración campaña (meses)">
-            <input
-              type="number"
-              min={1}
-              max={120}
+          <Field label="Duración derechos">
+            <select
               value={values.rightsDurationMonths}
               onChange={(e) => update("rightsDurationMonths", Number(e.target.value))}
               className={inputClass}
               required
-            />
+            >
+              {RIGHTS_DURATION_OPTIONS.map((m) => (
+                <option key={m} value={m}>
+                  {m} meses
+                </option>
+              ))}
+            </select>
           </Field>
           <Field label="Max talents">
             <input
@@ -246,90 +198,6 @@ export function ProjectForm({
               required
             />
           </Field>
-        </div>
-      </Section>
-
-      <Section title="Exclusividad">
-        <div className="grid gap-4 sm:grid-cols-2">
-          <Field label="Modo">
-            <select
-              value={values.exclusivityMode}
-              onChange={(e) =>
-                update(
-                  "exclusivityMode",
-                  e.target.value as ProjectFormValues["exclusivityMode"]
-                )
-              }
-              className={inputClass}
-            >
-              {EXCLUSIVITY_MODES.map((m) => (
-                <option key={m} value={m}>
-                  {m}
-                </option>
-              ))}
-            </select>
-          </Field>
-          {values.exclusivityMode === "category" && (
-            <>
-              <Field label="Categoría exclusiva (ES)">
-                <input
-                  value={values.exclusivityCategoryEs ?? ""}
-                  onChange={(e) =>
-                    update("exclusivityCategoryEs", e.target.value || null)
-                  }
-                  className={inputClass}
-                />
-              </Field>
-              <Field label="Categoría exclusiva (EN)">
-                <input
-                  value={values.exclusivityCategoryEn ?? ""}
-                  onChange={(e) =>
-                    update("exclusivityCategoryEn", e.target.value || null)
-                  }
-                  className={inputClass}
-                />
-              </Field>
-            </>
-          )}
-          <Field label="Texto ayuda exclusividad (ES)">
-            <textarea
-              value={values.exclusivityHelpEs}
-              onChange={(e) => update("exclusivityHelpEs", e.target.value)}
-              className={`${inputClass} min-h-[80px]`}
-              required
-            />
-          </Field>
-          <Field label="Texto ayuda exclusividad (EN)">
-            <textarea
-              value={values.exclusivityHelpEn}
-              onChange={(e) => update("exclusivityHelpEn", e.target.value)}
-              className={`${inputClass} min-h-[80px]`}
-              required
-            />
-          </Field>
-        </div>
-      </Section>
-
-      <Section title="Talents bloqueados">
-        <p className="mb-3 text-[12px] text-white/55">
-          Los talents seleccionados NO aparecerán en el catálogo de este
-          proyecto (ya están en otra campaña, en reserva, etc.).
-        </p>
-        <div className="grid max-h-72 overflow-y-auto border border-white/[0.08] bg-[#0a0a0a] p-3 sm:grid-cols-2 lg:grid-cols-3">
-          {talentOptions.map((t) => (
-            <label
-              key={t.code}
-              className="flex cursor-pointer items-center gap-2 px-2 py-1.5 text-[12px] text-white/70 hover:bg-white/[0.03]"
-            >
-              <input
-                type="checkbox"
-                checked={values.blockedTalentCodes.includes(t.code)}
-                onChange={() => toggleBlocked(t.code)}
-              />
-              <span className="font-mono text-[11px] text-white">{t.code}</span>
-              <span className="truncate">— {t.name}</span>
-            </label>
-          ))}
         </div>
       </Section>
 

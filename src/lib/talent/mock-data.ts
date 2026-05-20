@@ -658,32 +658,12 @@ export const PROJECT_SAMSUNG: ProjectConfig = {
   slug: "samsung-galaxy-q1-2026",
   name: "Samsung Galaxy Q1 2026",
   client: "BBDO Chile",
-  contactEmail: "test@bbdo.cl",
-  contactName: "M. Rojas",
   market: "Chile",
-  rightsDuration: { es: "8 meses", en: "8 months" },
-  exclusivityMode: "category",
-  exclusivityCategory: { es: "Tech / Electrónica", en: "Tech / Electronics" },
-  exclusivityHelp: {
-    es: "Marca individualmente abajo qué talentos requieren bloqueo exclusivo en esta categoría.",
-    en: "Mark below which talents need exclusive lock for this category.",
-  },
+  categoryEs: "Tecnología",
   maxTalents: 10,
   maxExclusive: 3,
-  industrySector: "telefonia",
   rightsDurationMonths: 12,
   startDate: "2026-04-30",
-  // 8 codes bloqueados — ya estan en otras campanas o reservados
-  blockedTalentCodes: [
-    "YE-W08",
-    "YE-W14",
-    "YE-W28",
-    "YE-M05",
-    "YE-W25",
-    "YE-M11",
-    "YE-M19",
-    "YE-W17",
-  ],
   status: "active",
 };
 
@@ -720,9 +700,10 @@ export function getTalentByCode(code: string): Talent | undefined {
   return TALENTS.find((t) => t.code === code);
 }
 
-/** Catalogo del proyecto, ya filtrado por blockedTalentCodes. */
+/** Catálogo de talents activos del proyecto. */
 export function getAvailableTalents(project: ProjectConfig): Talent[] {
-  return TALENTS.filter((t) => !project.blockedTalentCodes.includes(t.code));
+  void project;
+  return TALENTS;
 }
 
 /** Alias semantico — antes se llamaba getCatalogForProject. Mantener por retrocompat. */

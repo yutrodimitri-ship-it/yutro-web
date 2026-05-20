@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import {
+  getAssignedTalentsForProject,
   getAvailableTalents,
   getBlockedTalentsForProject,
   getProjectBySlug,
@@ -19,15 +20,17 @@ export default async function ProjectCatalogPage({
   const project = await getProjectBySlug(projectSlug);
   if (!project) notFound();
 
-  const [talents, exclusiveBlockedCodes] = await Promise.all([
+  const [talents, exclusiveBlockedCodes, assignedCodes] = await Promise.all([
     getAvailableTalents(project),
     getBlockedTalentsForProject(project),
+    getAssignedTalentsForProject(project.slug),
   ]);
   const clientName = clientToWatermark(project.client);
   const watermarkDate = formatWatermarkDate(project.startDate);
   const startDateLabel = formatStartDate(project.startDate, locale);
 
-  const total = talents.length;
+  const unavailable = new Set([...exclusiveBlockedCodes, ...assignedCodes]);
+  const available = talents.length - unavailable.size;
 
   return (
     <div className="flex flex-col">
@@ -42,7 +45,7 @@ export default async function ProjectCatalogPage({
             startDateLabel={startDateLabel}
           />
           <ProjectStats
-            available={total}
+            available={available}
             locale={locale}
             projectSlug={project.slug}
           />
@@ -66,7 +69,7 @@ export default async function ProjectCatalogPage({
               lineHeight: 0.88,
             }}
           >
-            {String(total).padStart(2, "0")}
+            {String(available).padStart(2, "0")}
           </p>
           <p
             className="mt-2 font-mono text-[10px] uppercase tracking-[0.16em]"
@@ -84,6 +87,7 @@ export default async function ProjectCatalogPage({
         watermarkDate={watermarkDate}
         projectSlug={project.slug}
         exclusiveBlockedCodes={exclusiveBlockedCodes}
+        assignedCodes={assignedCodes}
       />
 
       {/* ── Footer ──────────────────────────────────────────── */}

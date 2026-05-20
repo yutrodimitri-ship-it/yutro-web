@@ -175,6 +175,25 @@ function SubmissionRow({ submission }: { submission: Submission }) {
         </div>
       )}
 
+      {/* Liberar casting completo cuando ya está confirmado */}
+      {submission.status === "confirmed" && (
+        <div className="space-y-2">
+          {error && <p className="text-[12px] text-red-400">{error}</p>}
+          <button
+            onClick={() => {
+              if (confirm("¿Liberar todos los talentos de este casting? Los talentos volverán a estar disponibles en el catálogo.")) {
+                patch("rejected");
+              }
+            }}
+            disabled={loading !== null}
+            className="inline-flex items-center gap-1.5 px-4 py-2 font-mono text-[10px] uppercase tracking-[0.1em] border border-white/[0.12] text-white/50 hover:border-[var(--accent)]/40 hover:text-[var(--accent)] disabled:opacity-50"
+          >
+            {loading === "rejected" && <Loader2 className="h-3 w-3 animate-spin" />}
+            Liberar todos los talentos
+          </button>
+        </div>
+      )}
+
       {!isPending && submission.adminNotes && (
         <p className="text-[12px] text-white/40 italic">&ldquo;{submission.adminNotes}&rdquo;</p>
       )}

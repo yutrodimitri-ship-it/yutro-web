@@ -14,6 +14,7 @@ interface TalentGridProps {
   watermarkDate: string;
   projectSlug: string;
   exclusiveBlockedCodes?: string[];
+  assignedCodes?: string[];
 }
 
 const AGE_BUCKETS = new Set<FilterValue>(["20s", "30s", "40s", "50s"]);
@@ -24,6 +25,8 @@ const CATEGORIES = new Set<FilterValue>([
   "urbano",
   "senior",
   "oficios",
+  "artistico",
+  "profesional",
 ]);
 
 export function TalentGrid({
@@ -33,6 +36,7 @@ export function TalentGrid({
   watermarkDate,
   projectSlug,
   exclusiveBlockedCodes = [],
+  assignedCodes = [],
 }: TalentGridProps) {
   const t = useTranslations("studio.talent.catalog");
   const [filter, setFilter] = useState<FilterValue>("all");
@@ -52,6 +56,17 @@ export function TalentGrid({
     return talents;
   }, [filter, talents]);
 
+  /** Conjunto de filtros que tienen al menos un talento. */
+  const availableFilters = useMemo(() => {
+    const set = new Set<FilterValue>();
+    for (const tt of talents) {
+      set.add(tt.gender);
+      set.add(tt.ageBucket);
+      set.add(tt.category);
+    }
+    return set;
+  }, [talents]);
+
   const containerVariants = reduce
     ? undefined
     : {
@@ -68,7 +83,11 @@ export function TalentGrid({
     <div className="flex flex-col">
       {/* Filtros con padding lateral */}
       <div className="px-6 py-3 sm:px-10">
-        <FilterChips activeFilter={filter} onFilterChange={setFilter} />
+        <FilterChips
+          activeFilter={filter}
+          onFilterChange={setFilter}
+          availableFilters={availableFilters}
+        />
       </div>
 
       {filtered.length === 0 ? (
@@ -99,6 +118,7 @@ export function TalentGrid({
               watermarkDate={watermarkDate}
               projectSlug={projectSlug}
               isExclusiveBlocked={exclusiveBlockedCodes.includes(talent.code)}
+              isAssigned={assignedCodes.includes(talent.code)}
             />
           ))}
         </motion.div>

@@ -17,7 +17,9 @@ export type TalentCategory =
   | "familiar"
   | "urbano"
   | "senior"
-  | "oficios";
+  | "oficios"
+  | "artistico"
+  | "profesional";
 export type TalentStatus = "available" | "in-campaign" | "reserved";
 
 export interface Talent {
@@ -33,6 +35,8 @@ export interface Talent {
   archetype: LocaleString;
   category: TalentCategory;
   toneCommercial: LocaleString;
+  /** Bio narrativa larga del talento. Opcional — fallback a placeholder si falta. */
+  bio?: Partial<LocaleString>;
   /** ISO-style codes ("CL", "LATAM", "US") — traducibles en runtime. */
   market: string[];
   suggestedUses: LocaleString[];
@@ -47,9 +51,9 @@ export interface Talent {
   imageCharsheetKey?: string | null;
   /** R2 keys de galerias 1:1 (studio + lifestyle). Sprint 8+. */
   galleryKeys?: string[];
+  /** Score editorial 0-5: marca "anclas" del catálogo en el shuffle balanceado. */
+  editorialScore?: number;
 }
-
-export type ExclusivityMode = "none" | "category" | "total";
 
 export type ProjectStatus = "active" | "pending" | "closed";
 
@@ -57,24 +61,15 @@ export interface ProjectConfig {
   slug: string;
   name: string;
   client: string;
-  /** Email del contacto cliente (controla acceso al modulo Talent). */
-  contactEmail: string;
-  contactName: string;
   market: string;
-  rightsDuration: LocaleString;
-  exclusivityMode: ExclusivityMode;
-  exclusivityCategory?: LocaleString;
-  exclusivityHelp: LocaleString;
+  /** Categoría de industria del proyecto (Telco, Banca, ...). */
+  categoryEs: string;
   maxTalents: number;
   maxExclusive: number;
-  /** Sector de industria del cliente (ej: "telefonia", "belleza"). */
-  industrySector: string;
-  /** Duración en meses para calcular ventana de exclusividad. */
+  /** Duración derechos en meses (3, 6, 12, 18 o 24). Define la ventana de bloqueo de talentos. */
   rightsDurationMonths: number;
   /** ISO date (yyyy-mm-dd). */
   startDate: string;
-  /** Talent codes excluidos para este proyecto (ya en otra campana, etc.). */
-  blockedTalentCodes: string[];
   status: ProjectStatus;
 }
 

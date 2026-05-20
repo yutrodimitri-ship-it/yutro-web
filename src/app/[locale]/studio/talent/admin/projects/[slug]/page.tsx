@@ -1,22 +1,18 @@
 import { notFound } from "next/navigation";
-import { and, desc, eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { db } from "@/db";
 import {
   castingSubmissions,
   ndaAcceptances,
   talentProjectAccess,
   talentProjects,
-  talents,
 } from "@/db/schema";
 import { AdminPageHeader } from "@/components/studio/talent/admin/AdminPageHeader";
 import { ProjectForm } from "@/components/studio/talent/admin/ProjectForm";
 import { ProjectAccessManager } from "@/components/studio/talent/admin/ProjectAccessManager";
 import { ProjectNdaManager } from "@/components/studio/talent/admin/ProjectNdaManager";
 import { ProjectSubmissionsPanel } from "@/components/studio/talent/admin/ProjectSubmissionsPanel";
-import {
-  EXCLUSIVITY_MODES,
-  PROJECT_STATUSES,
-} from "@/lib/talent/admin-schemas";
+import { PROJECT_STATUSES } from "@/lib/talent/admin-schemas";
 
 export const dynamic = "force-dynamic";
 
@@ -35,7 +31,7 @@ export default async function AdminProjectEditPage({
     .limit(1);
   if (!project) notFound();
 
-  const [accessRows, ndaRows, talentRows, submissionRows] = await Promise.all([
+  const [accessRows, ndaRows, submissionRows] = await Promise.all([
     db
       .select()
       .from(talentProjectAccess)
@@ -47,10 +43,6 @@ export default async function AdminProjectEditPage({
       .where(eq(ndaAcceptances.projectSlug, slug))
       .orderBy(desc(ndaAcceptances.acceptedAt)),
     db
-      .select({ code: talents.code, name: talents.nameEs })
-      .from(talents)
-      .where(eq(talents.isActive, true)),
-    db
       .select()
       .from(castingSubmissions)
       .where(eq(castingSubmissions.projectSlug, slug))
@@ -61,22 +53,12 @@ export default async function AdminProjectEditPage({
     slug: project.slug,
     name: project.name,
     client: project.client,
-    contactEmail: project.contactEmail,
-    contactName: project.contactName,
     market: project.market,
-    rightsDurationEs: project.rightsDurationEs,
-    rightsDurationEn: project.rightsDurationEn,
-    exclusivityMode: project.exclusivityMode as (typeof EXCLUSIVITY_MODES)[number],
-    exclusivityCategoryEs: project.exclusivityCategoryEs,
-    exclusivityCategoryEn: project.exclusivityCategoryEn,
-    exclusivityHelpEs: project.exclusivityHelpEs,
-    exclusivityHelpEn: project.exclusivityHelpEn,
+    categoryEs: project.categoryEs,
     maxTalents: project.maxTalents,
     maxExclusive: project.maxExclusive,
-    industrySector: project.industrySector,
     rightsDurationMonths: project.rightsDurationMonths,
     startDate: project.startDate,
-    blockedTalentCodes: project.blockedTalentCodes,
     status: project.status as (typeof PROJECT_STATUSES)[number],
   };
 
@@ -94,7 +76,6 @@ export default async function AdminProjectEditPage({
         initial={initial}
         mode="edit"
         onCancelHref={`${base}/projects`}
-        talentOptions={talentRows}
       />
 
       <hr className="border-white/[0.08]" />

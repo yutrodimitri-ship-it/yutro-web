@@ -110,29 +110,37 @@ export function LicenseTerms({
 
   const resolvedBackHref = backHref ?? `/${locale}/studio`;
   const resolvedCatalogHref =
-    catalogHref ?? `/${locale}/studio/talent/${project.slug}`;
+    catalogHref ?? `/${locale}/studio/talent/${project.slug}/catalog`;
 
   return (
     <aside
       className="self-start p-8 lg:sticky lg:top-12"
       style={{
-        background: "#131313",
-        border: "1px solid color-mix(in oklch, white 8%, transparent)",
+        background: "var(--talent-bg-elev)",
+        border: "1px solid var(--talent-line)",
       }}
     >
       <h2
-        className="mb-2 text-xl text-white"
-        style={{ fontFamily: "var(--font-heading)", fontWeight: 400 }}
+        className="mb-2"
+        style={{
+          color: "var(--talent-ink)",
+          fontFamily: "var(--font-heading)",
+          fontWeight: 800,
+          fontSize: "clamp(20px, 2.5vw, 28px)",
+          letterSpacing: "-0.025em",
+          lineHeight: 1.05,
+        }}
       >
         {renderTitleItalic(tCasting("license.title"))}
       </h2>
 
       {/* Tag "Configurado por Yutro Estudio" con dot dorado */}
       <span
-        className="mb-7 inline-flex items-center gap-2 px-2.5 py-1 font-mono text-[9px] uppercase tracking-[0.1em] text-white/40"
+        className="mb-7 inline-flex items-center gap-2 px-2.5 py-1 font-mono text-[9px] uppercase tracking-[0.1em]"
         style={{
-          border: "1px solid color-mix(in oklch, white 8%, transparent)",
-          background: "#0a0a0a",
+          color: "var(--talent-ink-mute)",
+          border: "1px solid var(--talent-line)",
+          background: "var(--talent-bg-elev-2)",
         }}
       >
         <span
@@ -151,7 +159,7 @@ export function LicenseTerms({
         />
         <ReadOnlyField
           label={tCasting("license.duration")}
-          value={project.rightsDuration[locale]}
+          value={formatRightsDuration(project.rightsDurationMonths, locale)}
         />
       </div>
 
@@ -165,9 +173,10 @@ export function LicenseTerms({
 
       {/* Help contextual con borde-l accent */}
       <div
-        className="mb-7 flex gap-2.5 px-4 py-3 text-[11px] leading-relaxed text-white/55"
+        className="mb-7 flex gap-2.5 px-4 py-3 text-[11px] leading-relaxed"
         style={{
-          background: "#0a0a0a",
+          color: "var(--talent-ink-dim)",
+          background: "var(--talent-bg-elev-2)",
           borderLeft: "2px solid var(--accent)",
         }}
       >
@@ -182,7 +191,7 @@ export function LicenseTerms({
       {/* Resumen */}
       <div
         className="mb-7 space-y-2 px-4 py-4"
-        style={{ background: "#0a0a0a" }}
+        style={{ background: "var(--talent-bg-elev-2)" }}
       >
         <SummaryRow
           label={tCasting("summary.selected")}
@@ -224,16 +233,17 @@ export function LicenseTerms({
 
       {submitState === "submitted" && (
         <>
-          <p className="mt-3 text-[12px] leading-relaxed text-white/55">
+          <p className="mt-3 text-[12px] leading-relaxed" style={{ color: "var(--talent-ink-dim)" }}>
             {tCasting("submitted.body")}
           </p>
           {/* Post-submit nav: cliente puede volver al hub o al catalogo */}
           <div className="mt-5 flex flex-col gap-2 sm:flex-row">
             <Link
               href={resolvedCatalogHref}
-              className="inline-flex flex-1 items-center justify-center gap-2 px-4 py-2.5 font-mono text-[11px] uppercase tracking-[0.12em] text-white/70 transition-colors hover:text-white"
+              className="inline-flex flex-1 items-center justify-center gap-2 px-4 py-2.5 font-mono text-[11px] uppercase tracking-[0.12em] transition-colors"
               style={{
-                border: "1px solid color-mix(in oklch, white 12%, transparent)",
+                color: "var(--talent-ink-dim)",
+                border: "1px solid var(--talent-line)",
               }}
             >
               <Layers className="h-3.5 w-3.5" strokeWidth={1.75} />
@@ -241,9 +251,10 @@ export function LicenseTerms({
             </Link>
             <Link
               href={resolvedBackHref}
-              className="inline-flex flex-1 items-center justify-center gap-2 px-4 py-2.5 font-mono text-[11px] uppercase tracking-[0.12em] text-white/70 transition-colors hover:text-white"
+              className="inline-flex flex-1 items-center justify-center gap-2 px-4 py-2.5 font-mono text-[11px] uppercase tracking-[0.12em] transition-colors"
               style={{
-                border: "1px solid color-mix(in oklch, white 12%, transparent)",
+                color: "var(--talent-ink-dim)",
+                border: "1px solid var(--talent-line)",
               }}
             >
               <Home className="h-3.5 w-3.5" strokeWidth={1.75} />
@@ -258,7 +269,7 @@ export function LicenseTerms({
         selectedCount={selectedCount}
         exclusiveCount={exclusiveCount}
         projectName={project.name}
-        rightsDuration={project.rightsDuration[locale]}
+        rightsDuration={formatRightsDuration(project.rightsDurationMonths, locale)}
         onConfirm={actuallySubmit}
         onCancel={() => setConfirmOpen(false)}
         labels={{
@@ -287,13 +298,14 @@ interface ReadOnlyFieldProps {
 function ReadOnlyField({ label, value }: ReadOnlyFieldProps) {
   return (
     <div>
-      <p className="mb-1.5 font-mono text-[11px] uppercase tracking-[0.1em] text-white/40">
+      <p className="mb-1.5 font-mono text-[11px] uppercase tracking-[0.1em]" style={{ color: "var(--talent-ink-mute)" }}>
         {label}
       </p>
       <div
-        className="py-2 text-[15px] text-white"
+        className="py-2 text-[15px]"
         style={{
-          borderBottom: "1px solid color-mix(in oklch, white 8%, transparent)",
+          color: "var(--talent-ink)",
+          borderBottom: "1px solid var(--talent-line)",
         }}
       >
         {value}
@@ -309,9 +321,9 @@ interface SummaryRowProps {
 
 function SummaryRow({ label, value }: SummaryRowProps) {
   return (
-    <div className="flex items-center justify-between text-[13px] text-white/55">
+    <div className="flex items-center justify-between text-[13px]" style={{ color: "var(--talent-ink-dim)" }}>
       <span>{label}</span>
-      <strong className="font-normal text-white">{value}</strong>
+      <strong className="font-normal" style={{ color: "var(--talent-ink)" }}>{value}</strong>
     </div>
   );
 }
@@ -322,17 +334,9 @@ function exclusivityModeLabel(
   // useTranslations type — castea a callable
   t: ReturnType<typeof useTranslations>
 ): string {
+  void locale;
   const fn = t as unknown as (key: string, vars?: Record<string, string>) => string;
-  switch (project.exclusivityMode) {
-    case "none":
-      return fn("license.modes.none");
-    case "total":
-      return fn("license.modes.total");
-    case "category":
-      return fn("license.modes.category", {
-        category: project.exclusivityCategory?.[locale] ?? "",
-      });
-  }
+  return fn("license.modes.category", { category: project.categoryEs });
 }
 
 function exclusivityHelpText(
@@ -340,17 +344,13 @@ function exclusivityHelpText(
   locale: Locale,
   t: ReturnType<typeof useTranslations>
 ): string {
+  void locale;
   const fn = t as unknown as (key: string, vars?: Record<string, string>) => string;
-  switch (project.exclusivityMode) {
-    case "none":
-      return fn("license.helpNone");
-    case "total":
-      return fn("license.helpTotal");
-    case "category":
-      return fn("license.helpCategory", {
-        category: project.exclusivityCategory?.[locale] ?? "",
-      });
-  }
+  return fn("license.helpCategory", { category: project.categoryEs });
+}
+
+function formatRightsDuration(months: number, locale: Locale): string {
+  return locale === "en" ? `${months} months` : `${months} meses`;
 }
 
 function renderTitleItalic(title: string) {

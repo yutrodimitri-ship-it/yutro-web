@@ -1,7 +1,8 @@
 "use client";
 
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { ConfirmDialog } from "@/components/studio/ConfirmDialog";
 
 interface NdaRow {
   id: string;
@@ -20,19 +21,12 @@ export function ProjectNdaManager({
 }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
+  const [pendingNda, setPendingNda] = useState<string | null>(null);
 
-  async function handleRevokeNda(email: string) {
-    if (
-      !confirm(
-        `¿Revocar el NDA de ${email}? El cliente tendrá que volver a aceptarlo en su próximo acceso.`
-      )
-    ) {
-      return;
-    }
+  async function executeRevokeNda(email: string) {
+    setPendingNda(null);
     const res = await fetch(
-      `/api/studio/talent/admin/projects/${slug}/nda/${encodeURIComponent(
-        email
-      )}/revoke`,
+      `/api/studio/talent/admin/projects/${slug}/nda/${encodeURIComponent(email)}/revoke`,
       { method: "POST" }
     );
     if (res.ok) startTransition(() => router.refresh());
@@ -84,7 +78,7 @@ export function ProjectNdaManager({
             {!n.revokedAt && (
               <button
                 type="button"
-                onClick={() => handleRevokeNda(n.email)}
+                onClick={() => setPendingNda(n.email)}
                 disabled={isPending}
                 className="font-mono text-[10px] uppercase tracking-[0.1em] text-red-300 hover:text-red-200 disabled:opacity-50"
               >
@@ -94,6 +88,15 @@ export function ProjectNdaManager({
           </li>
         ))}
       </ul>
+
+      <ConfirmDialog
+        open={!!pendingNda}
+        message={`¿Revocar el NDA de ${pendingNda ?? ""}? El cliente tendrá que volver a aceptarlo en su próximo acceso.`}
+        onConfirm={() => { if (pendingNda) void executeRevokeNda(pendingNda); }}
+        onCancel={() => setPendingNda(null)}
+        danger
+        confirmLabel="Revocar NDA"
+      />
     </section>
   );
 }

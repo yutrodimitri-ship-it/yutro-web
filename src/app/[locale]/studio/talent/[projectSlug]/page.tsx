@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
+  getAssignedTalentsForProject,
   getAvailableTalents,
+  getBlockedTalentsForProject,
   getProjectBySlug,
 } from "@/lib/talent/data-source";
 import { LandingCovers } from "@/components/studio/talent/LandingCovers";
@@ -18,9 +20,28 @@ export default async function ProjectLandingPage({
   const project = await getProjectBySlug(projectSlug);
   if (!project) notFound();
 
-  const talents = await getAvailableTalents(project);
-  const featured = talents.slice(0, 6);
-  const total = talents.length;
+  const [talents, exclusiveBlockedCodes, assignedCodes] = await Promise.all([
+    getAvailableTalents(project),
+    getBlockedTalentsForProject(project),
+    getAssignedTalentsForProject(project.slug),
+  ]);
+  const unavailable = new Set([...exclusiveBlockedCodes, ...assignedCodes]);
+  const featured = talents.filter((t) => !unavailable.has(t.code)).slice(0, 6);
+  const total = talents.length - unavailable.size;
+
+  // Categorías únicas presentes en el catálogo, formateadas
+  const CATEGORY_LABELS: Record<string, string> = {
+    corporativo: "Corporativo",
+    lifestyle: "Lifestyle",
+    familiar: "Familiar",
+    urbano: "Urbano",
+    senior: "Senior",
+    oficios: "Oficios",
+    artistico: "Artístico",
+    profesional: "Profesional",
+  };
+  const presentCategories = Array.from(new Set(talents.map((t) => t.category)))
+    .map((c) => CATEGORY_LABELS[c] ?? c);
 
   const catalogHref = `/${rawLocale}/studio/talent/${projectSlug}/catalog`;
   const castingHref = `/${rawLocale}/studio/talent/${projectSlug}/casting`;
@@ -67,7 +88,7 @@ export default async function ProjectLandingPage({
         ].map((col) => (
           <div
             key={col.label}
-            className="font-mono text-[11px] uppercase tracking-[0.18em]"
+            className="font-mono text-[13px] uppercase tracking-[0.18em]"
           >
             <span className="mb-1 block" style={{ color: "var(--talent-ink-mute)" }}>
               {col.label}
@@ -78,7 +99,7 @@ export default async function ProjectLandingPage({
       </div>
 
       {/* ── Hero ────────────────────────────────────────────── */}
-      <section className="grid min-h-[calc(100vh-200px)] items-end gap-8 py-14 lg:grid-cols-[1.2fr_0.9fr]">
+      <section className="grid items-end gap-8 pt-6 pb-10 lg:grid-cols-[1.2fr_0.9fr]">
         {/* Left — headline */}
         <h1
           style={{
@@ -91,11 +112,11 @@ export default async function ProjectLandingPage({
             margin: 0,
           }}
         >
-          Un roster de<br />
+          Un catálogo de<br />
           talentos<br />
           digitales,<br />
-          seleccionados<br />
-          como una{" "}
+          editado como<br />
+          una{" "}
           <em style={{ fontStyle: "italic", color: "var(--accent)", fontWeight: "inherit" }}>
             revista.
           </em>
@@ -148,32 +169,41 @@ export default async function ProjectLandingPage({
         </div>
       </section>
 
-      {/* ── Marquee ─────────────────────────────────────────── */}
-      <div
-        className="overflow-hidden border-y py-4"
-        style={{ borderColor: "var(--talent-ink)" }}
-      >
+      {/* ── Marquee categorías rotativas — loop infinito sin saltos ─── */}
+      {presentCategories.length > 0 && (
         <div
-          className="flex gap-10 whitespace-nowrap"
-          style={{
-            fontFamily: "var(--font-heading)",
-            fontWeight: 800,
-            fontSize: "clamp(28px, 4vw, 52px)",
-            letterSpacing: "-0.025em",
-            lineHeight: 1,
-            color: "var(--talent-ink)",
-          }}
+          className="overflow-hidden border-y py-4"
+          style={{ borderColor: "var(--talent-ink)" }}
         >
-          {["Editorial", "·", "Couture", "·", "Street", "·", "Heritage", "·", "Athleisure", "·", "Cyber", "·", "Brutalist", "·"].map(
-            (word, i) => (
-              <span key={i} className="shrink-0">{word}</span>
-            )
-          )}
-          <span className="shrink-0">
-            <em style={{ fontStyle: "italic", color: "var(--accent)" }}>Romántico</em>
-          </span>
+          <div
+            className="flex w-max whitespace-nowrap"
+            style={{
+              fontFamily: "var(--font-heading)",
+              fontWeight: 800,
+              fontSize: "clamp(28px, 4vw, 52px)",
+              letterSpacing: "-0.025em",
+              lineHeight: 1,
+              color: "var(--talent-ink)",
+              animation: "marquee-quad 60s linear infinite",
+              willChange: "transform",
+            }}
+          >
+            {/* Cuadruplicamos la lista — animación va a -25% (= 1 copia hacia la izquierda) */}
+            {Array.from({ length: 4 }).flatMap((_, dup) =>
+              presentCategories.map((cat, i) => (
+                <span
+                  key={`${dup}-${i}`}
+                  className="flex shrink-0 items-center"
+                  aria-hidden={dup > 0}
+                >
+                  <span>{cat}</span>
+                  <span className="px-10" style={{ color: "var(--accent)" }}>·</span>
+                </span>
+              ))
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* ── 4 Bands ─────────────────────────────────────────── */}
       <div

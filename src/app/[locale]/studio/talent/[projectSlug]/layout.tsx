@@ -1,4 +1,7 @@
-import { notFound, redirect } from "next/navigation";
+import { redirect } from "next/navigation";
+import { and, eq, isNull } from "drizzle-orm";
+import { db } from "@/db";
+import { ndaAcceptances } from "@/db/schema";
 import { verifySession } from "@/lib/auth";
 import { getProjectBySlug } from "@/lib/talent/data-source";
 import { CastingProvider } from "@/lib/talent/casting-context";
@@ -6,20 +9,8 @@ import { TalentSessionProvider } from "@/lib/talent/talent-session-context";
 import { logAuditEventServer } from "@/lib/talent/audit-log-server";
 import { ToastProvider } from "@/components/studio/talent/Toast";
 import { NdaGate } from "@/components/studio/talent/NdaGate";
-import { WelcomeGate } from "@/components/studio/talent/WelcomeGate";
 import type { Locale } from "@/types/talent";
 
-/**
- * Layout del proyecto Talent.
- *
- * Resuelve el proyecto desde el slug y monta UNA SOLA INSTANCIA del
- * CastingProvider + ToastProvider para todas las pantallas hijas (catalogo,
- * detalle, casting). Tambien envuelve con NdaGate (modal click-wrap previo
- * al catalogo) y WelcomeGate (splash de bienvenida la primera vez).
- *
- * Side effect server-side: loguea audit event `session_start` cada vez que
- * el cliente entra al proyecto. En Fase 1 va a console; en Fase 2 va a DB.
- */
 export default async function ProjectLayout({
   children,
   params,
@@ -34,9 +25,22 @@ export default async function ProjectLayout({
   if (!session) redirect(`/${rawLocale}/studio/login`);
 
   const project = await getProjectBySlug(projectSlug);
-  if (!project) notFound();
+  if (!project) redirect(`/${rawLocale}/studio/talent`);
 
-  // Audit log: session_start (server-side, persiste en talent_access_logs)
+  // NDA status resuelto server-side — elimina el flash de cliente
+  const [ndaRow] = await db
+    .select({ id: ndaAcceptances.id })
+    .from(ndaAcceptances)
+    .where(
+      and(
+        eq(ndaAcceptances.projectSlug, project.slug),
+        eq(ndaAcceptances.userEmail, session.email.toLowerCase()),
+        isNull(ndaAcceptances.revokedAt)
+      )
+    )
+    .limit(1);
+  const ndaAccepted = Boolean(ndaRow);
+
   void logAuditEventServer("session_start", {
     userEmail: session.email,
     projectSlug: project.slug,
@@ -60,10 +64,14 @@ export default async function ProjectLayout({
             projectName={project.name}
             clientName={project.client}
             hubHref={hubHref}
+            initialAccepted={ndaAccepted}
           >
-            <WelcomeGate project={project} locale={locale}>
-              <div data-talent="project">{children}</div>
-            </WelcomeGate>
+            <div
+              data-talent="project"
+              className="studio-talent -mx-6 -mt-6 sm:-mx-10 sm:-mt-10 md:-mt-10"
+            >
+              {children}
+            </div>
           </NdaGate>
         </ToastProvider>
       </CastingProvider>

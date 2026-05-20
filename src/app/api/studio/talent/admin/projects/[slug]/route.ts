@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 import { db } from "@/db";
-import { talentProjects } from "@/db/schema";
+import { castingSubmissions, talentProjects } from "@/db/schema";
 import { verifySession } from "@/lib/auth";
 import { projectInputSchema } from "@/lib/talent/admin-schemas";
 import { logAuditEventServer } from "@/lib/talent/audit-log-server";
@@ -68,6 +68,40 @@ export async function PUT(
     userEmail: guard.session.email,
     projectSlug: slug,
     payload: { fields: Object.keys(updates) },
+  });
+
+  return NextResponse.json({ ok: true });
+}
+
+export async function DELETE(
+  _req: Request,
+  { params }: { params: Promise<{ slug: string }> }
+) {
+  const guard = await requireAdminSession();
+  if ("error" in guard) {
+    return NextResponse.json({ error: guard.error }, { status: guard.status });
+  }
+  const { slug } = await params;
+
+  const [project] = await db
+    .select({ slug: talentProjects.slug })
+    .from(talentProjects)
+    .where(eq(talentProjects.slug, slug))
+    .limit(1);
+
+  if (!project) {
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
+  }
+
+  // castingSubmissions no tiene cascade — borrar manualmente antes del proyecto
+  await db.delete(castingSubmissions).where(eq(castingSubmissions.projectSlug, slug));
+  // talentProjectAccess y talentProjectNdaAcceptances tienen onDelete: cascade
+  await db.delete(talentProjects).where(eq(talentProjects.slug, slug));
+
+  await logAuditEventServer("admin_project_deleted", {
+    userEmail: guard.session.email,
+    projectSlug: slug,
+    payload: {},
   });
 
   return NextResponse.json({ ok: true });

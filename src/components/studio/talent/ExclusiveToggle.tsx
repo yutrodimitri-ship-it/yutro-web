@@ -52,7 +52,7 @@ export function ExclusiveToggle({
         border: `1px solid ${
           isExclusive
             ? "var(--accent)"
-            : "color-mix(in oklch, white 12%, transparent)"
+            : "var(--talent-line, color-mix(in oklch, black 12%, transparent))"
         }`,
         background: "transparent",
       }}
@@ -70,7 +70,7 @@ export function ExclusiveToggle({
           border: `1px solid ${
             isExclusive
               ? "var(--accent)"
-              : "color-mix(in oklch, white 12%, transparent)"
+              : "var(--talent-line, color-mix(in oklch, black 12%, transparent))"
           }`,
           transition: "background-color 0.25s ease, border-color 0.25s ease",
         }}
@@ -101,7 +101,7 @@ export function ExclusiveToggle({
       <span
         className="font-mono text-[10px] uppercase tracking-[0.1em]"
         style={{
-          color: isExclusive ? "var(--accent)" : "rgba(255,255,255,0.55)",
+          color: isExclusive ? "var(--accent)" : "var(--talent-ink-mute, rgba(0,0,0,0.55))",
           minWidth: "64px",
           transition: "color 0.2s ease",
         }}

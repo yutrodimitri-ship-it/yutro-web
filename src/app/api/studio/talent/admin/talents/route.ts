@@ -70,6 +70,8 @@ export async function POST(request: Request) {
     archetypeEn: data.archetypeEn,
     toneCommercialEs: data.toneCommercialEs,
     toneCommercialEn: data.toneCommercialEn,
+    bioEs: data.bioEs || null,
+    bioEn: data.bioEn || null,
     gender: data.gender,
     ageRange: data.ageRange,
     ageBucket: data.ageBucket,
@@ -79,6 +81,7 @@ export async function POST(request: Request) {
     suggestedUses: data.suggestedUses,
     hue: data.hue,
     sat: data.sat,
+    editorialScore: data.editorialScore,
     isActive: data.isActive,
   });
 

@@ -7,6 +7,7 @@ import {
   castingSubmissions,
   talentProjectAccess,
   talentProjects,
+  users,
 } from "@/db/schema";
 import { verifySession } from "@/lib/auth";
 import { checkRateLimit } from "@/lib/rate-limit";
@@ -161,18 +162,25 @@ export async function POST(request: Request) {
   });
 
   // Email — non-blocking del response. Si falla, el submission ya esta en DB.
+  const [submitter] = await db
+    .select({ name: users.name })
+    .from(users)
+    .where(eq(users.id, session.userId))
+    .limit(1);
+  const submitterName = submitter?.name ?? session.email.split("@")[0];
+
   try {
     await sendCastingNotification({
       projectName: project.name,
       projectClient: project.client,
       projectSlug,
-      contactEmail: session.email,
-      contactName: project.contactName,
+      submitterEmail: session.email,
+      submitterName,
       shortlist,
       exclusives,
       market: project.market,
-      rightsDuration: project.rightsDurationEs,
-      exclusivityMode: project.exclusivityMode,
+      rightsDuration: `${project.rightsDurationMonths} meses`,
+      category: project.categoryEs,
       submissionId: submission.id,
       submittedAt: submission.submittedAt,
     });

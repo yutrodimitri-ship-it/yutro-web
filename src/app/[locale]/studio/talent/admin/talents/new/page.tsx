@@ -17,11 +17,14 @@ const EMPTY_INITIAL = {
   category: "lifestyle" as const,
   toneCommercialEs: "",
   toneCommercialEn: "",
+  bioEs: "",
+  bioEn: "",
   market: ["CL", "LATAM"],
   suggestedUses: [],
   status: "available" as const,
   hue: 200,
   sat: 30,
+  editorialScore: 0,
   isActive: true,
 };
 

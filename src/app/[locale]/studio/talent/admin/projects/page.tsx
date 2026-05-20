@@ -7,6 +7,7 @@ import {
 } from "@/db/schema";
 import { AdminPageHeader } from "@/components/studio/talent/admin/AdminPageHeader";
 import { AdminTable } from "@/components/studio/talent/admin/AdminTable";
+import { DeleteProjectButton } from "@/components/studio/talent/admin/DeleteProjectButton";
 
 export const dynamic = "force-dynamic";
 
@@ -50,7 +51,7 @@ export default async function AdminProjectsListPage({
     client: p.client,
     status: p.status,
     accesses: accessCounts[i],
-    submissions: submissionCounts[i],
+    submissions: submissionCounts[i] as number,
   }));
 
   return (
@@ -77,6 +78,13 @@ export default async function AdminProjectsListPage({
           { header: "Submissions", cell: (r) => r.submissions },
         ]}
         emptyMessage="No hay proyectos. Crea el primero."
+        actionCell={(r) => (
+          <DeleteProjectButton
+            slug={r.slug}
+            name={r.name}
+            submissionCount={r.submissions}
+          />
+        )}
       />
     </div>
   );

@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import {
+  getAvailableTalents,
   getProjectBySlug,
   getTalentByCode,
 } from "@/lib/talent/data-source";
@@ -27,10 +28,15 @@ export default async function TalentDetailPage({
 
   const talent = await getTalentByCode(code);
   if (!talent) notFound();
-  if (project.blockedTalentCodes.includes(talent.code)) notFound();
 
   const clientName = clientToWatermark(project.client);
   const watermarkDate = formatWatermarkDate(project.startDate);
+
+  const catalog = await getAvailableTalents(project);
+  const others = catalog.filter((t) => t.code !== talent.code);
+  const sameCat = others.filter((t) => t.category === talent.category).slice(0, 3);
+  const fill = others.filter((t) => t.category !== talent.category).slice(0, 3 - sameCat.length);
+  const adjacentTalents = [...sameCat, ...fill].slice(0, 3);
 
   return (
     <TalentDetail
@@ -39,6 +45,7 @@ export default async function TalentDetailPage({
       projectSlug={project.slug}
       clientName={clientName}
       watermarkDate={watermarkDate}
+      adjacentTalents={adjacentTalents}
     />
   );
 }

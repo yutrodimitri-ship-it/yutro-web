@@ -14,19 +14,27 @@ type SlotState =
 
 const VARIANT_LABELS: Record<ImageVariant, string> = {
   profile: "Profile (3:4)",
-  charsheet: "Charsheet (3:4)",
-  "studio-1": "Studio 1 (1:1)",
-  "studio-2": "Studio 2 (1:1)",
-  "studio-3": "Studio 3 (1:1)",
-  "lifestyle-1": "Lifestyle 1 (1:1)",
-  "lifestyle-2": "Lifestyle 2 (1:1)",
-  "lifestyle-3": "Lifestyle 3 (1:1)",
+  charsheet: "Charsheet (9:16)",
+  "gallery-1": "Galería 1 (3:4)",
+  "gallery-2": "Galería 2 (3:4)",
+  "gallery-3": "Galería 3 (3:4)",
+  "gallery-4": "Galería 4 (3:4)",
+  "gallery-5": "Galería 5 (3:4)",
+  "gallery-6": "Galería 6 (3:4)",
+  "gallery-7": "Galería 7 (3:4)",
+  "gallery-8": "Galería 8 (3:4)",
 };
 
 interface BulkUploadProps {
   code: string;
   /** Keys ya en DB para mostrar las que ya existen como `done`. */
-  existing: { profile: boolean; charsheet: boolean; gallery: ImageVariant[] };
+  existing: {
+    profile: boolean;
+    charsheet: boolean;
+    gallery: ImageVariant[];
+    /** URLs locales por variant (si las imágenes están en /public/talents-webp/...). */
+    localUrls?: Partial<Record<ImageVariant, string>>;
+  };
   redirectTo: string;
 }
 
@@ -260,7 +268,7 @@ function DropZone({ onFiles }: { onFiles: (files: File[]) => void }) {
         Arrastra los 8 archivos o haz click para seleccionar
       </p>
       <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-white/40">
-        profile.jpg · charsheet.jpg · studio-1..3.jpg · lifestyle-1..3.jpg
+        profile · charsheet · gallery-1..gallery-8
       </p>
       <input
         type="file"
@@ -287,7 +295,7 @@ function SlotCard({
   onPickFile: (file: File) => void;
   onClear: () => void;
 }) {
-  const aspect = variant.startsWith("studio") || variant.startsWith("lifestyle") ? "1 / 1" : "3 / 4";
+  const aspect = variant === "charsheet" ? "9 / 16" : "3 / 4";
   return (
     <div className="border border-white/[0.08] bg-[#131313] p-3">
       <div
@@ -356,15 +364,22 @@ function SlotCard({
 function buildInitialSlots(
   existing: BulkUploadProps["existing"]
 ): Record<ImageVariant, SlotState> {
+  const urls = existing.localUrls ?? {};
+  const doneSlot = (variant: ImageVariant): SlotState => ({
+    status: "done",
+    previewUrl: urls[variant] ?? "",
+  });
   const initial: Record<ImageVariant, SlotState> = {
-    profile: existing.profile ? { status: "done", previewUrl: "" } : { status: "empty" },
-    charsheet: existing.charsheet ? { status: "done", previewUrl: "" } : { status: "empty" },
-    "studio-1": existing.gallery.includes("studio-1") ? { status: "done", previewUrl: "" } : { status: "empty" },
-    "studio-2": existing.gallery.includes("studio-2") ? { status: "done", previewUrl: "" } : { status: "empty" },
-    "studio-3": existing.gallery.includes("studio-3") ? { status: "done", previewUrl: "" } : { status: "empty" },
-    "lifestyle-1": existing.gallery.includes("lifestyle-1") ? { status: "done", previewUrl: "" } : { status: "empty" },
-    "lifestyle-2": existing.gallery.includes("lifestyle-2") ? { status: "done", previewUrl: "" } : { status: "empty" },
-    "lifestyle-3": existing.gallery.includes("lifestyle-3") ? { status: "done", previewUrl: "" } : { status: "empty" },
+    profile: existing.profile ? doneSlot("profile") : { status: "empty" },
+    charsheet: existing.charsheet ? doneSlot("charsheet") : { status: "empty" },
+    "gallery-1": existing.gallery.includes("gallery-1") ? doneSlot("gallery-1") : { status: "empty" },
+    "gallery-2": existing.gallery.includes("gallery-2") ? doneSlot("gallery-2") : { status: "empty" },
+    "gallery-3": existing.gallery.includes("gallery-3") ? doneSlot("gallery-3") : { status: "empty" },
+    "gallery-4": existing.gallery.includes("gallery-4") ? doneSlot("gallery-4") : { status: "empty" },
+    "gallery-5": existing.gallery.includes("gallery-5") ? doneSlot("gallery-5") : { status: "empty" },
+    "gallery-6": existing.gallery.includes("gallery-6") ? doneSlot("gallery-6") : { status: "empty" },
+    "gallery-7": existing.gallery.includes("gallery-7") ? doneSlot("gallery-7") : { status: "empty" },
+    "gallery-8": existing.gallery.includes("gallery-8") ? doneSlot("gallery-8") : { status: "empty" },
   };
   return initial;
 }

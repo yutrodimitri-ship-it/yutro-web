@@ -11,6 +11,8 @@ interface AdminTableProps<T> {
   columns: Column<T>[];
   rows: T[];
   rowHref?: (row: T) => string;
+  /** Celda de acciones por fila — se renderiza FUERA del Link para evitar anidamiento. */
+  actionCell?: (row: T) => React.ReactNode;
   emptyMessage?: string;
 }
 
@@ -22,6 +24,7 @@ export function AdminTable<T extends { id?: string | number }>({
   columns,
   rows,
   rowHref,
+  actionCell,
   emptyMessage,
 }: AdminTableProps<T>) {
   if (rows.length === 0) {
@@ -45,6 +48,7 @@ export function AdminTable<T extends { id?: string | number }>({
                 {col.header}
               </th>
             ))}
+            {actionCell && <th className="px-3 py-3" />}
           </tr>
         </thead>
         <tbody>
@@ -54,6 +58,7 @@ export function AdminTable<T extends { id?: string | number }>({
               row={row}
               columns={columns}
               href={rowHref?.(row)}
+              actionCell={actionCell}
             />
           ))}
         </tbody>
@@ -66,10 +71,12 @@ function Row<T>({
   row,
   columns,
   href,
+  actionCell,
 }: {
   row: T;
   columns: Column<T>[];
   href?: string;
+  actionCell?: (row: T) => React.ReactNode;
 }) {
   const cells = columns.map((col, i) => (
     <td
@@ -79,6 +86,12 @@ function Row<T>({
       {col.cell(row)}
     </td>
   ));
+
+  const actionTd = actionCell ? (
+    <td className="px-3 py-2 align-middle">
+      {actionCell(row)}
+    </td>
+  ) : null;
 
   if (href) {
     return (
@@ -97,11 +110,15 @@ function Row<T>({
             </Link>
           </td>
         ))}
+        {actionTd}
       </tr>
     );
   }
 
   return (
-    <tr className="border-b border-white/[0.04] last:border-0">{cells}</tr>
+    <tr className="border-b border-white/[0.04] last:border-0">
+      {cells}
+      {actionTd}
+    </tr>
   );
 }

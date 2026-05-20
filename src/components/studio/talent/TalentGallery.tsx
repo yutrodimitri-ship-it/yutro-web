@@ -35,8 +35,9 @@ export function TalentGallery({
   return (
     <section>
       <h3
-        className="mb-3 text-base text-white/55"
+        className="mb-3 text-base"
         style={{
+          color: "var(--talent-ink-dim)",
           fontFamily: "var(--font-heading)",
           fontWeight: 400,
           fontSize: "20px",
@@ -55,8 +56,8 @@ export function TalentGallery({
           return (
             <div
               key={imageVariant}
-              className="relative overflow-hidden bg-[#131313]"
-              style={{ aspectRatio: "1 / 1" }}
+              className="relative overflow-hidden"
+              style={{ aspectRatio: "1 / 1", background: "oklch(0.91 0.012 77)" }}
             >
               <TalentImage
                 talent={talent}

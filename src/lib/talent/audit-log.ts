@@ -26,11 +26,13 @@ export type AuditEventType =
   | "admin_talent_deactivated"
   | "admin_project_created"
   | "admin_project_updated"
+  | "admin_project_deleted"
   | "admin_access_granted"
   | "admin_access_revoked"
   | "admin_nda_revoked"
   | "admin_submission_status_changed"
-  | "admin_submission_email_resent";
+  | "admin_submission_email_resent"
+  | "admin_talent_released";
 
 export interface AuditContext {
   userEmail: string;

@@ -69,7 +69,8 @@ export function ConfirmSubmitModal({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 12, scale: 0.98 }}
             transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-            className="relative w-full max-w-md border border-white/[0.08] bg-[#131313] p-7"
+            className="relative w-full max-w-md p-7"
+            style={{ background: "var(--talent-bg-elev, #f7f4ef)", border: "1px solid var(--talent-line, color-mix(in oklch, black 10%, transparent))" }}
             onClick={(e) => e.stopPropagation()}
             role="dialog"
             aria-modal="true"
@@ -78,7 +79,7 @@ export function ConfirmSubmitModal({
               type="button"
               onClick={onCancel}
               aria-label={labels.cancel}
-              className="absolute right-4 top-4 text-white/40 transition-colors hover:text-white"
+              className="absolute right-4 top-4 transition-colors" style={{ color: "var(--talent-ink-mute, oklch(0.60 0 0))" }}
             >
               <X className="h-4 w-4" strokeWidth={1.75} />
             </button>
@@ -94,8 +95,9 @@ export function ConfirmSubmitModal({
             </div>
 
             <h2
-              className="mb-2 text-2xl text-white"
+              className="mb-2 text-2xl"
               style={{
+                color: "var(--talent-ink, oklch(0.13 0 0))",
                 fontFamily: "var(--font-heading)",
                 fontWeight: 500,
                 letterSpacing: "-0.01em",
@@ -103,13 +105,13 @@ export function ConfirmSubmitModal({
             >
               {labels.title}
             </h2>
-            <p className="mb-6 text-[14px] leading-relaxed text-white/55">
+            <p className="mb-6 text-[14px] leading-relaxed" style={{ color: "var(--talent-ink-dim, oklch(0.42 0 0))" }}>
               {labels.body}
             </p>
 
             <div
               className="mb-5 space-y-2 px-4 py-4"
-              style={{ background: "#0a0a0a" }}
+              style={{ background: "var(--talent-bg-elev-2, oklch(0.93 0.014 77))" }}
             >
               <SummaryRow
                 label={labels.summaryProject}
@@ -130,8 +132,9 @@ export function ConfirmSubmitModal({
             </div>
 
             <p
-              className="mb-6 px-3 py-2 text-[11px] leading-relaxed text-white/55"
+              className="mb-6 px-3 py-2 text-[11px] leading-relaxed"
               style={{
+                color: "var(--talent-ink-dim, oklch(0.42 0 0))",
                 background: "color-mix(in oklch, var(--accent) 6%, transparent)",
                 borderLeft: "2px solid var(--accent)",
               }}
@@ -143,9 +146,10 @@ export function ConfirmSubmitModal({
               <button
                 type="button"
                 onClick={onCancel}
-                className="px-5 py-2.5 font-mono text-[11px] uppercase tracking-[0.12em] text-white/55 transition-colors hover:text-white"
+                className="px-5 py-2.5 font-mono text-[11px] uppercase tracking-[0.12em] transition-colors"
                 style={{
-                  border: "1px solid color-mix(in oklch, white 12%, transparent)",
+                  color: "var(--talent-ink-mute, oklch(0.60 0 0))",
+                  border: "1px solid var(--talent-line, color-mix(in oklch, black 12%, transparent))",
                 }}
               >
                 {labels.cancel}
@@ -171,9 +175,9 @@ export function ConfirmSubmitModal({
 
 function SummaryRow({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex items-center justify-between text-[13px] text-white/55">
+    <div className="flex items-center justify-between text-[13px]" style={{ color: "var(--talent-ink-dim, oklch(0.42 0 0))" }}>
       <span>{label}</span>
-      <strong className="font-normal text-white">{value}</strong>
+      <strong className="font-normal" style={{ color: "var(--talent-ink, oklch(0.13 0 0))" }}>{value}</strong>
     </div>
   );
 }

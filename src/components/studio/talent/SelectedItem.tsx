@@ -50,19 +50,19 @@ export function SelectedItem({
       style={{
         gridTemplateColumns: "64px 1fr auto",
         background: isExclusive
-          ? "linear-gradient(90deg, color-mix(in oklch, var(--accent) 6%, transparent) 0%, #131313 50%)"
-          : "#131313",
+          ? "linear-gradient(90deg, color-mix(in oklch, var(--accent) 8%, transparent) 0%, var(--talent-bg-elev) 60%)"
+          : "var(--talent-bg-elev)",
         borderLeft: `2px solid ${
           isExclusive
             ? "var(--accent)"
-            : "color-mix(in oklch, white 8%, transparent)"
+            : "var(--talent-line)"
         }`,
       }}
     >
       {/* Thumb 3:4 */}
       <div
-        className="row-span-2 overflow-hidden bg-[#1a1a1a] sm:row-span-1"
-        style={{ aspectRatio: "3 / 4", width: "100%" }}
+        className="row-span-2 overflow-hidden sm:row-span-1"
+        style={{ background: "oklch(0.91 0.012 77)", aspectRatio: "3 / 4", width: "100%" }}
       >
         <TalentImage talent={talent} variant="profile" />
       </div>
@@ -76,12 +76,19 @@ export function SelectedItem({
           {talent.code}
         </div>
         <div
-          className="mb-0.5 truncate text-base text-white"
-          style={{ fontFamily: "var(--font-heading)", fontWeight: 400 }}
+          className="mb-0.5 truncate"
+          style={{
+            color: "var(--talent-ink)",
+            fontFamily: "var(--font-heading)",
+            fontWeight: 800,
+            fontSize: 18,
+            letterSpacing: "-0.02em",
+            lineHeight: 1.1,
+          }}
         >
           {talent.name[locale]}
         </div>
-        <div className="truncate text-xs text-white/55">
+        <div className="truncate text-xs" style={{ color: "var(--talent-ink-dim)" }}>
           {talent.shortDesc[locale]}
         </div>
       </div>
@@ -103,7 +110,8 @@ export function SelectedItem({
         onClick={onRemove}
         title={tCasting("actions.remove")}
         aria-label={`${tCasting("actions.remove")} ${talent.code}`}
-        className="grid h-9 w-9 cursor-pointer place-items-center text-white/30 transition-colors hover:text-[oklch(0.65_0.13_25)]"
+        className="grid h-9 w-9 cursor-pointer place-items-center transition-colors hover:text-[oklch(0.50_0.18_25)]"
+        style={{ color: "var(--talent-ink-mute)" }}
       >
         <X className="h-4 w-4" strokeWidth={1.75} />
       </button>

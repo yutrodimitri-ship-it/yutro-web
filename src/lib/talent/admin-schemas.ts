@@ -13,15 +13,41 @@ export const TALENT_CATEGORIES = [
   "urbano",
   "senior",
   "oficios",
+  "artistico",
+  "profesional",
 ] as const;
 export const TALENT_STATUSES = ["available", "in-campaign", "reserved"] as const;
 export const PROJECT_STATUSES = ["active", "pending", "closed"] as const;
-export const EXCLUSIVITY_MODES = ["none", "category", "total"] as const;
 export const SUBMISSION_STATUSES = [
   "pending",
   "confirmed",
   "rejected",
 ] as const;
+
+/** Opciones del dropdown de duración de derechos (en meses). */
+export const RIGHTS_DURATION_OPTIONS = [3, 6, 12, 18, 24] as const;
+export type RightsDurationOption = (typeof RIGHTS_DURATION_OPTIONS)[number];
+
+/** Sectores de industria publicitaria para el dropdown de categoría exclusiva. */
+export const INDUSTRY_CATEGORIES = [
+  "Telco",
+  "Banca",
+  "Retail",
+  "Bebestibles",
+  "Alimentos",
+  "Belleza",
+  "Automotriz",
+  "Tecnología",
+  "Salud",
+  "Educación",
+  "Inmobiliaria",
+  "Turismo",
+  "Seguros",
+  "Energía",
+  "Moda",
+  "Hogar",
+] as const;
+export type IndustryCategory = (typeof INDUSTRY_CATEGORIES)[number];
 
 const localeStringSchema = z.object({
   es: z.string().min(1).max(200),
@@ -48,11 +74,14 @@ export const talentInputSchema = z.object({
   category: z.enum(TALENT_CATEGORIES),
   toneCommercialEs: z.string().min(1).max(200),
   toneCommercialEn: z.string().min(1).max(200),
+  bioEs: z.string().max(2000).nullable().optional(),
+  bioEn: z.string().max(2000).nullable().optional(),
   market: z.array(z.string().min(1).max(8)).min(1).max(10),
   suggestedUses: z.array(localeStringSchema).max(10).default([]),
   status: z.enum(TALENT_STATUSES),
   hue: z.number().int().min(0).max(360),
   sat: z.number().int().min(0).max(100),
+  editorialScore: z.number().int().min(0).max(5).default(0),
   isActive: z.boolean().default(true),
 });
 
@@ -70,22 +99,18 @@ export const projectInputSchema = z.object({
     .regex(/^[a-z0-9-]+$/, "Slug must be lowercase alphanumeric with dashes"),
   name: z.string().min(1).max(200),
   client: z.string().min(1).max(200),
-  contactEmail: z.email().max(254),
-  contactName: z.string().min(1).max(200),
   market: z.string().min(1).max(64),
-  rightsDurationEs: z.string().min(1).max(100),
-  rightsDurationEn: z.string().min(1).max(100),
-  exclusivityMode: z.enum(EXCLUSIVITY_MODES),
-  exclusivityCategoryEs: z.string().max(200).nullable().optional(),
-  exclusivityCategoryEn: z.string().max(200).nullable().optional(),
-  exclusivityHelpEs: z.string().min(1).max(500),
-  exclusivityHelpEn: z.string().min(1).max(500),
+  categoryEs: z.enum(INDUSTRY_CATEGORIES),
   maxTalents: z.number().int().min(1).max(50),
   maxExclusive: z.number().int().min(0).max(50),
-  industrySector: z.string().max(100).default(""),
-  rightsDurationMonths: z.number().int().min(1).max(120).default(12),
+  rightsDurationMonths: z
+    .number()
+    .int()
+    .refine(
+      (n) => (RIGHTS_DURATION_OPTIONS as readonly number[]).includes(n),
+      { message: "Duración debe ser 3, 6, 12, 18 o 24 meses" }
+    ),
   startDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "ISO date yyyy-mm-dd"),
-  blockedTalentCodes: z.array(z.string().max(16)).default([]),
   status: z.enum(PROJECT_STATUSES),
 });
 

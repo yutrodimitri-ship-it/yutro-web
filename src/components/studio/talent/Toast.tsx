@@ -69,8 +69,9 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
               animate={reduce ? { opacity: 1 } : { opacity: 1, y: 0 }}
               exit={reduce ? { opacity: 0 } : { opacity: 0, y: 12 }}
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="max-w-sm px-5 py-3.5 text-center text-sm text-white shadow-[0_12px_32px_rgba(0,0,0,0.4)]"
+              className="max-w-sm px-5 py-3.5 text-center text-sm shadow-[0_12px_32px_rgba(0,0,0,0.15)]"
               style={{
+                color: "var(--talent-ink, oklch(0.13 0 0))",
                 background: "var(--talent-bg-elev, #1a1a1a)",
                 border: "1px solid var(--accent)",
                 borderLeftWidth: "3px",

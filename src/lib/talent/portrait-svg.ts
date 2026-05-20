@@ -31,12 +31,11 @@ export function buildPortraitSVG({
   const lightId = `light-${code}-${variant}`;
   const skinId = `skin-${code}-${variant}`;
 
-  const bgStart = `hsl(${hue}, ${sat}%, ${15 + variation * 0.1}%)`;
-  const bgEnd = `hsl(${(hue + 30) % 360}, ${Math.max(0, sat - 10)}%, ${
-    8 + variation * 0.05
-  }%)`;
-  const lightStart = `hsl(${hue}, ${sat + 10}%, ${45 + variation * 0.15}%)`;
-  const lightEnd = `hsl(${hue}, ${sat}%, 10%)`;
+  // Backgrounds claros — pasteles del hue del talent sobre tema crema
+  const bgStart = `hsl(${hue}, ${Math.min(sat * 0.45, 30)}%, ${84 + variation * 0.05}%)`;
+  const bgEnd = `hsl(${(hue + 25) % 360}, ${Math.min(Math.max(0, sat * 0.35 - 5), 22)}%, ${77 + variation * 0.04}%)`;
+  const lightStart = `hsl(0, 0%, 100%)`;
+  const lightEnd = `hsl(0, 0%, 100%)`;
   const skinStart = `hsl(${20 + variation * 0.3}, 35%, ${55 + variation * 0.1}%)`;
   const skinEnd = `hsl(${20 + variation * 0.3}, 30%, ${30 + variation * 0.1}%)`;
   const shoulderColor = `hsl(${hue}, ${Math.max(0, sat - 10)}%, ${
@@ -45,7 +44,7 @@ export function buildPortraitSVG({
   const hairColor = `hsl(${20 + variation * 0.5}, ${
     15 + variation * 0.3
   }%, ${10 + variation * 0.1}%)`;
-  const faceShadow = `hsl(${hue}, ${sat}%, 8%)`;
+  const faceShadow = `hsl(${hue}, ${Math.min(sat * 0.3, 20)}%, 65%)`;
 
   return `
 <svg viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Portrait ${code}" style="width:100%;height:100%;display:block;">

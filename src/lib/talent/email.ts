@@ -30,14 +30,15 @@ export interface CastingNotificationParams {
   projectName: string;
   projectClient: string;
   projectSlug: string;
-  /** Email del cliente que envio (va al replyTo). */
-  contactEmail: string;
-  contactName: string;
+  /** Email del cliente que envió el casting (va al replyTo). */
+  submitterEmail: string;
+  /** Nombre del cliente que envió el casting. */
+  submitterName: string;
   shortlist: string[];
   exclusives: string[];
   market: string;
   rightsDuration: string;
-  exclusivityMode: string;
+  category: string;
   submissionId: string;
   submittedAt: Date;
 }
@@ -50,7 +51,7 @@ export async function sendCastingNotification(p: CastingNotificationParams) {
     from: `${FROM_NAME} <${FROM_ADDR}>`,
     to: [TO_ADDR],
     cc: [CC_ADDR],
-    replyTo: p.contactEmail,
+    replyTo: p.submitterEmail,
     subject: `[Yutro Talent] Casting recibido — ${p.projectName}`,
     html,
     text,
@@ -107,7 +108,7 @@ function renderCastingEmailHtml(p: CastingNotificationParams): string {
       <p style="margin:0 0 16px;font-size:18px;color:#fff">${escapeHtml(p.projectName)}</p>
 
       <p style="margin:0 0 4px;font-size:11px;color:#888;text-transform:uppercase;letter-spacing:0.1em;font-family:ui-monospace,monospace">Cliente</p>
-      <p style="margin:0 0 16px;font-size:14px;color:#fff">${escapeHtml(p.projectClient)} · ${escapeHtml(p.contactName)} &lt;${escapeHtml(p.contactEmail)}&gt;</p>
+      <p style="margin:0 0 16px;font-size:14px;color:#fff">${escapeHtml(p.projectClient)} · ${escapeHtml(p.submitterName)} &lt;${escapeHtml(p.submitterEmail)}&gt;</p>
 
       <p style="margin:0 0 4px;font-size:11px;color:#888;text-transform:uppercase;letter-spacing:0.1em;font-family:ui-monospace,monospace">Recibido</p>
       <p style="margin:0;font-size:13px;color:#bbb;font-family:ui-monospace,monospace">${escapeHtml(submittedLabel)}</p>
@@ -129,8 +130,8 @@ function renderCastingEmailHtml(p: CastingNotificationParams): string {
           <td style="padding:6px 0;text-align:right;font-size:13px;color:#fff">${escapeHtml(p.rightsDuration)}</td>
         </tr>
         <tr>
-          <td style="padding:6px 0;font-size:11px;color:#888;text-transform:uppercase;letter-spacing:0.1em;font-family:ui-monospace,monospace">Exclusividad</td>
-          <td style="padding:6px 0;text-align:right;font-size:13px;color:#fff">${escapeHtml(p.exclusivityMode)}</td>
+          <td style="padding:6px 0;font-size:11px;color:#888;text-transform:uppercase;letter-spacing:0.1em;font-family:ui-monospace,monospace">Categoría</td>
+          <td style="padding:6px 0;text-align:right;font-size:13px;color:#fff">${escapeHtml(p.category)}</td>
         </tr>
       </table>
     </div>
@@ -153,7 +154,7 @@ function renderCastingEmailText(p: CastingNotificationParams): string {
     `[Yutro Talent] Casting recibido — ${p.projectName}`,
     "",
     `Proyecto:  ${p.projectName}`,
-    `Cliente:   ${p.projectClient} · ${p.contactName} <${p.contactEmail}>`,
+    `Cliente:   ${p.projectClient} · ${p.submitterName} <${p.submitterEmail}>`,
     `Recibido:  ${formatChile(p.submittedAt)}`,
     "",
     `Selección — ${p.shortlist.length} talento(s) · ${p.exclusives.length} exclusivo(s):`,
@@ -163,7 +164,7 @@ function renderCastingEmailText(p: CastingNotificationParams): string {
     "",
     `Mercado:        ${p.market}`,
     `Duración:       ${p.rightsDuration}`,
-    `Exclusividad:   ${p.exclusivityMode}`,
+    `Categoría:      ${p.category}`,
     "",
     `Submission ID:  ${p.submissionId}`,
     "",

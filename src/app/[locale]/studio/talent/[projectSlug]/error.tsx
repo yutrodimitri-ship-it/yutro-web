@@ -41,15 +41,16 @@ export default function ProjectErrorPage({ error, reset }: ErrorPageProps) {
 
       <div className="space-y-3">
         <h1
-          className="text-3xl font-bold tracking-tight text-white sm:text-4xl"
+          className="text-3xl font-bold tracking-tight sm:text-4xl"
           style={{
+            color: "var(--talent-ink, oklch(0.13 0 0))",
             fontFamily: "var(--font-heading)",
             letterSpacing: "-0.02em",
           }}
         >
           {t("title")}
         </h1>
-        <p className="max-w-md text-base leading-relaxed text-white/55">
+        <p className="max-w-md text-base leading-relaxed" style={{ color: "var(--talent-ink-dim, oklch(0.42 0 0))" }}>
           {t("body")}
         </p>
       </div>
@@ -68,9 +69,10 @@ export default function ProjectErrorPage({ error, reset }: ErrorPageProps) {
         </button>
         <Link
           href={hubHref}
-          className="inline-flex items-center justify-center gap-2 px-6 py-3.5 font-mono text-[11px] uppercase tracking-[0.12em] text-white/55 transition-colors hover:text-white"
+          className="inline-flex items-center justify-center gap-2 px-6 py-3.5 font-mono text-[11px] uppercase tracking-[0.12em] transition-colors"
           style={{
-            border: "1px solid color-mix(in oklch, white 12%, transparent)",
+            color: "var(--talent-ink-mute, oklch(0.60 0 0))",
+            border: "1px solid var(--talent-line, color-mix(in oklch, black 12%, transparent))",
           }}
         >
           <ArrowLeft className="h-3.5 w-3.5" strokeWidth={1.75} />

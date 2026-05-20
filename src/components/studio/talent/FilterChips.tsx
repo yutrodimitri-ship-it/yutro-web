@@ -3,10 +3,6 @@
 import { useTranslations } from "next-intl";
 import type { TalentAgeBucket, TalentCategory, TalentGender } from "@/types/talent";
 
-/**
- * FilterValue — uniforme para genero, edad, categoria.
- *   "all" + ("m" | "f") + age buckets + categorias.
- */
 export type FilterValue =
   | "all"
   | TalentGender
@@ -16,11 +12,12 @@ export type FilterValue =
 interface FilterChipsProps {
   activeFilter: FilterValue;
   onFilterChange: (value: FilterValue) => void;
+  /** Conjunto de filtros que tienen al menos un talento presente. */
+  availableFilters?: Set<FilterValue>;
 }
 
 interface ChipDef {
   value: FilterValue;
-  /** Path dentro de namespace `studio.talent.catalog`. */
   i18nPath: string;
 }
 
@@ -38,23 +35,25 @@ const CHIPS: ReadonlyArray<ChipDef> = [
   { value: "corporativo", i18nPath: "filters.categories.corporativo" },
   { value: "senior", i18nPath: "filters.categories.senior" },
   { value: "oficios", i18nPath: "filters.categories.oficios" },
+  { value: "artistico", i18nPath: "filters.categories.artistico" },
+  { value: "profesional", i18nPath: "filters.categories.profesional" },
 ];
 
-export function FilterChips({ activeFilter, onFilterChange }: FilterChipsProps) {
+export function FilterChips({ activeFilter, onFilterChange, availableFilters }: FilterChipsProps) {
   const t = useTranslations("studio.talent.catalog");
+
+  const visibleChips = availableFilters
+    ? CHIPS.filter((chip) => chip.value === "all" || availableFilters.has(chip.value))
+    : CHIPS;
 
   return (
     <div
-      className="flex items-center gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible sm:pb-0"
+      className="flex items-center gap-6 overflow-x-auto pb-1"
+      style={{ scrollbarWidth: "none" }}
       role="toolbar"
       aria-label={t("filters.label")}
     >
-      <span
-        className="shrink-0 pr-1 font-mono text-[11px] uppercase tracking-[0.1em] text-white/40"
-      >
-        {t("filters.label")}
-      </span>
-      {CHIPS.map((chip) => {
+      {visibleChips.map((chip) => {
         const isActive = activeFilter === chip.value;
         return (
           <button
@@ -62,13 +61,11 @@ export function FilterChips({ activeFilter, onFilterChange }: FilterChipsProps) 
             type="button"
             onClick={() => onFilterChange(chip.value)}
             aria-pressed={isActive}
-            className="shrink-0 cursor-pointer px-3.5 py-2 font-mono text-[10px] uppercase tracking-[0.1em] transition-colors"
+            className="shrink-0 cursor-pointer font-mono text-[12px] uppercase tracking-[0.12em] transition-colors duration-150"
             style={{
-              border: `1px solid ${
-                isActive ? "var(--accent)" : "color-mix(in oklch, white 12%, transparent)"
-              }`,
-              background: isActive ? "var(--accent)" : "transparent",
-              color: isActive ? "var(--accent-foreground)" : "rgba(255,255,255,0.55)",
+              color: isActive ? "var(--accent)" : "rgba(0,0,0,0.45)",
+              borderBottom: isActive ? "1px solid var(--accent)" : "1px solid transparent",
+              paddingBottom: "2px",
             }}
           >
             {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
