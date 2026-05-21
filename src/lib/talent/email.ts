@@ -11,7 +11,7 @@
  */
 import { Resend } from "resend";
 
-const FROM_NAME = process.env.EMAIL_FROM_NAME || "Yutro Estudio";
+const FROM_NAME = process.env.EMAIL_FROM_NAME || "Yutro Studio";
 const FROM_ADDR = process.env.EMAIL_FROM_ADDRESS || "noreply@yutro.cl";
 const TO_ADDR = process.env.EMAIL_TO || "contacto@yutro.cl";
 const CC_ADDR = process.env.EMAIL_CC || "milivoy@yutro.cl";
@@ -97,7 +97,7 @@ function renderCastingEmailHtml(p: CastingNotificationParams): string {
 <body style="margin:0;padding:0;background:#0a0a0a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#e5e5e5">
   <div style="max-width:600px;margin:0 auto;padding:32px 20px">
     <p style="font-family:ui-monospace,monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:#d9b478;margin:0 0 8px">
-      Yutro Estudio · Talent
+      Yutro Studio · Talent
     </p>
     <h1 style="font-size:28px;font-weight:600;color:#fff;margin:0 0 24px;line-height:1.2">
       Casting recibido

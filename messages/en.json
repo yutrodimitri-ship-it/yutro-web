@@ -78,15 +78,15 @@
         "casting": "The confirmation screen ships next sprint. Here you'll review your selection, mark exclusives and confirm license terms."
       },
       "common": {
-        "brand": "Yutro Estudio",
+        "brand": "Yutro Studio",
         "submarca": "Talent",
         "back": "Back",
         "backToHub": "Back to hub",
         "backToCatalog": "Back to catalog",
         "comingSoon": "Coming soon",
         "confidential": "Confidential",
-        "configuredByStudio": "Configured by Yutro Estudio",
-        "rightClickBlocked": "Images are property of Yutro Estudio.",
+        "configuredByStudio": "Configured by Yutro Studio",
+        "rightClickBlocked": "Images are property of Yutro Studio.",
         "addToCasting": "Add to casting",
         "alreadyAdded": "Already in your casting",
         "removeFromCasting": "Remove from casting",
@@ -202,7 +202,7 @@
         },
         "license": {
           "title": "License terms",
-          "configuredBy": "Configured by Yutro Estudio",
+          "configuredBy": "Configured by Yutro Studio",
           "market": "Market",
           "duration": "Rights duration",
           "exclusivity": "Campaign exclusivity",
@@ -229,7 +229,7 @@
           "remove": "Remove"
         },
         "toast": {
-          "submitSuccess": "✓ Selection confirmed. {selected} talents · {exclusive} exclusive. — Yutro Estudio",
+          "submitSuccess": "✓ Selection confirmed. {selected} talents · {exclusive} exclusive. — Yutro Studio",
           "submitError": "Something went wrong sending your selection. Try again in a moment.",
           "exclusiveFull": "Your project allows up to {max} exclusive talents.",
           "needAtLeastOne": "Add at least one talent before confirming."
@@ -269,7 +269,7 @@
       "welcome": {
         "ariaLabel": "Project welcome screen",
         "eyebrow": "Welcome · {client}",
-        "subtitle": "Catalog curated by Yutro Estudio",
+        "subtitle": "Catalog curated by Yutro Studio",
         "metaTalent": "Digital talent",
         "totalExclusive": "Total exclusivity",
         "noExclusive": "No exclusivity",
@@ -277,7 +277,7 @@
       },
       "error": {
         "title": "Something went wrong",
-        "body": "There was an error loading this project. The Yutro Estudio team has been notified. Try again or go back to the hub.",
+        "body": "There was an error loading this project. The Yutro Studio team has been notified. Try again or go back to the hub.",
         "retry": "Try again",
         "backToHub": "Back to hub"
       },

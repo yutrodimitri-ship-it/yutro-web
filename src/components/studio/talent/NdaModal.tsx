@@ -88,7 +88,7 @@ export function NdaModal({
         transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
         className="relative w-full max-w-xl overflow-hidden"
         style={{
-          background: "var(--talent-bg-elev, #f7f4ef)",
+          background: "var(--talent-bg-elev, #ffffff)",
           border: "1px solid var(--talent-line, color-mix(in oklch, black 10%, transparent))",
           maxHeight: "calc(100vh - 80px)",
         }}

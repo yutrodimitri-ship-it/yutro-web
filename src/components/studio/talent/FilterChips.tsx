@@ -61,11 +61,12 @@ export function FilterChips({ activeFilter, onFilterChange, availableFilters }: 
             type="button"
             onClick={() => onFilterChange(chip.value)}
             aria-pressed={isActive}
-            className="shrink-0 cursor-pointer font-mono text-[12px] uppercase tracking-[0.12em] transition-colors duration-150"
+            className="shrink-0 cursor-pointer font-mono text-[13px] uppercase tracking-[0.14em] transition-colors duration-150"
             style={{
-              color: isActive ? "var(--accent)" : "rgba(0,0,0,0.45)",
-              borderBottom: isActive ? "1px solid var(--accent)" : "1px solid transparent",
-              paddingBottom: "2px",
+              color: isActive ? "var(--accent)" : "var(--talent-ink)",
+              fontWeight: isActive ? 800 : 600,
+              borderBottom: isActive ? "2px solid var(--accent)" : "2px solid transparent",
+              paddingBottom: "3px",
             }}
           >
             { }
