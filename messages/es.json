@@ -194,15 +194,15 @@
         "casting": "La pantalla de confirmación se construye en el siguiente sprint. Aquí revisarás tu selección, marcarás exclusividades y confirmarás los términos de licencia."
       },
       "common": {
-        "brand": "Yutro Estudio",
+        "brand": "Yutro Studio",
         "submarca": "Talent",
         "back": "Volver",
         "backToHub": "Volver al hub",
         "backToCatalog": "Volver al catálogo",
         "comingSoon": "Próximamente",
         "confidential": "Confidencial",
-        "configuredByStudio": "Configurado por Yutro Estudio",
-        "rightClickBlocked": "Las imágenes son propiedad de Yutro Estudio.",
+        "configuredByStudio": "Configurado por Yutro Studio",
+        "rightClickBlocked": "Las imágenes son propiedad de Yutro Studio.",
         "addToCasting": "Agregar al casting",
         "alreadyAdded": "Ya en tu casting",
         "removeFromCasting": "Quitar del casting",
@@ -318,7 +318,7 @@
         },
         "license": {
           "title": "Términos de licencia",
-          "configuredBy": "Configurado por Yutro Estudio",
+          "configuredBy": "Configurado por Yutro Studio",
           "market": "Mercado",
           "duration": "Duración derechos",
           "exclusivity": "Exclusividad de campaña",
@@ -345,7 +345,7 @@
           "remove": "Quitar"
         },
         "toast": {
-          "submitSuccess": "✓ Selección confirmada al estudio. {selected} talentos · {exclusive} con exclusividad. — Yutro Estudio",
+          "submitSuccess": "✓ Selección confirmada al estudio. {selected} talentos · {exclusive} con exclusividad. — Yutro Studio",
           "submitError": "Hubo un error al enviar tu selección. Intenta de nuevo en un momento.",
           "exclusiveFull": "Tu proyecto contempla máximo {max} talentos con exclusividad.",
           "needAtLeastOne": "Agrega al menos un talento antes de confirmar."
@@ -385,15 +385,15 @@
       "welcome": {
         "ariaLabel": "Pantalla de bienvenida del proyecto",
         "eyebrow": "Bienvenido · {client}",
-        "subtitle": "Catálogo curado por Yutro Estudio",
-        "metaTalent": "Talento digital",
+        "subtitle": "Catálogo de avatares IA · Yutro Studio",
+        "metaTalent": "Avatar IA",
         "totalExclusive": "Exclusividad total",
         "noExclusive": "Sin exclusividad",
         "continue": "Continuar al catálogo"
       },
       "error": {
         "title": "Algo salió mal",
-        "body": "Ocurrió un error al cargar este proyecto. El equipo de Yutro Estudio fue notificado. Intenta de nuevo o vuelve al hub.",
+        "body": "Ocurrió un error al cargar este proyecto. El equipo de Yutro Studio fue notificado. Intenta de nuevo o vuelve al hub.",
         "retry": "Intentar de nuevo",
         "backToHub": "Volver al hub"
       },

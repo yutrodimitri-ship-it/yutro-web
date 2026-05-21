@@ -116,10 +116,10 @@ export function TalentDetail({
             <h1
               style={{
                 fontFamily: "var(--font-heading)",
-                fontWeight: 800,
+                fontWeight: 900,
                 fontSize: "clamp(40px, 5.5vw, 80px)",
-                lineHeight: 0.88,
-                letterSpacing: "-0.035em",
+                lineHeight: 0.84,
+                letterSpacing: "-0.04em",
                 margin: "8px 0 0",
                 color: "var(--talent-ink)",
               }}
@@ -136,8 +136,14 @@ export function TalentDetail({
           </div>
 
           <p
-            className="text-base leading-relaxed"
-            style={{ color: "var(--talent-ink-dim)", maxWidth: "44ch" }}
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontWeight: 400,
+              fontSize: "clamp(15px, 1.4vw, 17px)",
+              lineHeight: 1.7,
+              color: "var(--talent-ink-dim)",
+              maxWidth: "44ch",
+            }}
           >
             {talent.shortDesc[locale]}
           </p>
@@ -336,10 +342,10 @@ export function TalentDetail({
               <h2
                 style={{
                   fontFamily: "var(--font-heading)",
-                  fontWeight: 800,
+                  fontWeight: 900,
                   fontSize: "clamp(20px, 2vw, 28px)",
-                  lineHeight: 1,
-                  letterSpacing: "-0.03em",
+                  lineHeight: 0.95,
+                  letterSpacing: "-0.04em",
                   margin: 0,
                   color: "var(--talent-ink)",
                 }}
@@ -356,9 +362,12 @@ export function TalentDetail({
               </h2>
               {bioText ? (
                 <div
-                  className="mt-4 leading-relaxed"
+                  className="mt-4"
                   style={{
+                    fontFamily: "var(--font-sans)",
+                    fontWeight: 400,
                     fontSize: "clamp(13px, 1vw, 15px)",
+                    lineHeight: 1.7,
                     color: "var(--talent-ink)",
                     whiteSpace: "pre-wrap",
                   }}
@@ -419,10 +428,10 @@ export function TalentDetail({
             <h2
               style={{
                 fontFamily: "var(--font-heading)",
-                fontWeight: 800,
+                fontWeight: 900,
                 fontSize: "clamp(24px, 3vw, 36px)",
-                lineHeight: 1,
-                letterSpacing: "-0.03em",
+                lineHeight: 0.95,
+                letterSpacing: "-0.04em",
                 margin: 0,
                 color: "var(--talent-ink)",
               }}
@@ -440,8 +449,15 @@ export function TalentDetail({
               )}
             </h2>
             <p
-              className="mt-3 text-sm leading-relaxed"
-              style={{ color: "var(--talent-ink-dim)", maxWidth: "32ch" }}
+              className="mt-3"
+              style={{
+                fontFamily: "var(--font-sans)",
+                fontWeight: 400,
+                fontSize: "clamp(13px, 1.1vw, 15px)",
+                lineHeight: 1.65,
+                color: "var(--talent-ink-dim)",
+                maxWidth: "32ch",
+              }}
             >
               {locale === "es"
                 ? `Si estás evaluando a ${talent.name[locale].split(" ")[0]}, estos perfiles también suelen considerarse:`
@@ -528,10 +544,10 @@ function SpecDisplayItem({
       <div
         style={{
           fontFamily: "var(--font-heading)",
-          fontWeight: 800,
+          fontWeight: 900,
           fontSize: "clamp(15px, 1.8vw, 22px)",
-          lineHeight: 1.05,
-          letterSpacing: "-0.025em",
+          lineHeight: 1.0,
+          letterSpacing: "-0.03em",
           color: "var(--talent-ink)",
         }}
       >
@@ -570,7 +586,7 @@ function renderItalicLast(name: string) {
   return (
     <>
       {trimmed.slice(0, i)}{" "}
-      <em style={{ fontStyle: "italic", fontWeight: 800, color: "var(--accent)" }}>
+      <em style={{ fontStyle: "italic", fontWeight: 900, color: "var(--accent)" }}>
         {trimmed.slice(i + 1)}
       </em>
     </>

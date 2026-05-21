@@ -48,27 +48,27 @@ export default async function ProjectLandingPage({
   const bands = [
     {
       num: "N° 01",
-      title: "Navega como un",
-      em: "libro.",
-      desc: "Un grid de talentos indexados por arquetipo y tipo de licencia. Alterna entre vista editorial y vista de datos.",
+      title: "Filtra y",
+      em: "navega.",
+      desc: "Filtra por tipo de personaje, género y edad. Encuentra el avatar que encaja con el tono de tu campaña.",
     },
     {
       num: "N° 02",
-      title: "Lee un perfil",
-      em: "completo.",
-      desc: "Ficha técnica, fotos de firma, capacidad de movimiento. Todo lo que un productor necesita en una sola página.",
+      title: "Conoce cada",
+      em: "personaje.",
+      desc: "Ve las fotos de cada avatar, su perfil de uso y el tipo de campañas para el que está pensado.",
     },
     {
       num: "N° 03",
-      title: "Selecciona con",
-      em: "cantidad.",
-      desc: "Arma tu shortlist y asigna cantidades por uso. Envía la selección directamente a tu productor.",
+      title: "Arma tu",
+      em: "selección.",
+      desc: "Agrega los avatares que quieres usar. Si necesitas que sean exclusivos para tu marca, márcalos.",
     },
     {
       num: "N° 04",
-      title: "Derechos,",
-      em: "resueltos.",
-      desc: "Territorios despejados, ventanas de uso claras. Sin misterios de derechos al momento de entrega.",
+      title: "Yutro",
+      em: "produce.",
+      desc: "Enviamos cotización en 24 horas. Aprobada la selección, producimos las imágenes, videos o comerciales.",
     },
   ];
 
@@ -83,7 +83,7 @@ export default async function ProjectLandingPage({
         {[
           { label: "Volumen", value: "01 · 2026" },
           { label: "Para", value: project.client },
-          { label: "Catálogo", value: `${total} talentos digitales` },
+          { label: "Catálogo", value: `${total} avatares IA` },
         ].map((col) => (
           <div
             key={col.label}
@@ -103,21 +103,19 @@ export default async function ProjectLandingPage({
         <h1
           style={{
             fontFamily: "var(--font-heading)",
-            fontWeight: 800,
-            fontSize: "clamp(56px, 9vw, 158px)",
-            lineHeight: 0.88,
-            letterSpacing: "-0.035em",
+            fontWeight: 900,
+            fontSize: "clamp(40px, 6vw, 96px)",
+            lineHeight: 0.84,
+            letterSpacing: "-0.04em",
             color: "var(--talent-ink)",
             margin: 0,
           }}
         >
-          Un catálogo de<br />
-          talentos<br />
-          digitales,<br />
-          editado como<br />
-          una{" "}
+          Avatares IA<br />
+          para tus<br />
+          campañas<br />
           <em style={{ fontStyle: "italic", color: "var(--accent)", fontWeight: "inherit" }}>
-            revista.
+            publicitarias.
           </em>
         </h1>
 
@@ -127,19 +125,21 @@ export default async function ProjectLandingPage({
             className="font-mono text-[11px] uppercase tracking-[0.18em]"
             style={{ color: "var(--talent-ink-mute)" }}
           >
-            Yutro Estudio — Casting House
+            Yutro Studio — Casting House
           </p>
           <p
-            className="leading-relaxed"
             style={{
-              fontSize: "clamp(14px, 1.4vw, 17px)",
+              fontFamily: "var(--font-sans)",
+              fontWeight: 400,
+              fontSize: "clamp(15px, 1.5vw, 18px)",
+              lineHeight: 1.7,
               color: "var(--talent-ink-dim)",
-              maxWidth: "46ch",
+              maxWidth: "44ch",
             }}
           >
-            Creamos talentos digitales listos para campaña, contrato y
-            continuidad. Navega el roster, selecciona con cantidad y briefia
-            a tu productor en una sola vista.
+            Navega el catálogo, elige los personajes que representan tu marca
+            y el equipo Yutro produce las imágenes, videos o comerciales.
+            Cotización en 24 horas hábiles.
           </p>
 
           <div className="flex flex-wrap gap-3 pt-1">
@@ -162,7 +162,7 @@ export default async function ProjectLandingPage({
                 border: "1px solid var(--talent-line)",
               }}
             >
-              Ver selección
+              Ver mi selección
             </Link>
           </div>
         </div>
@@ -178,9 +178,9 @@ export default async function ProjectLandingPage({
             className="flex w-max whitespace-nowrap"
             style={{
               fontFamily: "var(--font-heading)",
-              fontWeight: 800,
-              fontSize: "clamp(28px, 4vw, 52px)",
-              letterSpacing: "-0.025em",
+              fontWeight: 700,
+              fontSize: "clamp(14px, 1.8vw, 22px)",
+              letterSpacing: "0.01em",
               lineHeight: 1,
               color: "var(--talent-ink)",
               animation: "marquee-quad 60s linear infinite",
@@ -227,10 +227,10 @@ export default async function ProjectLandingPage({
               className="mb-3 mt-1.5"
               style={{
                 fontFamily: "var(--font-heading)",
-                fontWeight: 800,
+                fontWeight: 900,
                 fontSize: "clamp(18px, 2vw, 26px)",
-                lineHeight: 1.05,
-                letterSpacing: "-0.02em",
+                lineHeight: 1.0,
+                letterSpacing: "-0.03em",
                 color: "var(--talent-ink)",
               }}
             >
@@ -241,11 +241,13 @@ export default async function ProjectLandingPage({
             </h3>
             <p
               style={{
+                fontFamily: "var(--font-sans)",
+                fontWeight: 400,
                 fontSize: "clamp(13px, 1.1vw, 14.5px)",
                 color: "var(--talent-ink-dim)",
                 margin: 0,
                 maxWidth: "32ch",
-                lineHeight: 1.5,
+                lineHeight: 1.65,
               }}
             >
               {band.desc}
@@ -263,10 +265,10 @@ export default async function ProjectLandingPage({
           <h2
             style={{
               fontFamily: "var(--font-heading)",
-              fontWeight: 800,
+              fontWeight: 900,
               fontSize: "clamp(24px, 3vw, 36px)",
-              letterSpacing: "-0.025em",
-              lineHeight: 1,
+              letterSpacing: "-0.035em",
+              lineHeight: 0.95,
               margin: 0,
               color: "var(--talent-ink)",
             }}
@@ -300,18 +302,18 @@ export default async function ProjectLandingPage({
         <h2
           style={{
             fontFamily: "var(--font-heading)",
-            fontWeight: 800,
+            fontWeight: 700,
             fontSize: "clamp(28px, 4vw, 56px)",
-            letterSpacing: "-0.03em",
-            lineHeight: 1,
+            letterSpacing: "-0.025em",
+            lineHeight: 1.05,
             margin: 0,
             maxWidth: "18ch",
             color: "var(--talent-ink)",
           }}
         >
-          Abre el catálogo y comienza el{" "}
+          Elige tus personajes. El equipo Yutro produce el{" "}
           <em style={{ fontStyle: "italic", color: "var(--accent)", fontWeight: "inherit" }}>
-            casting.
+            resto.
           </em>
         </h2>
 
@@ -335,7 +337,7 @@ export default async function ProjectLandingPage({
               border: "1px solid var(--talent-line)",
             }}
           >
-            Ver casting cart
+            Ver mi selección
           </Link>
         </div>
       </section>
@@ -349,7 +351,7 @@ export default async function ProjectLandingPage({
           className="font-mono text-[10px] uppercase tracking-[0.18em]"
           style={{ color: "var(--talent-ink-mute)" }}
         >
-          Yutro Estudio — Casting House
+          Yutro Studio — Casting House
         </span>
         <Link
           href="/"

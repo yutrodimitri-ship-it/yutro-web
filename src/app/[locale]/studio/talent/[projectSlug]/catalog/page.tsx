@@ -63,7 +63,7 @@ export default async function ProjectCatalogPage({
             className="leading-none"
             style={{
               fontFamily: "var(--font-heading)",
-              fontWeight: 800,
+              fontWeight: 900,
               fontSize: "clamp(64px, 8vw, 112px)",
               letterSpacing: "-0.035em",
               color: "var(--talent-ink)",
@@ -100,7 +100,7 @@ export default async function ProjectCatalogPage({
           className="font-mono text-[10px] uppercase tracking-[0.18em]"
           style={{ color: "var(--talent-ink-mute)" }}
         >
-          Yutro Estudio — Casting House
+          Yutro Studio — Casting House
         </span>
         <Link
           href="/"
