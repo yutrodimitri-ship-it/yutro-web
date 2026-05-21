@@ -83,6 +83,19 @@ export const talents = pgTable("talents", {
     .notNull(),
   /** Score editorial 0-5: marca "anclas" del catálogo (los más icónicos). */
   editorialScore: integer("editorial_score").notNull().default(0),
+  // Sprint 2 — capa publica del catalogo (yutro.cl/casting). Solo
+  // talentos con public_visible=true salen del area privada y aparecen
+  // en el lookbook publico. Featured = tier separado con IG embed.
+  publicVisible: boolean("public_visible").notNull().default(false),
+  tier: text("tier").notNull().default("standard"), // CHECK ('standard'|'featured') en DB
+  instagramHandle: text("instagram_handle"),
+  instagramFollowers: integer("instagram_followers"),
+  publicBioEs: text("public_bio_es"),
+  publicBioEn: text("public_bio_en"),
+  // Slug publico URL-friendly, separado del code interno (YE-W01) para
+  // que el SEO publico no exponga la nomenclatura del roster. UNIQUE
+  // parcial via index en DB — null permitido.
+  publicSlug: text("public_slug"),
   // soft delete
   isActive: boolean("is_active").notNull().default(true),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
