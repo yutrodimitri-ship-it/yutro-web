@@ -57,6 +57,38 @@
       "body": "El catálogo público es solo un anticipo. Detrás hay un roster privado más grande, con filtros, exclusividades y selección por proyecto.",
       "button": "Solicitar acceso"
     },
+    "request": {
+      "eyebrow": "Casting · Solicitar acceso",
+      "title": "Acceso al",
+      "titleAccent": "catálogo completo.",
+      "intro": "El catálogo público es solo un anticipo. Detrás hay un roster privado más grande con filtros, exclusividades y selección por proyecto. Contanos brevemente tu proyecto y agendamos una conversación.",
+      "stepsTitle": "Lo que sigue",
+      "step1": "Revisamos tu solicitud dentro de 24 horas hábiles.",
+      "step2": "Agendamos una llamada de 30 minutos para entender tu proyecto.",
+      "step3": "Te entregamos credenciales del catálogo completo bajo contrato.",
+      "form": {
+        "name": "Nombre completo",
+        "email": "Email corporativo",
+        "emailHint": "Necesitamos email del dominio de tu empresa.",
+        "company": "Empresa",
+        "role": "Rol",
+        "country": "País",
+        "projectType": "Tipo de proyecto",
+        "timeline": "Plazo estimado",
+        "budgetRange": "Rango de presupuesto",
+        "attribution": "¿Cómo nos conociste?",
+        "notes": "Notas",
+        "notesHint": "Máximo 500 caracteres. Opcional.",
+        "submit": "Enviar solicitud",
+        "submitting": "Enviando…",
+        "successTitle": "Solicitud recibida.",
+        "successBody": "Yutro te contacta dentro de 24 horas hábiles al email que indicaste. Mientras tanto, podés volver a navegar el Casting.",
+        "back": "Volver al Casting",
+        "errorBlockedEmail": "Necesitamos un email corporativo para verificar tu empresa.",
+        "errorRateLimit": "Recibimos varias solicitudes desde tu red recientemente. Esperá unos minutos antes de reintentar.",
+        "errorGeneric": "Algo falló al enviar. Probá de nuevo en unos segundos."
+      }
+    },
     "detail": {
       "eyebrowProfile": "Perfil N°",
       "back": "← Volver al Casting",

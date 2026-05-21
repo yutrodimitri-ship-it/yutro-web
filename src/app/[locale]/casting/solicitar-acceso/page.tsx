@@ -1,18 +1,19 @@
 import type { Metadata } from "next";
-import { Link } from "@/i18n/navigation";
+import { getTranslations } from "next-intl/server";
 import { Container } from "@/components/shared/Container";
+import { AccessRequestForm } from "@/components/casting/AccessRequestForm";
 import { createMetadata } from "@/lib/metadata";
 
 const meta: Record<string, { title: string; description: string }> = {
   es: {
     title: "Solicitar acceso · Casting",
     description:
-      "Formulario de solicitud para acceder al catálogo completo del Casting Yutro. Acceso post-acuerdo, revisado por el equipo.",
+      "Formulario para solicitar acceso al catálogo completo del Casting Yutro. Acceso post-acuerdo, revisado por el equipo.",
   },
   en: {
     title: "Request access · Casting",
     description:
-      "Request access form for the full Yutro Casting catalog. Post-agreement access, reviewed by the team.",
+      "Form to request access to the full Yutro Casting catalog. Post-agreement access, reviewed by the team.",
   },
 };
 
@@ -32,12 +33,6 @@ export async function generateMetadata({
   });
 }
 
-/**
- * Stub Sprint 2. El form completo + endpoint + email se construye en
- * Sprint 3 (Tareas 3.1 + 3.2). Por ahora, copy editorial + placeholder
- * visual para que los CTAs de /casting y /casting/featured no caigan
- * en 404.
- */
 export default async function SolicitarAccesoPage({
   params,
 }: {
@@ -45,80 +40,85 @@ export default async function SolicitarAccesoPage({
 }) {
   const { locale: rawLocale } = await params;
   const locale: "es" | "en" = rawLocale === "en" ? "en" : "es";
+  const t = await getTranslations({ locale, namespace: "casting.request" });
+  const tf = await getTranslations({ locale, namespace: "casting.request.form" });
 
   return (
     <main className="bg-background pt-32 pb-32 sm:pt-40 text-foreground">
       <Container>
-        <div className="mx-auto max-w-2xl">
-          <p className="mb-6 font-mono text-[11px] uppercase tracking-[0.18em] text-foreground/40">
-            {locale === "es" ? "Casting · Solicitar acceso" : "Casting · Request access"}
-          </p>
-          <h1
-            className="font-heading font-extrabold leading-[0.95] text-foreground"
-            style={{
-              fontSize: "clamp(2.5rem, 6vw, 4.5rem)",
-              letterSpacing: "-0.035em",
-            }}
-          >
-            {locale === "es" ? (
-              <>
-                Acceso al{" "}
-                <em className="italic text-primary not-italic-fallback">catálogo completo.</em>
-              </>
-            ) : (
-              <>
-                Access to the{" "}
-                <em className="italic text-primary not-italic-fallback">full catalog.</em>
-              </>
-            )}
-          </h1>
-
-          <p className="mt-6 text-base leading-relaxed text-foreground/65 sm:text-lg">
-            {locale === "es"
-              ? "El formulario de acceso se publica esta semana. Mientras tanto, escríbenos directamente y agendamos una conversación."
-              : "The access form launches this week. In the meantime, write to us directly and we'll set up a call."}
-          </p>
-
-          <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-            <a
-              href="mailto:contacto@yutro.cl?subject=Solicitud%20de%20acceso%20Casting%20Yutro"
-              className="inline-flex items-center gap-3 bg-primary px-7 py-4 font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-primary-foreground transition-colors hover:bg-primary/90"
+        <div className="grid gap-12 lg:grid-cols-[1.1fr_1.4fr] lg:gap-20">
+          {/* ── Lado izquierdo — copy + steps ─────────────── */}
+          <div>
+            <p className="mb-6 font-mono text-[11px] uppercase tracking-[0.18em] text-foreground/40">
+              {t("eyebrow")}
+            </p>
+            <h1
+              className="font-heading font-extrabold leading-[0.95] text-foreground"
+              style={{
+                fontSize: "clamp(2.5rem, 6vw, 4.5rem)",
+                letterSpacing: "-0.035em",
+              }}
             >
-              {locale === "es" ? "Escribir a contacto@yutro.cl" : "Email contacto@yutro.cl"}
-              <span>→</span>
-            </a>
-            <Link
-              href="/casting"
-              className="inline-flex items-center px-5 py-4 font-mono text-[11px] uppercase tracking-[0.14em] text-foreground/70 hover:text-primary"
+              {t("title")}{" "}
+              <em className="italic text-primary not-italic-fallback">
+                {t("titleAccent")}
+              </em>
+            </h1>
+            <p
+              className="mt-6 text-base leading-relaxed text-foreground/65 sm:text-lg"
+              style={{ maxWidth: "44ch" }}
             >
-              {locale === "es" ? "← Volver al Casting" : "← Back to Casting"}
-            </Link>
+              {t("intro")}
+            </p>
+
+            <div className="mt-12 border-t border-foreground/10 pt-8">
+              <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-foreground/40">
+                {t("stepsTitle")}
+              </p>
+              <ol className="mt-5 space-y-3 text-sm leading-relaxed text-foreground/70 sm:text-base">
+                <li>
+                  <span className="font-semibold text-foreground">01.</span>{" "}
+                  {t("step1")}
+                </li>
+                <li>
+                  <span className="font-semibold text-foreground">02.</span>{" "}
+                  {t("step2")}
+                </li>
+                <li>
+                  <span className="font-semibold text-foreground">03.</span>{" "}
+                  {t("step3")}
+                </li>
+              </ol>
+            </div>
           </div>
 
-          <div className="mt-16 border-t border-foreground/10 pt-8">
-            <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-foreground/40">
-              {locale === "es" ? "Lo que sigue" : "What happens next"}
-            </p>
-            <ol className="mt-4 space-y-3 text-sm leading-relaxed text-foreground/65 sm:text-base">
-              <li>
-                <span className="font-semibold text-foreground">01.</span>{" "}
-                {locale === "es"
-                  ? "Revisamos tu solicitud dentro de 24 horas hábiles."
-                  : "We review your request within 24 business hours."}
-              </li>
-              <li>
-                <span className="font-semibold text-foreground">02.</span>{" "}
-                {locale === "es"
-                  ? "Agendamos una llamada de 30 minutos para entender tu proyecto."
-                  : "We schedule a 30-minute call to understand your project."}
-              </li>
-              <li>
-                <span className="font-semibold text-foreground">03.</span>{" "}
-                {locale === "es"
-                  ? "Te entregamos credenciales del catálogo completo bajo contrato."
-                  : "We provide full catalog credentials under contract."}
-              </li>
-            </ol>
+          {/* ── Lado derecho — form ───────────────────────── */}
+          <div>
+            <AccessRequestForm
+              locale={locale}
+              labels={{
+                name: tf("name"),
+                email: tf("email"),
+                emailHint: tf("emailHint"),
+                company: tf("company"),
+                role: tf("role"),
+                country: tf("country"),
+                projectType: tf("projectType"),
+                timeline: tf("timeline"),
+                budgetRange: tf("budgetRange"),
+                attribution: tf("attribution"),
+                notes: tf("notes"),
+                notesHint: tf("notesHint"),
+                submit: tf("submit"),
+                submitting: tf("submitting"),
+                successTitle: tf("successTitle"),
+                successBody: tf("successBody"),
+                back: tf("back"),
+                errorBlockedEmail: tf("errorBlockedEmail"),
+                errorRateLimit: tf("errorRateLimit"),
+                errorGeneric: tf("errorGeneric"),
+              }}
+            />
           </div>
         </div>
       </Container>

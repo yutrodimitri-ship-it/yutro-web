@@ -98,6 +98,7 @@ export const talents = pgTable("talents", {
   publicSlug: text("public_slug"),
   // soft delete
   isActive: boolean("is_active").notNull().default(true),
+  // sentinel for downstream tables — see below
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
 });
@@ -214,5 +215,35 @@ export const rateLimitEntries = pgTable(
   (table) => [
     uniqueIndex("idx_rate_limit_key").on(table.key),
     index("idx_rate_limit_reset").on(table.resetAt),
+  ]
+);
+
+// Sprint 3 — Solicitudes de acceso al catalogo completo desde
+// /casting/solicitar-acceso. RLS deny-all en DB; toda lectura/escritura
+// pasa por service_role en el endpoint o admin server component.
+export const accessRequests = pgTable(
+  "access_requests",
+  {
+    id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    name: text("name").notNull(),
+    email: text("email").notNull(),
+    company: text("company").notNull(),
+    role: text("role"),
+    country: text("country"),
+    projectType: text("project_type"),
+    timeline: text("timeline"),
+    budgetRange: text("budget_range"),
+    attribution: text("attribution"),
+    notes: text("notes"),
+    status: text("status").notNull().default("pending"), // CHECK in DB
+    ipAddress: text("ip_address"),
+    userAgent: text("user_agent"),
+    locale: text("locale").notNull().default("es"),
+  },
+  (table) => [
+    index("idx_access_requests_status").on(table.status),
+    index("idx_access_requests_created").on(table.createdAt),
+    index("idx_access_requests_ip_recent").on(table.ipAddress, table.createdAt),
   ]
 );

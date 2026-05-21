@@ -57,6 +57,38 @@
       "body": "The public catalog is only a teaser. Behind it sits a larger private roster, with filters, exclusivities and per-project curation.",
       "button": "Request access"
     },
+    "request": {
+      "eyebrow": "Casting · Request access",
+      "title": "Access to the",
+      "titleAccent": "full catalog.",
+      "intro": "The public catalog is only a teaser. Behind it sits a larger private roster with filters, exclusivities and per-project curation. Tell us briefly about your project and we'll set up a call.",
+      "stepsTitle": "What happens next",
+      "step1": "We review your request within 24 business hours.",
+      "step2": "We schedule a 30-minute call to understand your project.",
+      "step3": "We provide full catalog credentials under contract.",
+      "form": {
+        "name": "Full name",
+        "email": "Corporate email",
+        "emailHint": "We need an email from your company domain.",
+        "company": "Company",
+        "role": "Role",
+        "country": "Country",
+        "projectType": "Project type",
+        "timeline": "Timeline",
+        "budgetRange": "Budget range",
+        "attribution": "How did you hear about us?",
+        "notes": "Notes",
+        "notesHint": "Maximum 500 characters. Optional.",
+        "submit": "Submit request",
+        "submitting": "Sending…",
+        "successTitle": "Request received.",
+        "successBody": "Yutro will reach out within 24 business hours at the email you provided. In the meantime, you can keep browsing the Casting.",
+        "back": "Back to Casting",
+        "errorBlockedEmail": "We need a corporate email to verify your company.",
+        "errorRateLimit": "We've received several requests from your network recently. Please wait a few minutes before retrying.",
+        "errorGeneric": "Something went wrong. Please try again in a moment."
+      }
+    },
     "detail": {
       "eyebrowProfile": "Profile N°",
       "back": "← Back to Casting",
