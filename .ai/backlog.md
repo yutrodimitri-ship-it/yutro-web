@@ -79,3 +79,50 @@ Cosas detectadas durante Sprint 1 que NO están en el scope de esta fase. Cada e
 **Observación:** Marcado `@deprecated`. Quedará huérfano una vez que el seed de Featured Talents esté aplicado en DB.
 
 **Sugerencia:** Después de Sprint 2 Tarea 2.1, borrar este archivo en commit `chore(cleanup): drop legacy influencers data file`. Asegurarse antes que el seed fue exitoso.
+
+---
+
+## DT-009 · Endpoint público de imágenes para R2 keys (Sprint 2)
+
+**Archivo:** `src/lib/talents-public.ts:resolvePublicImage`
+
+**Observación:** Hoy `resolvePublicImage` solo resuelve paths que empiezan con `/` (assets de `/public/`) o `http`. Los talentos con `image_profile_key` estilo R2 storage (sin slash inicial) retornan null y caen al placeholder gradient.
+
+Los 6 talentos seedados en Sprint 2 tienen path-style (`/talents-webp/YE-W04/profile.webp`, `/influencers/Camila/avatar.webp`) así que renderizan bien. El problema aparecerá cuando se agreguen talentos nuevos con R2 keys plain.
+
+**Sugerencia:** Crear endpoint `GET /api/casting/image/[slug]/[variant]` (sin auth) que:
+1. Lee del talents por slug + variant (profile/charsheet/gallery-N)
+2. Genera presigned URL de R2 con caché corta
+3. Retorna 302 a la URL firmada (o sirve el bytes directo con Cache-Control: public, max-age=86400)
+
+Reusar lógica del endpoint privado `/api/studio/talent/image/[code]/[variant]/route.ts` pero sin chequeo de session.
+
+---
+
+## DT-010 · Drizzle `tier` no tiene type union (Sprint 2)
+
+**Archivo:** `src/db/schema.ts:tier`
+
+**Observación:** `tier: text("tier").notNull().default("standard")` — Drizzle no modela el CHECK constraint. Si código TS hace `db.update(...).set({ tier: "foo" })` no salta error en compile, solo en runtime.
+
+**Sugerencia:** En `src/lib/talents-public.ts` ya existe `export type PublicTalentTier = "featured" | "standard"`. Refactor `schema.ts` para usar Drizzle's `enum` type o agregar `$type<PublicTalentTier>()` al campo.
+
+---
+
+## DT-011 · `/api/og` no acepta `subtitle` (Sprint 2)
+
+**Archivo:** `src/app/api/og/route.tsx`
+
+**Observación:** La ficha pública `/casting/[slug]` pasa `&subtitle=` al endpoint pero el endpoint actual solo lee `title` y `locale`. La OG image de cada talento queda con el subtitle hardcoded "Productora Audiovisual con IA" en vez del archetype del talento.
+
+**Sugerencia:** Extender `/api/og` para aceptar `subtitle` opcional. Si está, override del default. Permite que cada talento tenga su OG image personalizado con su archetype.
+
+---
+
+## DT-012 · `eyebrowProfile` N°XX en ficha es pseudo-aleatorio (Sprint 2)
+
+**Archivo:** `src/app/[locale]/casting/[slug]/page.tsx`
+
+**Observación:** El "N°XX" del eyebrow se calcula como `(slug.charCodeAt(0) + slug.length) % 100`. Determinístico pero hacky.
+
+**Sugerencia:** Agregar columna `public_order INTEGER` en talents y rellenar manualmente (1, 2, 3, ...). El order también puede servir como tie-breaker en `getPublicTalents()`.
