@@ -37,6 +37,41 @@
     "allCategories": "Todos",
     "loadMore": "Cargar más"
   },
+  "estudio": {
+    "eyebrow": "Estudio · Manifiesto",
+    "subtitle": "Estudio creativo del grupo VRYP. Producción audiovisual con IA y casting digital propio.",
+    "manifesto": {
+      "label": "Manifiesto",
+      "p1": "Nacimos para que la idea no se quede esperando producción. Cuando un brief pide una campaña en dos semanas, no hay margen para tres semanas de casting físico, dos de pre-pro y cinco días de pintar en post.",
+      "p2": "Trabajamos con un roster propio de personajes digitales, con identidad consistente entre piezas, derechos resueltos por contrato y disponibilidad inmediata. Cada talento del catálogo nació para vivir en publicidad: arquetipo declarado, tono comercial y mercado asignado.",
+      "p3": "Yutro es el estudio. Casting y Producción son dos líneas del mismo equipo. Un solo interlocutor, una sola factura, una sola garantía creativa."
+    },
+    "lines": {
+      "label": "Las dos líneas",
+      "casting": {
+        "title": "Casting",
+        "body": "Catálogo curado de personajes IA para campañas publicitarias. Selección con cantidad por uso, exclusividades cross-project, cotización en 24 horas hábiles.",
+        "cta": "Ver el catálogo público"
+      },
+      "production": {
+        "title": "Producción",
+        "body": "Producción audiovisual con IA — campañas, hero spots, contenido para retail. De la idea al deliverable en una sola línea de mando.",
+        "cta": "Ver los casos"
+      }
+    },
+    "team": {
+      "label": "Equipo",
+      "role": {
+        "founder": "Founder · Director creativo"
+      }
+    },
+    "contact": {
+      "label": "Contacto",
+      "emailLabel": "Correo",
+      "phoneLabel": "Teléfono",
+      "instagramLabel": "Instagram"
+    }
+  },
   "services": {
     "title": "Servicios",
     "learnMore": "Saber más"

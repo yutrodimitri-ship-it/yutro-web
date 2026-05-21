@@ -37,6 +37,41 @@
     "allCategories": "All",
     "loadMore": "Load More"
   },
+  "estudio": {
+    "eyebrow": "Studio · Manifesto",
+    "subtitle": "Creative studio of the VRYP group. AI-driven audiovisual production and our own digital casting.",
+    "manifesto": {
+      "label": "Manifesto",
+      "p1": "We were born so the idea wouldn't have to wait for production. When a brief calls for a two-week campaign, there's no room for three weeks of physical casting, two of pre-pro and five days of post.",
+      "p2": "We work with a proprietary roster of digital characters with consistent identity across pieces, rights cleared by contract and immediate availability. Each talent in the catalog was born to live in advertising: declared archetype, commercial tone and assigned market.",
+      "p3": "Yutro is the studio. Casting and Production are two lines of the same team. One point of contact, one invoice, one creative guarantee."
+    },
+    "lines": {
+      "label": "The two lines",
+      "casting": {
+        "title": "Casting",
+        "body": "Curated catalog of AI characters for advertising campaigns. Selection by quantity per use, cross-project exclusivities, quotation within 24 business hours.",
+        "cta": "See the public catalog"
+      },
+      "production": {
+        "title": "Production",
+        "body": "AI-driven audiovisual production — campaigns, hero spots, retail content. From idea to deliverable under a single chain of command.",
+        "cta": "See the cases"
+      }
+    },
+    "team": {
+      "label": "Team",
+      "role": {
+        "founder": "Founder · Creative director"
+      }
+    },
+    "contact": {
+      "label": "Contact",
+      "emailLabel": "Email",
+      "phoneLabel": "Phone",
+      "instagramLabel": "Instagram"
+    }
+  },
   "services": {
     "title": "Services",
     "learnMore": "Learn More"
