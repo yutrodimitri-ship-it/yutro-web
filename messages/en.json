@@ -114,10 +114,6 @@
     "contactDescription": "Get in touch with YUTRO. Tell us about your project."
   },
   "studio": {
-    "banner": {
-      "description": "Access Yutro's curated digital talent catalog. Browse, license and brief your producer in a single view.",
-      "cta": "Access the Catalog"
-    },
     "talent": {
       "placeholders": {
         "catalog": "The catalog ships next sprint. Here you'll see the talents available for your project, filters by gender/age/category, and a live count of your casting.",

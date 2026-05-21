@@ -114,10 +114,6 @@
     "contactDescription": "Ponte en contacto con YUTRO. Cuéntanos tu proyecto."
   },
   "studio": {
-    "banner": {
-      "description": "Accede al catálogo curado de talentos digitales de Yutro. Selecciona, licencia y briefia en una sola vista.",
-      "cta": "Acceder al Catálogo"
-    },
     "talent": {
       "placeholders": {
         "catalog": "El catálogo se construye en el siguiente sprint. Aquí verás los talentos disponibles para tu proyecto, filtros por género/edad/categoría, y el contador de tu casting en vivo.",
