@@ -37,6 +37,47 @@
     "allCategories": "All",
     "loadMore": "Load More"
   },
+  "casting": {
+    "hero": {
+      "eyebrow": "Casting · Vol. 01 · 2026",
+      "title": "Digital talent",
+      "titleAccent": "with identity.",
+      "intro": "Curated roster of AI characters for advertising campaigns across LATAM. Each one with a declared archetype, commercial tone and rights cleared by contract."
+    },
+    "sections": {
+      "featuredTitle": "Featured Talent",
+      "featuredIntro": "Characters with their own social presence. They appear in campaigns and on their channels — narrative, audience and brand ambassadors.",
+      "standardTitle": "Standard casting",
+      "standardIntro": "The rest of the roster — professional faces ready for campaigns, no social presence, rights by contract.",
+      "standardEmpty": "Volume 02 is in preparation. In the meantime, meet the Featured talent.",
+      "featuredEmpty": "Volume 02 is in preparation. In the meantime, browse the full roster."
+    },
+    "cta": {
+      "title": "Need access to the full catalog?",
+      "body": "The public catalog is only a teaser. Behind it sits a larger private roster, with filters, exclusivities and per-project curation.",
+      "button": "Request access"
+    },
+    "detail": {
+      "eyebrowProfile": "Profile N°",
+      "back": "← Back to Casting",
+      "fields": {
+        "archetype": "Archetype",
+        "phenotype": "Style register",
+        "tone": "Commercial tone",
+        "ageRange": "Age range",
+        "market": "Market",
+        "category": "Category",
+        "ageNote": "(adjustable ±2 years)"
+      },
+      "instagram": {
+        "label": "On Instagram",
+        "followers": "{count} followers",
+        "viewProfile": "View profile"
+      },
+      "ctaTitle": "Want to work with {name}?",
+      "ctaButton": "Request access to the catalog"
+    }
+  },
   "estudio": {
     "eyebrow": "Studio · Manifesto",
     "subtitle": "Creative studio of the VRYP group. AI-driven audiovisual production and our own digital casting.",

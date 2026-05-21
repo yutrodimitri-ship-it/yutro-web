@@ -37,6 +37,47 @@
     "allCategories": "Todos",
     "loadMore": "Cargar más"
   },
+  "casting": {
+    "hero": {
+      "eyebrow": "Casting · Vol. 01 · 2026",
+      "title": "Talento digital",
+      "titleAccent": "con identidad.",
+      "intro": "Roster curado de personajes IA para campañas publicitarias en LATAM. Cada uno con arquetipo declarado, tono comercial y derechos resueltos por contrato."
+    },
+    "sections": {
+      "featuredTitle": "Featured Talent",
+      "featuredIntro": "Personajes con presencia social propia. Aparecen en campañas y en sus redes — narrativa, audiencia y embajadores de marca.",
+      "standardTitle": "Casting estándar",
+      "standardIntro": "El resto del roster — caras profesionales listas para campaña, sin presencia social, con derechos por contrato.",
+      "standardEmpty": "El Volumen 02 está en preparación. Mientras tanto, conocé los talentos Featured.",
+      "featuredEmpty": "El Volumen 02 está en preparación. Mientras tanto, conocé el roster completo."
+    },
+    "cta": {
+      "title": "¿Necesitás acceso al catálogo completo?",
+      "body": "El catálogo público es solo un anticipo. Detrás hay un roster privado más grande, con filtros, exclusividades y selección por proyecto.",
+      "button": "Solicitar acceso"
+    },
+    "detail": {
+      "eyebrowProfile": "Perfil N°",
+      "back": "← Volver al Casting",
+      "fields": {
+        "archetype": "Arquetipo",
+        "phenotype": "Registro de estilo",
+        "tone": "Tono comercial",
+        "ageRange": "Rango etario",
+        "market": "Mercado",
+        "category": "Categoría",
+        "ageNote": "(ajustable ±2 años)"
+      },
+      "instagram": {
+        "label": "En Instagram",
+        "followers": "{count} seguidores",
+        "viewProfile": "Ver perfil"
+      },
+      "ctaTitle": "¿Querés trabajar con {name}?",
+      "ctaButton": "Solicitar acceso al catálogo"
+    }
+  },
   "estudio": {
     "eyebrow": "Estudio · Manifiesto",
     "subtitle": "Estudio creativo del grupo VRYP. Producción audiovisual con IA y casting digital propio.",
