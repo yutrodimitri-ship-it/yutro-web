@@ -1,12 +1,13 @@
 {
   "nav": {
     "home": "Home",
+    "casting": "Casting",
+    "production": "Production",
+    "estudio": "Studio",
     "projects": "Projects",
-    "services": "Services",
-    "influencer": "Influencer",
-    "studio": "Studio",
     "blog": "Blog",
-    "contact": "Contact"
+    "contact": "Contact",
+    "clientAccess": "Client access"
   },
   "home": {
     "heroTitle": "WE CREATE WITH AI",

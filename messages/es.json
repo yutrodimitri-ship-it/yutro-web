@@ -1,12 +1,13 @@
 {
   "nav": {
     "home": "Inicio",
+    "casting": "Casting",
+    "production": "Producción",
+    "estudio": "Estudio",
     "projects": "Proyectos",
-    "services": "Servicios",
-    "influencer": "Influencer",
-    "studio": "Studio",
     "blog": "Blog",
-    "contact": "Contacto"
+    "contact": "Contacto",
+    "clientAccess": "Acceso cliente"
   },
   "home": {
     "heroTitle": "CREAMOS CON IA",
