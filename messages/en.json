@@ -10,8 +10,11 @@
     "clientAccess": "Client access"
   },
   "home": {
-    "heroTitle": "WE CREATE WITH AI",
-    "heroSubtitle": "Audiovisual production powered by artificial intelligence",
+    "heroTitle": "AI-driven audiovisual production",
+    "heroTitleAccent": "with our own digital casting.",
+    "heroSubtitle": "For campaigns that can no longer wait.",
+    "heroCTAPrimary": "See the Casting",
+    "heroCTASecondary": "Let's talk",
     "heroCTA": "Let's Talk",
     "featuredTitle": "Featured Projects",
     "featuredCTA": "See More",

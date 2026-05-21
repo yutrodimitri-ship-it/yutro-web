@@ -10,8 +10,11 @@
     "clientAccess": "Acceso cliente"
   },
   "home": {
-    "heroTitle": "CREAMOS CON IA",
-    "heroSubtitle": "Producción audiovisual impulsada por inteligencia artificial",
+    "heroTitle": "Producción audiovisual con IA",
+    "heroTitleAccent": "y casting digital propio.",
+    "heroSubtitle": "Para campañas que ya no esperan.",
+    "heroCTAPrimary": "Ver el Casting",
+    "heroCTASecondary": "Hablemos",
     "heroCTA": "Hablemos",
     "featuredTitle": "Proyectos destacados",
     "featuredCTA": "Quiero ver más",
