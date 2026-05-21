@@ -16,6 +16,14 @@
     "heroCTAPrimary": "See the Casting",
     "heroCTASecondary": "Let's talk",
     "heroCTA": "Let's Talk",
+    "casting": {
+      "eyebrow": "Casting · Vol. 01 · 2026",
+      "title": "The Casting",
+      "titleAccent": "is now open.",
+      "description": "Curated roster of AI characters for advertising campaigns across LATAM. Each one with a declared archetype, commercial tone and rights cleared by contract.",
+      "ctaPrompt": "Browse the editorial lookbook.",
+      "cta": "See the public catalog"
+    },
     "featuredTitle": "Featured Projects",
     "featuredCTA": "See More",
     "servicesTitle": "Services & Proposals",
