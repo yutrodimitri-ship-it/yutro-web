@@ -146,7 +146,7 @@
     }
   },
   "services": {
-    "title": "Services",
+    "title": "Production",
     "learnMore": "Learn More"
   },
   "blog": {
@@ -179,8 +179,8 @@
     "homeDescription": "We create audiovisual content with artificial intelligence. Creative production, 3D, motion graphics and advanced post-production.",
     "projectsTitle": "Projects",
     "projectsDescription": "Explore our portfolio of AI-powered audiovisual projects.",
-    "servicesTitle": "Services",
-    "servicesDescription": "Creative production, animation, 3D, motion graphics, post-production and more with AI.",
+    "servicesTitle": "Production",
+    "servicesDescription": "AI-driven audiovisual production: 3D, motion graphics, post-production and generative content for advertising campaigns across LATAM.",
     "blogTitle": "Blog",
     "blogDescription": "News, trends and updates from the AI audiovisual world.",
     "contactTitle": "Contact",

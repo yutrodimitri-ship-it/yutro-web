@@ -10,8 +10,12 @@ export async function GET(request: NextRequest) {
   const title = rawTitle.replace(/[\x00-\x1F\x7F]/g, "").slice(0, 100) || "YUTRO.";
   const rawLocale = searchParams.get("locale") ?? "es";
   const locale = rawLocale === "en" ? "en" : "es";
-  const subtitle =
-    locale === "es"
+  // Sprint 4 — subtitle opcional para que /casting/[slug] pueda
+  // diferenciar la OG image de cada talento con su arquetipo.
+  const rawSubtitle = searchParams.get("subtitle");
+  const subtitle = rawSubtitle
+    ? rawSubtitle.replace(/[\x00-\x1F\x7F]/g, "").slice(0, 100)
+    : locale === "es"
       ? "Productora Audiovisual con IA"
       : "AI Audiovisual Production";
 

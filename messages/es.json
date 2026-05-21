@@ -146,7 +146,7 @@
     }
   },
   "services": {
-    "title": "Servicios",
+    "title": "Producción",
     "learnMore": "Saber más"
   },
   "blog": {
@@ -179,8 +179,8 @@
     "homeDescription": "Creamos contenido audiovisual con inteligencia artificial. Producción creativa, 3D, motion graphics y postproducción avanzada.",
     "projectsTitle": "Proyectos",
     "projectsDescription": "Explora nuestro portafolio de proyectos audiovisuales creados con IA.",
-    "servicesTitle": "Servicios",
-    "servicesDescription": "Producción creativa, animación, 3D, motion graphics, postproducción y más con IA.",
+    "servicesTitle": "Producción",
+    "servicesDescription": "Producción audiovisual con IA: 3D, motion graphics, postproducción y contenido generativo para campañas publicitarias en LATAM.",
     "blogTitle": "Blog",
     "blogDescription": "Noticias, tendencias y novedades del mundo audiovisual con IA.",
     "contactTitle": "Contacto",
