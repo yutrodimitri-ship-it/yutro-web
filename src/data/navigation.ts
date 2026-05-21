@@ -6,11 +6,14 @@ export interface NavItem {
 }
 
 // Menu principal del header publico. Orden definido en
-// .ai/decisions.md (Sprint 1, Tarea 1.1).
-//   Casting · Produccion · Estudio · Blog · Contacto
+// .ai/decisions.md (Sprint 1, Tarea 1.1) + ajuste post-review:
+// Proyectos reintegrado entre Produccion y Estudio (prueba social
+// antes que el manifiesto).
+//   Casting · Produccion · Proyectos · Estudio · Blog · Contacto
 export const mainNavItems: NavItem[] = [
   { key: "casting", href: "/casting" },
   { key: "production", href: "/produccion" },
+  { key: "projects", href: "/proyectos" },
   { key: "estudio", href: "/estudio" },
   { key: "blog", href: "/blog" },
   { key: "contact", href: "/contacto", anchor: "#contacto-cta" },
