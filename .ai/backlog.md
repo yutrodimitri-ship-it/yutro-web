@@ -169,3 +169,34 @@ Reusar lógica del endpoint privado `/api/studio/talent/image/[code]/[variant]/r
 **Observación:** Sin `maxDuration` explícito, Vercel usa el default (300s). Si Resend cuelga, esperamos hasta 5 min.
 
 **Sugerencia:** Agregar `export const maxDuration = 30`. Fail-fast.
+
+---
+
+## DT-017 · Sin analytics instalado (Sprint 4)
+
+**Archivos:** `src/app/layout.tsx` y `package.json`
+
+**Observación:** Repo no tiene tracking de pageviews ni eventos. El brief Tarea 4.4 pidió verificar que `access_request_submitted` se trackea — pero no hay sistema donde trackearlo.
+
+**Sugerencia minimal:**
+
+```bash
+npm install @vercel/analytics
+```
+
+```tsx
+// src/app/layout.tsx
+import { Analytics } from '@vercel/analytics/react';
+// dentro del <body>:
+<Analytics />
+```
+
+```tsx
+// src/components/casting/AccessRequestForm.tsx — al success state:
+import { track } from '@vercel/analytics';
+track('access_request_submitted', { company: input.company, projectType: input.projectType });
+```
+
+Cero overhead, sin cookies (es first-party), gratis en hobby de Vercel.
+
+**Alternativas si querés más:** PostHog (funnel completo), Plausible (privacy-first y SEO-friendly).
