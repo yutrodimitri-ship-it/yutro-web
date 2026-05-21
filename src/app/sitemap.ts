@@ -1,7 +1,6 @@
 import type { MetadataRoute } from "next";
 import { projects } from "@/data/projects";
 import { blogPosts } from "@/data/blog";
-import { influencers } from "@/data/influencers";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.yutro.cl";
 
@@ -20,10 +19,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // Static pages
   // NOTE: Sprint 4 rebuilds this list completely (adds /casting,
-  // /casting/featured, /estudio + dynamic talent slugs). For now we
-  // just swap /servicios -> /produccion and keep /influencer because
-  // Tarea 1.6 hasn't removed it yet.
-  const staticPages = ["", "/proyectos", "/produccion", "/blog", "/influencer", "/contacto"];
+  // /casting/featured, /estudio + dynamic talent slugs).
+  const staticPages = ["", "/proyectos", "/produccion", "/blog", "/contacto"];
   const staticEntries = locales.flatMap((locale) =>
     staticPages.map((page) => ({
       url: `${SITE_URL}/${locale}${page}`,
@@ -54,16 +51,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     alternates: withAlternates(`/blog/${post.slug}`),
   }));
 
-  // Influencer pages
-  const influencerEntries = locales.flatMap((locale) =>
-    influencers.map((inf) => ({
-      url: `${SITE_URL}/${locale}/influencer/${inf.slug}`,
-      lastModified: now,
-      changeFrequency: "monthly" as const,
-      priority: 0.7,
-      alternates: withAlternates(`/influencer/${inf.slug}`),
-    }))
-  );
+  // /influencer pages removed in Sprint 1.6 (301 -> /casting/featured).
+  // /casting/[slug] entries will be added in Sprint 4 Tarea 4.1 once
+  // talents are flagged with public_visible in DB.
 
-  return [...staticEntries, ...projectEntries, ...blogEntries, ...influencerEntries];
+  return [...staticEntries, ...projectEntries, ...blogEntries];
 }

@@ -1,3 +1,12 @@
+/**
+ * @deprecated Sprint 1.6 — La ruta /influencer fue eliminada. Estos 3
+ * personajes se preservan como referencia para el seed de Featured
+ * Talents que se carga en Sprint 2 (talents table con
+ * tier='featured', public_visible=true).
+ *
+ * Una vez que el seed este aplicado en DB, este archivo se borra
+ * en un commit chore(cleanup).
+ */
 export interface Influencer {
   slug: string;
   name: string;

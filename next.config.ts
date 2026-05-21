@@ -50,6 +50,16 @@ const nextConfig: NextConfig = {
         destination: "/:locale/produccion/:path*",
         permanent: true,
       },
+      {
+        source: "/:locale(es|en)/influencer",
+        destination: "/:locale/casting/featured",
+        permanent: true,
+      },
+      {
+        source: "/:locale(es|en)/influencer/:path*",
+        destination: "/:locale/casting/featured",
+        permanent: true,
+      },
     ];
   },
 };
