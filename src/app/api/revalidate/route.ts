@@ -24,8 +24,8 @@ export async function POST(request: Request) {
   const pathMap: Record<string, string> = {
     project: "/proyectos",
     blogPost: "/blog",
-    service: "/servicios",
-    influencer: "/influencer",
+    service: "/produccion",
+    influencer: "/casting/featured",
   };
 
   if (type && pathMap[type]) {

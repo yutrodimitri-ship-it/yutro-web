@@ -3,14 +3,14 @@ import { createMetadata } from "@/lib/metadata";
 
 const meta: Record<string, { title: string; description: string }> = {
   es: {
-    title: "Servicios",
+    title: "Producción",
     description:
-      "Servicios de producción audiovisual con IA: 3D, motion graphics, postproducción, influencers digitales y contenido generativo.",
+      "Producción audiovisual con IA: 3D, motion graphics, postproducción y contenido generativo para campañas publicitarias.",
   },
   en: {
-    title: "Services",
+    title: "Production",
     description:
-      "AI audiovisual production services: 3D, motion graphics, post-production, digital influencers and generative content.",
+      "AI-driven audiovisual production: 3D, motion graphics, post-production and generative content for advertising campaigns.",
   },
 };
 
@@ -24,12 +24,12 @@ export async function generateMetadata({
   return createMetadata({
     title: m.title,
     description: m.description,
-    path: "/servicios",
+    path: "/produccion",
     locale,
   });
 }
 
-export default function ServicesLayout({
+export default function ProduccionLayout({
   children,
 }: {
   children: React.ReactNode;

@@ -19,7 +19,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
 
   // Static pages
-  const staticPages = ["", "/proyectos", "/servicios", "/blog", "/influencer", "/contacto"];
+  // NOTE: Sprint 4 rebuilds this list completely (adds /casting,
+  // /casting/featured, /estudio + dynamic talent slugs). For now we
+  // just swap /servicios -> /produccion and keep /influencer because
+  // Tarea 1.6 hasn't removed it yet.
+  const staticPages = ["", "/proyectos", "/produccion", "/blog", "/influencer", "/contacto"];
   const staticEntries = locales.flatMap((locale) =>
     staticPages.map((page) => ({
       url: `${SITE_URL}/${locale}${page}`,

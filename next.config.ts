@@ -33,6 +33,25 @@ const nextConfig: NextConfig = {
     "@opentelemetry/instrumentation",
     "@prisma/instrumentation",
   ],
+
+  // Redirects 301 a nivel servidor — el brief Sprint 1 los pide
+  // explicitos asi para preservar SEO de las URLs antiguas.
+  //   /servicios -> /produccion        (Tarea 1.5)
+  //   /influencer -> /casting/featured (Tarea 1.6)
+  async redirects() {
+    return [
+      {
+        source: "/:locale(es|en)/servicios",
+        destination: "/:locale/produccion",
+        permanent: true,
+      },
+      {
+        source: "/:locale(es|en)/servicios/:path*",
+        destination: "/:locale/produccion/:path*",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default withNextIntl(nextConfig);
