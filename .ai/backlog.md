@@ -126,3 +126,46 @@ Reusar lógica del endpoint privado `/api/studio/talent/image/[code]/[variant]/r
 **Observación:** El "N°XX" del eyebrow se calcula como `(slug.charCodeAt(0) + slug.length) % 100`. Determinístico pero hacky.
 
 **Sugerencia:** Agregar columna `public_order INTEGER` en talents y rellenar manualmente (1, 2, 3, ...). El order también puede servir como tie-breaker en `getPublicTalents()`.
+
+---
+
+## DT-013 · Status edit UI en admin access-requests (Sprint 3)
+
+**Archivo:** `src/app/[locale]/studio/admin/access-requests/page.tsx`
+
+**Observación:** El status hoy es read-only. Cambios manuales via SQL.
+
+**Sugerencia:**
+1. `PATCH /api/studio/admin/access-requests/[id]/status` con `requireAdmin()`
+2. Cliente: `<select>` por fila con `onChange` → fetch + revalidatePath
+3. Audit log vía `logAuditEventServer`
+
+---
+
+## DT-014 · `contacted_at` column para deduplicar follow-ups
+
+**Archivo:** `src/db/schema.ts:accessRequests`
+
+**Observación:** Cuando un miembro del team contacta al lead, el siguiente puede contactarlo otra vez sin saberlo.
+
+**Sugerencia:** Agregar `contacted_at TIMESTAMPTZ` + `contacted_by UUID REFERENCES users(id)`. Render visual en la tabla.
+
+---
+
+## DT-015 · `BLOCKED_EMAIL_DOMAINS` debounce en cliente
+
+**Archivo:** `src/components/casting/AccessRequestForm.tsx`
+
+**Observación:** El chequeo `.includes(domain)` corre por cada keystroke. Trivial hoy (20 dominios). Si crece a 200+ podría sentirse en mobile.
+
+**Sugerencia:** `useDeferredValue(email)` antes del chequeo.
+
+---
+
+## DT-016 · maxDuration en /api/access-request
+
+**Archivo:** `src/app/api/access-request/route.ts`
+
+**Observación:** Sin `maxDuration` explícito, Vercel usa el default (300s). Si Resend cuelga, esperamos hasta 5 min.
+
+**Sugerencia:** Agregar `export const maxDuration = 30`. Fail-fast.

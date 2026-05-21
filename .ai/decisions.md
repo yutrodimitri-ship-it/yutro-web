@@ -151,3 +151,41 @@ Este archivo lista decisiones que el agente tomó por su cuenta cuando el brief 
 **Decisión:** Inline en el `<head>` de cada ficha, con `name`, `description` (= archetype del locale), `image`, `url`, `nationality: Chile`, `knowsAbout` (= suggested_uses).
 
 **Justificación:** Mantener mínimo lo suficiente para que Google Search Console y rich results no se quejen. `nationality: Chile` hard-coded porque todo el roster es LATAM/CL. Si en el futuro hay talentos de otros países, agregar columna `nationality` en DB.
+
+---
+
+## D-016 · Honeypot silencioso (200 fake)
+
+**Contexto:** El brief sugiere "honeypot anti-spam... si viene lleno descarta el submit". No especifica response code.
+
+**Decisión:** Si el honeypot está lleno, devolver `200 OK` con `id: "honeypot"`, sin guardar en DB.
+
+**Justificación:** Devolver 400 le dice al bot "intentá de otra forma". Devolver 200 lo desactiva permanentemente.
+
+---
+
+## D-017 · Notificaciones no bloquean response
+
+**Contexto:** Resend puede tardar 500-2000ms. No queremos que el usuario vea el form colgado si Resend está lento.
+
+**Decisión:** `Promise.allSettled` paralelo + `Promise.race(notify, sleep(1000))` antes del response. Vercel Fluid mantiene la lambda viva hasta que terminen.
+
+**Justificación:** El lead YA está en DB cuando respondemos. La notificación es nice-to-have. El admin lo ve igual en `/studio/admin/access-requests`.
+
+---
+
+## D-018 · Rate limit fail-open
+
+**Decisión:** Si la query de count-by-IP falla, log error y procede con el insert.
+
+**Justificación:** Mejor un duplicado ocasional que perder un lead por un blip de DB. Rate-limits son para spam masivo, no para edge cases.
+
+---
+
+## D-019 · Admin listing solo read (sin status toggle)
+
+**Contexto:** Brief Tarea 3.3 sugiere "acción para marcar status".
+
+**Decisión:** Tabla read-only. Cambios de status via SQL por ahora. Toggle UI queda en backlog (DT-013).
+
+**Justificación:** Hacer el toggle bien requiere PATCH endpoint con audit log + optimistic update + revalidatePath. 30-40 min más. Lo separé para no inflar Sprint 3.
