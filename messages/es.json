@@ -11,7 +11,7 @@
   },
   "home": {
     "heroTitle": "Producción audiovisual con IA",
-    "heroTitleAccent": "y casting digital propio.",
+    "heroTitleAccent": "y talento digital propio.",
     "heroSubtitle": "Para campañas que ya no esperan.",
     "heroCTAPrimary": "Ver el Casting",
     "heroCTASecondary": "Hablemos",
@@ -20,7 +20,7 @@
       "eyebrow": "Casting · Vol. 01 · 2026",
       "title": "El Casting",
       "titleAccent": "ya está abierto.",
-      "description": "Roster curado de personajes IA para campañas publicitarias en LATAM. Cada uno con arquetipo declarado, tono comercial y derechos resueltos por contrato.",
+      "description": "Roster curado de talentos digitales para campañas publicitarias en LATAM. Cada uno con arquetipo declarado, tono comercial y derechos resueltos por contrato.",
       "ctaPrompt": "Hojea el lookbook editorial.",
       "cta": "Ver el catálogo público"
     },
@@ -42,12 +42,13 @@
       "eyebrow": "Casting · Vol. 01 · 2026",
       "title": "Talento digital",
       "titleAccent": "con identidad.",
-      "intro": "Roster curado de personajes IA para campañas publicitarias en LATAM. Cada uno con arquetipo declarado, tono comercial y derechos resueltos por contrato."
+      "intro": "Roster curado de talentos digitales para campañas publicitarias en LATAM. Cada uno con arquetipo declarado, tono comercial y derechos resueltos por contrato.",
+      "note": "Esto es el catálogo público — una selección del roster. El catálogo completo se abre tras una conversación con el estudio."
     },
     "sections": {
       "featuredTitle": "Featured Talent",
-      "featuredIntro": "Personajes con presencia social propia. Aparecen en campañas y en sus redes — narrativa, audiencia y embajadores de marca.",
-      "standardTitle": "Casting estándar",
+      "featuredIntro": "Talentos con presencia social propia. Aparecen en campañas y en sus redes — narrativa, audiencia y embajadores de marca.",
+      "standardTitle": "Roster general",
       "standardIntro": "El resto del roster — caras profesionales listas para campaña, sin presencia social, con derechos por contrato.",
       "standardEmpty": "El Volumen 02 está en preparación. Mientras tanto, conocé los talentos Featured.",
       "featuredEmpty": "El Volumen 02 está en preparación. Mientras tanto, conocé el roster completo."
@@ -94,7 +95,7 @@
       "back": "← Volver al Casting",
       "fields": {
         "archetype": "Arquetipo",
-        "phenotype": "Registro de estilo",
+        "phenotype": "Fenotipo",
         "tone": "Tono comercial",
         "ageRange": "Rango etario",
         "market": "Mercado",
@@ -112,18 +113,18 @@
   },
   "estudio": {
     "eyebrow": "Estudio · Manifiesto",
-    "subtitle": "Estudio creativo del grupo VRYP. Producción audiovisual con IA y casting digital propio.",
+    "subtitle": "Estudio creativo del grupo VRYP. Producción audiovisual con IA y talento digital propio.",
     "manifesto": {
       "label": "Manifiesto",
       "p1": "Nacimos para que la idea no se quede esperando producción. Cuando un brief pide una campaña en dos semanas, no hay margen para tres semanas de casting físico, dos de pre-pro y cinco días de pintar en post.",
-      "p2": "Trabajamos con un roster propio de personajes digitales, con identidad consistente entre piezas, derechos resueltos por contrato y disponibilidad inmediata. Cada talento del catálogo nació para vivir en publicidad: arquetipo declarado, tono comercial y mercado asignado.",
+      "p2": "Trabajamos con un roster propio de talentos digitales, con identidad consistente entre piezas, derechos resueltos por contrato y disponibilidad inmediata. Cada talento del catálogo nació para vivir en publicidad: arquetipo declarado, tono comercial y mercado asignado.",
       "p3": "Yutro es el estudio. Casting y Producción son dos líneas del mismo equipo. Un solo interlocutor, una sola factura, una sola garantía creativa."
     },
     "lines": {
       "label": "Las dos líneas",
       "casting": {
         "title": "Casting",
-        "body": "Catálogo curado de personajes IA para campañas publicitarias. Selección con cantidad por uso, exclusividades cross-project, cotización en 24 horas hábiles.",
+        "body": "Catálogo curado de talentos digitales para campañas publicitarias. Selección con cantidad por uso, exclusividades cross-project, cotización en 24 horas hábiles.",
         "cta": "Ver el catálogo público"
       },
       "production": {

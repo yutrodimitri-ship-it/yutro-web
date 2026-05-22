@@ -19,9 +19,9 @@ export function CastingPreview() {
   // El layout esta pensado para 3 cards; si en el futuro hay mas, se
   // limita el slice a 3 en home y se ve el resto en /casting/featured.
   const placeholders = [
-    { name: "Personaje N°01", category: "Lifestyle", hue: 6 },
-    { name: "Personaje N°02", category: "Corporativo", hue: 200 },
-    { name: "Personaje N°03", category: "Urbano", hue: 340 },
+    { name: "Talento N°01", category: "Lifestyle", hue: 6 },
+    { name: "Talento N°02", category: "Corporativo", hue: 200 },
+    { name: "Talento N°03", category: "Urbano", hue: 340 },
   ];
 
   return (

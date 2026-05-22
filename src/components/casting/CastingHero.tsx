@@ -45,6 +45,14 @@ export async function CastingHero({
             >
               {t("intro")}
             </p>
+            {/* Micro-copy de orientacion — convierte la friccion
+                "por que no veo todo" en valor percibido. */}
+            <p
+              className="border-l-2 pl-4 text-[13px] leading-relaxed italic text-foreground/50"
+              style={{ borderColor: "var(--primary)", maxWidth: "44ch" }}
+            >
+              {t("note")}
+            </p>
             {totalCount !== undefined && (
               <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-foreground/40">
                 {locale === "es"

@@ -11,7 +11,7 @@
   },
   "home": {
     "heroTitle": "AI-driven audiovisual production",
-    "heroTitleAccent": "with our own digital casting.",
+    "heroTitleAccent": "with our own digital talent.",
     "heroSubtitle": "For campaigns that can no longer wait.",
     "heroCTAPrimary": "See the Casting",
     "heroCTASecondary": "Let's talk",
@@ -20,7 +20,7 @@
       "eyebrow": "Casting · Vol. 01 · 2026",
       "title": "The Casting",
       "titleAccent": "is now open.",
-      "description": "Curated roster of AI characters for advertising campaigns across LATAM. Each one with a declared archetype, commercial tone and rights cleared by contract.",
+      "description": "Curated roster of digital talents for advertising campaigns across LATAM. Each one with a declared archetype, commercial tone and rights cleared by contract.",
       "ctaPrompt": "Browse the editorial lookbook.",
       "cta": "See the public catalog"
     },
@@ -42,12 +42,13 @@
       "eyebrow": "Casting · Vol. 01 · 2026",
       "title": "Digital talent",
       "titleAccent": "with identity.",
-      "intro": "Curated roster of AI characters for advertising campaigns across LATAM. Each one with a declared archetype, commercial tone and rights cleared by contract."
+      "intro": "Curated roster of digital talents for advertising campaigns across LATAM. Each one with a declared archetype, commercial tone and rights cleared by contract.",
+      "note": "This is the public catalog — a selection of the roster. The full catalog opens after a conversation with the studio."
     },
     "sections": {
       "featuredTitle": "Featured Talent",
-      "featuredIntro": "Characters with their own social presence. They appear in campaigns and on their channels — narrative, audience and brand ambassadors.",
-      "standardTitle": "Standard casting",
+      "featuredIntro": "Talents with their own social presence. They appear in campaigns and on their channels — narrative, audience and brand ambassadors.",
+      "standardTitle": "General roster",
       "standardIntro": "The rest of the roster — professional faces ready for campaigns, no social presence, rights by contract.",
       "standardEmpty": "Volume 02 is in preparation. In the meantime, meet the Featured talent.",
       "featuredEmpty": "Volume 02 is in preparation. In the meantime, browse the full roster."
@@ -94,7 +95,7 @@
       "back": "← Back to Casting",
       "fields": {
         "archetype": "Archetype",
-        "phenotype": "Style register",
+        "phenotype": "Phenotype",
         "tone": "Commercial tone",
         "ageRange": "Age range",
         "market": "Market",
@@ -116,14 +117,14 @@
     "manifesto": {
       "label": "Manifesto",
       "p1": "We were born so the idea wouldn't have to wait for production. When a brief calls for a two-week campaign, there's no room for three weeks of physical casting, two of pre-pro and five days of post.",
-      "p2": "We work with a proprietary roster of digital characters with consistent identity across pieces, rights cleared by contract and immediate availability. Each talent in the catalog was born to live in advertising: declared archetype, commercial tone and assigned market.",
+      "p2": "We work with a proprietary roster of digital talents with consistent identity across pieces, rights cleared by contract and immediate availability. Each talent in the catalog was born to live in advertising: declared archetype, commercial tone and assigned market.",
       "p3": "Yutro is the studio. Casting and Production are two lines of the same team. One point of contact, one invoice, one creative guarantee."
     },
     "lines": {
       "label": "The two lines",
       "casting": {
         "title": "Casting",
-        "body": "Curated catalog of AI characters for advertising campaigns. Selection by quantity per use, cross-project exclusivities, quotation within 24 business hours.",
+        "body": "Curated catalog of digital talents for advertising campaigns. Selection by quantity per use, cross-project exclusivities, quotation within 24 business hours.",
         "cta": "See the public catalog"
       },
       "production": {
