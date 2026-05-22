@@ -33,8 +33,6 @@ async function seed() {
     shortDescEn: t.shortDesc.en,
     phenotypeEs: t.phenotype.es,
     phenotypeEn: t.phenotype.en,
-    archetypeEs: t.archetype.es,
-    archetypeEn: t.archetype.en,
     toneCommercialEs: t.toneCommercial.es,
     toneCommercialEn: t.toneCommercial.en,
     gender: t.gender,

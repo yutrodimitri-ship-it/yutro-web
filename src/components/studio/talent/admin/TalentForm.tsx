@@ -22,8 +22,6 @@ export interface TalentFormValues {
   ageBucket: (typeof TALENT_AGE_BUCKETS)[number];
   phenotypeEs: string;
   phenotypeEn: string;
-  archetypeEs: string;
-  archetypeEn: string;
   category: (typeof TALENT_CATEGORIES)[number];
   toneCommercialEs: string;
   toneCommercialEn: string;
@@ -268,22 +266,6 @@ export function TalentForm({ initial, mode, onCancelHref }: TalentFormProps) {
         {/* Posicionamiento */}
         <Section title="Posicionamiento">
           <div className="grid gap-4 sm:grid-cols-2">
-            <Field label="Arquetipo (ES)">
-              <input
-                value={values.archetypeEs}
-                onChange={(e) => update("archetypeEs", e.target.value)}
-                className={inputClass}
-                required
-              />
-            </Field>
-            <Field label="Arquetipo (EN)">
-              <input
-                value={values.archetypeEn}
-                onChange={(e) => update("archetypeEn", e.target.value)}
-                className={inputClass}
-                required
-              />
-            </Field>
             <Field label="Tono comercial (ES)">
               <input
                 value={values.toneCommercialEs}

@@ -32,7 +32,6 @@ export interface Talent {
   ageRange: string;
   ageBucket: TalentAgeBucket;
   phenotype: LocaleString;
-  archetype: LocaleString;
   category: TalentCategory;
   toneCommercial: LocaleString;
   /** Bio narrativa larga del talento. Opcional — fallback a placeholder si falta. */

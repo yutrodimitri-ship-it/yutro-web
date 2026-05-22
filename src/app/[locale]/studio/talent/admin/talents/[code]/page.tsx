@@ -42,8 +42,6 @@ export default async function AdminTalentEditPage({
     ageBucket: row.ageBucket as (typeof TALENT_AGE_BUCKETS)[number],
     phenotypeEs: row.phenotypeEs,
     phenotypeEn: row.phenotypeEn,
-    archetypeEs: row.archetypeEs,
-    archetypeEn: row.archetypeEn,
     category: row.category as (typeof TALENT_CATEGORIES)[number],
     toneCommercialEs: row.toneCommercialEs,
     toneCommercialEn: row.toneCommercialEn,

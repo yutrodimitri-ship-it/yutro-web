@@ -40,8 +40,6 @@ export interface PublicTalentDetail extends PublicTalentCard {
   shortDescEn: string;
   phenotypeEs: string;
   phenotypeEn: string;
-  archetypeEs: string;
-  archetypeEn: string;
   toneCommercialEs: string;
   toneCommercialEn: string;
   publicBioEs: string | null;
@@ -120,8 +118,6 @@ export async function getPublicTalentBySlug(
       shortDescEn: talents.shortDescEn,
       phenotypeEs: talents.phenotypeEs,
       phenotypeEn: talents.phenotypeEn,
-      archetypeEs: talents.archetypeEs,
-      archetypeEn: talents.archetypeEn,
       toneCommercialEs: talents.toneCommercialEs,
       toneCommercialEn: talents.toneCommercialEn,
       publicBioEs: talents.publicBioEs,
