@@ -10,11 +10,8 @@
     "clientAccess": "Acceso cliente"
   },
   "home": {
-    "heroTitle": "Producción con IA.",
-    "heroTitleAccent": "Talento digital propio.",
-    "heroSubtitle": "Del brief a la pieza final en días, no en semanas.",
-    "heroCTAPrimary": "Ver el Casting",
-    "heroCTASecondary": "Hablemos",
+    "heroTitle": "CREAMOS CON IA",
+    "heroSubtitle": "Producción audiovisual impulsada por inteligencia artificial",
     "heroCTA": "Hablemos",
     "casting": {
       "eyebrow": "Casting · Vol. 01 · 2026",

@@ -2,8 +2,8 @@
 
 import { useRef, useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
-import { motion } from "framer-motion";
 import { CTAButton } from "@/components/shared/CTAButton";
+import { FadeInOnScroll } from "@/components/animations/FadeInOnScroll";
 
 export function HeroVideo() {
   const t = useTranslations("home");
@@ -18,16 +18,6 @@ export function HeroVideo() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  // Entrada sutil: fade + 10px translate-up, 600ms ease-out, stagger por linea.
-  const fadeUp = {
-    hidden: { opacity: 0, y: 10 },
-    visible: (i: number = 0) => ({
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const, delay: i * 0.12 },
-    }),
-  };
 
   return (
     <section className="relative h-screen overflow-hidden bg-black">
@@ -50,59 +40,29 @@ export function HeroVideo() {
       <div className="absolute inset-0 bg-black/50" />
 
       {/* Text content — left aligned */}
-      <div className="relative z-10 flex h-full flex-col items-start justify-center px-[10%] sm:px-[12%] lg:px-[15%] text-left">
-        <motion.h1
-          initial="hidden"
-          animate="visible"
-          custom={0}
-          variants={fadeUp}
-          className="font-heading font-extrabold leading-[1.05] text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.5)]"
-          style={{
-            fontSize: "clamp(2rem, 5.2vw, 5rem)",
-            letterSpacing: "-0.015em",
-            maxWidth: "22ch",
-          }}
+      <div className="relative z-10 flex h-full flex-col items-start justify-center px-[12%] sm:px-[15%] lg:px-[18%] text-left">
+        <h1
+          className="font-heading font-extrabold leading-none text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.5)]"
+          style={{ fontSize: "clamp(2.5rem, 6vw, 6rem)", letterSpacing: "0.02em" }}
         >
-          {t("heroTitle")}
-          <br />
-          <span className="text-primary italic font-bold">
-            {t("heroTitleAccent")}
-          </span>
-        </motion.h1>
+          CREAMOS<br />CON <span className="text-primary">IA</span>
+        </h1>
 
-        <motion.p
-          initial="hidden"
-          animate="visible"
-          custom={1}
-          variants={fadeUp}
-          className="mt-6 text-lg leading-relaxed text-white/80 drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)] sm:text-xl"
-          style={{ maxWidth: "38ch" }}
-        >
-          {t("heroSubtitle")}
-        </motion.p>
+        <div className="max-w-md">
+          <FadeInOnScroll delay={0.6} variant="fade-blur" duration={1}>
+            <p className="mt-6 text-lg leading-relaxed text-white/80 drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)] sm:text-xl">
+              {t("heroSubtitle")}
+            </p>
+          </FadeInOnScroll>
 
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          custom={2}
-          variants={fadeUp}
-          className="mt-10 flex flex-wrap gap-3"
-        >
-          <CTAButton
-            href="/casting"
-            variant="primary"
-            className="px-8 py-3.5 text-base shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40"
-          >
-            {t("heroCTAPrimary")}
-          </CTAButton>
-          <CTAButton
-            href="/contacto"
-            variant="outline"
-            className="px-8 py-3.5 text-base text-white border-white/80 hover:bg-white hover:text-black"
-          >
-            {t("heroCTASecondary")}
-          </CTAButton>
-        </motion.div>
+          <FadeInOnScroll delay={1} variant="fade-scale" duration={0.8}>
+            <div className="mt-10">
+              <CTAButton href="/contacto" className="px-10 py-4 text-base shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40">
+                {t("heroCTA")}
+              </CTAButton>
+            </div>
+          </FadeInOnScroll>
+        </div>
       </div>
 
       {/* Scroll indicator */}
@@ -120,6 +80,7 @@ export function HeroVideo() {
           />
         </div>
       </div>
+
     </section>
   );
 }
