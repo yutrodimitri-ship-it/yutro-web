@@ -165,7 +165,7 @@ export default async function CastingDetailPage({
               {t("eyebrowProfile")}
               {String((slug.charCodeAt(0) + slug.length) % 100).padStart(2, "0")}
               {isFeatured && (
-                <FeaturedBadge className="ml-3 align-middle" />
+                <FeaturedBadge locale={locale} className="ml-3 align-middle" />
               )}
             </p>
 

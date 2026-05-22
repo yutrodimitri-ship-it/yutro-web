@@ -77,7 +77,7 @@ export function TalentCardPublic({
             <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/55">
               {categoryLabel} · {talent.ageRange}
             </p>
-            {isFeatured && <FeaturedBadge />}
+            {isFeatured && <FeaturedBadge locale={locale} />}
           </div>
           <p
             className="font-heading text-lg font-bold leading-tight text-white sm:text-xl"

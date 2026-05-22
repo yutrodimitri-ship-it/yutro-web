@@ -46,11 +46,11 @@
       "note": "Esto es el catálogo público — una selección del elenco. El catálogo completo se abre tras una conversación con el estudio."
     },
     "sections": {
-      "featuredTitle": "Featured Talent",
+      "featuredTitle": "Talentos Destacados",
       "featuredIntro": "Talentos con presencia social propia. Aparecen en campañas y en sus redes — narrativa, audiencia y embajadores de marca.",
       "standardTitle": "Elenco general",
       "standardIntro": "El resto del elenco — caras profesionales listas para campaña, sin presencia social, con derechos por contrato.",
-      "standardEmpty": "El Volumen 02 está en preparación. Mientras tanto, conocé los talentos Featured.",
+      "standardEmpty": "El Volumen 02 está en preparación. Mientras tanto, conocé los talentos destacados.",
       "featuredEmpty": "El Volumen 02 está en preparación. Mientras tanto, conocé el elenco completo."
     },
     "cta": {
