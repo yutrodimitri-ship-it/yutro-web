@@ -35,24 +35,27 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
-  const { locale, slug } = await params;
+  const { locale: rawLocale, slug } = await params;
+  const locale: "es" | "en" = rawLocale === "en" ? "en" : "es";
   const talent = await getPublicTalentBySlug(slug);
   if (!talent) {
     return { title: "Casting · Yutro" };
   }
   const name = locale === "en" ? talent.nameEn : talent.nameEs;
-  const archetype = locale === "en" ? talent.archetypeEn : talent.archetypeEs;
+  const shortDesc = locale === "en" ? talent.shortDescEn : talent.shortDescEs;
+  const categoryLabel =
+    CATEGORY_LABELS[talent.category]?.[locale] ?? talent.category;
   const description =
     locale === "en"
-      ? `${name} — ${archetype}. Digital talent by Yutro for advertising campaigns in LATAM.`
-      : `${name} — ${archetype}. Talento digital de Yutro para campañas publicitarias en LATAM.`;
+      ? `${name} — ${shortDesc} Digital talent by Yutro for advertising campaigns in LATAM.`
+      : `${name} — ${shortDesc} Talento digital de Yutro para campañas publicitarias en LATAM.`;
 
   return createMetadata({
     title: `${name} · Casting`,
     description,
     path: `/casting/${slug}`,
     locale,
-    image: `/api/og?title=${encodeURIComponent(name)}&subtitle=${encodeURIComponent(archetype)}&locale=${locale}`,
+    image: `/api/og?title=${encodeURIComponent(name)}&subtitle=${encodeURIComponent(categoryLabel)}&locale=${locale}`,
   });
 }
 
@@ -69,7 +72,7 @@ export default async function CastingDetailPage({
   const t = await getTranslations({ locale, namespace: "casting.detail" });
 
   const name = locale === "es" ? talent.nameEs : talent.nameEn;
-  const archetype = locale === "es" ? talent.archetypeEs : talent.archetypeEn;
+  const shortDesc = locale === "es" ? talent.shortDescEs : talent.shortDescEn;
   const phenotype = locale === "es" ? talent.phenotypeEs : talent.phenotypeEn;
   const tone = locale === "es" ? talent.toneCommercialEs : talent.toneCommercialEn;
   const bio = locale === "es" ? talent.publicBioEs : talent.publicBioEn;
@@ -89,7 +92,7 @@ export default async function CastingDetailPage({
     "@context": "https://schema.org",
     "@type": "Person",
     name,
-    description: archetype,
+    description: shortDesc,
     image: heroImage ? `${SITE_URL}${heroImage}` : undefined,
     url: `${SITE_URL}/${locale}/casting/${slug}`,
     nationality: { "@type": "Country", name: "Chile" },
@@ -185,7 +188,6 @@ export default async function CastingDetailPage({
 
             {/* Bloque de ficha */}
             <dl className="mt-10 grid grid-cols-1 gap-x-8 gap-y-4 sm:grid-cols-2">
-              <FichaRow label={t("fields.archetype")}>{archetype}</FichaRow>
               <FichaRow label={t("fields.phenotype")}>{phenotype}</FichaRow>
               <FichaRow label={t("fields.tone")}>{tone}</FichaRow>
               <FichaRow label={t("fields.ageRange")}>

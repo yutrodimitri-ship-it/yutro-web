@@ -202,10 +202,6 @@ export function TalentDetail({
         <div className="py-8 lg:pl-6 talent-detail-right">
           <div className="grid grid-cols-2 gap-x-6 gap-y-0">
             <SpecDisplayItem
-              label={tDetail("spec.archetype")}
-              value={talent.archetype[locale]}
-            />
-            <SpecDisplayItem
               label={tDetail("spec.ageRange")}
               value={talent.ageRange}
             />

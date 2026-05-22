@@ -5,12 +5,12 @@ const meta: Record<string, { title: string; description: string }> = {
   es: {
     title: "Casting",
     description:
-      "Catálogo público de talentos digitales Yutro. Personajes IA con identidad consistente, arquetipo declarado y derechos resueltos por contrato. Para campañas publicitarias en LATAM.",
+      "Catálogo público de talentos digitales Yutro. Identidad consistente, tono comercial definido y derechos resueltos por contrato. Para campañas publicitarias en LATAM.",
   },
   en: {
     title: "Casting",
     description:
-      "Public catalog of Yutro digital talents. AI characters with consistent identity, declared archetype and rights cleared by contract. For advertising campaigns in LATAM.",
+      "Public catalog of Yutro digital talents. Consistent identity, defined commercial tone and rights cleared by contract. For advertising campaigns in LATAM.",
   },
 };
 
