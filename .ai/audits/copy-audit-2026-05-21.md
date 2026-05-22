@@ -84,7 +84,7 @@ Que el contenedor y la acción se llamen igual genera frases ambiguas: "Ver mi c
 | ❌ Evitar | "Yutro Studio", "Casting House" como marca visible | Son categorías internas |
 | La sección pública | **"el Casting"** / **"Casting"** | Ya es así |
 | La selección del cliente | **"tu selección"** (no "tu casting") | Desambigua del nombre de la sección |
-| El conjunto de talentos | **"el roster"** | Ya es así, funciona |
+| El conjunto de talentos | **"el elenco"** (ES) / "the roster" (EN) | "roster" es jerga inglesa que no se entiende en español; "elenco" es el término de la industria del casting. EN mantiene "roster" (palabra normal en inglés). |
 
 ---
 

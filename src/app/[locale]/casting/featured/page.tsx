@@ -83,7 +83,7 @@ export default async function CastingFeaturedPage({
                 href="/casting"
                 className="mt-6 inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em] text-primary hover:underline"
               >
-                {locale === "es" ? "Ver roster completo" : "See full roster"} →
+                {locale === "es" ? "Ver elenco completo" : "See full roster"} →
               </Link>
             </div>
           ) : (

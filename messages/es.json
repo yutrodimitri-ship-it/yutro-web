@@ -20,7 +20,7 @@
       "eyebrow": "Casting · Vol. 01 · 2026",
       "title": "El Casting",
       "titleAccent": "ya está abierto.",
-      "description": "Roster curado de talentos digitales para campañas publicitarias en LATAM. Cada uno con arquetipo declarado, tono comercial y derechos resueltos por contrato.",
+      "description": "Elenco curado de talentos digitales para campañas publicitarias en LATAM. Cada uno con arquetipo declarado, tono comercial y derechos resueltos por contrato.",
       "ctaPrompt": "Hojea el lookbook editorial.",
       "cta": "Ver el catálogo público"
     },
@@ -42,27 +42,27 @@
       "eyebrow": "Casting · Vol. 01 · 2026",
       "title": "Talento digital",
       "titleAccent": "con identidad.",
-      "intro": "Roster curado de talentos digitales para campañas publicitarias en LATAM. Cada uno con arquetipo declarado, tono comercial y derechos resueltos por contrato.",
-      "note": "Esto es el catálogo público — una selección del roster. El catálogo completo se abre tras una conversación con el estudio."
+      "intro": "Elenco curado de talentos digitales para campañas publicitarias en LATAM. Cada uno con arquetipo declarado, tono comercial y derechos resueltos por contrato.",
+      "note": "Esto es el catálogo público — una selección del elenco. El catálogo completo se abre tras una conversación con el estudio."
     },
     "sections": {
       "featuredTitle": "Featured Talent",
       "featuredIntro": "Talentos con presencia social propia. Aparecen en campañas y en sus redes — narrativa, audiencia y embajadores de marca.",
-      "standardTitle": "Roster general",
-      "standardIntro": "El resto del roster — caras profesionales listas para campaña, sin presencia social, con derechos por contrato.",
+      "standardTitle": "Elenco general",
+      "standardIntro": "El resto del elenco — caras profesionales listas para campaña, sin presencia social, con derechos por contrato.",
       "standardEmpty": "El Volumen 02 está en preparación. Mientras tanto, conocé los talentos Featured.",
-      "featuredEmpty": "El Volumen 02 está en preparación. Mientras tanto, conocé el roster completo."
+      "featuredEmpty": "El Volumen 02 está en preparación. Mientras tanto, conocé el elenco completo."
     },
     "cta": {
       "title": "¿Necesitás acceso al catálogo completo?",
-      "body": "El catálogo público es solo un anticipo. Detrás hay un roster privado más grande, con filtros, exclusividades y selección por proyecto.",
+      "body": "El catálogo público es solo un anticipo. Detrás hay un elenco privado más grande, con filtros, exclusividades y selección por proyecto.",
       "button": "Solicitar acceso"
     },
     "request": {
       "eyebrow": "Casting · Solicitar acceso",
       "title": "Acceso al",
       "titleAccent": "catálogo completo.",
-      "intro": "El catálogo público es solo un anticipo. Detrás hay un roster privado más grande con filtros, exclusividades y selección por proyecto. Contanos brevemente tu proyecto y agendamos una conversación.",
+      "intro": "El catálogo público es solo un anticipo. Detrás hay un elenco privado más grande con filtros, exclusividades y selección por proyecto. Contanos brevemente tu proyecto y agendamos una conversación.",
       "stepsTitle": "Lo que sigue",
       "step1": "Revisamos tu solicitud dentro de 24 horas hábiles.",
       "step2": "Agendamos una llamada de 30 minutos para entender tu proyecto.",
@@ -117,7 +117,7 @@
     "manifesto": {
       "label": "Manifiesto",
       "p1": "Nacimos para que la idea no se quede esperando producción. Cuando un brief pide una campaña en dos semanas, no hay margen para tres semanas de casting físico, dos de pre-pro y cinco días de pintar en post.",
-      "p2": "Trabajamos con un roster propio de talentos digitales, con identidad consistente entre piezas, derechos resueltos por contrato y disponibilidad inmediata. Cada talento del catálogo nació para vivir en publicidad: arquetipo declarado, tono comercial y mercado asignado.",
+      "p2": "Trabajamos con un elenco propio de talentos digitales, con identidad consistente entre piezas, derechos resueltos por contrato y disponibilidad inmediata. Cada talento del catálogo nació para vivir en publicidad: arquetipo declarado, tono comercial y mercado asignado.",
       "p3": "Yutro es el estudio. Casting y Producción son dos líneas del mismo equipo. Un solo interlocutor, una sola factura, una sola garantía creativa."
     },
     "lines": {
