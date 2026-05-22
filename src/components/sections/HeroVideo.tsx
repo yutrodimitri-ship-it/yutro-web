@@ -63,7 +63,8 @@ export function HeroVideo() {
             maxWidth: "22ch",
           }}
         >
-          {t("heroTitle")}{" "}
+          {t("heroTitle")}
+          <br />
           <span className="text-primary italic font-bold">
             {t("heroTitleAccent")}
           </span>
