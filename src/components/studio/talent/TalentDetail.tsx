@@ -204,22 +204,18 @@ export function TalentDetail({
             <SpecDisplayItem
               label={tDetail("spec.archetype")}
               value={talent.archetype[locale]}
-              sub={locale === "es" ? "Registro de estilo" : "Style register"}
             />
             <SpecDisplayItem
               label={tDetail("spec.ageRange")}
               value={talent.ageRange}
-              sub={locale === "es" ? "Ajustable ±2 años" : "Tunable ±2 years"}
             />
             <SpecDisplayItem
               label={tDetail("spec.tone")}
               value={talent.toneCommercial[locale]}
-              sub={locale === "es" ? "Perfil comercial" : "Commercial tone"}
             />
             <SpecDisplayItem
               label={tDetail("spec.market")}
               value={talent.market.join(" · ")}
-              sub={locale === "es" ? "Territorios" : "Territories"}
             />
             <SpecDisplayItem
               label={tDetail("spec.status")}
@@ -228,13 +224,11 @@ export function TalentDetail({
                   talent.status === "in-campaign" ? "inCampaign" : talent.status
                 }` as `status.${"available" | "inCampaign" | "reserved"}`
               )}
-              sub={locale === "es" ? "Disponibilidad actual" : "Current availability"}
               dotColor={statusColor(talent.status)}
             />
             <SpecDisplayItem
               label={tDetail("spec.origin")}
               value={talent.phenotype[locale]}
-              sub={locale === "es" ? "Origen físico" : "Physical origin"}
             />
           </div>
         </div>
@@ -522,12 +516,10 @@ export function TalentDetail({
 function SpecDisplayItem({
   label,
   value,
-  sub,
   dotColor,
 }: {
   label: string;
   value: string;
-  sub?: string;
   dotColor?: string;
 }) {
   return (
@@ -558,14 +550,6 @@ function SpecDisplayItem({
         )}
         {value}
       </div>
-      {sub && (
-        <div
-          className="mt-1 font-mono text-[10px] uppercase tracking-[0.16em]"
-          style={{ color: "var(--talent-ink-mute)" }}
-        >
-          {sub}
-        </div>
-      )}
     </div>
   );
 }
