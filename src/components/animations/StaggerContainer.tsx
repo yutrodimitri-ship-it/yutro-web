@@ -24,7 +24,7 @@ export function StaggerContainer({
       className={className}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: false, margin: "-80px" }}
+      viewport={{ once: true, margin: "-80px" }}
       variants={{
         hidden: {},
         visible: {

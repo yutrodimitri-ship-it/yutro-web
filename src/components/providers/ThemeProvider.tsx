@@ -9,6 +9,11 @@ interface ThemeContextValue {
   toggleTheme: () => void;
 }
 
+interface ThemeState {
+  theme: Theme;
+  manual: boolean;
+}
+
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
 /** Returns "dark" between 19:00–06:59 and "light" between 07:00–18:59 */
@@ -17,58 +22,52 @@ function getThemeByHour(): Theme {
   return hour >= 7 && hour < 19 ? "light" : "dark";
 }
 
+/**
+ * SSR-safe initial read. `app/layout.tsx` sets `suppressHydrationWarning`
+ * on <html>, so any client/server mismatch on the first paint won't warn.
+ */
+function readInitialState(): ThemeState {
+  if (typeof window === "undefined") {
+    return { theme: "light", manual: false };
+  }
+  const stored = localStorage.getItem("theme") as Theme | null;
+  const wasManual = localStorage.getItem("theme-manual") === "true";
+  if (stored && wasManual) return { theme: stored, manual: true };
+  return { theme: getThemeByHour(), manual: false };
+}
+
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("light");
-  const [manualOverride, setManualOverride] = useState(false);
+  // Lazy initializer — runs once, before paint. Avoids the
+  // set-state-in-effect anti-pattern for reading from localStorage.
+  const [state, setState] = useState<ThemeState>(readInitialState);
 
-  // Initial theme: manual > time-based
+  // Sync the <html class="dark"> with the chosen theme — this is the
+  // legitimate "sync external system" use of useEffect.
   useEffect(() => {
-    const stored = localStorage.getItem("theme") as Theme | null;
-    const wasManual = localStorage.getItem("theme-manual") === "true";
+    document.documentElement.classList.toggle("dark", state.theme === "dark");
+  }, [state.theme]);
 
-    let initial: Theme;
-    if (stored && wasManual) {
-      // User explicitly chose a theme — respect it
-      initial = stored;
-      setManualOverride(true);
-    } else {
-      // Auto mode: use time of day
-      initial = getThemeByHour();
-    }
-
-    setTheme(initial);
-    document.documentElement.classList.toggle("dark", initial === "dark");
-  }, []);
-
-  // Auto-update theme when the hour changes (if no manual override)
+  // Auto-update theme when the hour changes (if no manual override).
   useEffect(() => {
-    if (manualOverride) return;
-
+    if (state.manual) return;
     const interval = setInterval(() => {
       const timeTheme = getThemeByHour();
-      setTheme((prev) => {
-        if (prev !== timeTheme) {
-          document.documentElement.classList.toggle("dark", timeTheme === "dark");
-          return timeTheme;
-        }
-        return prev;
-      });
-    }, 60_000); // check every minute
-
+      setState((prev) =>
+        prev.theme === timeTheme ? prev : { ...prev, theme: timeTheme }
+      );
+    }, 60_000);
     return () => clearInterval(interval);
-  }, [manualOverride]);
+  }, [state.manual]);
 
   const toggleTheme = () => {
-    const next = theme === "light" ? "dark" : "light";
-    setTheme(next);
-    setManualOverride(true);
+    const next: Theme = state.theme === "light" ? "dark" : "light";
+    setState({ theme: next, manual: true });
     localStorage.setItem("theme", next);
     localStorage.setItem("theme-manual", "true");
-    document.documentElement.classList.toggle("dark", next === "dark");
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme: state.theme, toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );

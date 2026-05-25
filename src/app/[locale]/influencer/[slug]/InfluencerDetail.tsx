@@ -18,15 +18,6 @@ const fadeUp = {
   }),
 };
 
-const scaleIn = {
-  hidden: { opacity: 0, scale: 0.85 },
-  visible: (i: number) => ({
-    opacity: 1,
-    scale: 1,
-    transition: { delay: 0.3 + i * 0.05, duration: 0.4, ease: "easeOut" as const },
-  }),
-};
-
 export default function InfluencerDetail() {
   const { slug } = useParams<{ slug: string }>();
   const locale = useLocale();

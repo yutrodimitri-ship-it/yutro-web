@@ -20,7 +20,7 @@ export function HeroVideo() {
   }, []);
 
   return (
-    <section className="relative h-screen overflow-hidden">
+    <section className="relative h-screen overflow-hidden bg-black">
       {/* Video background */}
       <video
         ref={videoRef}
@@ -28,7 +28,8 @@ export function HeroVideo() {
         muted
         loop
         playsInline
-        preload="auto"
+        preload="metadata"
+        poster="/showreel-poster.webp"
         className="absolute inset-0 h-full w-full object-cover"
       >
         <source src="/showreel.webm" type="video/webm" />

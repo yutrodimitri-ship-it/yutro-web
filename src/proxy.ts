@@ -1,14 +1,58 @@
 import createMiddleware from "next-intl/middleware";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { jwtVerify } from "jose";
 import { routing } from "./i18n/routing";
 
 const intlMiddleware = createMiddleware(routing);
 
-export function proxy(request: NextRequest) {
+function getAuthSecret() {
+  const secret = process.env.AUTH_SECRET;
+  if (!secret) return null;
+  return new TextEncoder().encode(secret);
+}
+
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
   const isDev = process.env.NODE_ENV === "development";
+
+  // Studio auth guard: protect /*/studio/* except login pages (with or without locale)
+  const studioMatch = pathname.match(/^(?:\/(es|en))?\/studio(?:\/(.*))?$/);
+  if (studioMatch) {
+    const subpath = studioMatch[2] || "";
+    const locale = studioMatch[1] || "es";
+    const isLoginPage = subpath === "login" || subpath.startsWith("login/");
+
+    const secret = getAuthSecret();
+    const token = request.cookies.get("studio_session")?.value;
+    let authenticated = false;
+
+    if (secret && token) {
+      try {
+        await jwtVerify(token, secret);
+        authenticated = true;
+      } catch {
+        // Invalid or expired token
+      }
+    }
+
+    if (isLoginPage && authenticated) {
+      return NextResponse.redirect(
+        new URL(`/${locale}/studio`, request.url)
+      );
+    }
+
+    if (!isLoginPage && !authenticated) {
+      return NextResponse.redirect(
+        new URL(`/${locale}/studio/login`, request.url)
+      );
+    }
+  }
+
+  // Pass nonce to request headers so Next.js can extract it via headers()
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("x-nonce", nonce);
 
   // Skip i18n for studio, api, static files, and generated assets (icon, apple-icon, sitemap, robots)
   if (
@@ -22,7 +66,9 @@ export function proxy(request: NextRequest) {
     pathname === "/sitemap.xml" ||
     pathname === "/robots.txt"
   ) {
-    const response = NextResponse.next();
+    const response = NextResponse.next({
+      request: { headers: requestHeaders },
+    });
     applySecurityHeaders(response, nonce, isDev);
 
     // Prevent indexing of studio and api routes
@@ -32,10 +78,6 @@ export function proxy(request: NextRequest) {
 
     return response;
   }
-
-  // Pass nonce to request headers so Next.js can extract it
-  const requestHeaders = new Headers(request.headers);
-  requestHeaders.set("x-nonce", nonce);
 
   const response = intlMiddleware(request);
   applySecurityHeaders(response, nonce, isDev);
@@ -54,11 +96,13 @@ function applySecurityHeaders(
   // Content Security Policy with nonce
   const csp = [
     "default-src 'self'",
-    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'${isDev ? " 'unsafe-eval'" : ""}`,
+    isDev
+      ? `script-src 'self' 'unsafe-inline' 'unsafe-eval'`
+      : `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'`,
     `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`,
-    "connect-src 'self' https://*.sanity.io https://cdn.sanity.io",
+    "connect-src 'self' https://*.sanity.io https://cdn.sanity.io https://*.supabase.co https://comfy.yutro.cl",
     "frame-src 'self' https://www.youtube.com https://player.vimeo.com",
-    "img-src 'self' data: https://cdn.sanity.io blob:",
+    "img-src 'self' data: https://cdn.sanity.io https://*.supabase.co https://comfy.yutro.cl blob:",
     "font-src 'self' https://fonts.gstatic.com",
     "media-src 'self' https:",
     "object-src 'none'",

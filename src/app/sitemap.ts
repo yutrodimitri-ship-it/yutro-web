@@ -5,6 +5,15 @@ import { influencers } from "@/data/influencers";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.yutro.cl";
 
+function withAlternates(path: string) {
+  return {
+    languages: {
+      es: `${SITE_URL}/es${path}`,
+      en: `${SITE_URL}/en${path}`,
+    },
+  };
+}
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const locales = ["es", "en"];
   const now = new Date();
@@ -17,6 +26,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       changeFrequency: page === "" ? ("weekly" as const) : ("monthly" as const),
       priority: page === "" ? 1.0 : 0.8,
+      alternates: withAlternates(page),
     }))
   );
 
@@ -27,6 +37,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       changeFrequency: "monthly" as const,
       priority: 0.7,
+      alternates: withAlternates(`/proyectos/${project.slug}`),
     }))
   );
 
@@ -36,6 +47,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(post.date),
     changeFrequency: "monthly" as const,
     priority: 0.6,
+    alternates: withAlternates(`/blog/${post.slug}`),
   }));
 
   // Influencer pages
@@ -45,6 +57,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       changeFrequency: "monthly" as const,
       priority: 0.7,
+      alternates: withAlternates(`/influencer/${inf.slug}`),
     }))
   );
 

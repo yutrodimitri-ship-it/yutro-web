@@ -2,6 +2,28 @@ import type { BlogPost } from "@/components/cards/BlogCard";
 
 export const blogPosts: (BlogPost & { locale: string })[] = [
   {
+    slug: "seedance-2-bytedance-video-ia-escandalo-hollywood-benchmarks",
+    title:
+      "Seedance 2.0: el modelo de video de ByteDance que escandalizó a Hollywood y lidera los benchmarks mundiales",
+    excerpt:
+      "ByteDance lanzó Seedance 2.0 en febrero 2026. En 48 horas generó clips tan realistas que Hollywood reaccionó con cartas de cese. Hoy está disponible en CapCut con el Elo más alto del mundo en generación de video.",
+    image: "/blog/seedance-2-bytedance.webp",
+    date: "2026-04-01",
+    readingTime: 9,
+    locale: "es",
+  },
+  {
+    slug: "seedance-2-bytedance-video-ai-hollywood-scandal-benchmarks",
+    title:
+      "Seedance 2.0: ByteDance's video model that scandalized Hollywood and leads global benchmarks",
+    excerpt:
+      "ByteDance launched Seedance 2.0 in February 2026. Within 48 hours it generated clips so realistic that Hollywood responded with cease-and-desist letters. Today it's available on CapCut with the world's highest Elo in video generation.",
+    image: "/blog/seedance-2-bytedance.webp",
+    date: "2026-04-01",
+    readingTime: 9,
+    locale: "en",
+  },
+  {
     slug: "tertulias-ia-universidad-mayor-comfyui-casting-digital",
     title: "Casting digital con ComfyUI en Tertulias IA – Universidad Mayor",
     excerpt:
@@ -19,60 +41,6 @@ export const blogPosts: (BlogPost & { locale: string })[] = [
     image: "/blog/tertulias-ia-umayor.webp",
     date: "2026-03-27",
     readingTime: 7,
-    locale: "en",
-  },
-  {
-    slug: "ia-generativa-publicidad-2025",
-    title: "IA Generativa en Publicidad: Tendencias 2025",
-    excerpt:
-      "Descubre cómo la inteligencia artificial está transformando la industria publicitaria con imágenes hiperrealistas y producción audiovisual automatizada.",
-    date: "2025-12-15",
-    readingTime: 5,
-    locale: "es",
-  },
-  {
-    slug: "generative-ai-advertising-2025",
-    title: "Generative AI in Advertising: 2025 Trends",
-    excerpt:
-      "Discover how artificial intelligence is transforming the advertising industry with hyperrealistic images and automated audiovisual production.",
-    date: "2025-12-15",
-    readingTime: 5,
-    locale: "en",
-  },
-  {
-    slug: "detras-de-camaras-super-pollo",
-    title: "Detrás de cámaras: Proyecto Super Pollo",
-    excerpt:
-      "Un vistazo al proceso creativo detrás de nuestra campaña para Super Pollo utilizando IA generativa y postproducción avanzada.",
-    date: "2025-11-20",
-    readingTime: 4,
-    locale: "es",
-  },
-  {
-    slug: "behind-the-scenes-super-pollo",
-    title: "Behind the Scenes: Super Pollo Project",
-    excerpt:
-      "A look at the creative process behind our Super Pollo campaign using generative AI and advanced post-production.",
-    date: "2025-11-20",
-    readingTime: 4,
-    locale: "en",
-  },
-  {
-    slug: "consistencia-visual-marca-ia",
-    title: "Consistencia Visual de Marca con IA",
-    excerpt:
-      "Cómo mantenemos coherencia visual en personajes, productos y escenarios usando inteligencia artificial.",
-    date: "2025-10-05",
-    readingTime: 6,
-    locale: "es",
-  },
-  {
-    slug: "brand-visual-consistency-ai",
-    title: "Brand Visual Consistency with AI",
-    excerpt:
-      "How we maintain visual coherence across characters, products, and scenarios using artificial intelligence.",
-    date: "2025-10-05",
-    readingTime: 6,
     locale: "en",
   },
 ];
