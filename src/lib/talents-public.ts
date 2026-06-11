@@ -176,6 +176,9 @@ export function resolvePublicImage(key: string | null): string | null {
   if (!key) return null;
   if (key.startsWith("/")) return key;
   if (key.startsWith("http")) return key;
-  // R2 keys aun no enrutados publicamente — TODO Sprint 2 endpoint.
+  // Keys de storage (`talents/{code}/{variant}.jpg`) se sirven via el
+  // endpoint publico de vitrina (preview 1200px, solo public_visible).
+  const m = key.match(/^talents\/([^/]+)\/([^/]+)\.jpg$/);
+  if (m) return `/api/casting/image/${m[1]}/${m[2]}`;
   return null;
 }
