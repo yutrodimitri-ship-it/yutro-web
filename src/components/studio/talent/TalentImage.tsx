@@ -65,9 +65,13 @@ export function TalentImage({
     let aborted = false;
     let createdUrl: string | null = null;
 
+    // La variante que entiende la API es la del NOMBRE DEL ARCHIVO en la key
+    // (gallery-1..8): los componentes usan alias (studio-1, gallery-0 base-0),
+    // asi que se deriva de la key real en vez de confiar en el alias.
+    const storageVariant = resolveStorageVariant(talent, variant);
     const url = `/api/studio/talent/image/${encodeURIComponent(
       talent.code
-    )}/${encodeURIComponent(variant)}`;
+    )}/${encodeURIComponent(storageVariant)}`;
     fetch(url, {
       headers: { "x-project-slug": session.projectSlug },
     })
@@ -168,7 +172,26 @@ function resolveLocalPath(talent: Talent, variant: TalentImageVariant): string |
 }
 
 function isLocalKey(key: string | null | undefined): boolean {
-  return Boolean(key && (key.startsWith("/talents/") || key.startsWith("/talents-webp/")));
+  // Cualquier path absoluto de /public es local (talents, talents-webp,
+  // influencers, etc). Las keys de storage no llevan "/" inicial.
+  return Boolean(key && key.startsWith("/"));
+}
+
+/**
+ * Variante canonica para la API protegida: el basename de la key en storage
+ * (`talents/{code}/{variant}.jpg`). Si la key no es parseable, devuelve el
+ * alias recibido tal cual.
+ */
+function resolveStorageVariant(talent: Talent, variant: TalentImageVariant): string {
+  let key: string | null | undefined;
+  if (variant === "profile") key = talent.imageProfileKey;
+  else if (variant === "charsheet") key = talent.imageCharsheetKey;
+  else {
+    const idx = galleryIndex(variant);
+    key = idx >= 0 ? talent.galleryKeys?.[idx] : null;
+  }
+  const m = key?.match(/\/([^/]+)\.[a-z]+$/i);
+  return m ? m[1] : variant;
 }
 
 function variantHasKey(talent: Talent, variant: TalentImageVariant): boolean {
