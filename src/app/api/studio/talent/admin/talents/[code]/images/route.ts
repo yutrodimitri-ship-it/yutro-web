@@ -8,7 +8,7 @@ import {
   isValidVariant,
   uploadImage,
   type ImageVariant,
-} from "@/lib/talent/r2-client";
+} from "@/lib/talent/storage-client";
 import { processUpload } from "@/lib/talent/watermark";
 import { logAuditEventServer } from "@/lib/talent/audit-log-server";
 

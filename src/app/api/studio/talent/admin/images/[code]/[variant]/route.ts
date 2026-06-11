@@ -5,7 +5,7 @@ import {
   buildKey,
   getImageBuffer,
   isValidVariant,
-} from "@/lib/talent/r2-client";
+} from "@/lib/talent/storage-client";
 
 /**
  * GET /api/studio/talent/admin/images/[code]/[variant]

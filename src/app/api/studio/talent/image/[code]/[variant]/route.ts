@@ -8,7 +8,7 @@ import {
   buildKey,
   getImageBuffer,
   isValidVariant,
-} from "@/lib/talent/r2-client";
+} from "@/lib/talent/storage-client";
 import { applyWatermark } from "@/lib/talent/watermark";
 import { logAuditEventServer } from "@/lib/talent/audit-log-server";
 import { hasProjectAccess } from "@/lib/talent/access-check";
