@@ -2,6 +2,7 @@
 
 import { useLocale } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
+import { blogPosts } from "@/data/blog";
 
 export function LanguageSwitcher() {
   const locale = useLocale();
@@ -11,6 +12,14 @@ export function LanguageSwitcher() {
   const switchTo = locale === "es" ? "en" : "es";
 
   const handleSwitch = () => {
+    // Los posts del blog tienen slug distinto por idioma: navegar al slug traducido
+    const blogMatch = pathname.match(/^\/blog\/([^/]+)$/);
+    if (blogMatch) {
+      const post = blogPosts.find((p) => p.slug === blogMatch[1] && p.locale === locale);
+      const target = post ? `/blog/${post.altSlug}` : "/blog";
+      router.replace(target, { locale: switchTo });
+      return;
+    }
     router.replace(pathname, { locale: switchTo });
   };
 

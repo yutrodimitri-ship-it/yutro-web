@@ -27,24 +27,44 @@ function checkMemoryRateLimit(
   return { allowed: entry.count <= maxRequests, remaining, resetIn: entry.resetTime - now };
 }
 
-// --- Redis store (lazy) ---
+// --- Redis store (lazy singleton) ---
+
+type RedisClient = import("ioredis").default;
+
+let redisClient: RedisClient | null = null;
+
+async function getRedisClient(): Promise<RedisClient> {
+  if (!redisClient) {
+    const { default: Redis } = await import("ioredis");
+    redisClient = new Redis(process.env.REDIS_URL || "redis://localhost:6379", {
+      maxRetriesPerRequest: 2,
+      lazyConnect: true,
+      enableOfflineQueue: false,
+    });
+    // Sin listener, un error de conexión se convierte en unhandled rejection
+    redisClient.on("error", (err) => {
+      console.error("Rate limit Redis error:", err.message);
+    });
+  }
+  return redisClient;
+}
 
 async function checkRedisRateLimit(
   key: string,
   maxRequests: number,
   windowMs: number
 ): Promise<{ allowed: boolean; remaining: number; resetIn: number }> {
-  const { default: Redis } = await import("ioredis");
-  const client = new Redis(process.env.REDIS_URL || "redis://localhost:6379", {
-    maxRetriesPerRequest: 3,
-    lazyConnect: true,
-  });
+  const client = await getRedisClient();
 
   const redisKey = `rl:${key}`;
   const windowSec = Math.ceil(windowMs / 1000);
-  const count = await client.incr(redisKey);
-  if (count === 1) await client.expire(redisKey, windowSec);
-  const ttl = await client.ttl(redisKey);
+  const [count, ttl] = (await client
+    .multi()
+    .incr(redisKey)
+    .expire(redisKey, windowSec, "NX")
+    .ttl(redisKey)
+    .exec()
+    .then((results) => [results?.[0]?.[1], results?.[2]?.[1]])) as [number, number];
 
   return {
     allowed: count <= maxRequests,
@@ -61,7 +81,13 @@ export async function checkRateLimit(
   windowMs: number
 ): Promise<{ allowed: boolean; remaining: number; resetIn: number }> {
   if (process.env.RATE_LIMIT_STORE === "redis") {
-    return checkRedisRateLimit(key, maxRequests, windowMs);
+    try {
+      return await checkRedisRateLimit(key, maxRequests, windowMs);
+    } catch (err) {
+      // Si Redis no responde, degradar al límite en memoria en vez de tumbar la ruta
+      console.error("Redis rate limit failed, falling back to memory:", err);
+      return checkMemoryRateLimit(key, maxRequests, windowMs);
+    }
   }
   return checkMemoryRateLimit(key, maxRequests, windowMs);
 }

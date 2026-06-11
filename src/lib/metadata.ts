@@ -11,6 +11,7 @@ export function createMetadata({
   image,
   type = "website",
   noIndex = false,
+  alternatePaths,
 }: {
   title: string;
   description: string;
@@ -19,10 +20,15 @@ export function createMetadata({
   image?: string;
   type?: "website" | "article";
   noIndex?: boolean;
+  /**
+   * Ruta por idioma cuando los slugs difieren (p. ej. el blog).
+   * Por defecto se usa `path` para ambos idiomas.
+   */
+  alternatePaths?: { es?: string; en?: string };
 }): Metadata {
   const url = `${SITE_URL}/${locale}${path}`;
-  const altLocale = locale === "es" ? "en" : "es";
-  const altUrl = `${SITE_URL}/${altLocale}${path}`;
+  const esPath = alternatePaths?.es ?? path;
+  const enPath = alternatePaths?.en ?? path;
   const ogImage = image || `${SITE_URL}/api/og?title=${encodeURIComponent(title)}&locale=${locale}`;
 
   return {
@@ -31,8 +37,9 @@ export function createMetadata({
     alternates: {
       canonical: url,
       languages: {
-        es: `${SITE_URL}/es${path}`,
-        en: `${SITE_URL}/en${path}`,
+        es: `${SITE_URL}/es${esPath}`,
+        en: `${SITE_URL}/en${enPath}`,
+        "x-default": `${SITE_URL}/es${esPath}`,
       },
     },
     openGraph: {

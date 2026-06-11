@@ -8,61 +8,61 @@
     "contact": "Contacto"
   },
   "home": {
-    "heroTitle": "CREAMOS CON IA",
-    "heroSubtitle": "Producción audiovisual impulsada por inteligencia artificial",
+    "heroTitle": "CREAMOS<br></br>CON <accent>IA</accent>",
+    "heroSubtitle": "ProducciÃ³n audiovisual impulsada por inteligencia artificial",
     "heroCTA": "Hablemos",
     "featuredTitle": "Proyectos destacados",
-    "featuredCTA": "Quiero ver más",
+    "featuredCTA": "Quiero ver mÃ¡s",
     "servicesTitle": "Servicios y propuestas",
     "servicesCTA": "Ver todos los servicios",
-    "ctaTitle": "¿Tienes un PROYECTO EN MENTE?",
+    "ctaTitle": "Â¿Tienes un PROYECTO EN MENTE?",
     "ctaCTA": "Hablemos",
-    "latestPostsTitle": "Últimas noticias"
+    "latestPostsTitle": "Ãšltimas noticias"
   },
   "projects": {
     "title": "Proyectos",
     "allCategories": "Todos",
-    "loadMore": "Cargar más"
+    "loadMore": "Cargar mÃ¡s"
   },
   "services": {
     "title": "Servicios",
-    "learnMore": "Saber más"
+    "learnMore": "Saber mÃ¡s"
   },
   "blog": {
     "title": "Blog",
-    "readMore": "Leer más",
+    "readMore": "Leer mÃ¡s",
     "readingTime": "{minutes} min de lectura",
     "publishedAt": "Publicado el {date}"
   },
   "contact": {
     "title": "Contacto",
     "name": "Nombre",
-    "email": "Correo electrónico",
-    "phone": "Teléfono (opcional)",
+    "email": "Correo electrÃ³nico",
+    "phone": "TelÃ©fono (opcional)",
     "subject": "Asunto",
     "message": "Mensaje",
     "send": "Enviar mensaje",
     "sending": "Enviando...",
-    "success": "¡Mensaje enviado correctamente! Te responderemos pronto.",
+    "success": "Â¡Mensaje enviado correctamente! Te responderemos pronto.",
     "error": "Hubo un error al enviar el mensaje. Intenta de nuevo.",
     "rateLimited": "Demasiados intentos. Espera un momento antes de volver a intentar."
   },
   "common": {
     "backToHome": "Volver al inicio",
-    "notFound": "Página no encontrada",
-    "notFoundDescription": "La página que buscas no existe o ha sido movida.",
-    "copyright": "© {year} YUTRO. Una marca de VRYP – Art & AI Solutions."
+    "notFound": "PÃ¡gina no encontrada",
+    "notFoundDescription": "La pÃ¡gina que buscas no existe o ha sido movida.",
+    "copyright": "Â© {year} YUTRO. Una marca de VRYP â€“ Art & AI Solutions."
   },
   "meta": {
-    "homeTitle": "YUTRO. — Productora Audiovisual con IA",
-    "homeDescription": "Creamos contenido audiovisual con inteligencia artificial. Producción creativa, 3D, motion graphics y postproducción avanzada.",
+    "homeTitle": "YUTRO. â€” Productora Audiovisual con IA",
+    "homeDescription": "Creamos contenido audiovisual con inteligencia artificial. ProducciÃ³n creativa, 3D, motion graphics y postproducciÃ³n avanzada.",
     "projectsTitle": "Proyectos",
     "projectsDescription": "Explora nuestro portafolio de proyectos audiovisuales creados con IA.",
     "servicesTitle": "Servicios",
-    "servicesDescription": "Producción creativa, animación, 3D, motion graphics, postproducción y más con IA.",
+    "servicesDescription": "ProducciÃ³n creativa, animaciÃ³n, 3D, motion graphics, postproducciÃ³n y mÃ¡s con IA.",
     "blogTitle": "Blog",
     "blogDescription": "Noticias, tendencias y novedades del mundo audiovisual con IA.",
     "contactTitle": "Contacto",
-    "contactDescription": "Ponte en contacto con YUTRO. Cuéntanos tu proyecto."
+    "contactDescription": "Ponte en contacto con YUTRO. CuÃ©ntanos tu proyecto."
   }
 }

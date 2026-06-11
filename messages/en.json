@@ -8,7 +8,7 @@
     "contact": "Contact"
   },
   "home": {
-    "heroTitle": "WE CREATE WITH AI",
+    "heroTitle": "WE CREATE<br></br>WITH <accent>AI</accent>",
     "heroSubtitle": "Audiovisual production powered by artificial intelligence",
     "heroCTA": "Let's Talk",
     "featuredTitle": "Featured Projects",
@@ -51,10 +51,10 @@
     "backToHome": "Back to Home",
     "notFound": "Page Not Found",
     "notFoundDescription": "The page you're looking for doesn't exist or has been moved.",
-    "copyright": "© {year} YUTRO. A brand of VRYP – Art & AI Solutions."
+    "copyright": "Â© {year} YUTRO. A brand of VRYP â€“ Art & AI Solutions."
   },
   "meta": {
-    "homeTitle": "YUTRO. — AI-Powered Audiovisual Production",
+    "homeTitle": "YUTRO. â€” AI-Powered Audiovisual Production",
     "homeDescription": "We create audiovisual content with artificial intelligence. Creative production, 3D, motion graphics and advanced post-production.",
     "projectsTitle": "Projects",
     "projectsDescription": "Explore our portfolio of AI-powered audiovisual projects.",

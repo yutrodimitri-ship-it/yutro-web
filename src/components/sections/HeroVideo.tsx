@@ -44,7 +44,10 @@ export function HeroVideo() {
           className="font-heading font-extrabold leading-none text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.5)]"
           style={{ fontSize: "clamp(2.5rem, 6vw, 6rem)", letterSpacing: "0.02em" }}
         >
-          CREAMOS<br />CON <span className="text-primary">IA</span>
+          {t.rich("heroTitle", {
+            br: () => <br />,
+            accent: (chunks) => <span className="text-primary">{chunks}</span>,
+          })}
         </h1>
 
         <div className="max-w-md">

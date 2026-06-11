@@ -218,7 +218,7 @@ export default function InfluencerDetail() {
               >
                 <Image
                   src={img}
-                  alt={`${influencer.name} ${idx + 1}`}
+                  alt={`${influencer.name}, influencer virtual creada con IA — foto ${idx + 1}`}
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
                   sizes="33vw"
@@ -258,7 +258,7 @@ export default function InfluencerDetail() {
           >
             <Image
               src={influencer.gallery[lightboxIndex]}
-              alt={`${influencer.name} ${lightboxIndex + 1}`}
+              alt={`${influencer.name}, influencer virtual creada con IA — foto ${lightboxIndex + 1}`}
               fill
               className="object-contain"
               sizes="90vw"

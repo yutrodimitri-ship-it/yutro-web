@@ -135,7 +135,7 @@ export default async function ProjectPage({
           <h2 className="mb-6 text-2xl font-bold">
             {l === "es" ? "Proceso & Imágenes" : "Process & Images"}
           </h2>
-          <ProjectGallery gallery={project.gallery} />
+          <ProjectGallery gallery={project.gallery} title={`${project.title} · ${project.client}`} />
         </div>
 
         {/* CTA */}

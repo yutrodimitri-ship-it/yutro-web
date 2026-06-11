@@ -192,7 +192,9 @@ function TertuliasIAContentEN() {
 }
 
 export function generateStaticParams() {
-  return blogPosts.map((post) => ({ slug: post.slug }));
+  return blogPosts
+    .filter((post) => post.published)
+    .map((post) => ({ locale: post.locale, slug: post.slug }));
 }
 
 export async function generateMetadata({
@@ -202,13 +204,19 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug, locale } = await params;
   const post = blogPosts.find((p) => p.slug === slug && p.locale === locale);
-  if (!post) return {};
+  if (!post || !post.published) return {};
+  const esSlug = locale === "es" ? post.slug : post.altSlug;
+  const enSlug = locale === "en" ? post.slug : post.altSlug;
   return createMetadata({
     title: post.title,
     description: post.excerpt,
     path: `/blog/${slug}`,
     locale,
     type: "article",
+    alternatePaths: {
+      es: `/blog/${esSlug}`,
+      en: `/blog/${enSlug}`,
+    },
   });
 }
 
@@ -220,7 +228,7 @@ export default async function BlogPostPage({
   const { slug, locale } = await params;
   const post = blogPosts.find((p) => p.slug === slug && p.locale === locale);
 
-  if (!post) notFound();
+  if (!post || !post.published) notFound();
 
   return (
     <section className="py-20 lg:py-28">

@@ -44,6 +44,26 @@ export async function POST(request: Request) {
 
   const data = result.data;
 
+  // Persistir primero en DB: si el SMTP falla, el lead no se pierde.
+  let savedToDb = false;
+  try {
+    const { db } = await import("@/db");
+    const { contactSubmissions } = await import("@/db/schema");
+    await db.insert(contactSubmissions).values({
+      name: data.name,
+      email: data.email,
+      phone: data.phone ?? null,
+      // La tabla no tiene columna subject; se conserva dentro del mensaje
+      message: `[${data.subject}]\n\n${data.message}`,
+      ipAddress: ip !== "unknown" ? ip : null,
+      userAgent: request.headers.get("user-agent"),
+    });
+    savedToDb = true;
+  } catch (err) {
+    console.error("DB insert failed:", err);
+  }
+
+  let emailSent = false;
   try {
     await sendContactEmail({
       name: data.name,
@@ -53,8 +73,16 @@ export async function POST(request: Request) {
       message: data.message,
       ip,
     });
+    emailSent = true;
   } catch (err) {
     console.error("Email send failed:", err);
+  }
+
+  if (!savedToDb && !emailSent) {
+    return NextResponse.json(
+      { error: "No pudimos enviar tu mensaje. Intenta de nuevo o escríbenos directamente." },
+      { status: 502 }
+    );
   }
 
   return NextResponse.json({ success: true });

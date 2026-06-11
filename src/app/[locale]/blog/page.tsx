@@ -11,7 +11,7 @@ export default function BlogPage() {
   const t = useTranslations("blog");
   const locale = useLocale();
 
-  const posts = blogPosts.filter((p) => p.locale === locale);
+  const posts = blogPosts.filter((p) => p.locale === locale && p.published);
 
   return (
     <section className="py-20 lg:py-28">

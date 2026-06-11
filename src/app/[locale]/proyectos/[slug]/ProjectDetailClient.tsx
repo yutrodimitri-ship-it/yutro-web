@@ -33,7 +33,7 @@ export function ProjectHeroImage({
   );
 }
 
-export function ProjectGallery({ gallery }: { gallery: string[] }) {
+export function ProjectGallery({ gallery, title }: { gallery: string[]; title?: string }) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   const close = useCallback(() => setLightboxIndex(null), []);
@@ -80,7 +80,7 @@ export function ProjectGallery({ gallery }: { gallery: string[] }) {
             >
               <Image
                 src={img}
-                alt={`Imagen ${idx + 1}`}
+                alt={title ? `${title} — imagen ${idx + 1} de ${gallery.length}` : `Imagen ${idx + 1}`}
                 fill
                 className="object-cover transition-transform duration-300 group-hover:scale-105"
                 sizes="(max-width: 640px) 50vw, 33vw"
@@ -115,7 +115,7 @@ export function ProjectGallery({ gallery }: { gallery: string[] }) {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={gallery[lightboxIndex]}
-            alt={`Imagen ${lightboxIndex + 1}`}
+            alt={title ? `${title} — imagen ${lightboxIndex + 1} de ${gallery.length}` : `Imagen ${lightboxIndex + 1}`}
             className="max-h-[80vh] max-w-[85vw] object-contain"
             onClick={(e) => e.stopPropagation()}
           />
