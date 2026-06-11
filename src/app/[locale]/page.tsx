@@ -1,11 +1,15 @@
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 import { HeroVideo } from "@/components/sections/HeroVideo";
 import { FeaturedProjects } from "@/components/sections/FeaturedProjects";
-import { ServicesPreview } from "@/components/sections/ServicesPreview";
-import { CTASection } from "@/components/sections/CTASection";
 import { ScrollProgress } from "@/components/animations/ScrollProgress";
-import { SectionDivider } from "@/components/animations/SectionDivider";
 import { createMetadata } from "@/lib/metadata";
+
+// Below-the-fold components loaded dynamically
+const StudioBanner = dynamic(() => import("@/components/sections/StudioBanner").then(m => ({ default: m.StudioBanner })));
+const ServicesPreview = dynamic(() => import("@/components/sections/ServicesPreview").then(m => ({ default: m.ServicesPreview })));
+const SectionDivider = dynamic(() => import("@/components/animations/SectionDivider").then(m => ({ default: m.SectionDivider })));
+const CTASection = dynamic(() => import("@/components/sections/CTASection").then(m => ({ default: m.CTASection })));
 
 const meta: Record<string, { title: string; description: string }> = {
   es: {
@@ -35,13 +39,15 @@ export async function generateMetadata({
   });
 }
 
+export const revalidate = 3600; // ISR: revalidate every hour
+
 export default function HomePage() {
   return (
     <>
       <ScrollProgress />
       <HeroVideo />
       <FeaturedProjects />
-      <SectionDivider />
+      <StudioBanner />
       <ServicesPreview />
       <SectionDivider />
       <CTASection />

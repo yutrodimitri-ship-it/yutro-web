@@ -212,7 +212,6 @@ export const projects: Project[] = [
       "/projects/proyecto-mg/04.webp",
       "/projects/proyecto-mg/05.webp",
       "/projects/proyecto-mg/06.webp",
-      "/projects/proyecto-mg/07.webp",
     ],
     featured: false,
   },

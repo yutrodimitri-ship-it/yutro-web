@@ -10,6 +10,32 @@ export interface BlogPostEntry extends BlogPost {
 
 export const blogPosts: BlogPostEntry[] = [
   {
+    slug: "seedance-2-bytedance-video-ia-escandalo-hollywood-benchmarks",
+    altSlug: "seedance-2-bytedance-video-ai-hollywood-scandal-benchmarks",
+    published: true,
+    title:
+      "Seedance 2.0: el modelo de video de ByteDance que escandalizó a Hollywood y lidera los benchmarks mundiales",
+    excerpt:
+      "ByteDance lanzó Seedance 2.0 en febrero 2026. En 48 horas generó clips tan realistas que Hollywood reaccionó con cartas de cese. Hoy está disponible en CapCut con el Elo más alto del mundo en generación de video.",
+    image: "/blog/seedance-2-bytedance.webp",
+    date: "2026-04-01",
+    readingTime: 9,
+    locale: "es",
+  },
+  {
+    slug: "seedance-2-bytedance-video-ai-hollywood-scandal-benchmarks",
+    altSlug: "seedance-2-bytedance-video-ia-escandalo-hollywood-benchmarks",
+    published: true,
+    title:
+      "Seedance 2.0: ByteDance's video model that scandalized Hollywood and leads global benchmarks",
+    excerpt:
+      "ByteDance launched Seedance 2.0 in February 2026. Within 48 hours it generated clips so realistic that Hollywood responded with cease-and-desist letters. Today it's available on CapCut with the world's highest Elo in video generation.",
+    image: "/blog/seedance-2-bytedance.webp",
+    date: "2026-04-01",
+    readingTime: 9,
+    locale: "en",
+  },
+  {
     slug: "tertulias-ia-universidad-mayor-comfyui-casting-digital",
     altSlug: "tertulias-ia-universidad-mayor-comfyui-digital-casting",
     title: "Casting digital con ComfyUI en Tertulias IA – Universidad Mayor",

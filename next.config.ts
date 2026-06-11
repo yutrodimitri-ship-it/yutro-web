@@ -12,8 +12,27 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "cdn.sanity.io",
       },
+      {
+        protocol: "https",
+        hostname: "comfy.yutro.cl",
+      },
+      {
+        protocol: "https",
+        hostname: "*.supabase.co",
+      },
     ],
   },
+  // Silence the "Critical dependency: the request of a dependency is an expression"
+  // warning emitted by @opentelemetry/instrumentation (transitive via
+  // @sentry/node → @sentry/nextjs). It's a known false-positive: the dynamic
+  // require is gated behind feature detection and never reached in our build.
+  // See: https://github.com/open-telemetry/opentelemetry-js/issues/4297
+  serverExternalPackages: [
+    "@sentry/nextjs",
+    "@sentry/node",
+    "@opentelemetry/instrumentation",
+    "@prisma/instrumentation",
+  ],
 };
 
 export default withNextIntl(nextConfig);

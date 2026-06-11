@@ -10,27 +10,26 @@ import { LanguageSwitcher } from "./LanguageSwitcher";
 import { MobileNav } from "./MobileNav";
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 
-const navItems = [
-  { key: "projects", href: "/proyectos", anchor: null },
-  { key: "services", href: "/servicios", anchor: null },
-  { key: "influencer", href: "/influencer", anchor: null },
-  { key: "blog", href: "/blog", anchor: null },
-  { key: "contact", href: "/contacto", anchor: "#contacto-cta" },
-] as const;
+import { mainNavItems } from "@/data/navigation";
 
 export function Header() {
   const t = useTranslations("nav");
   const pathname = usePathname();
   const { scrollY } = useScroll();
   const [scrolled, setScrolled] = useState(false);
+  const isStudio = pathname.includes("/studio");
 
   // Detect if we're on the homepage (e.g. "/es", "/en", "/es/", "/en/")
   const isHome = /^\/(es|en)\/?$/.test(pathname);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
+    if (isStudio) return;
     if (latest > 80) setScrolled(true);
     else if (latest < 20) setScrolled(false);
   });
+
+  // Hide header in Studio routes (after all hooks)
+  if (isStudio) return null;
 
   function handleAnchorClick(e: React.MouseEvent, anchor: string) {
     e.preventDefault();
@@ -60,8 +59,16 @@ export function Header() {
 
           {/* Desktop Nav */}
           <div className="hidden items-center gap-12 md:flex">
-            {navItems.map((item) =>
-              isHome && item.anchor ? (
+            {mainNavItems.map((item) =>
+              item.key === "studio" ? (
+                <a
+                  key={item.key}
+                  href={`/${pathname.split("/")[1]}/studio/login`}
+                  className="text-sm font-medium text-foreground/70 transition-colors hover:text-primary"
+                >
+                  {t(item.key)}
+                </a>
+              ) : isHome && item.anchor ? (
                 <a
                   key={item.key}
                   href={item.anchor}

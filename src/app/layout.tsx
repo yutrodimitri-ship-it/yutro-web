@@ -1,19 +1,34 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, Outfit } from "next/font/google";
+import { Plus_Jakarta_Sans, Outfit, Archivo, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
 const plusJakarta = Plus_Jakarta_Sans({
   variable: "--font-sans",
   subsets: ["latin"],
   display: "swap",
-  weight: ["300", "400", "500", "600", "700", "800"],
+  weight: ["400", "500", "600", "700"],
 });
 
 const outfit = Outfit({
   variable: "--font-heading",
   subsets: ["latin"],
   display: "swap",
-  weight: ["600", "700", "800", "900"],
+  weight: ["300", "400", "700", "800"],
+});
+
+const archivo = Archivo({
+  variable: "--font-display",
+  subsets: ["latin"],
+  display: "swap",
+  style: ["normal", "italic"],
+  weight: ["700", "800", "900"],
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains",
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["300", "400", "500"],
 });
 
 export const metadata: Metadata = {
@@ -55,7 +70,7 @@ export default async function RootLayout({
   const { locale } = await params;
   const lang = locale === "en" ? "en" : "es";
   return (
-    <html lang={lang} className={`${plusJakarta.variable} ${outfit.variable} h-full antialiased`} suppressHydrationWarning>
+    <html lang={lang} className={`${plusJakarta.variable} ${outfit.variable} ${archivo.variable} ${jetbrainsMono.variable} h-full antialiased`} suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{

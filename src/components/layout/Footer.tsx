@@ -1,19 +1,19 @@
+"use client";
+
 import { useTranslations } from "next-intl";
+import { usePathname } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import { Container } from "@/components/shared/Container";
 import { contactInfo } from "@/data/contact";
 
-const navItems = [
-  { key: "projects", href: "/proyectos" },
-  { key: "services", href: "/servicios" },
-  { key: "influencer", href: "/influencer" },
-  { key: "blog", href: "/blog" },
-  { key: "contact", href: "/contacto" },
-] as const;
+import { footerNavItems as navItems } from "@/data/navigation";
 
 export function Footer() {
+  const pathname = usePathname();
   const t = useTranslations("nav");
   const tCommon = useTranslations("common");
+
+  if (pathname.includes("/studio")) return null;
 
   return (
     <footer className="border-t border-border bg-card">

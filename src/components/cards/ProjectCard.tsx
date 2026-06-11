@@ -34,7 +34,7 @@ export function ProjectCard({ project, locale, index = 0, featured = false }: Pr
     <motion.div
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: false, margin: "-60px" }}
+      viewport={{ once: true, margin: "-60px" }}
       whileHover={{ y: -4 }}
       transition={{ type: "spring", stiffness: 120, damping: 20 }}
     >
@@ -50,8 +50,9 @@ export function ProjectCard({ project, locale, index = 0, featured = false }: Pr
             src={project.image}
             alt={project.title}
             fill
+            priority={featured && index === 0}
             className="object-cover transition-transform duration-700 group-hover:scale-110"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            sizes={featured ? "(max-width: 1024px) 100vw, 70vw" : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"}
           />
 
           {/* Overlay — dark in light theme, light in dark theme */}
