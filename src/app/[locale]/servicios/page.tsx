@@ -7,7 +7,10 @@ import { Container } from "@/components/shared/Container";
 import { SectionHeader } from "@/components/shared/SectionHeader";
 import { FadeInOnScroll } from "@/components/animations/FadeInOnScroll";
 import { AIToolsSection } from "@/components/sections/AIToolsSection";
+import { Link } from "@/i18n/navigation";
+import { ArrowRight } from "lucide-react";
 import { services } from "@/data/services";
+import { serviceLandings } from "@/data/landings";
 
 export default function ServicesPage() {
   const t = useTranslations("services");
@@ -69,6 +72,38 @@ export default function ServicesPage() {
                 </FadeInOnScroll>
               );
             })}
+          </div>
+          {/* Soluciones específicas (landings SEO) */}
+          <div className="mt-20">
+            <FadeInOnScroll>
+              <SectionHeader
+                title={locale === "es" ? "Soluciones específicas" : "Specific solutions"}
+                align="left"
+              />
+            </FadeInOnScroll>
+            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {serviceLandings.map((landing, i) => (
+                <FadeInOnScroll key={landing.slug} delay={i * 0.05}>
+                  <Link
+                    href={`/servicios/${landing.slug}`}
+                    className="group flex h-full flex-col justify-between rounded-xl border border-border bg-card p-6 transition-colors hover:border-primary/50"
+                  >
+                    <div>
+                      <h3 className="font-semibold group-hover:text-primary">
+                        {landing.copy[locale].h1}
+                      </h3>
+                      <p className="mt-2 text-sm leading-relaxed text-muted-foreground line-clamp-2">
+                        {landing.copy[locale].metaDescription}
+                      </p>
+                    </div>
+                    <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-primary">
+                      {locale === "es" ? "Ver más" : "Learn more"}
+                      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    </span>
+                  </Link>
+                </FadeInOnScroll>
+              ))}
+            </div>
           </div>
         </Container>
       </section>

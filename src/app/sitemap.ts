@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { projects } from "@/data/projects";
 import { blogPosts } from "@/data/blog";
 import { influencers } from "@/data/influencers";
+import { serviceLandings } from "@/data/landings";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.yutro.cl";
 
@@ -20,6 +21,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }))
   );
 
+  // Landings SEO de servicios
+  const landingEntries = locales.flatMap((locale) =>
+    serviceLandings.map((landing) => ({
+      url: `${SITE_URL}/${locale}/servicios/${landing.slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.9,
+      alternates: {
+        languages: {
+          es: `${SITE_URL}/es/servicios/${landing.slug}`,
+          en: `${SITE_URL}/en/servicios/${landing.slug}`,
+        },
+      },
+    }))
+  );
+
   // Project pages
   const projectEntries = locales.flatMap((locale) =>
     projects.map((project) => ({
@@ -30,13 +47,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }))
   );
 
-  // Blog pages
-  const blogEntries = blogPosts.map((post) => ({
-    url: `${SITE_URL}/${post.locale}/blog/${post.slug}`,
-    lastModified: new Date(post.date),
-    changeFrequency: "monthly" as const,
-    priority: 0.6,
-  }));
+  // Blog pages (solo posts con contenido real)
+  const blogEntries = blogPosts
+    .filter((post) => post.published)
+    .map((post) => ({
+      url: `${SITE_URL}/${post.locale}/blog/${post.slug}`,
+      lastModified: new Date(post.date),
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+      alternates: {
+        languages: {
+          es: `${SITE_URL}/es/blog/${post.locale === "es" ? post.slug : post.altSlug}`,
+          en: `${SITE_URL}/en/blog/${post.locale === "en" ? post.slug : post.altSlug}`,
+        },
+      },
+    }));
 
   // Influencer pages
   const influencerEntries = locales.flatMap((locale) =>
@@ -48,5 +73,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }))
   );
 
-  return [...staticEntries, ...projectEntries, ...blogEntries, ...influencerEntries];
+  return [...staticEntries, ...landingEntries, ...projectEntries, ...blogEntries, ...influencerEntries];
 }
