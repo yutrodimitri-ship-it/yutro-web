@@ -60,6 +60,18 @@ const nextConfig: NextConfig = {
         destination: "/:locale/casting/featured",
         permanent: true,
       },
+      // Alias amigable: yutro.cl/catalogo -> /casting (canonica para SEO).
+      // Sin locale tambien funciona: el middleware de next-intl resuelve.
+      {
+        source: "/catalogo",
+        destination: "/es/casting",
+        permanent: false,
+      },
+      {
+        source: "/:locale(es|en)/catalogo",
+        destination: "/:locale/casting",
+        permanent: false,
+      },
     ];
   },
 };
