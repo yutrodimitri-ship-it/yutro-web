@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Link } from "@/i18n/navigation";
@@ -130,7 +130,7 @@ export default async function ServiceLandingPage({
           />
         </div>
 
-        {/* QuÃ© incluye */}
+        {/* Qué incluye */}
         <section className="mt-16">
           <h2 className="text-2xl font-bold sm:text-3xl">{copy.includesTitle}</h2>
           <div className="mt-8 grid gap-6 sm:grid-cols-2">
@@ -173,7 +173,7 @@ export default async function ServiceLandingPage({
                   <div className="relative aspect-video overflow-hidden bg-muted">
                     <Image
                       src={project.image}
-                      alt={`${project.title} Â· ${project.client}`}
+                      alt={`${project.title} · ${project.client}`}
                       fill
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
                       sizes="(max-width: 640px) 100vw, 33vw"
@@ -244,11 +244,11 @@ export default async function ServiceLandingPage({
         {/* CTA final */}
         <div className="mt-16 rounded-xl border border-border bg-card p-10 text-center">
           <h2 className="text-2xl font-bold">
-            {l === "es" ? "Â¿Tienes un proyecto en mente?" : "Have a project in mind?"}
+            {l === "es" ? "¿Tienes un proyecto en mente?" : "Have a project in mind?"}
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
             {l === "es"
-              ? "CuÃ©ntanos quÃ© necesitas y te enviamos una propuesta con tiempos y presupuesto en 48 horas."
+              ? "Cuéntanos qué necesitas y te enviamos una propuesta con tiempos y presupuesto en 48 horas."
               : "Tell us what you need and we'll send a proposal with timeline and budget within 48 hours."}
           </p>
           <div className="mt-6">

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Image from "next/image";
 import { useTranslations, useLocale } from "next-intl";
@@ -73,11 +73,11 @@ export default function ServicesPage() {
               );
             })}
           </div>
-          {/* Soluciones especÃ­ficas (landings SEO) */}
+          {/* Soluciones específicas (landings SEO) */}
           <div className="mt-20">
             <FadeInOnScroll>
               <SectionHeader
-                title={locale === "es" ? "Soluciones especÃ­ficas" : "Specific solutions"}
+                title={locale === "es" ? "Soluciones específicas" : "Specific solutions"}
                 align="left"
               />
             </FadeInOnScroll>
@@ -97,7 +97,7 @@ export default function ServicesPage() {
                       </p>
                     </div>
                     <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-primary">
-                      {locale === "es" ? "Ver mÃ¡s" : "Learn more"}
+                      {locale === "es" ? "Ver más" : "Learn more"}
                       <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                     </span>
                   </Link>
