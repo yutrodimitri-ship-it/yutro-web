@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Link } from "@/i18n/navigation";
@@ -7,7 +7,7 @@ import { CTAButton } from "@/components/shared/CTAButton";
 import { JsonLd, BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 import { serviceLandings } from "@/data/landings";
 import { projects } from "@/data/projects";
-import { influencers } from "@/data/influencers";
+import { getFeaturedTalents, resolvePublicImage } from "@/lib/talents-public";
 import { createMetadata } from "@/lib/metadata";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.yutro.cl";
@@ -30,7 +30,7 @@ export async function generateMetadata({
   return createMetadata({
     title: copy.metaTitle,
     description: copy.metaDescription,
-    path: `/servicios/${slug}`,
+    path: `/produccion/${slug}`,
     locale,
   });
 }
@@ -49,6 +49,8 @@ export default async function ServiceLandingPage({
   const relatedProjects = landing.relatedProjects
     .map((s) => projects.find((p) => p.slug === s))
     .filter((p) => p !== undefined);
+  // Los influencers pasaron a ser talentos destacados del catalogo publico
+  const featuredTalents = landing.showInfluencers ? await getFeaturedTalents() : [];
 
   return (
     <article className="py-20 lg:py-28">
@@ -59,7 +61,7 @@ export default async function ServiceLandingPage({
           name: copy.h1,
           description: copy.metaDescription,
           serviceType: copy.h1,
-          url: `${SITE_URL}/${l}/servicios/${slug}`,
+          url: `${SITE_URL}/${l}/produccion/${slug}`,
           areaServed: [
             { "@type": "Country", name: "Chile" },
             { "@type": "AdministrativeArea", name: "Latin America" },
@@ -90,8 +92,8 @@ export default async function ServiceLandingPage({
       <BreadcrumbJsonLd
         items={[
           { name: "Yutro", url: `${SITE_URL}/${l}` },
-          { name: l === "es" ? "Servicios" : "Services", url: `${SITE_URL}/${l}/servicios` },
-          { name: copy.h1, url: `${SITE_URL}/${l}/servicios/${slug}` },
+          { name: l === "es" ? "Producción" : "Production", url: `${SITE_URL}/${l}/produccion` },
+          { name: copy.h1, url: `${SITE_URL}/${l}/produccion/${slug}` },
         ]}
       />
 
@@ -128,7 +130,7 @@ export default async function ServiceLandingPage({
           />
         </div>
 
-        {/* Qué incluye */}
+        {/* QuÃ© incluye */}
         <section className="mt-16">
           <h2 className="text-2xl font-bold sm:text-3xl">{copy.includesTitle}</h2>
           <div className="mt-8 grid gap-6 sm:grid-cols-2">
@@ -171,7 +173,7 @@ export default async function ServiceLandingPage({
                   <div className="relative aspect-video overflow-hidden bg-muted">
                     <Image
                       src={project.image}
-                      alt={`${project.title} · ${project.client}`}
+                      alt={`${project.title} Â· ${project.client}`}
                       fill
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
                       sizes="(max-width: 640px) 100vw, 33vw"
@@ -187,30 +189,36 @@ export default async function ServiceLandingPage({
                   </div>
                 </Link>
               ))}
-              {landing.showInfluencers &&
-                influencers.map((inf) => (
+              {featuredTalents.map((talent) => {
+                const imageSrc = resolvePublicImage(talent.imageProfileKey);
+                return (
                   <Link
-                    key={inf.slug}
-                    href={`/influencer/${inf.slug}`}
+                    key={talent.slug}
+                    href={`/casting/${talent.slug}`}
                     className="group overflow-hidden rounded-xl border border-border bg-card"
                   >
                     <div className="relative aspect-video overflow-hidden bg-muted">
-                      <Image
-                        src={inf.image}
-                        alt={`${inf.name}, influencer virtual creada con IA por Yutro`}
-                        fill
-                        className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
-                        sizes="(max-width: 640px) 100vw, 33vw"
-                      />
+                      {imageSrc && (
+                        <Image
+                          src={imageSrc}
+                          alt={`${talent.nameEs}, talento digital de Yutro`}
+                          fill
+                          className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                          sizes="(max-width: 640px) 100vw, 33vw"
+                        />
+                      )}
                     </div>
                     <div className="p-4">
                       <p className="text-xs uppercase tracking-wider text-muted-foreground">
-                        {l === "es" ? "Influencer virtual" : "Virtual influencer"}
+                        {l === "es" ? "Talento destacado" : "Featured talent"}
                       </p>
-                      <h3 className="mt-1 font-semibold group-hover:text-primary">{inf.name}</h3>
+                      <h3 className="mt-1 font-semibold group-hover:text-primary">
+                        {l === "es" ? talent.nameEs : talent.nameEn}
+                      </h3>
                     </div>
                   </Link>
-                ))}
+                );
+              })}
             </div>
           </section>
         )}
@@ -236,11 +244,11 @@ export default async function ServiceLandingPage({
         {/* CTA final */}
         <div className="mt-16 rounded-xl border border-border bg-card p-10 text-center">
           <h2 className="text-2xl font-bold">
-            {l === "es" ? "¿Tienes un proyecto en mente?" : "Have a project in mind?"}
+            {l === "es" ? "Â¿Tienes un proyecto en mente?" : "Have a project in mind?"}
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
             {l === "es"
-              ? "Cuéntanos qué necesitas y te enviamos una propuesta con tiempos y presupuesto en 48 horas."
+              ? "CuÃ©ntanos quÃ© necesitas y te enviamos una propuesta con tiempos y presupuesto en 48 horas."
               : "Tell us what you need and we'll send a proposal with timeline and budget within 48 hours."}
           </p>
           <div className="mt-6">

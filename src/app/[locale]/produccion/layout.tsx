@@ -3,14 +3,14 @@ import { createMetadata } from "@/lib/metadata";
 
 const meta: Record<string, { title: string; description: string }> = {
   es: {
-    title: "Influencer",
+    title: "Producción",
     description:
-      "Avatares digitales creados con IA para campañas de alto impacto. Influencers virtuales personalizados por YUTRO.",
+      "Producción audiovisual con IA: 3D, motion graphics, postproducción y contenido generativo para campañas publicitarias.",
   },
   en: {
-    title: "Influencer",
+    title: "Production",
     description:
-      "AI-created digital avatars for high-impact campaigns. Custom virtual influencers by YUTRO.",
+      "AI-driven audiovisual production: 3D, motion graphics, post-production and generative content for advertising campaigns.",
   },
 };
 
@@ -24,12 +24,12 @@ export async function generateMetadata({
   return createMetadata({
     title: m.title,
     description: m.description,
-    path: "/influencer",
+    path: "/produccion",
     locale,
   });
 }
 
-export default function InfluencerLayout({
+export default function ProduccionLayout({
   children,
 }: {
   children: React.ReactNode;

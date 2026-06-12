@@ -69,8 +69,6 @@ export const talentInputSchema = z.object({
   ageBucket: z.enum(TALENT_AGE_BUCKETS),
   phenotypeEs: z.string().min(1).max(200),
   phenotypeEn: z.string().min(1).max(200),
-  archetypeEs: z.string().min(1).max(200),
-  archetypeEn: z.string().min(1).max(200),
   category: z.enum(TALENT_CATEGORIES),
   toneCommercialEs: z.string().min(1).max(200),
   toneCommercialEn: z.string().min(1).max(200),

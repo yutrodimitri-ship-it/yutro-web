@@ -387,7 +387,6 @@ function rowToTalent(row: TalentRow): Talent {
     ageRange: row.ageRange,
     ageBucket: row.ageBucket as TalentAgeBucket,
     phenotype: { es: row.phenotypeEs, en: row.phenotypeEn },
-    archetype: { es: row.archetypeEs, en: row.archetypeEn },
     category: row.category as TalentCategory,
     toneCommercial: { es: row.toneCommercialEs, en: row.toneCommercialEn },
     bio:

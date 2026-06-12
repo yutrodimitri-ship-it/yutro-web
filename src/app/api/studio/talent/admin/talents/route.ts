@@ -66,8 +66,6 @@ export async function POST(request: Request) {
     shortDescEn: data.shortDescEn,
     phenotypeEs: data.phenotypeEs,
     phenotypeEn: data.phenotypeEn,
-    archetypeEs: data.archetypeEs,
-    archetypeEn: data.archetypeEn,
     toneCommercialEs: data.toneCommercialEs,
     toneCommercialEn: data.toneCommercialEn,
     bioEs: data.bioEs || null,

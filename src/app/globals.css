@@ -234,31 +234,31 @@ body::after {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   Yutro Estudio Talent — submarca curada dentro de /studio.
+   Yutro Studio Talent — submarca curada dentro de /studio.
    Aliases locales que apuntan a tokens globales (--accent dorado +
    surfaces dark del studio). Solo agrega helpers tipograficos
    especificos del modulo Talent. NO redefine colores nuevos.
    ───────────────────────────────────────────────────────────── */
 .studio-talent {
-  /* Surfaces — warm cream editorial */
-  --talent-bg: oklch(0.95 0.018 77);
-  --talent-bg-elev: oklch(0.97 0.012 75);
-  --talent-bg-elev-2: oklch(0.91 0.020 77);
+  /* Surfaces — white */
+  --talent-bg: oklch(1 0 0);
+  --talent-bg-elev: oklch(0.99 0 0);
+  --talent-bg-elev-2: oklch(0.96 0 0);
 
   /* Ink */
   --talent-ink: oklch(0.13 0 0);
   --talent-ink-dim: oklch(0.42 0 0);
   --talent-ink-mute: oklch(0.60 0 0);
-  --talent-line: oklch(0.84 0.016 77);
-  --talent-line-strong: oklch(0.70 0.018 77);
+  --talent-line: oklch(0.88 0 0);
+  --talent-line-strong: oklch(0.75 0 0);
 
   /* Accent — brand orange */
   --talent-accent: var(--accent);
   --talent-accent-soft: var(--accent-soft);
   --talent-accent-line: oklch(from var(--accent) l c h / 0.4);
 
-  /* Override heading font: Archivo 800 dentro del módulo Talent */
-  --font-heading: var(--font-display);
+  /* Override heading font: Roboto dentro del módulo Talent */
+  --font-heading: var(--font-roboto);
 
   /* Status */
   --talent-danger: oklch(0.50 0.18 25);

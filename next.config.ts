@@ -33,6 +33,47 @@ const nextConfig: NextConfig = {
     "@opentelemetry/instrumentation",
     "@prisma/instrumentation",
   ],
+
+  // Redirects 301 a nivel servidor — el brief Sprint 1 los pide
+  // explicitos asi para preservar SEO de las URLs antiguas.
+  //   /servicios -> /produccion        (Tarea 1.5)
+  //   /influencer -> /casting/featured (Tarea 1.6)
+  async redirects() {
+    return [
+      {
+        source: "/:locale(es|en)/servicios",
+        destination: "/:locale/produccion",
+        permanent: true,
+      },
+      {
+        source: "/:locale(es|en)/servicios/:path*",
+        destination: "/:locale/produccion/:path*",
+        permanent: true,
+      },
+      {
+        source: "/:locale(es|en)/influencer",
+        destination: "/:locale/casting/featured",
+        permanent: true,
+      },
+      {
+        source: "/:locale(es|en)/influencer/:path*",
+        destination: "/:locale/casting/featured",
+        permanent: true,
+      },
+      // Alias amigable: yutro.cl/catalogo -> /casting (canonica para SEO).
+      // Sin locale tambien funciona: el middleware de next-intl resuelve.
+      {
+        source: "/catalogo",
+        destination: "/es/casting",
+        permanent: false,
+      },
+      {
+        source: "/:locale(es|en)/catalogo",
+        destination: "/:locale/casting",
+        permanent: false,
+      },
+    ];
+  },
 };
 
 export default withNextIntl(nextConfig);

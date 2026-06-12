@@ -11,7 +11,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 
-import { mobileNavItems } from "@/data/navigation";
+import { mobileNavItems, clientAccessItem } from "@/data/navigation";
 
 export function MobileNav() {
   const t = useTranslations("nav");
@@ -40,22 +40,12 @@ export function MobileNav() {
           <line x1="4" y1="18" x2="20" y2="18" />
         </svg>
       </SheetTrigger>
-      <SheetContent side="right" className="w-72">
+      <SheetContent side="right" className="flex w-72 flex-col">
         <SheetTitle className="text-2xl font-extrabold">
           YUTRO<span className="text-primary">.</span>
         </SheetTitle>
         <nav className="mt-8 flex flex-col gap-4">
           {mobileNavItems.map((item) => (
-            "external" in item && item.external ? (
-            <a
-              key={item.key}
-              href={`/${locale}${item.href}`}
-              onClick={() => setOpen(false)}
-              className="text-lg font-medium text-foreground/70 transition-colors hover:text-primary"
-            >
-              {t(item.key)}
-            </a>
-            ) : (
             <Link
               key={item.key}
               href={item.href}
@@ -64,9 +54,20 @@ export function MobileNav() {
             >
               {t(item.key)}
             </Link>
-            )
           ))}
         </nav>
+
+        {/* Acceso cliente — separado al final del drawer, mismo estilo
+            outlined coral que en desktop */}
+        <div className="mt-auto pt-6">
+          <a
+            href={`/${locale}${clientAccessItem.href}`}
+            onClick={() => setOpen(false)}
+            className="inline-flex w-full items-center justify-center rounded-full border border-primary/60 px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.12em] text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
+          >
+            {t(clientAccessItem.key)}
+          </a>
+        </div>
       </SheetContent>
     </Sheet>
   );

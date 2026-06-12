@@ -9,8 +9,8 @@ export const contactInfo = {
     url: "https://www.instagram.com/yutro_ia/",
   },
   company: {
-    name: "YUTRO.",
-    parent: "VRYP – Art & AI Solutions",
+    name: "Yutro",
+    parent: "VRYP Art & AI Solutions",
     url: "https://www.yutro.cl",
   },
 };

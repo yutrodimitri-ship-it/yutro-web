@@ -22,7 +22,7 @@ const lines: string[] = [];
 // Talents
 for (const t of TALENTS) {
   lines.push(
-    `INSERT INTO talents (code, name_es, name_en, short_desc_es, short_desc_en, phenotype_es, phenotype_en, archetype_es, archetype_en, tone_commercial_es, tone_commercial_en, gender, age_range, age_bucket, category, status, market, suggested_uses, hue, sat) VALUES (` +
+    `INSERT INTO talents (code, name_es, name_en, short_desc_es, short_desc_en, phenotype_es, phenotype_en, tone_commercial_es, tone_commercial_en, gender, age_range, age_bucket, category, status, market, suggested_uses, hue, sat) VALUES (` +
       [
         quote(t.code),
         quote(t.name.es),
@@ -31,8 +31,6 @@ for (const t of TALENTS) {
         quote(t.shortDesc.en),
         quote(t.phenotype.es),
         quote(t.phenotype.en),
-        quote(t.archetype.es),
-        quote(t.archetype.en),
         quote(t.toneCommercial.es),
         quote(t.toneCommercial.en),
         quote(t.gender),

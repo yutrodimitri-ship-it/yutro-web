@@ -10,7 +10,7 @@ import { LanguageSwitcher } from "./LanguageSwitcher";
 import { MobileNav } from "./MobileNav";
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 
-import { mainNavItems } from "@/data/navigation";
+import { mainNavItems, clientAccessItem } from "@/data/navigation";
 
 export function Header() {
   const t = useTranslations("nav");
@@ -18,6 +18,7 @@ export function Header() {
   const { scrollY } = useScroll();
   const [scrolled, setScrolled] = useState(false);
   const isStudio = pathname.includes("/studio");
+  const locale = pathname.split("/")[1] || "es";
 
   // Detect if we're on the homepage (e.g. "/es", "/en", "/es/", "/en/")
   const isHome = /^\/(es|en)\/?$/.test(pathname);
@@ -57,18 +58,10 @@ export function Header() {
             YUTRO<span className="text-primary">.</span>
           </Link>
 
-          {/* Desktop Nav */}
-          <div className="hidden items-center gap-12 md:flex">
+          {/* Desktop Nav — centro */}
+          <div className="hidden items-center gap-10 md:flex">
             {mainNavItems.map((item) =>
-              item.key === "studio" ? (
-                <a
-                  key={item.key}
-                  href={`/${pathname.split("/")[1]}/studio/login`}
-                  className="text-sm font-medium text-foreground/70 transition-colors hover:text-primary"
-                >
-                  {t(item.key)}
-                </a>
-              ) : isHome && item.anchor ? (
+              isHome && item.anchor ? (
                 <a
                   key={item.key}
                   href={item.anchor}
@@ -89,10 +82,22 @@ export function Header() {
             )}
           </div>
 
-          {/* Actions */}
-          <div className="flex items-center gap-2">
+          {/* Actions — derecha */}
+          <div className="flex items-center gap-2 md:gap-3">
             <LanguageSwitcher />
             <ThemeSwitcher />
+
+            {/* Divisor sutil entre toggles y CTA */}
+            <span className="hidden h-5 w-px bg-foreground/15 md:block" aria-hidden />
+
+            {/* Acceso cliente — outlined coral, visualmente separado */}
+            <a
+              href={`/${locale}${clientAccessItem.href}`}
+              className="hidden items-center rounded-full border border-primary/60 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.12em] text-primary transition-colors hover:bg-primary hover:text-primary-foreground md:inline-flex"
+            >
+              {t(clientAccessItem.key)}
+            </a>
+
             <MobileNav />
           </div>
         </nav>

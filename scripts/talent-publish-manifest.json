@@ -1,6 +1,6 @@
 {
   "_comment": "Manifiesto de curaduría: variante → archivo fuente. Para reemplazar un shot, apuntar la variante al archivo nuevo (path absoluto OK) y correr publish-talents.ts --talent <code>. Las variantes ausentes no se publican.",
-  "generated_at": "2026-06-11T19:19:21.353Z",
+  "generated_at": "2026-06-11T23:39:06.444Z",
   "talents": {
     "YE-M01": {
       "profile": "public/talents/YE-M01/profile.png",
@@ -19,6 +19,7 @@
       "charsheet": "public/talents/YE-M02/charsheet.png",
       "gallery-1": "public/talents/YE-M02/gallery-1.png",
       "gallery-2": "public/talents/YE-M02/gallery-2.png",
+      "gallery-3": "public/talents/YE-M02/gallery-3.png",
       "gallery-4": "public/talents/YE-M02/gallery-4.png",
       "gallery-5": "public/talents/YE-M02/gallery-5.png",
       "gallery-6": "public/talents/YE-M02/gallery-6.png",
@@ -69,6 +70,7 @@
       "gallery-3": "public/talents/YE-M06/gallery-3.png",
       "gallery-4": "public/talents/YE-M06/gallery-4.png",
       "gallery-5": "public/talents/YE-M06/gallery-5.png",
+      "gallery-6": "public/talents/YE-M06/gallery-6.png",
       "gallery-7": "public/talents/YE-M06/gallery-7.png",
       "gallery-8": "public/talents/YE-M06/gallery-8.png"
     },
@@ -78,6 +80,7 @@
       "gallery-1": "public/talents/YE-M07/gallery-1.png",
       "gallery-2": "public/talents/YE-M07/gallery-2.png",
       "gallery-3": "public/talents/YE-M07/gallery-3.png",
+      "gallery-4": "public/talents/YE-M07/gallery-4.png",
       "gallery-5": "public/talents/YE-M07/gallery-5.png",
       "gallery-6": "public/talents/YE-M07/gallery-6.png",
       "gallery-7": "public/talents/YE-M07/gallery-7.png",
@@ -100,6 +103,7 @@
       "charsheet": "public/talents/YE-M09/charsheet.png",
       "gallery-1": "public/talents/YE-M09/gallery-1.png",
       "gallery-2": "public/talents/YE-M09/gallery-2.png",
+      "gallery-3": "public/talents/YE-M09/gallery-3.png",
       "gallery-4": "public/talents/YE-M09/gallery-4.png",
       "gallery-5": "public/talents/YE-M09/gallery-5.png",
       "gallery-6": "public/talents/YE-M09/gallery-6.png",
@@ -127,7 +131,8 @@
       "gallery-4": "public/talents/YE-M11/gallery-4.png",
       "gallery-5": "public/talents/YE-M11/gallery-5.png",
       "gallery-6": "public/talents/YE-M11/gallery-6.png",
-      "gallery-7": "public/talents/YE-M11/gallery-7.png"
+      "gallery-7": "public/talents/YE-M11/gallery-7.png",
+      "gallery-8": "public/talents/YE-M11/gallery-8.png"
     },
     "YE-M12": {
       "profile": "public/talents/YE-M12/profile.png",
@@ -138,6 +143,7 @@
       "gallery-4": "public/talents/YE-M12/gallery-4.png",
       "gallery-5": "public/talents/YE-M12/gallery-5.png",
       "gallery-6": "public/talents/YE-M12/gallery-6.png",
+      "gallery-7": "public/talents/YE-M12/gallery-7.png",
       "gallery-8": "public/talents/YE-M12/gallery-8.png"
     },
     "YE-M13": {
@@ -157,9 +163,11 @@
       "charsheet": "public/talents/YE-M14/charsheet.png",
       "gallery-1": "public/talents/YE-M14/gallery-1.png",
       "gallery-2": "public/talents/YE-M14/gallery-2.png",
+      "gallery-3": "public/talents/YE-M14/gallery-3.png",
       "gallery-4": "public/talents/YE-M14/gallery-4.png",
       "gallery-5": "public/talents/YE-M14/gallery-5.png",
       "gallery-6": "public/talents/YE-M14/gallery-6.png",
+      "gallery-7": "public/talents/YE-M14/gallery-7.png",
       "gallery-8": "public/talents/YE-M14/gallery-8.png"
     },
     "YE-M15": {
@@ -195,6 +203,7 @@
       "gallery-4": "public/talents/YE-M17/gallery-4.png",
       "gallery-5": "public/talents/YE-M17/gallery-5.png",
       "gallery-6": "public/talents/YE-M17/gallery-6.png",
+      "gallery-7": "public/talents/YE-M17/gallery-7.png",
       "gallery-8": "public/talents/YE-M17/gallery-8.png"
     },
     "YE-M18": {
@@ -224,6 +233,7 @@
     "YE-M20": {
       "profile": "public/talents/YE-M20/profile.png",
       "charsheet": "public/talents/YE-M20/charsheet.png",
+      "gallery-1": "public/talents/YE-M20/gallery-1.png",
       "gallery-2": "public/talents/YE-M20/gallery-2.png",
       "gallery-3": "public/talents/YE-M20/gallery-3.png",
       "gallery-4": "public/talents/YE-M20/gallery-4.png",
@@ -259,6 +269,7 @@
     "YE-M23": {
       "profile": "public/talents/YE-M23/profile.png",
       "charsheet": "public/talents/YE-M23/charsheet.png",
+      "gallery-1": "public/talents/YE-M23/gallery-1.png",
       "gallery-2": "public/talents/YE-M23/gallery-2.png",
       "gallery-3": "public/talents/YE-M23/gallery-3.png",
       "gallery-4": "public/talents/YE-M23/gallery-4.png",
@@ -270,6 +281,7 @@
     "YE-M24": {
       "profile": "public/talents/YE-M24/profile.png",
       "charsheet": "public/talents/YE-M24/charsheet.png",
+      "gallery-1": "public/talents/YE-M24/gallery-1.png",
       "gallery-2": "public/talents/YE-M24/gallery-2.png",
       "gallery-3": "public/talents/YE-M24/gallery-3.png",
       "gallery-4": "public/talents/YE-M24/gallery-4.png",
@@ -286,6 +298,7 @@
       "gallery-3": "public/talents/YE-M25/gallery-3.png",
       "gallery-4": "public/talents/YE-M25/gallery-4.png",
       "gallery-5": "public/talents/YE-M25/gallery-5.png",
+      "gallery-6": "public/talents/YE-M25/gallery-6.png",
       "gallery-7": "public/talents/YE-M25/gallery-7.png",
       "gallery-8": "public/talents/YE-M25/gallery-8.png"
     },
@@ -330,7 +343,12 @@
       "charsheet": "public/talents/YE-W04/charsheet.png",
       "gallery-1": "public/talents/YE-W04/gallery-1.png",
       "gallery-2": "public/talents/YE-W04/gallery-2.png",
-      "gallery-3": "public/talents/YE-W04/gallery-3.png"
+      "gallery-3": "public/talents/YE-W04/gallery-3.png",
+      "gallery-4": "public/talents/YE-W04/gallery-4.png",
+      "gallery-5": "public/talents/YE-W04/gallery-5.png",
+      "gallery-6": "public/talents/YE-W04/gallery-6.png",
+      "gallery-7": "public/talents/YE-W04/gallery-7.png",
+      "gallery-8": "public/talents/YE-W04/gallery-8.png"
     },
     "YE-W05": {
       "profile": "public/talents/YE-W05/profile.png",
@@ -351,6 +369,7 @@
       "gallery-2": "public/talents/YE-W06/gallery-2.png",
       "gallery-3": "public/talents/YE-W06/gallery-3.png",
       "gallery-4": "public/talents/YE-W06/gallery-4.png",
+      "gallery-5": "public/talents/YE-W06/gallery-5.png",
       "gallery-6": "public/talents/YE-W06/gallery-6.png",
       "gallery-7": "public/talents/YE-W06/gallery-7.png",
       "gallery-8": "public/talents/YE-W06/gallery-8.png"
@@ -364,7 +383,8 @@
       "gallery-4": "public/talents/YE-W07/gallery-4.png",
       "gallery-5": "public/talents/YE-W07/gallery-5.png",
       "gallery-6": "public/talents/YE-W07/gallery-6.png",
-      "gallery-7": "public/talents/YE-W07/gallery-7.png"
+      "gallery-7": "public/talents/YE-W07/gallery-7.png",
+      "gallery-8": "public/talents/YE-W07/gallery-8.png"
     },
     "YE-W08": {
       "profile": "public/talents/YE-W08/profile.png",
@@ -398,7 +418,9 @@
       "gallery-3": "public/talents/YE-W10/gallery-3.png",
       "gallery-4": "public/talents/YE-W10/gallery-4.png",
       "gallery-5": "public/talents/YE-W10/gallery-5.png",
-      "gallery-6": "public/talents/YE-W10/gallery-6.png"
+      "gallery-6": "public/talents/YE-W10/gallery-6.png",
+      "gallery-7": "public/talents/YE-W10/gallery-7.png",
+      "gallery-8": "public/talents/YE-W10/gallery-8.png"
     },
     "YE-W11": {
       "profile": "public/talents/YE-W11/profile.png",
@@ -418,9 +440,11 @@
       "gallery-1": "public/talents/YE-W12/gallery-1.png",
       "gallery-2": "public/talents/YE-W12/gallery-2.png",
       "gallery-3": "public/talents/YE-W12/gallery-3.png",
+      "gallery-4": "public/talents/YE-W12/gallery-4.png",
       "gallery-5": "public/talents/YE-W12/gallery-5.png",
       "gallery-6": "public/talents/YE-W12/gallery-6.png",
-      "gallery-7": "public/talents/YE-W12/gallery-7.png"
+      "gallery-7": "public/talents/YE-W12/gallery-7.png",
+      "gallery-8": "public/talents/YE-W12/gallery-8.png"
     },
     "YE-W13": {
       "profile": "public/talents/YE-W13/profile.png",
@@ -487,6 +511,7 @@
       "charsheet": "public/talents/YE-W18/charsheet.png",
       "gallery-1": "public/talents/YE-W18/gallery-1.png",
       "gallery-2": "public/talents/YE-W18/gallery-2.png",
+      "gallery-3": "public/talents/YE-W18/gallery-3.png",
       "gallery-4": "public/talents/YE-W18/gallery-4.png",
       "gallery-5": "public/talents/YE-W18/gallery-5.png",
       "gallery-6": "public/talents/YE-W18/gallery-6.png",
@@ -498,6 +523,7 @@
       "charsheet": "public/talents/YE-W19/charsheet.png",
       "gallery-1": "public/talents/YE-W19/gallery-1.png",
       "gallery-2": "public/talents/YE-W19/gallery-2.png",
+      "gallery-3": "public/talents/YE-W19/gallery-3.png",
       "gallery-4": "public/talents/YE-W19/gallery-4.png",
       "gallery-5": "public/talents/YE-W19/gallery-5.png",
       "gallery-6": "public/talents/YE-W19/gallery-6.png",
@@ -508,6 +534,7 @@
       "profile": "public/talents/YE-W20/profile.png",
       "charsheet": "public/talents/YE-W20/charsheet.png",
       "gallery-1": "public/talents/YE-W20/gallery-1.png",
+      "gallery-2": "public/talents/YE-W20/gallery-2.png",
       "gallery-3": "public/talents/YE-W20/gallery-3.png",
       "gallery-4": "public/talents/YE-W20/gallery-4.png",
       "gallery-5": "public/talents/YE-W20/gallery-5.png",
@@ -518,6 +545,7 @@
     "YE-W21": {
       "profile": "public/talents/YE-W21/profile.png",
       "charsheet": "public/talents/YE-W21/charsheet.png",
+      "gallery-1": "public/talents/YE-W21/gallery-1.png",
       "gallery-2": "public/talents/YE-W21/gallery-2.png",
       "gallery-3": "public/talents/YE-W21/gallery-3.png",
       "gallery-4": "public/talents/YE-W21/gallery-4.png",
@@ -547,7 +575,8 @@
       "gallery-4": "public/talents/YE-W23/gallery-4.png",
       "gallery-5": "public/talents/YE-W23/gallery-5.png",
       "gallery-6": "public/talents/YE-W23/gallery-6.png",
-      "gallery-7": "public/talents/YE-W23/gallery-7.png"
+      "gallery-7": "public/talents/YE-W23/gallery-7.png",
+      "gallery-8": "public/talents/YE-W23/gallery-8.png"
     },
     "YE-W24": {
       "profile": "public/talents/YE-W24/profile.png",

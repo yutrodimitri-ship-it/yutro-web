@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { HeroVideo } from "@/components/sections/HeroVideo";
+import { CastingPreview } from "@/components/sections/CastingPreview";
 import { FeaturedProjects } from "@/components/sections/FeaturedProjects";
 import { ScrollProgress } from "@/components/animations/ScrollProgress";
 import { createMetadata } from "@/lib/metadata";
 
 // Below-the-fold components loaded dynamically
-const StudioBanner = dynamic(() => import("@/components/sections/StudioBanner").then(m => ({ default: m.StudioBanner })));
 const ServicesPreview = dynamic(() => import("@/components/sections/ServicesPreview").then(m => ({ default: m.ServicesPreview })));
 const SectionDivider = dynamic(() => import("@/components/animations/SectionDivider").then(m => ({ default: m.SectionDivider })));
 const CTASection = dynamic(() => import("@/components/sections/CTASection").then(m => ({ default: m.CTASection })));
@@ -46,8 +46,10 @@ export default function HomePage() {
     <>
       <ScrollProgress />
       <HeroVideo />
+      {/* El Casting — bloque editorial sobre el Casting publico. Va
+          arriba de proyectos para reforzar el lanzamiento. */}
+      <CastingPreview />
       <FeaturedProjects />
-      <StudioBanner />
       <ServicesPreview />
       <SectionDivider />
       <CTASection />

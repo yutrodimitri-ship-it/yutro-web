@@ -1,5 +1,5 @@
 /**
- * Yutro Estudio Talent — type definitions.
+ * Yutro Studio Talent — type definitions.
  *
  * Modulo de licenciamiento de talento digital. Estos tipos se construyen
  * pensando en Fase 2 (Drizzle schema) — el shape de Talent y ProjectConfig
@@ -32,7 +32,6 @@ export interface Talent {
   ageRange: string;
   ageBucket: TalentAgeBucket;
   phenotype: LocaleString;
-  archetype: LocaleString;
   category: TalentCategory;
   toneCommercial: LocaleString;
   /** Bio narrativa larga del talento. Opcional — fallback a placeholder si falta. */

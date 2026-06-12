@@ -53,7 +53,7 @@ export default async function TalentRootPage({
         className="mb-2 text-[11px] font-medium uppercase tracking-[0.18em] text-white/30"
         style={{ fontFamily: "ui-monospace, monospace" }}
       >
-        {isAdmin ? "Catálogo · Vista admin" : "Yutro Estudio — Casting House"}
+        {isAdmin ? "Catálogo · Vista admin" : "Yutro Studio — Casting House"}
       </p>
       <h1
         className="mb-3 text-3xl font-bold tracking-tight text-white sm:text-4xl"

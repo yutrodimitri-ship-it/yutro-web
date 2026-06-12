@@ -3,14 +3,14 @@ import { createMetadata } from "@/lib/metadata";
 
 const meta: Record<string, { title: string; description: string }> = {
   es: {
-    title: "Servicios",
+    title: "Estudio",
     description:
-      "Servicios de producción audiovisual con IA: 3D, motion graphics, postproducción, influencers digitales y contenido generativo.",
+      "Yutro es el estudio creativo del grupo VRYP. Producción audiovisual con IA y casting digital propio para campañas publicitarias en LATAM.",
   },
   en: {
-    title: "Services",
+    title: "Studio",
     description:
-      "AI audiovisual production services: 3D, motion graphics, post-production, digital influencers and generative content.",
+      "Yutro is the creative studio of the VRYP group. AI-driven audiovisual production and proprietary digital casting for advertising campaigns across LATAM.",
   },
 };
 
@@ -24,12 +24,12 @@ export async function generateMetadata({
   return createMetadata({
     title: m.title,
     description: m.description,
-    path: "/servicios",
+    path: "/estudio",
     locale,
   });
 }
 
-export default function ServicesLayout({
+export default function EstudioLayout({
   children,
 }: {
   children: React.ReactNode;

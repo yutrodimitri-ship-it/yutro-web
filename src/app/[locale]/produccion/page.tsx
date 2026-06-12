@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Image from "next/image";
 import { useTranslations, useLocale } from "next-intl";
@@ -73,11 +73,11 @@ export default function ServicesPage() {
               );
             })}
           </div>
-          {/* Soluciones específicas (landings SEO) */}
+          {/* Soluciones especÃ­ficas (landings SEO) */}
           <div className="mt-20">
             <FadeInOnScroll>
               <SectionHeader
-                title={locale === "es" ? "Soluciones específicas" : "Specific solutions"}
+                title={locale === "es" ? "Soluciones especÃ­ficas" : "Specific solutions"}
                 align="left"
               />
             </FadeInOnScroll>
@@ -85,7 +85,7 @@ export default function ServicesPage() {
               {serviceLandings.map((landing, i) => (
                 <FadeInOnScroll key={landing.slug} delay={i * 0.05}>
                   <Link
-                    href={`/servicios/${landing.slug}`}
+                    href={`/produccion/${landing.slug}`}
                     className="group flex h-full flex-col justify-between rounded-xl border border-border bg-card p-6 transition-colors hover:border-primary/50"
                   >
                     <div>
@@ -97,7 +97,7 @@ export default function ServicesPage() {
                       </p>
                     </div>
                     <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-primary">
-                      {locale === "es" ? "Ver más" : "Learn more"}
+                      {locale === "es" ? "Ver mÃ¡s" : "Learn more"}
                       <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                     </span>
                   </Link>

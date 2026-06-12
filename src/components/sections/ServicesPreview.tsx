@@ -25,7 +25,7 @@ export function ServicesPreview() {
   const locale = useLocale() as "es" | "en";
 
   return (
-    <section id="servicios" className="relative py-20 lg:py-24">
+    <section id="produccion" className="relative py-20 lg:py-24">
       <Container>
         <FadeInOnScroll variant="fade-blur">
           <SectionHeader title={t("servicesTitle")} align="left" />
@@ -43,7 +43,7 @@ export function ServicesPreview() {
         >
           {services.map((service) => (
             <motion.div key={service.slug} variants={cardReveal}>
-              <Link href="/servicios" className="group relative block h-64 overflow-hidden rounded-xl sm:h-72">
+              <Link href="/produccion" className="group relative block h-64 overflow-hidden rounded-xl sm:h-72">
                 {/* Background image */}
                 <Image
                   src={service.image}
@@ -76,7 +76,7 @@ export function ServicesPreview() {
 
         <FadeInOnScroll delay={0.3} variant="fade-scale">
           <div className="mt-10">
-            <CTAButton href="/servicios" variant="outline">
+            <CTAButton href="/produccion" variant="outline">
               {t("servicesCTA")}
             </CTAButton>
           </div>

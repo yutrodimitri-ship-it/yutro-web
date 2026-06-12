@@ -12,8 +12,6 @@ const EMPTY_INITIAL = {
   ageBucket: "30s" as const,
   phenotypeEs: "",
   phenotypeEn: "",
-  archetypeEs: "",
-  archetypeEn: "",
   category: "lifestyle" as const,
   toneCommercialEs: "",
   toneCommercialEn: "",
