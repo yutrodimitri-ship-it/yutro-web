@@ -7,17 +7,16 @@ import { Container } from "@/components/shared/Container";
 import { FeaturedBadge } from "@/components/casting/FeaturedBadge";
 import {
   getPublicTalentBySlug,
-  getAllPublicSlugs,
   resolvePublicImage,
 } from "@/lib/talents-public";
 import { createMetadata } from "@/lib/metadata";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.yutro.cl";
 
-export async function generateStaticParams() {
-  const slugs = await getAllPublicSlugs();
-  return slugs.map((slug) => ({ slug }));
-}
+// Dinamica a proposito: la ficha lee de la BD (visibilidad/curaduria cambian
+// sin redeploy) y getTranslations usa APIs de request — prerender estatico
+// tiraba DYNAMIC_SERVER_USAGE en produccion.
+export const dynamic = "force-dynamic";
 
 const CATEGORY_LABELS: Record<string, { es: string; en: string }> = {
   corporativo: { es: "Corporativo", en: "Corporate" },
