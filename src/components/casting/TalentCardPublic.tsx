@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
-import { FeaturedBadge } from "./FeaturedBadge";
 import {
   resolvePublicImage,
   type PublicTalentCard,
@@ -14,17 +13,6 @@ interface TalentCardPublicProps {
   locale: "es" | "en";
 }
 
-const CATEGORY_LABELS: Record<string, { es: string; en: string }> = {
-  corporativo: { es: "Corporativo", en: "Corporate" },
-  lifestyle: { es: "Lifestyle", en: "Lifestyle" },
-  familiar: { es: "Familiar", en: "Family" },
-  urbano: { es: "Urbano", en: "Urban" },
-  senior: { es: "Senior", en: "Senior" },
-  oficios: { es: "Oficios", en: "Trades" },
-  artistico: { es: "Artístico", en: "Artistic" },
-  profesional: { es: "Profesional", en: "Professional" },
-};
-
 export function TalentCardPublic({
   talent,
   variant = "standard",
@@ -32,8 +20,6 @@ export function TalentCardPublic({
   locale,
 }: TalentCardPublicProps) {
   const name = locale === "es" ? talent.nameEs : talent.nameEn;
-  const categoryLabel =
-    CATEGORY_LABELS[talent.category]?.[locale] ?? talent.category;
   const imageSrc = resolvePublicImage(talent.imageProfileKey);
   const isFeatured = variant === "featured";
 
@@ -71,35 +57,16 @@ export function TalentCardPublic({
           Yutro · Vol. 01
         </span>
 
-        {/* Overlay editorial bottom — meta + nombre */}
+        {/* Overlay editorial bottom — solo el nombre */}
         <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent p-4 sm:p-5">
-          <div className="mb-1 flex items-center justify-between gap-2">
-            <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/55">
-              {categoryLabel} · {talent.ageRange}
-            </p>
-            {isFeatured && <FeaturedBadge locale={locale} />}
-          </div>
           <p
             className="font-heading text-lg font-bold leading-tight text-white sm:text-xl"
             style={{ letterSpacing: "-0.015em" }}
           >
             {name}
           </p>
-          {isFeatured && talent.instagramFollowers && (
-            <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.18em] text-white/55">
-              {formatFollowers(talent.instagramFollowers)} {locale === "es" ? "seguidores" : "followers"}
-            </p>
-          )}
         </div>
       </div>
     </Link>
   );
-}
-
-function formatFollowers(n: number): string {
-  if (n >= 1000) {
-    const k = n / 1000;
-    return `${k % 1 === 0 ? k.toFixed(0) : k.toFixed(1)}K`;
-  }
-  return String(n);
 }
