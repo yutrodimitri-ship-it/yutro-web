@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { Container } from "@/components/shared/Container";
 import { FeaturedBadge } from "@/components/casting/FeaturedBadge";
+import { PublicGalleryLightbox } from "@/components/casting/PublicGalleryLightbox";
 import {
   getPublicTalentBySlug,
   resolvePublicImage,
@@ -79,10 +79,10 @@ export default async function CastingDetailPage({
     CATEGORY_LABELS[talent.category]?.[locale] ?? talent.category;
 
   const heroImage = resolvePublicImage(talent.imageProfileKey);
+  // Galeria completa — el lightbox permite recorrerla ampliada
   const gallery = (talent.galleryKeys || [])
     .map((k) => resolvePublicImage(k))
-    .filter((src): src is string => Boolean(src))
-    .slice(0, 4);
+    .filter((src): src is string => Boolean(src));
 
   const isFeatured = talent.tier === "featured";
 
@@ -118,48 +118,12 @@ export default async function CastingDetailPage({
         </nav>
 
         <div className="grid gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
-          {/* ── Columna izquierda — galeria editorial ────────── */}
-          <div>
-            <div className="relative aspect-[3/4] w-full overflow-hidden bg-foreground/5">
-              {heroImage ? (
-                <Image
-                  src={heroImage}
-                  alt={name}
-                  fill
-                  sizes="(max-width:1024px) 100vw, 50vw"
-                  className="object-cover"
-                  priority
-                />
-              ) : (
-                <div className="h-full w-full bg-gradient-to-br from-foreground/15 to-foreground/5" />
-              )}
-              <span
-                className="pointer-events-none absolute right-3 bottom-3 font-mono text-[9px] uppercase tracking-[0.18em] text-white/40 mix-blend-overlay"
-                aria-hidden
-              >
-                Yutro · Vol. 01
-              </span>
-            </div>
-
-            {gallery.length > 0 && (
-              <div className="mt-3 grid grid-cols-3 gap-3">
-                {gallery.map((src, i) => (
-                  <div
-                    key={i}
-                    className="relative aspect-square overflow-hidden bg-foreground/5"
-                  >
-                    <Image
-                      src={src}
-                      alt={`${name} — ${i + 1}`}
-                      fill
-                      sizes="(max-width:1024px) 33vw, 16vw"
-                      className="object-cover"
-                    />
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+          {/* ── Columna izquierda — galeria editorial con lightbox ── */}
+          <PublicGalleryLightbox
+            heroSrc={heroImage}
+            gallerySrcs={gallery}
+            name={name}
+          />
 
           {/* ── Columna derecha — ficha tipografica ─────────── */}
           <div>
