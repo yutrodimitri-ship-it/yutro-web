@@ -155,8 +155,8 @@ function galleryIndex(variant: TalentImageVariant): number {
 }
 
 /**
- * Si la key del talento empieza con "/talents/" la consideramos un path local
- * en /public.
+ * Si la key del talento es un path absoluto de /public (ej. /influencers/...
+ * de las featured) la servimos local; si no, va por el endpoint del bucket.
  */
 function resolveLocalPath(talent: Talent, variant: TalentImageVariant): string | null {
   if (variant === "profile") {

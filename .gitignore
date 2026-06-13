@@ -41,11 +41,12 @@ yarn-error.log*
 # (the previous /drizzle/ blanket-ignore contradicted the already-tracked
 #  0000-0003 migrations and left new ones invisible to git status)
 
-# talent image masters: PNG originals stay local / in R2 backup.
-# Only the optimized WebP variants under public/talents-webp/ are tracked
-# (served directly from /public on Vercel). Run scripts/convert-talents-to-webp.ts
-# locally before committing new talents.
+# El catalogo se sirve desde el bucket privado de Supabase, no desde /public.
+# public/talents/ = PNG originales curados (fuente del manifiesto de
+# publish-talents.ts). public/talents-webp/ = derivados viejos ya no usados.
+# Ambos se mantienen LOCAL, fuera del repo.
 /public/talents/
+/public/talents-webp/
 
 # vercel
 .vercel

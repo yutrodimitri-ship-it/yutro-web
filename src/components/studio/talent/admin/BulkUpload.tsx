@@ -32,7 +32,7 @@ interface BulkUploadProps {
     profile: boolean;
     charsheet: boolean;
     gallery: ImageVariant[];
-    /** URLs locales por variant (si las imágenes están en /public/talents-webp/...). */
+    /** URLs locales por variant (paths absolutos de /public, ej. featured /influencers/...). */
     localUrls?: Partial<Record<ImageVariant, string>>;
   };
   redirectTo: string;
