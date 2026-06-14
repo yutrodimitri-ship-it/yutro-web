@@ -6,6 +6,7 @@ import { castingSubmissions } from "@/db/schema";
 import { verifySession } from "@/lib/auth";
 import { logAuditEventServer } from "@/lib/talent/audit-log-server";
 import { releaseTalent } from "@/lib/talent/release-talent";
+import { releaseLicenseForTalent } from "@/lib/talent/licenses";
 
 export const dynamic = "force-dynamic";
 
@@ -66,6 +67,14 @@ export async function PATCH(
         : {}),
     })
     .where(eq(castingSubmissions.id, id));
+
+  // Hito 3 — cerrar la licencia del talento y devolverlo a 'available' si
+  // no le quedan otras activas. No bloquea la respuesta si falla.
+  try {
+    await releaseLicenseForTalent(id, talentCode);
+  } catch (e) {
+    console.error("[release-talent] license release failed", { id, talentCode, e });
+  }
 
   await logAuditEventServer("admin_talent_released", {
     userEmail: session.email,

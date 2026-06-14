@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Portrait } from "./Portrait";
 import { useTalentSession } from "@/lib/talent/talent-session-context";
 import type { Talent } from "@/types/talent";
@@ -26,6 +26,13 @@ interface TalentImageProps {
   className?: string;
   /** Forza usar el placeholder SVG (utility para preview / admin). */
   forcePortrait?: boolean;
+  /**
+   * Tamaño del derivado a pedir: `thumb` (grilla, default) o `preview` (ficha).
+   * El backend genera y cachea cada tamaño una sola vez.
+   */
+  size?: "thumb" | "preview";
+  /** Prioriza la carga (sin lazy) — solo para imágenes sobre el fold. */
+  priority?: boolean;
 }
 
 /**
@@ -38,8 +45,9 @@ interface TalentImageProps {
  *   - variant=charsheet    → talent.imageCharsheetKey
  *   - variant=studio|lifestyle-* → talent.galleryKeys.includes(variant)
  *
- * El fetch al API pasa `x-project-slug` (necesario para construir el watermark
- * con cliente + fecha del proyecto activo).
+ * Usa un <img> nativo con lazy-loading apuntando a la ruta protegida, pasando
+ * el slug del proyecto por query (`?p=`) — necesario para el watermark con
+ * cliente + fecha. La ruta valida sesión + acceso server-side igual que antes.
  */
 export function TalentImage({
   talent,
@@ -48,10 +56,12 @@ export function TalentImage({
   disabled = false,
   className,
   forcePortrait = false,
+  size = "thumb",
+  priority = false,
 }: TalentImageProps) {
   const session = useTalentSession();
-  const [blobUrl, setBlobUrl] = useState<string | null>(null);
   const [failed, setFailed] = useState(false);
+  const [loaded, setLoaded] = useState(false);
 
   // Path local en /public (modo pre-R2) — se sirve estáticamente.
   const localPath = forcePortrait ? null : resolveLocalPath(talent, variant);
@@ -59,37 +69,6 @@ export function TalentImage({
   const hasRealImage = forcePortrait
     ? false
     : Boolean(localPath) || variantHasKey(talent, variant);
-
-  useEffect(() => {
-    if (!hasRealImage || localPath) return;
-    let aborted = false;
-    let createdUrl: string | null = null;
-
-    // La variante que entiende la API es la del NOMBRE DEL ARCHIVO en la key
-    // (gallery-1..8): los componentes usan alias (studio-1, gallery-0 base-0),
-    // asi que se deriva de la key real en vez de confiar en el alias.
-    const storageVariant = resolveStorageVariant(talent, variant);
-    const url = `/api/studio/talent/image/${encodeURIComponent(
-      talent.code
-    )}/${encodeURIComponent(storageVariant)}`;
-    fetch(url, {
-      headers: { "x-project-slug": session.projectSlug },
-    })
-      .then((r) => (r.ok ? r.blob() : Promise.reject(r.status)))
-      .then((blob) => {
-        if (aborted) return;
-        createdUrl = URL.createObjectURL(blob);
-        setBlobUrl(createdUrl);
-      })
-      .catch(() => {
-        if (!aborted) setFailed(true);
-      });
-
-    return () => {
-      aborted = true;
-      if (createdUrl) URL.revokeObjectURL(createdUrl);
-    };
-  }, [hasRealImage, localPath, talent.code, variant, session.projectSlug]);
 
   if (!hasRealImage || failed) {
     return (
@@ -106,32 +85,51 @@ export function TalentImage({
     );
   }
 
-  const src = localPath ?? blobUrl;
-  if (!src) {
-    return (
-      <div
-        className={`talent-skeleton h-full w-full ${className ?? ""}`}
-        aria-hidden
-      />
-    );
-  }
+  // La variante que entiende la API es la del NOMBRE DEL ARCHIVO en la key
+  // (gallery-1..8): los componentes usan alias (studio-1, gallery-0 base-0),
+  // asi que se deriva de la key real en vez de confiar en el alias.
+  // El slug del proyecto va por query (`?p=`) para poder usar <img> nativo
+  // con lazy-loading — la ruta sigue validando sesión + acceso server-side.
+  const src =
+    localPath ??
+    `/api/studio/talent/image/${encodeURIComponent(
+      talent.code
+    )}/${encodeURIComponent(
+      resolveStorageVariant(talent, variant)
+    )}?p=${encodeURIComponent(session.projectSlug)}&size=${size}`;
 
   return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src={src}
-      alt={`Talent ${talent.code}`}
-      className={`h-full w-full object-cover transition-[filter] duration-300 ${className ?? ""}`}
-      draggable={false}
-      onContextMenu={(e) => e.preventDefault()}
-      onDragStart={(e) => e.preventDefault()}
-      style={{
-        filter: disabled ? "grayscale(0.7) brightness(0.55)" : undefined,
-        userSelect: "none",
-        WebkitUserSelect: "none",
-        WebkitTouchCallout: "none",
-      }}
-    />
+    <>
+      {/* Skeleton detrás hasta que la imagen carga (evita salto de layout). */}
+      {!loaded && (
+        <div
+          className={`talent-skeleton absolute inset-0 h-full w-full ${className ?? ""}`}
+          aria-hidden
+        />
+      )}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={src}
+        alt={`Talent ${talent.code}`}
+        loading={priority ? "eager" : "lazy"}
+        decoding="async"
+        fetchPriority={priority ? "high" : "auto"}
+        onLoad={() => setLoaded(true)}
+        onError={() => setFailed(true)}
+        className={`h-full w-full object-cover transition-[filter,opacity] duration-300 ${
+          loaded ? "opacity-100" : "opacity-0"
+        } ${className ?? ""}`}
+        draggable={false}
+        onContextMenu={(e) => e.preventDefault()}
+        onDragStart={(e) => e.preventDefault()}
+        style={{
+          filter: disabled ? "grayscale(0.7) brightness(0.55)" : undefined,
+          userSelect: "none",
+          WebkitUserSelect: "none",
+          WebkitTouchCallout: "none",
+        }}
+      />
+    </>
   );
 }
 

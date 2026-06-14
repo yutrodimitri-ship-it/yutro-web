@@ -10,6 +10,7 @@ import {
   type ImageVariant,
 } from "@/lib/talent/storage-client";
 import { processUpload } from "@/lib/talent/watermark";
+import { purgeDerivatives } from "@/lib/talent/image-derivatives";
 import { logAuditEventServer } from "@/lib/talent/audit-log-server";
 
 /**
@@ -121,6 +122,12 @@ export async function POST(
         updatedAt: new Date(),
       })
       .where(eq(talents.code, code));
+  }
+
+  // Invalidar derivados cacheados: tras re-subir, las miniaturas/preview
+  // deben regenerarse para reflejar la imagen nueva (best-effort).
+  if (uploaded.length > 0) {
+    await purgeDerivatives(code);
   }
 
   await logAuditEventServer("admin_talent_updated", {

@@ -240,7 +240,7 @@ export function TalentDetail({
             className="relative overflow-hidden"
             style={{ aspectRatio: "3/4", background: "var(--talent-bg-elev-2)" }}
           >
-            <TalentImage talent={talent} variant={v} portraitVariant={i} />
+            <TalentImage talent={talent} variant={v} portraitVariant={i} size="preview" priority={i === 0} />
             {v === "profile" ? (
               <WatermarkOverlay
                 clientName={clientName}
@@ -266,7 +266,7 @@ export function TalentDetail({
           className="row-span-2 relative overflow-hidden"
           style={{ aspectRatio: "3/4", background: "var(--talent-bg-elev-2)" }}
         >
-          <TalentImage talent={talent} variant="profile" className="h-full w-full" />
+          <TalentImage talent={talent} variant="profile" className="h-full w-full" size="preview" priority />
           <WatermarkOverlay
             clientName={clientName}
             talentCode={talent.code}
@@ -280,7 +280,7 @@ export function TalentDetail({
           className="row-span-2 relative overflow-hidden"
           style={{ background: "var(--talent-bg-elev-2)" }}
         >
-          <TalentImage talent={talent} variant="charsheet" className="h-full w-full" />
+          <TalentImage talent={talent} variant="charsheet" className="h-full w-full" size="preview" />
           <WatermarkOverlay clientName={clientName} talentCode={talent.code} date={watermarkDate} />
         </div>
         {/* Primeras 2 imágenes editoriales apiladas en la 3ra columna */}
@@ -294,6 +294,7 @@ export function TalentDetail({
               talent={talent}
               variant={`gallery-${idx}` as const}
               portraitVariant={idx + 2}
+              size="preview"
             />
             <WatermarkOverlay clientName={clientName} talentCode={talent.code} date={watermarkDate} />
           </div>
@@ -320,6 +321,7 @@ export function TalentDetail({
                   talent={talent}
                   variant={`gallery-${idx}` as const}
                   portraitVariant={i + 4}
+                  size="preview"
                 />
                 <WatermarkOverlay clientName={clientName} talentCode={talent.code} date={watermarkDate} />
               </div>

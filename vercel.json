@@ -1,5 +1,11 @@
 {
   "framework": "nextjs",
+  "crons": [
+    {
+      "path": "/api/cron/expire-licenses",
+      "schedule": "0 6 * * *"
+    }
+  ],
   "redirects": [
     {
       "source": "/proyectos",

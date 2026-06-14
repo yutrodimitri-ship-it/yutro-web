@@ -88,6 +88,9 @@ export const talents = pgTable("talents", {
   // en el lookbook publico. Featured = tier separado con IG embed.
   publicVisible: boolean("public_visible").notNull().default(false),
   tier: text("tier").notNull().default("standard"), // CHECK ('standard'|'featured') en DB
+  // Tier COMERCIAL (precio) — distinto de `tier` (visibilidad de vitrina).
+  // El admin lo setea manualmente. Hito 3: badge en ficha + regla de carrito.
+  commercialTier: text("commercial_tier").notNull().default("standard"), // CHECK ('standard'|'premium')
   instagramHandle: text("instagram_handle"),
   instagramFollowers: integer("instagram_followers"),
   publicBioEs: text("public_bio_es"),
@@ -111,8 +114,13 @@ export const talentProjects = pgTable("talent_projects", {
   categoryEs: text("category_es").notNull(),
   maxTalents: integer("max_talents").notNull(),
   maxExclusive: integer("max_exclusive").notNull(),
+  // Regla de composición del carrito (Hito 3): máx talentos Premium permitidos
+  // en la shortlist. null = sin límite.
+  maxPremium: integer("max_premium"),
   rightsDurationMonths: integer("rights_duration_months").notNull().default(12),
   startDate: date("start_date").notNull(),
+  // Brief narrativo de campaña (Hito 4): contexto para producir el material.
+  briefText: text("brief_text"),
   status: varchar("status", { length: 16 }).default("active").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
 });
@@ -158,6 +166,38 @@ export const castingSubmissions = pgTable(
   (t) => [
     uniqueIndex("casting_idempotency_unique").on(t.idempotencyKey),
     index("casting_project_idx").on(t.projectSlug, t.submittedAt),
+  ]
+);
+
+// Hito 3 — registro formal de derechos. Una fila por talento comprometido
+// en una submission confirmada. La ventana [start, end] se calcula del
+// proyecto (startDate + rightsDurationMonths). El cron de vencimiento la
+// marca 'expired' al pasar license_end; el release/reject la marca 'released'.
+export const talentLicenses = pgTable(
+  "talent_licenses",
+  {
+    id: uuid("id").primaryKey().default(uuidV7Default),
+    talentCode: varchar("talent_code", { length: 16 })
+      .notNull()
+      .references(() => talents.code),
+    submissionId: uuid("submission_id")
+      .notNull()
+      .references(() => castingSubmissions.id, { onDelete: "cascade" }),
+    projectSlug: varchar("project_slug", { length: 64 })
+      .notNull()
+      .references(() => talentProjects.slug),
+    licenseStart: date("license_start").notNull(),
+    licenseEnd: date("license_end").notNull(),
+    isExclusive: boolean("is_exclusive").notNull().default(false),
+    // active = derechos vigentes | expired = venció | released = liberado por admin
+    status: varchar("status", { length: 16 }).notNull().default("active"),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    closedAt: timestamp("closed_at", { withTimezone: true }),
+  },
+  (t) => [
+    index("license_talent_end_idx").on(t.talentCode, t.licenseEnd),
+    index("license_status_end_idx").on(t.status, t.licenseEnd),
+    index("license_submission_idx").on(t.submissionId),
   ]
 );
 

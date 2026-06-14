@@ -8,6 +8,10 @@ import {
   SUBMISSION_STATUSES,
 } from "@/lib/talent/admin-schemas";
 import { logAuditEventServer } from "@/lib/talent/audit-log-server";
+import {
+  activateLicensesForSubmission,
+  releaseLicensesForSubmission,
+} from "@/lib/talent/licenses";
 
 export const dynamic = "force-dynamic";
 
@@ -96,13 +100,29 @@ export async function PATCH(
     .where(eq(castingSubmissions.id, id));
 
   if (parsed.data.status) {
+    // Hito 3 — transiciones de derechos según el nuevo estado.
+    // Idempotente: activar dos veces no duplica licencias.
+    const from = existing.previousStatus;
+    const to = parsed.data.status;
+    try {
+      if (to === "confirmed" && from !== "confirmed") {
+        await activateLicensesForSubmission(id);
+      } else if (to === "rejected" && from === "confirmed") {
+        await releaseLicensesForSubmission(id);
+      }
+    } catch (e) {
+      // No bloqueamos el cambio de estado si falla la capa de licencias;
+      // queda registrado para revisión manual.
+      console.error("[submissions] license transition failed", { id, from, to, e });
+    }
+
     await logAuditEventServer("admin_submission_status_changed", {
       userEmail: guard.session.email,
       projectSlug: existing.projectSlug,
       payload: {
         submissionId: id,
-        from: existing.previousStatus,
-        to: parsed.data.status,
+        from,
+        to,
       },
     });
   }

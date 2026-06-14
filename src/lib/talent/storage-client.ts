@@ -71,6 +71,42 @@ export async function deleteImage(key: string): Promise<void> {
   if (error) throw new Error(`Storage delete failed for ${key}: ${error.message}`);
 }
 
+/**
+ * Lista recursivamente todos los objetos bajo un prefijo. `.list()` de Supabase
+ * no es recursivo: las carpetas vienen como entradas con `id === null`, así que
+ * se baja un nivel a la vez. Usado por la invalidación de derivados.
+ */
+async function listAllUnder(prefix: string): Promise<string[]> {
+  const { data, error } = await getClient()
+    .storage.from(BUCKET)
+    .list(prefix, { limit: 1000 });
+  if (error || !data) return [];
+  const out: string[] = [];
+  for (const entry of data) {
+    const path = prefix ? `${prefix}/${entry.name}` : entry.name;
+    // Carpeta (placeholder) → recursión; archivo → se agrega.
+    if ((entry as { id: string | null }).id === null) {
+      out.push(...(await listAllUnder(path)));
+    } else {
+      out.push(path);
+    }
+  }
+  return out;
+}
+
+/**
+ * Borra todos los objetos bajo un prefijo (no incluye el prefijo en sí).
+ * Best-effort: si no hay nada, no hace nada. Se usa para invalidar los
+ * derivados cacheados de un talento cuando se re-sube una imagen.
+ */
+export async function removeByPrefix(prefix: string): Promise<void> {
+  const objectPrefix = toObjectPath(prefix).replace(/\/+$/, "");
+  const files = await listAllUnder(objectPrefix);
+  if (files.length === 0) return;
+  const { error } = await getClient().storage.from(BUCKET).remove(files);
+  if (error) throw new Error(`Storage purge failed for ${prefix}: ${error.message}`);
+}
+
 // Constantes de variantes compartidas (safe para client) — mismo re-export
 // que hacia r2-client.ts para no cambiar el resto del codigo server.
 export {

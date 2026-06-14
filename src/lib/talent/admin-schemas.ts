@@ -17,6 +17,7 @@ export const TALENT_CATEGORIES = [
   "profesional",
 ] as const;
 export const TALENT_STATUSES = ["available", "in-campaign", "reserved"] as const;
+export const COMMERCIAL_TIERS = ["standard", "premium"] as const;
 export const PROJECT_STATUSES = ["active", "pending", "closed"] as const;
 export const SUBMISSION_STATUSES = [
   "pending",
@@ -77,6 +78,7 @@ export const talentInputSchema = z.object({
   market: z.array(z.string().min(1).max(8)).min(1).max(10),
   suggestedUses: z.array(localeStringSchema).max(10).default([]),
   status: z.enum(TALENT_STATUSES),
+  commercialTier: z.enum(COMMERCIAL_TIERS).default("standard"),
   hue: z.number().int().min(0).max(360),
   sat: z.number().int().min(0).max(100),
   editorialScore: z.number().int().min(0).max(5).default(0),
@@ -109,6 +111,10 @@ export const projectInputSchema = z.object({
       { message: "Duración debe ser 3, 6, 12, 18 o 24 meses" }
     ),
   startDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "ISO date yyyy-mm-dd"),
+  // Hito 3: máx talentos Premium en la shortlist (null = sin límite).
+  maxPremium: z.number().int().min(0).max(50).nullable().optional(),
+  // Hito 4: brief narrativo de campaña para producción.
+  briefText: z.string().max(4000).nullable().optional(),
   status: z.enum(PROJECT_STATUSES),
 });
 

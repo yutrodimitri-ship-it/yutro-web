@@ -3,33 +3,32 @@ import * as Sentry from "@sentry/nextjs";
 import { and, eq } from "drizzle-orm";
 import { db } from "@/db";
 import { talents } from "@/db/schema";
-import {
-  buildKey,
-  getImageBuffer,
-  isValidVariant,
-} from "@/lib/talent/storage-client";
+import { buildKey, isValidVariant } from "@/lib/talent/storage-client";
+import { getPublicDerivative } from "@/lib/talent/image-derivatives";
+import { parseSize } from "@/lib/talent/image-variants";
 
 /**
  * GET /api/casting/image/[code]/[variant]
  *
  * Imagenes del lookbook PUBLICO (vitrina /casting). Sin auth — deliberado:
- * solo sirve talentos con `public_visible = true`, en resolucion preview
- * (max 1200px), nunca el material completo ni el charsheet tecnico.
+ * solo sirve talentos con `public_visible = true`, en resolucion derivada
+ * (`?size=` thumb|preview), nunca el material completo ni el charsheet tecnico.
+ * El derivado se genera UNA vez y se persiste (ver image-derivatives.ts);
+ * las visitas siguientes no reprocesan con sharp.
  * El catalogo gateado (studio) usa la ruta protegida con watermark.
  *
  *   400  variant invalido o charsheet (privado)
  *   404  talent no existe, no es publico, o no tiene la imagen
- *   200  JPG preview, cache publico de 1 dia (CDN-friendly)
+ *   200  JPG, cache publico de 1 dia (CDN-friendly)
  */
 export const runtime = "nodejs";
 
-const PUBLIC_MAX_PX = 1200;
-
 export async function GET(
-  _request: Request,
+  request: Request,
   { params }: { params: Promise<{ code: string; variant: string }> }
 ) {
   const { code, variant } = await params;
+  const size = parseSize(new URL(request.url).searchParams.get("size"));
 
   // charsheet es material tecnico interno — solo via studio autenticado
   if (!isValidVariant(variant) || variant === "charsheet") {
@@ -51,36 +50,16 @@ export async function GET(
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
-  let original: Buffer;
+  let preview: Buffer;
   try {
-    original = await getImageBuffer(buildKey(code, variant));
+    preview = await getPublicDerivative(buildKey(code, variant), code, variant, size);
   } catch (err) {
-    if (err instanceof Error && /NoSuchKey|NotFound|404/.test(err.message)) {
+    if (err instanceof Error && /NoSuchKey|NotFound|404|empty body/i.test(err.message)) {
       return NextResponse.json({ error: "Image not found" }, { status: 404 });
     }
     Sentry.captureException(err, {
-      tags: { module: "casting", flow: "storage-fetch" },
-      extra: { code, variant },
-    });
-    return NextResponse.json({ error: "Storage fetch failed" }, { status: 502 });
-  }
-
-  let preview: Buffer;
-  try {
-    const sharp = (await import("sharp")).default;
-    preview = await sharp(original)
-      .resize({
-        width: PUBLIC_MAX_PX,
-        height: PUBLIC_MAX_PX,
-        fit: "inside",
-        withoutEnlargement: true,
-      })
-      .jpeg({ quality: 82, mozjpeg: true })
-      .toBuffer();
-  } catch (err) {
-    Sentry.captureException(err, {
-      tags: { module: "casting", flow: "sharp-preview" },
-      extra: { code, variant },
+      tags: { module: "casting", flow: "derivative" },
+      extra: { code, variant, size },
     });
     return NextResponse.json({ error: "Image processing failed" }, { status: 500 });
   }

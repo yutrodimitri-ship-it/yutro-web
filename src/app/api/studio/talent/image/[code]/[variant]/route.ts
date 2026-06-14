@@ -4,12 +4,12 @@ import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { talentProjects, talents } from "@/db/schema";
 import { verifySession } from "@/lib/auth";
+import { buildKey, isValidVariant } from "@/lib/talent/storage-client";
 import {
-  buildKey,
-  getImageBuffer,
-  isValidVariant,
-} from "@/lib/talent/storage-client";
-import { applyWatermark } from "@/lib/talent/watermark";
+  getStudioDerivative,
+  watermarkHash,
+} from "@/lib/talent/image-derivatives";
+import { parseSize } from "@/lib/talent/image-variants";
 import { logAuditEventServer } from "@/lib/talent/audit-log-server";
 import { hasProjectAccess } from "@/lib/talent/access-check";
 
@@ -20,13 +20,16 @@ import { hasProjectAccess } from "@/lib/talent/access-check";
  * Bajo NINGUNA circunstancia se exponen las URLs de R2 al cliente.
  *
  *   401  sin sesion
- *   400  variant invalido
- *   403  no tiene acceso a este proyecto (header `x-project-slug`)
- *   404  talent o proyecto no existe / R2 no tiene la imagen
- *   200  binary JPG con watermark, cache-control: private, max-age=600
+ *   400  variant invalido / falta slug de proyecto
+ *   403  no tiene acceso a este proyecto
+ *   404  talent o proyecto no existe / storage no tiene la imagen
+ *   200  binary JPG con watermark, cache-control: private, max-age=3600
  *
- * El header `x-project-slug` es necesario para construir el watermark
- * (cliente + fecha del proyecto). Lo pasa el componente TalentImage.
+ * El slug del proyecto (necesario para el watermark con cliente + fecha) se
+ * recibe por header `x-project-slug` o query `?p=`. El `?size=` elige el
+ * derivado (thumb|preview). El resultado se genera UNA vez y se persiste en
+ * `_derived/...` (ver image-derivatives.ts); las visitas siguientes no
+ * reprocesan con sharp.
  */
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -45,10 +48,14 @@ export async function GET(
     return NextResponse.json({ error: "Invalid variant" }, { status: 400 });
   }
 
-  const projectSlug = request.headers.get("x-project-slug");
+  const url = new URL(request.url);
+  const size = parseSize(url.searchParams.get("size"));
+  // Slug del proyecto: por header (fetch) o por query `?p=` (img nativo).
+  const projectSlug =
+    request.headers.get("x-project-slug") ?? url.searchParams.get("p");
   if (!projectSlug) {
     return NextResponse.json(
-      { error: "Missing x-project-slug header" },
+      { error: "Missing project slug" },
       { status: 400 }
     );
   }
@@ -77,46 +84,35 @@ export async function GET(
     return NextResponse.json({ error: "Talent not found" }, { status: 404 });
   }
 
-  // Bajar imagen original de R2
+  // Derivado con watermark: se genera una vez por (talento, proyecto, variant,
+  // size) y se persiste; visitas siguientes lo leen directo (sin sharp).
   const key = buildKey(code, variant);
-  let originalBuffer: Buffer;
+  const clientName =
+    project.client.split(" ")[0]?.toUpperCase() ?? project.client.toUpperCase();
+  const date = formatWatermarkDate(project.startDate);
+  const text = `YUTRO ESTUDIO · ${clientName} · ${date} · ${code}`;
+  // wmHash namespacea por contenido del watermark: si cambia cliente/fecha del
+  // proyecto, cambia el hash y el derivado se regenera solo.
+  const wmHash = watermarkHash(`${project.client}|${project.startDate}`);
+
+  let watermarked: Buffer;
   try {
-    originalBuffer = await getImageBuffer(key);
+    watermarked = await getStudioDerivative({
+      originalKey: key,
+      code,
+      variant,
+      size,
+      watermarkText: text,
+      wmHash,
+    });
   } catch (err) {
     // 404 esperado si no se subio aun (no hace ruido en Sentry)
-    if (
-      err instanceof Error &&
-      /NoSuchKey|NotFound|404/.test(err.message)
-    ) {
+    if (err instanceof Error && /NoSuchKey|NotFound|404|empty body/i.test(err.message)) {
       return NextResponse.json({ error: "Image not found" }, { status: 404 });
     }
     Sentry.captureException(err, {
-      tags: { module: "talent", flow: "r2-fetch" },
-      extra: { code, variant, key },
-    });
-    return NextResponse.json({ error: "R2 fetch failed" }, { status: 502 });
-  }
-
-  // Resolver dimensiones + aplicar watermark
-  let watermarked: Buffer;
-  try {
-    const sharp = (await import("sharp")).default;
-    const meta = await sharp(originalBuffer).metadata();
-    const clientName =
-      project.client.split(" ")[0]?.toUpperCase() ?? project.client.toUpperCase();
-    const date = formatWatermarkDate(project.startDate);
-    const text = `YUTRO ESTUDIO · ${clientName} · ${date} · ${code}`;
-
-    watermarked = await applyWatermark({
-      buffer: originalBuffer,
-      text,
-      width: meta.width ?? 1200,
-      height: meta.height ?? 1600,
-    });
-  } catch (err) {
-    Sentry.captureException(err, {
-      tags: { module: "talent", flow: "sharp-watermark" },
-      extra: { code, variant, key },
+      tags: { module: "talent", flow: "derivative" },
+      extra: { code, variant, key, size },
     });
     return NextResponse.json(
       { error: "Image processing failed" },
@@ -135,7 +131,9 @@ export async function GET(
   return new NextResponse(new Uint8Array(watermarked), {
     headers: {
       "Content-Type": "image/jpeg",
-      "Cache-Control": "private, max-age=600, must-revalidate",
+      // Privado (lleva watermark del cliente) pero el navegador puede reusarlo
+      // dentro de la sesión: el derivado es estable, no hay que revalidar.
+      "Cache-Control": "private, max-age=3600",
       "X-Content-Type-Options": "nosniff",
       "Content-Length": String(watermarked.length),
     },

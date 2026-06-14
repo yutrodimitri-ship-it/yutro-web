@@ -33,6 +33,7 @@ export type AuditEventType =
   | "admin_submission_status_changed"
   | "admin_submission_email_resent"
   | "admin_talent_released"
+  | "talent_license_expired"
   | "admin_password_reset";
 
 export interface AuditContext {

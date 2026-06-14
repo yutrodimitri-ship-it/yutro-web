@@ -25,6 +25,25 @@ export function isValidVariant(v: string): v is ImageVariant {
   return (VARIANTS as readonly string[]).includes(v);
 }
 
+/**
+ * Tamaños de derivado servidos al cliente. Se generan UNA vez y se persisten
+ * en storage (`_derived/...`), nunca se reprocesan por request.
+ *   - thumb   → grilla de catálogo (cards pequeñas)
+ *   - preview → ficha de detalle / vitrina pública
+ * El original (subido por admin) llega a 1600px; estos nunca lo agrandan.
+ */
+export const DERIVATIVE_SIZES = {
+  thumb: 600,
+  preview: 1280,
+} as const;
+
+export type DerivativeSize = keyof typeof DERIVATIVE_SIZES;
+
+/** Normaliza el query `?size=` a un tamaño válido (default `preview`). */
+export function parseSize(v: string | null | undefined): DerivativeSize {
+  return v === "thumb" ? "thumb" : "preview";
+}
+
 /** R2 key convention: `talents/{code}/{variant}.jpg` */
 export function buildKey(code: string, variant: ImageVariant): string {
   return `talents/${code}/${variant}.jpg`;
