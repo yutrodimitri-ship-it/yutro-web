@@ -100,13 +100,25 @@ export async function POST(request: NextRequest) {
           name: users.name,
         });
 
-      await tx.insert(talentProjectAccess).values(
-        data.projectSlugs.map((slug) => ({
-          projectSlug: slug,
-          userEmail: email,
-          grantedBy: session.userId,
-        }))
-      );
+      // Upsert: si ya existe un row (de un user borrado previamente con mismo
+      // email/proyecto), lo reactivamos en lugar de fallar por unique violation.
+      await tx
+        .insert(talentProjectAccess)
+        .values(
+          data.projectSlugs.map((slug) => ({
+            projectSlug: slug,
+            userEmail: email,
+            grantedBy: session.userId,
+          }))
+        )
+        .onConflictDoUpdate({
+          target: [talentProjectAccess.projectSlug, talentProjectAccess.userEmail],
+          set: {
+            grantedBy: session.userId,
+            grantedAt: new Date(),
+            revokedAt: null,
+          },
+        });
 
       return created;
     });
