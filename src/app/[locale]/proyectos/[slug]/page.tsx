@@ -20,7 +20,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug, locale } = await params;
   const project = projects.find((p) => p.slug === slug);
-  if (!project) return {};
+  // notFound() aqui (y no solo en la pagina) para que el status HTTP sea 404
+  // real: con streaming el 200 ya se envio cuando el body llama a notFound().
+  if (!project) notFound();
   const l = locale as "es" | "en";
   return createMetadata({
     title: project.title,

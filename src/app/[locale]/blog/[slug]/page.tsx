@@ -628,7 +628,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug, locale } = await params;
   const post = blogPosts.find((p) => p.slug === slug && p.locale === locale);
-  if (!post || !post.published) return {};
+  // notFound() aqui (y no solo en la pagina) para que el status HTTP sea 404
+  // real: con streaming el 200 ya se envio cuando el body llama a notFound().
+  if (!post || !post.published) notFound();
   const esSlug = locale === "es" ? post.slug : post.altSlug;
   const enSlug = locale === "en" ? post.slug : post.altSlug;
   return createMetadata({

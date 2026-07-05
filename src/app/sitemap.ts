@@ -109,7 +109,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // ── /blog/[slug] ────────────────────────────────────────────
   // El blog tiene posts marcados con su locale propio (no es mirror).
-  const blogEntries = blogPosts.map((post) => ({
+  // Solo publicados: un post despublicado en el sitemap le anuncia a Google
+  // una URL que responde 404.
+  const blogEntries = blogPosts
+    .filter((post) => post.published)
+    .map((post) => ({
     url: `${SITE_URL}/${post.locale}/blog/${post.slug}`,
     lastModified: new Date(post.date),
     changeFrequency: "monthly" as const,

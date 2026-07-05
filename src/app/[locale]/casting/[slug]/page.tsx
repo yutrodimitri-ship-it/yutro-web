@@ -37,9 +37,9 @@ export async function generateMetadata({
   const { locale: rawLocale, slug } = await params;
   const locale: "es" | "en" = rawLocale === "en" ? "en" : "es";
   const talent = await getPublicTalentBySlug(slug);
-  if (!talent) {
-    return { title: "Casting · Yutro" };
-  }
+  // notFound() aqui (y no solo en la pagina) para que el status HTTP sea 404
+  // real: con streaming el 200 ya se envio cuando el body llama a notFound().
+  if (!talent) notFound();
   const name = locale === "en" ? talent.nameEn : talent.nameEs;
   const shortDesc = locale === "en" ? talent.shortDescEn : talent.shortDescEs;
   const categoryLabel =

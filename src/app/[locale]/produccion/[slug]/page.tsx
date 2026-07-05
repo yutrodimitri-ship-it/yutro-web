@@ -25,7 +25,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug, locale } = await params;
   const landing = serviceLandings.find((l) => l.slug === slug);
-  if (!landing) return {};
+  // notFound() aqui (y no solo en la pagina) para que el status HTTP sea 404
+  // real: con streaming el 200 ya se envio cuando el body llama a notFound().
+  if (!landing) notFound();
   const copy = landing.copy[locale === "en" ? "en" : "es"];
   return createMetadata({
     title: copy.metaTitle,
