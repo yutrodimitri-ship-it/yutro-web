@@ -149,8 +149,14 @@ export async function POST(request: NextRequest) {
   ]);
   console.log("[access-request] notify results", {
     id: insertedId,
-    admin: adminRes.status === "fulfilled" ? adminRes.value : "rejected",
-    lead: leadRes.status === "fulfilled" ? leadRes.value : "rejected",
+    admin:
+      adminRes.status === "fulfilled"
+        ? adminRes.value
+        : `rejected: ${String(adminRes.reason)}`,
+    lead:
+      leadRes.status === "fulfilled"
+        ? leadRes.value
+        : `rejected: ${String(leadRes.reason)}`,
   });
 
   return NextResponse.json({ ok: true, id: insertedId }, { status: 200 });
