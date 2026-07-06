@@ -137,26 +137,21 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  // ── Notificaciones (no bloqueantes para el response) ────────
-  // Si Resend falla, ya guardamos el lead en DB — el admin lo ve igual
-  // en la pagina de listado.
-  const notify = Promise.allSettled([
+  // ── Notificaciones ──────────────────────────────────────────
+  // Esperamos los envios antes de responder: si la lambda se congela
+  // tras el response, las promises in-flight se pierden sin log.
+  // Si Resend falla, ya guardamos el lead en DB — el admin lo ve
+  // igual en la pagina de listado.
+  const [adminRes, leadRes] = await Promise.allSettled([
     notifyAdminAccessRequest({ input, id: insertedId, locale, ipAddress }),
     sendLeadConfirmation({ input, locale }),
     postToSlack({ input, id: insertedId, locale }),
   ]);
-
-  // Esperamos ~1 segundo a las notifs antes de responder, pero el
-  // response no depende de ellas. Vercel Fluid no termina la lambda
-  // hasta que las promises in-flight terminan, asi que igual se mandan.
-  try {
-    await Promise.race([
-      notify,
-      new Promise((r) => setTimeout(r, 1000)),
-    ]);
-  } catch {
-    // ignored — emails ya estan en pipeline
-  }
+  console.log("[access-request] notify results", {
+    id: insertedId,
+    admin: adminRes.status === "fulfilled" ? adminRes.value : "rejected",
+    lead: leadRes.status === "fulfilled" ? leadRes.value : "rejected",
+  });
 
   return NextResponse.json({ ok: true, id: insertedId }, { status: 200 });
 }
