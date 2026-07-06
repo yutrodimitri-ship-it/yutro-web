@@ -1,6 +1,15 @@
 import nodemailer from "nodemailer";
 
-const CONTACT_EMAIL = process.env.CONTACT_EMAIL_TO || "contacto@yutro.cl";
+// Acepta lista separada por comas ("a@x.cl,b@x.cl"). trim() defensivo:
+// un salto de linea o espacio colado en la env var rompe el header y el
+// envio falla silenciosamente.
+const CONTACT_EMAIL = (
+  (process.env.CONTACT_EMAIL_TO ?? "").trim() ||
+  "milivoy@yutro.cl,silvana@yutro.cl"
+)
+  .split(",")
+  .map((s) => s.trim())
+  .filter(Boolean);
 
 interface ContactEmailData {
   name: string;
@@ -24,13 +33,13 @@ export async function sendContactEmail(data: ContactEmailData) {
     port: 465,
     secure: true,
     auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
+      user: process.env.SMTP_USER?.trim(),
+      pass: process.env.SMTP_PASS?.trim(),
     },
   });
 
   const info = await transporter.sendMail({
-    from: `"YUTRO Web" <${process.env.SMTP_USER}>`,
+    from: `"YUTRO Web" <${process.env.SMTP_USER?.trim()}>`,
     to: CONTACT_EMAIL,
     replyTo: data.email,
     subject: `[YUTRO Web] ${data.subject}`,
