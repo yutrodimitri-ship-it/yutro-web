@@ -5,10 +5,6 @@ import {
   accessRequestSchema,
   FIELD_LABELS,
   PROJECT_TYPES,
-  TIMELINES,
-  BUDGET_RANGES,
-  ATTRIBUTIONS,
-  COUNTRIES,
   BLOCKED_EMAIL_DOMAINS,
   type AccessRequestInput,
 } from "@/lib/access-request/schema";
@@ -23,12 +19,7 @@ export interface FormLabels {
   email: string;
   emailHint: string;
   company: string;
-  role: string;
-  country: string;
   projectType: string;
-  timeline: string;
-  budgetRange: string;
-  attribution: string;
   notes: string;
   notesHint: string;
   submit: string;
@@ -91,12 +82,7 @@ export function AccessRequestForm({ locale, labels }: AccessRequestFormProps) {
       name: String(fd.get("name") ?? ""),
       email: String(fd.get("email") ?? ""),
       company: String(fd.get("company") ?? ""),
-      role: String(fd.get("role") ?? ""),
-      country: String(fd.get("country") ?? "CL"),
       projectType: String(fd.get("projectType") ?? ""),
-      timeline: String(fd.get("timeline") ?? ""),
-      budgetRange: String(fd.get("budgetRange") ?? ""),
-      attribution: String(fd.get("attribution") ?? ""),
       notes: String(fd.get("notes") ?? ""),
       website: String(fd.get("website") ?? ""), // honeypot
     };
@@ -207,7 +193,7 @@ export function AccessRequestForm({ locale, labels }: AccessRequestFormProps) {
         </Field>
       </div>
 
-      {/* Email + Rol */}
+      {/* Email + Tipo proyecto */}
       <div className="grid gap-5 sm:grid-cols-2">
         <Field
           label={labels.email}
@@ -225,28 +211,6 @@ export function AccessRequestForm({ locale, labels }: AccessRequestFormProps) {
             className={fieldClass(errors.email || (emailDomainBlocked ? "x" : undefined))}
           />
         </Field>
-        <Field label={labels.role} error={errors.role} required>
-          <input
-            type="text"
-            name="role"
-            required
-            autoComplete="organization-title"
-            className={fieldClass(errors.role)}
-          />
-        </Field>
-      </div>
-
-      {/* País + Tipo proyecto */}
-      <div className="grid gap-5 sm:grid-cols-2">
-        <Field label={labels.country} error={errors.country} required>
-          <select name="country" defaultValue="CL" required className={fieldClass(errors.country)}>
-            {COUNTRIES.map((c) => (
-              <option key={c} value={c}>
-                {FIELD_LABELS.country[locale][c]}
-              </option>
-            ))}
-          </select>
-        </Field>
         <Field label={labels.projectType} error={errors.projectType} required>
           <select name="projectType" required defaultValue="" className={fieldClass(errors.projectType)}>
             <option value="" disabled>
@@ -260,36 +224,6 @@ export function AccessRequestForm({ locale, labels }: AccessRequestFormProps) {
           </select>
         </Field>
       </div>
-
-      {/* Plazo + Presupuesto */}
-      <div className="grid gap-5 sm:grid-cols-2">
-        <Field label={labels.timeline} error={errors.timeline} required>
-          <select name="timeline" required defaultValue="" className={fieldClass(errors.timeline)}>
-            <option value="" disabled>—</option>
-            {TIMELINES.map((c) => (
-              <option key={c} value={c}>{FIELD_LABELS.timeline[locale][c]}</option>
-            ))}
-          </select>
-        </Field>
-        <Field label={labels.budgetRange} error={errors.budgetRange} required>
-          <select name="budgetRange" required defaultValue="" className={fieldClass(errors.budgetRange)}>
-            <option value="" disabled>—</option>
-            {BUDGET_RANGES.map((c) => (
-              <option key={c} value={c}>{FIELD_LABELS.budgetRange[locale][c]}</option>
-            ))}
-          </select>
-        </Field>
-      </div>
-
-      {/* Atribución */}
-      <Field label={labels.attribution} error={errors.attribution} required>
-        <select name="attribution" required defaultValue="" className={fieldClass(errors.attribution)}>
-          <option value="" disabled>—</option>
-          {ATTRIBUTIONS.map((c) => (
-            <option key={c} value={c}>{FIELD_LABELS.attribution[locale][c]}</option>
-          ))}
-        </select>
-      </Field>
 
       {/* Notas */}
       <Field label={labels.notes} hint={labels.notesHint}>

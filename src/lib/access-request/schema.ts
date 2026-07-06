@@ -90,12 +90,14 @@ export const accessRequestSchema = z.object({
       { message: "Necesitamos un email corporativo para verificar tu empresa" }
     ),
   company: z.string().trim().min(2, "Empresa requerida").max(160),
-  role: z.string().trim().min(2).max(120),
-  country: z.enum(COUNTRIES),
   projectType: z.enum(PROJECT_TYPES),
-  timeline: z.enum(TIMELINES),
-  budgetRange: z.enum(BUDGET_RANGES),
-  attribution: z.enum(ATTRIBUTIONS),
+  // Campos opcionales — el form simplificado ya no los pide, pero el
+  // endpoint los sigue aceptando (compatibilidad con clientes viejos).
+  role: z.string().trim().max(120).optional().or(z.literal("")),
+  country: z.enum(COUNTRIES).optional(),
+  timeline: z.enum(TIMELINES).optional(),
+  budgetRange: z.enum(BUDGET_RANGES).optional(),
+  attribution: z.enum(ATTRIBUTIONS).optional(),
   notes: z.string().trim().max(500).optional().or(z.literal("")),
   // Honeypot. Si llega lleno es bot → endpoint descarta silenciosamente.
   website: z.string().max(0).optional().or(z.literal("")),

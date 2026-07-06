@@ -4,7 +4,16 @@ import { FIELD_LABELS, type AccessRequestInput } from "./schema";
 
 const FROM_NAME = process.env.EMAIL_FROM_NAME || "Yutro";
 const FROM_ADDR = process.env.EMAIL_FROM_ADDRESS || "noreply@yutro.cl";
-const ADMIN_TO = process.env.ADMIN_NOTIFY_EMAIL || process.env.EMAIL_TO || "contacto@yutro.cl";
+// Acepta lista separada por comas ("a@x.cl,b@x.cl"). Resend requiere
+// array para múltiples destinatarios.
+const ADMIN_TO = (
+  process.env.ADMIN_NOTIFY_EMAIL ||
+  process.env.EMAIL_TO ||
+  "milivoy@yutro.cl,silvana@yutro.cl"
+)
+  .split(",")
+  .map((s) => s.trim())
+  .filter(Boolean);
 const SLACK_WEBHOOK = process.env.SLACK_WEBHOOK_URL;
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.yutro.cl";
 
@@ -112,12 +121,10 @@ export async function postToSlack({
   if (!SLACK_WEBHOOK) return;
 
   const ptLabel = FIELD_LABELS.projectType[locale][input.projectType];
-  const budgetLabel = FIELD_LABELS.budgetRange[locale][input.budgetRange];
-  const timelineLabel = FIELD_LABELS.timeline[locale][input.timeline];
 
   const text = `:envelope: *Nueva solicitud Casting* — ${input.company}
-*Tipo:* ${ptLabel}  ·  *Plazo:* ${timelineLabel}  ·  *Presupuesto:* ${budgetLabel}
-*Lead:* ${input.name} <${input.email}>  ·  *Rol:* ${input.role}
+*Tipo:* ${ptLabel}
+*Lead:* ${input.name} <${input.email}>
 *ID:* \`${id}\``;
 
   try {
@@ -152,12 +159,12 @@ function renderAdminHtml(
     <table cellpadding="0" cellspacing="0" style="border-collapse:collapse;width:100%">
       ${row(L === "es" ? "Nombre" : "Name", input.name)}
       ${row("Email", input.email)}
-      ${row(L === "es" ? "Rol" : "Role", input.role)}
-      ${row(L === "es" ? "País" : "Country", FIELD_LABELS.country[L][input.country])}
       ${row(L === "es" ? "Proyecto" : "Project", FIELD_LABELS.projectType[L][input.projectType])}
-      ${row(L === "es" ? "Plazo" : "Timeline", FIELD_LABELS.timeline[L][input.timeline])}
-      ${row(L === "es" ? "Presupuesto" : "Budget", FIELD_LABELS.budgetRange[L][input.budgetRange])}
-      ${row(L === "es" ? "Atribución" : "Attribution", FIELD_LABELS.attribution[L][input.attribution])}
+      ${input.role ? row(L === "es" ? "Rol" : "Role", input.role) : ""}
+      ${input.country ? row(L === "es" ? "País" : "Country", FIELD_LABELS.country[L][input.country]) : ""}
+      ${input.timeline ? row(L === "es" ? "Plazo" : "Timeline", FIELD_LABELS.timeline[L][input.timeline]) : ""}
+      ${input.budgetRange ? row(L === "es" ? "Presupuesto" : "Budget", FIELD_LABELS.budgetRange[L][input.budgetRange]) : ""}
+      ${input.attribution ? row(L === "es" ? "Atribución" : "Attribution", FIELD_LABELS.attribution[L][input.attribution]) : ""}
       ${input.notes ? row(L === "es" ? "Notas" : "Notes", input.notes) : ""}
     </table>
     <hr style="border:none;border-top:1px solid #e0e0e0;margin:24px 0">
@@ -183,12 +190,12 @@ function renderAdminText(
     `Empresa:      ${input.company}`,
     `Nombre:       ${input.name}`,
     `Email:        ${input.email}`,
-    `Rol:          ${input.role}`,
-    `País:         ${FIELD_LABELS.country[L][input.country]}`,
     `Proyecto:     ${FIELD_LABELS.projectType[L][input.projectType]}`,
-    `Plazo:        ${FIELD_LABELS.timeline[L][input.timeline]}`,
-    `Presupuesto:  ${FIELD_LABELS.budgetRange[L][input.budgetRange]}`,
-    `Atribución:   ${FIELD_LABELS.attribution[L][input.attribution]}`,
+    input.role ? `Rol:          ${input.role}` : "",
+    input.country ? `País:         ${FIELD_LABELS.country[L][input.country]}` : "",
+    input.timeline ? `Plazo:        ${FIELD_LABELS.timeline[L][input.timeline]}` : "",
+    input.budgetRange ? `Presupuesto:  ${FIELD_LABELS.budgetRange[L][input.budgetRange]}` : "",
+    input.attribution ? `Atribución:   ${FIELD_LABELS.attribution[L][input.attribution]}` : "",
     input.notes ? `\nNotas:\n${input.notes}` : "",
     "",
     `ID: ${id}`,
