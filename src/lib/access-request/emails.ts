@@ -2,13 +2,13 @@ import "server-only";
 import { Resend } from "resend";
 import { FIELD_LABELS, type AccessRequestInput } from "./schema";
 
-const FROM_NAME = process.env.EMAIL_FROM_NAME || "Yutro";
-const FROM_ADDR = process.env.EMAIL_FROM_ADDRESS || "noreply@yutro.cl";
+const FROM_NAME = (process.env.EMAIL_FROM_NAME ?? "").trim() || "Yutro";
+const FROM_ADDR = (process.env.EMAIL_FROM_ADDRESS ?? "").trim() || "noreply@yutro.cl";
 // Acepta lista separada por comas ("a@x.cl,b@x.cl"). Resend requiere
 // array para múltiples destinatarios.
 const ADMIN_TO = (
-  process.env.ADMIN_NOTIFY_EMAIL ||
-  process.env.EMAIL_TO ||
+  (process.env.ADMIN_NOTIFY_EMAIL ?? "").trim() ||
+  (process.env.EMAIL_TO ?? "").trim() ||
   "milivoy@yutro.cl,silvana@yutro.cl"
 )
   .split(",")
@@ -19,8 +19,11 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.yutro.cl";
 
 let resendClient: Resend | null = null;
 function getResend(): Resend | null {
-  if (!process.env.RESEND_API_KEY || process.env.RESEND_API_KEY === "re_xxx") return null;
-  if (!resendClient) resendClient = new Resend(process.env.RESEND_API_KEY);
+  // trim(): un salto de linea o espacio colado en la env var rompe el
+  // header Authorization (new Headers() lanza) y los envios rechazan.
+  const key = (process.env.RESEND_API_KEY ?? "").trim();
+  if (!key || key === "re_xxx") return null;
+  if (!resendClient) resendClient = new Resend(key);
   return resendClient;
 }
 
