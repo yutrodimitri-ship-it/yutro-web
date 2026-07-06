@@ -6,31 +6,6 @@ import { z } from "zod";
  * que el form usa para la UI — single source of truth.
  */
 
-// Email personales bloqueados — usamos endsWith para que cualquier
-// variante (.com, .es, .co.uk, etc.) caiga.
-export const BLOCKED_EMAIL_DOMAINS = [
-  "gmail.com",
-  "googlemail.com",
-  "hotmail.com",
-  "hotmail.cl",
-  "hotmail.es",
-  "outlook.com",
-  "outlook.cl",
-  "outlook.es",
-  "yahoo.com",
-  "yahoo.es",
-  "yahoo.cl",
-  "yahoo.com.ar",
-  "ymail.com",
-  "icloud.com",
-  "live.com",
-  "live.cl",
-  "live.es",
-  "msn.com",
-  "aol.com",
-  "protonmail.com",
-] as const;
-
 export const PROJECT_TYPES = [
   "campaign",
   "retail-catalog",
@@ -74,25 +49,11 @@ export const COUNTRIES = [
 
 export const accessRequestSchema = z.object({
   name: z.string().trim().min(2, "Nombre demasiado corto").max(120),
-  email: z
-    .string()
-    .trim()
-    .toLowerCase()
-    .email("Email inválido")
-    .max(200)
-    .refine(
-      (val) => {
-        const domain = val.split("@")[1] ?? "";
-        return !BLOCKED_EMAIL_DOMAINS.includes(
-          domain as (typeof BLOCKED_EMAIL_DOMAINS)[number]
-        );
-      },
-      { message: "Necesitamos un email corporativo para verificar tu empresa" }
-    ),
-  company: z.string().trim().min(2, "Empresa requerida").max(160),
-  projectType: z.enum(PROJECT_TYPES),
+  email: z.string().trim().toLowerCase().email("Email inválido").max(200),
   // Campos opcionales — el form simplificado ya no los pide, pero el
   // endpoint los sigue aceptando (compatibilidad con clientes viejos).
+  company: z.string().trim().max(160).optional().or(z.literal("")),
+  projectType: z.enum(PROJECT_TYPES).optional(),
   role: z.string().trim().max(120).optional().or(z.literal("")),
   country: z.enum(COUNTRIES).optional(),
   timeline: z.enum(TIMELINES).optional(),

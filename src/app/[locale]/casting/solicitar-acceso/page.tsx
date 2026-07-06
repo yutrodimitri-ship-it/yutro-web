@@ -100,8 +100,6 @@ export default async function SolicitarAccesoPage({
                 name: tf("name"),
                 email: tf("email"),
                 emailHint: tf("emailHint"),
-                company: tf("company"),
-                projectType: tf("projectType"),
                 notes: tf("notes"),
                 notesHint: tf("notesHint"),
                 submit: tf("submit"),
@@ -109,7 +107,6 @@ export default async function SolicitarAccesoPage({
                 successTitle: tf("successTitle"),
                 successBody: tf("successBody"),
                 back: tf("back"),
-                errorBlockedEmail: tf("errorBlockedEmail"),
                 errorRateLimit: tf("errorRateLimit"),
                 errorGeneric: tf("errorGeneric"),
               }}

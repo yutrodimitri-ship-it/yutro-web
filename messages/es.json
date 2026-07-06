@@ -66,8 +66,8 @@
       "step3": "Te entregamos credenciales del catálogo completo bajo contrato.",
       "form": {
         "name": "Nombre completo",
-        "email": "Email corporativo",
-        "emailHint": "Necesitamos email del dominio de tu empresa.",
+        "email": "Email",
+        "emailHint": "Te contactamos a este email.",
         "company": "Empresa",
         "role": "Rol",
         "country": "País",

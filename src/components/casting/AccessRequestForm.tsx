@@ -3,9 +3,6 @@
 import { useState, useTransition } from "react";
 import {
   accessRequestSchema,
-  FIELD_LABELS,
-  PROJECT_TYPES,
-  BLOCKED_EMAIL_DOMAINS,
   type AccessRequestInput,
 } from "@/lib/access-request/schema";
 
@@ -18,8 +15,6 @@ export interface FormLabels {
   name: string;
   email: string;
   emailHint: string;
-  company: string;
-  projectType: string;
   notes: string;
   notesHint: string;
   submit: string;
@@ -27,7 +22,6 @@ export interface FormLabels {
   successTitle: string;
   successBody: string;
   back: string;
-  errorBlockedEmail: string;
   errorRateLimit: string;
   errorGeneric: string;
 }
@@ -47,17 +41,6 @@ export function AccessRequestForm({ locale, labels }: AccessRequestFormProps) {
   const [errors, setErrors] = useState<Partial<Record<keyof AccessRequestInput, string>>>(
     {}
   );
-
-  // Para el feedback inline del email corporativo (sin esperar al submit)
-  const [email, setEmail] = useState("");
-  const emailDomainBlocked = (() => {
-    const at = email.indexOf("@");
-    if (at === -1 || at === email.length - 1) return false;
-    const domain = email.slice(at + 1).toLowerCase();
-    return BLOCKED_EMAIL_DOMAINS.includes(
-      domain as (typeof BLOCKED_EMAIL_DOMAINS)[number]
-    );
-  })();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -81,8 +64,6 @@ export function AccessRequestForm({ locale, labels }: AccessRequestFormProps) {
     const raw = {
       name: String(fd.get("name") ?? ""),
       email: String(fd.get("email") ?? ""),
-      company: String(fd.get("company") ?? ""),
-      projectType: String(fd.get("projectType") ?? ""),
       notes: String(fd.get("notes") ?? ""),
       website: String(fd.get("website") ?? ""), // honeypot
     };
@@ -122,13 +103,7 @@ export function AccessRequestForm({ locale, labels }: AccessRequestFormProps) {
           return;
         }
         if (!res.ok || !json?.ok) {
-          setState({
-            status: "error",
-            message:
-              json?.error === "validation"
-                ? labels.errorBlockedEmail
-                : labels.errorGeneric,
-          });
+          setState({ status: "error", message: labels.errorGeneric });
           return;
         }
         try {
@@ -171,7 +146,7 @@ export function AccessRequestForm({ locale, labels }: AccessRequestFormProps) {
         </label>
       </div>
 
-      {/* Nombre + Empresa en grid */}
+      {/* Nombre + Email en grid */}
       <div className="grid gap-5 sm:grid-cols-2">
         <Field label={labels.name} error={errors.name} required>
           <input
@@ -182,22 +157,9 @@ export function AccessRequestForm({ locale, labels }: AccessRequestFormProps) {
             className={fieldClass(errors.name)}
           />
         </Field>
-        <Field label={labels.company} error={errors.company} required>
-          <input
-            type="text"
-            name="company"
-            required
-            autoComplete="organization"
-            className={fieldClass(errors.company)}
-          />
-        </Field>
-      </div>
-
-      {/* Email + Tipo proyecto */}
-      <div className="grid gap-5 sm:grid-cols-2">
         <Field
           label={labels.email}
-          error={errors.email ?? (emailDomainBlocked ? labels.errorBlockedEmail : undefined)}
+          error={errors.email}
           hint={labels.emailHint}
           required
         >
@@ -206,22 +168,8 @@ export function AccessRequestForm({ locale, labels }: AccessRequestFormProps) {
             name="email"
             required
             autoComplete="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className={fieldClass(errors.email || (emailDomainBlocked ? "x" : undefined))}
+            className={fieldClass(errors.email)}
           />
-        </Field>
-        <Field label={labels.projectType} error={errors.projectType} required>
-          <select name="projectType" required defaultValue="" className={fieldClass(errors.projectType)}>
-            <option value="" disabled>
-              —
-            </option>
-            {PROJECT_TYPES.map((c) => (
-              <option key={c} value={c}>
-                {FIELD_LABELS.projectType[locale][c]}
-              </option>
-            ))}
-          </select>
         </Field>
       </div>
 
@@ -239,7 +187,7 @@ export function AccessRequestForm({ locale, labels }: AccessRequestFormProps) {
       <div className="flex flex-col items-start gap-3 pt-3 sm:flex-row sm:items-center">
         <button
           type="submit"
-          disabled={state.status === "submitting" || emailDomainBlocked}
+          disabled={state.status === "submitting"}
           className="group inline-flex items-center gap-3 bg-primary px-7 py-4 font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-primary-foreground transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {state.status === "submitting" && (

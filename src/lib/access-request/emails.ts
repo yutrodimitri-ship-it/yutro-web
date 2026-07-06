@@ -47,8 +47,7 @@ export async function notifyAdminAccessRequest({
     return { ok: false, error: "no_resend_key" };
   }
 
-  const ptLabel = FIELD_LABELS.projectType[locale][input.projectType];
-  const subject = `[Yutro Casting] Nueva solicitud — ${input.company} · ${ptLabel}`;
+  const subject = `[Yutro Casting] Nueva solicitud — ${input.name}`;
 
   const html = renderAdminHtml(input, id, locale, ipAddress);
   const text = renderAdminText(input, id, locale, ipAddress);
@@ -120,11 +119,12 @@ export async function postToSlack({
 }: Pick<NotifyParams, "input" | "id" | "locale">): Promise<void> {
   if (!SLACK_WEBHOOK) return;
 
-  const ptLabel = FIELD_LABELS.projectType[locale][input.projectType];
+  const ptLabel = input.projectType
+    ? FIELD_LABELS.projectType[locale][input.projectType]
+    : null;
 
-  const text = `:envelope: *Nueva solicitud Casting* — ${input.company}
-*Tipo:* ${ptLabel}
-*Lead:* ${input.name} <${input.email}>
+  const text = `:envelope: *Nueva solicitud Casting* — ${input.name}
+${ptLabel ? `*Tipo:* ${ptLabel}\n` : ""}*Lead:* ${input.name} <${input.email}>
 *ID:* \`${id}\``;
 
   try {
@@ -155,11 +155,11 @@ function renderAdminHtml(
 
   return `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#1a1a1a;max-width:580px;padding:32px">
     <p style="margin:0 0 8px;color:#999;font-size:11px;text-transform:uppercase;letter-spacing:0.18em;font-family:monospace">Yutro Casting · ${L === "es" ? "Nueva solicitud" : "New request"}</p>
-    <h1 style="margin:0 0 24px;font-size:24px;font-weight:800;letter-spacing:-0.02em">${escapeHtml(input.company)}</h1>
+    <h1 style="margin:0 0 24px;font-size:24px;font-weight:800;letter-spacing:-0.02em">${escapeHtml(input.name)}</h1>
     <table cellpadding="0" cellspacing="0" style="border-collapse:collapse;width:100%">
-      ${row(L === "es" ? "Nombre" : "Name", input.name)}
       ${row("Email", input.email)}
-      ${row(L === "es" ? "Proyecto" : "Project", FIELD_LABELS.projectType[L][input.projectType])}
+      ${input.company ? row(L === "es" ? "Empresa" : "Company", input.company) : ""}
+      ${input.projectType ? row(L === "es" ? "Proyecto" : "Project", FIELD_LABELS.projectType[L][input.projectType]) : ""}
       ${input.role ? row(L === "es" ? "Rol" : "Role", input.role) : ""}
       ${input.country ? row(L === "es" ? "País" : "Country", FIELD_LABELS.country[L][input.country]) : ""}
       ${input.timeline ? row(L === "es" ? "Plazo" : "Timeline", FIELD_LABELS.timeline[L][input.timeline]) : ""}
@@ -187,10 +187,10 @@ function renderAdminText(
   return [
     `Yutro Casting — ${L === "es" ? "Nueva solicitud" : "New request"}`,
     "",
-    `Empresa:      ${input.company}`,
     `Nombre:       ${input.name}`,
     `Email:        ${input.email}`,
-    `Proyecto:     ${FIELD_LABELS.projectType[L][input.projectType]}`,
+    input.company ? `Empresa:      ${input.company}` : "",
+    input.projectType ? `Proyecto:     ${FIELD_LABELS.projectType[L][input.projectType]}` : "",
     input.role ? `Rol:          ${input.role}` : "",
     input.country ? `País:         ${FIELD_LABELS.country[L][input.country]}` : "",
     input.timeline ? `Plazo:        ${FIELD_LABELS.timeline[L][input.timeline]}` : "",

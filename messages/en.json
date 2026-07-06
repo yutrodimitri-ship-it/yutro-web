@@ -66,8 +66,8 @@
       "step3": "We provide full catalog credentials under contract.",
       "form": {
         "name": "Full name",
-        "email": "Corporate email",
-        "emailHint": "We need an email from your company domain.",
+        "email": "Email",
+        "emailHint": "We'll reach out at this email.",
         "company": "Company",
         "role": "Role",
         "country": "Country",

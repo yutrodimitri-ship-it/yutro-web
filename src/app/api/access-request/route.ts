@@ -113,10 +113,11 @@ export async function POST(request: NextRequest) {
       .values({
         name: input.name,
         email: input.email,
-        company: input.company,
+        // company es NOT NULL en DB; el form simplificado ya no lo pide.
+        company: input.company || "",
         role: input.role || null,
         country: input.country || null,
-        projectType: input.projectType,
+        projectType: input.projectType || null,
         timeline: input.timeline || null,
         budgetRange: input.budgetRange || null,
         attribution: input.attribution || null,
