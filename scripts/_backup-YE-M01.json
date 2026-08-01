@@ -1,0 +1,68 @@
+{
+  "code": "YE-M01",
+  "name_es": "Joaquín Aravena",
+  "name_en": "Joaquín Aravena",
+  "short_desc_es": "Hombre · 28-32 · Precisión",
+  "short_desc_en": "Man · 28-32 · Precision",
+  "phenotype_es": "Latino mestizo",
+  "phenotype_en": "Latino mestizo",
+  "archetype_es": "Precisión analítica",
+  "archetype_en": "Analytical precision",
+  "tone_commercial_es": "Premium discreto",
+  "tone_commercial_en": "Premium discreet",
+  "gender": "m",
+  "age_range": "28-32",
+  "age_bucket": "30s",
+  "category": "corporativo",
+  "status": "available",
+  "market": [
+    "CL",
+    "LATAM"
+  ],
+  "suggested_uses": [
+    {
+      "en": "Banking / Insurance",
+      "es": "Banca / Seguros"
+    },
+    {
+      "en": "Premium corporate",
+      "es": "Corporativo premium"
+    },
+    {
+      "en": "Formal fashion",
+      "es": "Moda formal"
+    },
+    {
+      "en": "Premium telecom",
+      "es": "Telecomunicaciones premium"
+    }
+  ],
+  "hue": 220,
+  "sat": 25,
+  "image_profile_key": "talents/YE-M01/profile.jpg",
+  "image_charsheet_key": "talents/YE-M01/charsheet.jpg",
+  "gallery_keys": [
+    "talents/YE-M01/gallery-1.jpg",
+    "talents/YE-M01/gallery-2.jpg",
+    "talents/YE-M01/gallery-3.jpg",
+    "talents/YE-M01/gallery-4.jpg",
+    "talents/YE-M01/gallery-5.jpg",
+    "talents/YE-M01/gallery-6.jpg",
+    "talents/YE-M01/gallery-7.jpg",
+    "talents/YE-M01/gallery-8.jpg"
+  ],
+  "is_active": true,
+  "created_at": "2026-05-18T06:27:45.330Z",
+  "updated_at": "2026-06-12T22:02:54.586Z",
+  "bio_es": "Ejecutivo de banca de inversión, 30 años, basado en Las Condes. Traje slim navy, camisa oxford sin corbata, derbys de cuero. Vive entre torres de Vitacura, salas de directorio y vuelos cortos a Buenos Aires.\n\nTrae quietud de profesional senior: la confianza fría de quien decide con dinero ajeno y no necesita levantar la voz. Analítico, discreto, calculador. Ambición elegante, no ostentosa.\n\nFunciona en campañas de banca privada, AFP, seguros premium, telecomunicaciones corporativas y moda formal. Escenarios naturales: oficina corporativa, lobby de hotel cinco estrellas, sala de directorio, restaurant de socios.",
+  "bio_en": "Investment banking executive, 30 years old, based in Las Condes. Slim navy suit, oxford shirt sin tie, leather derbys. Lives between Vitacura towers, board rooms and short flights to Buenos Aires.\n\nCarries the stillness of a senior professional: the cold confidence of one who decides with other people's money and doesn't need to raise his voice. Analytical, discreet, calculating. Elegant ambition, never ostentatious.\n\nWorks for private banking, AFP, premium insurance, corporate telecom and formal fashion. Natural settings: corporate office, five-star hotel lobby, board room, partners' restaurant.",
+  "editorial_score": 0,
+  "public_visible": true,
+  "tier": "standard",
+  "instagram_handle": null,
+  "instagram_followers": null,
+  "public_bio_es": "Ejecutivo de banca de inversión, 30 años, basado en Las Condes. Traje slim navy, camisa oxford sin corbata, derbys de cuero. Vive entre torres de Vitacura, salas de directorio y vuelos cortos a Buenos Aires.\n\nTrae quietud de profesional senior: la confianza fría de quien decide con dinero ajeno y no necesita levantar la voz. Analítico, discreto, calculador. Ambición elegante, no ostentosa.\n\nFunciona en campañas de banca privada, AFP, seguros premium, telecomunicaciones corporativas y moda formal. Escenarios naturales: oficina corporativa, lobby de hotel cinco estrellas, sala de directorio, restaurant de socios.",
+  "public_bio_en": "Investment banking executive, 30 years old, based in Las Condes. Slim navy suit, oxford shirt sin tie, leather derbys. Lives between Vitacura towers, board rooms and short flights to Buenos Aires.\n\nCarries the stillness of a senior professional: the cold confidence of one who decides with other people's money and doesn't need to raise his voice. Analytical, discreet, calculating. Elegant ambition, never ostentatious.\n\nWorks for private banking, AFP, premium insurance, corporate telecom and formal fashion. Natural settings: corporate office, five-star hotel lobby, board room, partners' restaurant.",
+  "public_slug": "joaquin-aravena",
+  "commercial_tier": "standard"
+}
