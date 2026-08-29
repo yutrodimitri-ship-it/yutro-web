@@ -133,7 +133,9 @@ function applySecurityHeaders(
     "default-src 'self'",
     isDev
       ? `script-src 'self' 'unsafe-inline' 'unsafe-eval'`
-      : `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'`,
+      : // El hash autoriza el script anti-flash del tema en src/app/layout.tsx
+        // (HTML estático, no puede llevar nonce por request).
+        `script-src 'self' 'nonce-${nonce}' 'sha256-G2KlYBepCcNNbbeg7wfWKRA2smCd2Xr1JqB7zBjKiso=' 'strict-dynamic'`,
     `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`,
     "connect-src 'self' https://*.sanity.io https://cdn.sanity.io https://*.supabase.co https://comfy.yutro.cl",
     "frame-src 'self' https://www.youtube.com https://player.vimeo.com",

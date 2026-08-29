@@ -79,6 +79,10 @@ export default async function RootLayout({
   return (
     <html lang={lang} className={`${plusJakarta.variable} ${outfit.variable} ${archivo.variable} ${jetbrainsMono.variable} ${roboto.variable} h-full antialiased`} suppressHydrationWarning>
       <head>
+        {/* Script anti-flash del tema: es HTML estático (no puede llevar
+            nonce por request), así que su hash sha256 está autorizado en
+            el CSP de src/proxy.ts. Si cambias este script, recalcula el
+            hash (el error de consola del navegador lo muestra). */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
