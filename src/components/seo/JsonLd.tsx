@@ -17,7 +17,7 @@ export function OrganizationJsonLd() {
         "@type": "Organization",
         name: "YUTRO.",
         url: SITE_URL,
-        logo: `${SITE_URL}/logo.png`,
+        logo: `${SITE_URL}/icon-512.png`,
         description:
           "Productora audiovisual especializada en inteligencia artificial generativa. Parte de VRYP - Art & AI Solutions.",
         parentOrganization: {

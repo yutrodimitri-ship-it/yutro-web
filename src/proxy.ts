@@ -4,6 +4,14 @@ import type { NextRequest } from "next/server";
 import { jwtVerify } from "jose";
 import { routing } from "./i18n/routing";
 
+// Negociación markdown (acceptmarkdown.com) — mantener en sync con
+// wantsMarkdown() en src/lib/agent-markdown.ts (no se importa para no
+// arrastrar los datos de proyectos/blog al bundle del middleware).
+function acceptsMarkdown(accept: string | null): boolean {
+  if (!accept) return false;
+  return /\btext\/markdown\b/i.test(accept);
+}
+
 const intlMiddleware = createMiddleware(routing);
 
 function getAuthSecret() {
@@ -54,10 +62,33 @@ export async function proxy(request: NextRequest) {
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set("x-nonce", nonce);
 
+  // Negociación de contenido markdown (acceptmarkdown.com):
+  // una petición pública con `Accept: text/markdown` se reescribe a
+  // /md/<ruta>, que responde text/markdown generado desde los mismos
+  // datos que el HTML. Vary: Accept evita que un CDN sirva la variante
+  // equivocada desde caché.
+  const isPublicPage =
+    !pathname.startsWith("/studio") &&
+    !pathname.startsWith("/api") &&
+    !pathname.startsWith("/_next") &&
+    !pathname.startsWith("/md") &&
+    !pathname.startsWith("/intel") &&
+    !pathname.includes(".");
+  if (isPublicPage && acceptsMarkdown(request.headers.get("accept"))) {
+    const mdUrl = new URL(`/md${pathname === "/" ? "" : pathname}`, request.url);
+    const response = NextResponse.rewrite(mdUrl, {
+      request: { headers: requestHeaders },
+    });
+    applySecurityHeaders(response, nonce, isDev);
+    response.headers.set("Vary", "Accept");
+    return response;
+  }
+
   // Skip i18n for studio, api, static files, and generated assets (icon, apple-icon, sitemap, robots)
   if (
     pathname.startsWith("/studio") ||
     pathname.startsWith("/api") ||
+    pathname.startsWith("/md") ||
     pathname.startsWith("/_next") ||
     pathname.includes(".") ||
     pathname === "/icon" ||
@@ -84,6 +115,10 @@ export async function proxy(request: NextRequest) {
 
   // Set nonce in request headers for downstream use
   response.headers.set("x-nonce", nonce);
+
+  // Nota: el `Vary: Accept` de la variante HTML se agrega en
+  // next.config.ts (headers()) porque el render pisa el Vary que se
+  // setee acá en el middleware.
 
   return response;
 }

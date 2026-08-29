@@ -109,7 +109,13 @@ export function Footer() {
 
         {/* Copyright */}
         <div className="mt-12 border-t border-border pt-6 text-center text-sm text-muted-foreground">
-          {tCommon("copyright", { year: new Date().getFullYear() })}
+          {tCommon("copyright", { year: new Date().getFullYear() })}{" "}
+          <Link
+            href="/privacidad"
+            className="underline-offset-4 transition-colors hover:text-primary hover:underline"
+          >
+            {tCommon("privacyLink")}
+          </Link>
         </div>
       </Container>
     </footer>

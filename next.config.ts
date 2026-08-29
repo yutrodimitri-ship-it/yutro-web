@@ -34,6 +34,19 @@ const nextConfig: NextConfig = {
     "@prisma/instrumentation",
   ],
 
+  // Vary: Accept en todas las respuestas — contraparte de la negociación
+  // markdown (acceptmarkdown.com) del middleware: sin esto un CDN puede
+  // servir la variante HTML cacheada a un agente que pidió markdown.
+  // Next agrega sus propios valores de Vary (rsc, next-router-*) por append.
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [{ key: "Vary", value: "Accept" }],
+      },
+    ];
+  },
+
   // Redirects 301 a nivel servidor — el brief Sprint 1 los pide
   // explicitos asi para preservar SEO de las URLs antiguas.
   //   /servicios -> /produccion        (Tarea 1.5)
@@ -71,6 +84,38 @@ const nextConfig: NextConfig = {
         source: "/:locale(es|en)/catalogo",
         destination: "/:locale/casting",
         permanent: false,
+      },
+      // Trust anchors: rutas en ingles que los agentes de IA verifican
+      // (/about, /contact, /privacy) apuntan a las paginas reales.
+      {
+        source: "/about",
+        destination: "/es/estudio",
+        permanent: true,
+      },
+      {
+        source: "/:locale(es|en)/about",
+        destination: "/:locale/estudio",
+        permanent: true,
+      },
+      {
+        source: "/contact",
+        destination: "/es/contacto",
+        permanent: true,
+      },
+      {
+        source: "/:locale(es|en)/contact",
+        destination: "/:locale/contacto",
+        permanent: true,
+      },
+      {
+        source: "/privacy",
+        destination: "/es/privacidad",
+        permanent: true,
+      },
+      {
+        source: "/:locale(es|en)/privacy",
+        destination: "/:locale/privacidad",
+        permanent: true,
       },
     ];
   },

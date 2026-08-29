@@ -170,7 +170,8 @@
     "backToHome": "Back to Home",
     "notFound": "Page Not Found",
     "notFoundDescription": "The page you're looking for doesn't exist or has been moved.",
-    "copyright": "© {year} Yutro · VRYP Art & AI Solutions · Santiago, Chile."
+    "copyright": "© {year} Yutro · VRYP Art & AI Solutions · Santiago, Chile.",
+    "privacyLink": "Privacy"
   },
   "meta": {
     "homeTitle": "YUTRO. — AI-Powered Audiovisual Production",

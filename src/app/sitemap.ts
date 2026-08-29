@@ -52,6 +52,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { path: "/proyectos", priority: 0.85, changeFreq: "monthly" },
     { path: "/blog", priority: 0.7, changeFreq: "monthly" },
     { path: "/contacto", priority: 0.7, changeFreq: "monthly" },
+    { path: "/privacidad", priority: 0.3, changeFreq: "monthly" },
   ];
   const staticEntries = locales.flatMap((locale) =>
     staticPages.map((p) => ({
