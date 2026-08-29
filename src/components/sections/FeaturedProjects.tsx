@@ -9,10 +9,21 @@ import { StaggerContainer, StaggerItem } from "@/components/animations/StaggerCo
 import { FadeInOnScroll } from "@/components/animations/FadeInOnScroll";
 import { projects } from "@/data/projects";
 
+// Orden de la home: el primero se muestra en grande (full-width)
+const FEATURED_SLUGS = [
+  "super-pollo",
+  "parque-arauco-ddm",
+  "pomarola",
+  "mochilas-head",
+  "santander",
+];
+
 export function FeaturedProjects() {
   const t = useTranslations("home");
   const locale = useLocale();
-  const featured = projects.filter((p) => p.featured).slice(0, 6);
+  const featured = FEATURED_SLUGS.map((slug) =>
+    projects.find((p) => p.slug === slug)
+  ).filter((p): p is (typeof projects)[number] => Boolean(p));
 
   return (
     <section id="proyectos" className="relative py-20 lg:py-28">
