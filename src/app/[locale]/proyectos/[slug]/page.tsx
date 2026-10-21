@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { Container } from "@/components/shared/Container";
 import { CTAButton } from "@/components/shared/CTAButton";
 import { Separator } from "@/components/ui/separator";
-import { projects } from "@/data/projects";
+import { projects, MODALITY_LABELS } from "@/data/projects";
 import { createMetadata } from "@/lib/metadata";
 import { ProjectHeroImage, ProjectGallery } from "./ProjectDetailClient";
 
@@ -97,6 +97,56 @@ export default async function ProjectPage({
             </p>
           </div>
         </div>
+
+        {/* Créditos: Modalidad + Alcance - Nuestro rol - Equipo */}
+        {project.credits && (
+          <div className="mt-10 grid gap-8 rounded-xl border border-border p-6 sm:grid-cols-3 sm:p-8">
+            <div>
+              <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                {l === "es" ? "Modalidad" : "Engagement"}
+              </h3>
+              <p className="mt-2 inline-block rounded-full border border-foreground/20 px-3 py-1 text-sm font-medium">
+                {MODALITY_LABELS[project.credits.modality][l]}
+              </p>
+              {project.credits.scope && (
+                <>
+                  <h3 className="mt-6 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                    {l === "es" ? "Alcance" : "Scope"}
+                  </h3>
+                  <p className="mt-2 text-base font-medium">{project.credits.scope[l]}</p>
+                </>
+              )}
+            </div>
+
+            <div>
+              <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                {l === "es" ? "Nuestro rol" : "Our role"}
+              </h3>
+              <ul className="mt-2 space-y-1">
+                {project.credits.role[l].map((item) => (
+                  <li key={item} className="text-base leading-relaxed">
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {project.credits.team && project.credits.team.length > 0 && (
+              <div>
+                <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                  {l === "es" ? "Equipo" : "Team"}
+                </h3>
+                <ul className="mt-2 space-y-2">
+                  {project.credits.team.map((member) => (
+                    <li key={member[l]} className="text-base leading-relaxed text-muted-foreground">
+                      {member[l]}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        )}
 
         <Separator className="my-12" />
 

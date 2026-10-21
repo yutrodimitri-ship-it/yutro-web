@@ -1,4 +1,4 @@
-import { projects } from "@/data/projects";
+import { projects, MODALITY_LABELS, type Project } from "@/data/projects";
 import { blogPosts } from "@/data/blog";
 import { serviceLandings } from "@/data/landings";
 
@@ -104,6 +104,23 @@ function projectsIndexMarkdown(locale: "es" | "en"): string {
   return `# ${title} — YUTRO.\n\n${intro}\n\n${list}\n${footer(locale)}`;
 }
 
+function creditsMarkdown(p: Project, locale: "es" | "en"): string {
+  const c = p.credits;
+  if (!c) return "";
+  const labels =
+    locale === "es"
+      ? { modality: "Modalidad", role: "Nuestro rol", scope: "Alcance", team: "Equipo" }
+      : { modality: "Engagement", role: "Our role", scope: "Scope", team: "Team" };
+  return [
+    `- **${labels.modality}:** ${MODALITY_LABELS[c.modality][locale]}`,
+    `- **${labels.role}:** ${c.role[locale].join(" · ")}`,
+    c.scope ? `- **${labels.scope}:** ${c.scope[locale]}` : "",
+    c.team?.length ? `- **${labels.team}:** ${c.team.map((m) => m[locale]).join("; ")}` : "",
+  ]
+    .filter(Boolean)
+    .join("\n") + "\n";
+}
+
 function projectMarkdown(slug: string, locale: "es" | "en"): string | null {
   const p = projects.find((x) => x.slug === slug);
   if (!p) return null;
@@ -117,7 +134,7 @@ function projectMarkdown(slug: string, locale: "es" | "en"): string | null {
 > ${p.excerpt[locale]}
 
 - **${labels.client}:** ${p.client}
-${p.partners.length ? `- **${labels.partners}:** ${p.partners.join(", ")}\n` : ""}
+${p.partners.length ? `- **${labels.partners}:** ${p.partners.join(", ")}\n` : ""}${creditsMarkdown(p, locale)}
 ${p.description[locale]}
 
 ## ${labels.videos}

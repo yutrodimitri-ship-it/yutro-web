@@ -19,6 +19,31 @@ export interface Project {
   videoUrl: string | string[];
   gallery: string[];
   featured: boolean;
+  credits?: ProjectCredits;
+}
+
+type Localized = { es: string; en: string };
+
+// Cómo participamos en el proyecto. Se muestra siempre, para que quede claro
+// qué hizo YUTRO y qué hizo el resto del equipo.
+export type Modality = "full" | "team" | "partner" | "in-house" | "own";
+
+export const MODALITY_LABELS: Record<Modality, Localized> = {
+  full: { es: "Producción completa", en: "Full production" },
+  team: { es: "Producción IA en equipo", en: "AI production as part of a team" },
+  partner: { es: "Partner de producción", en: "Production partner" },
+  "in-house": { es: "Como parte de un equipo", en: "As part of an in-house team" },
+  own: { es: "Proyecto propio", en: "Original project" },
+};
+
+export interface ProjectCredits {
+  modality: Modality;
+  /** Lo que hizo YUTRO, en orden de proceso. */
+  role: { es: string[]; en: string[] };
+  /** Cuánto de la campaña es nuestro, si no es todo (ej. "4 de las 10 cápsulas"). */
+  scope?: Localized;
+  /** Quién más participó y con qué. */
+  team?: Localized[];
 }
 
 export const projects: Project[] = [
@@ -56,6 +81,17 @@ export const projects: Project[] = [
       "/projects/latam-pass/09.webp",
     ],
     featured: false,
+    credits: {
+      modality: "team",
+      role: {
+        es: ["Consistencia de personaje", "Animación", "Tomas extra", "Tracking de cámara para reemplazar pantallas", "Montaje en After Effects", "Entrega del editable"],
+        en: ["Character consistency", "Animation", "Extra shots", "Camera tracking for screen replacement", "Assembly in After Effects", "Editable project delivery"],
+      },
+      scope: { es: "4 de las 10 cápsulas de la campaña", en: "4 of the campaign's 10 spots" },
+      team: [
+        { es: "Chinatown — imágenes base, sobreimpresiones, locución y música", en: "Chinatown — base images, supers, voiceover and music" },
+      ],
+    },
   },
   {
     slug: "soprole-zerolacto",
@@ -86,6 +122,16 @@ export const projects: Project[] = [
       "/projects/soprole-zerolacto/09.webp",
     ],
     featured: false,
+    credits: {
+      modality: "team",
+      role: {
+        es: ["Animación de cada plano", "Imágenes adicionales", "Montaje con efectos de corte"],
+        en: ["Animation of every shot", "Additional images", "Editing with cut effects"],
+      },
+      team: [
+        { es: "Chinatown — imágenes base, locución y mezcla", en: "Chinatown — base images, voiceover and mix" },
+      ],
+    },
   },
   {
     slug: "pomarola",
@@ -119,6 +165,16 @@ export const projects: Project[] = [
       "/projects/pomarola/09.webp",
     ],
     featured: true,
+    credits: {
+      modality: "team",
+      role: {
+        es: ["Imágenes rehechas y adaptadas a cliente y agencia", "Altas para print", "Retoque en alta de 2 imágenes", "Animación", "Lip sync sobre la locución", "Upscaling de 2 videos", "Efectos de sonido"],
+        en: ["Images remade to client and agency requirements", "High-res files for print", "High-res retouching of 2 images", "Animation", "Lip sync over the voiceover", "Upscaling of 2 videos", "Sound effects"],
+      },
+      team: [
+        { es: "Bravo Studio — locuciones, edición, cierre de pack y adaptaciones", en: "Bravo Studio — voiceovers, editing, pack shot and adaptations" },
+      ],
+    },
   },
   {
     slug: "parque-arauco-ddm",
@@ -149,6 +205,16 @@ export const projects: Project[] = [
       "/projects/parque-arauco-ddm/09.webp",
     ],
     featured: true,
+    credits: {
+      modality: "team",
+      role: {
+        es: ["Imágenes rehechas en 9:16 y 16:9", "Preparación de las locuciones para lip sync", "Lip sync de dos personajes", "Armado de ambas versiones"],
+        en: ["Images remade in 9:16 and 16:9", "Voiceover prep for lip sync", "Lip sync for two characters", "Assembly of both versions"],
+      },
+      team: [
+        { es: "Bravo Studio — audio", en: "Bravo Studio — audio" },
+      ],
+    },
   },
   {
     slug: "kross",
@@ -179,6 +245,13 @@ export const projects: Project[] = [
       "/projects/kross/09.webp",
     ],
     featured: false,
+    credits: {
+      modality: "full",
+      role: {
+        es: ["Imágenes recreadas desde los bocetos", "Personaje consistente", "Revisión de logos", "Post digital", "Animación en 9:16", "Reframe a 16:9"],
+        en: ["Images recreated from the sketches", "Consistent character", "Logo review", "Digital post", "Animation in 9:16", "Reframe to 16:9"],
+      },
+    },
   },
   {
     slug: "super-pollo",
@@ -204,6 +277,17 @@ export const projects: Project[] = [
       "/projects/super-pollo/04.webp",
     ],
     featured: true,
+    credits: {
+      modality: "team",
+      role: {
+        es: ["Tupper generado a partir del producto real", "Consistencia del personaje", "Animación en todas sus escenas", "Seguimiento de cámara y reemplazo por logo vectorial", "Integración de color", "Packshot de la línea"],
+        en: ["Tupper character generated from the real product", "Character consistency", "Animation in every scene", "Camera tracking and vector logo replacement", "Color integration", "Product line packshot"],
+      },
+      scope: { es: "100% de las tomas de producto", en: "100% of the product shots" },
+      team: [
+        { es: "Productora interna de video — rodaje", en: "In-house video production — live-action shoot" },
+      ],
+    },
   },
   {
     slug: "mochilas-head",
@@ -238,6 +322,16 @@ export const projects: Project[] = [
       "/projects/mochilas-head/06.webp",
     ],
     featured: true,
+    credits: {
+      modality: "team",
+      role: {
+        es: ["Generación de tomas", "Construcción del movimiento", "Edición sincronizada con la música"],
+        en: ["Shot generation", "Motion design", "Editing synced to the music"],
+      },
+      team: [
+        { es: "Estudio Pic-Nic — 8 imágenes base", en: "Estudio Pic-Nic — 8 base images" },
+      ],
+    },
   },
   {
     slug: "santander",
@@ -264,6 +358,16 @@ export const projects: Project[] = [
       "/projects/santander/05.webp",
     ],
     featured: true,
+    credits: {
+      modality: "team",
+      role: {
+        es: ["Intro con las \"S\" apareciendo en distintas texturas", "Tomas de concierto generadas con IA como inserts del material filmado"],
+        en: ["Intro with the \"S\" appearing in different textures", "AI-generated concert shots as inserts for the filmed footage"],
+      },
+      team: [
+        { es: "UOIEA y Publicis Chile — comercial original", en: "UOIEA and Publicis Chile — original commercial" },
+      ],
+    },
   },
   {
     slug: "paris-electro",
@@ -289,6 +393,17 @@ export const projects: Project[] = [
       "/projects/paris-electro/04.webp",
     ],
     featured: false,
+    credits: {
+      modality: "team",
+      role: {
+        es: ["Generación de las tomas con el notebook que habla", "Animación", "Post para que el notebook hable", "Sonidos", "Másters con cierres"],
+        en: ["Generation of the talking-notebook shots", "Animation", "Post to make the notebook talk", "Sound", "Masters with end cards"],
+      },
+      scope: { es: "5 tomas nuevas dentro de un comercial existente", en: "5 new shots inside an existing commercial" },
+      team: [
+        { es: "BBDO — comercial original", en: "BBDO — original commercial" },
+      ],
+    },
   },
   {
     slug: "sprim",
@@ -315,6 +430,16 @@ export const projects: Project[] = [
       "/projects/sprim/5.webp",
     ],
     featured: false,
+    credits: {
+      modality: "partner",
+      role: {
+        es: ["Personajes y locaciones regenerados", "Casting de la familia", "Animación", "Montaje", "Voces", "Pack final"],
+        en: ["Characters and locations regenerated", "Family casting", "Animation", "Editing", "Voices", "Final pack shot"],
+      },
+      team: [
+        { es: "IA Films — productora que nos contrató para llevar el proyecto", en: "IA Films — production company that hired us to lead the project" },
+      ],
+    },
   },
   {
     slug: "zapatillas-falabella",
@@ -344,6 +469,16 @@ export const projects: Project[] = [
       "/projects/zapatillas-falabella/07.webp",
     ],
     featured: false,
+    credits: {
+      modality: "team",
+      role: {
+        es: ["Animación con IA", "Postproducción", "Armado final"],
+        en: ["AI animation", "Post-production", "Final assembly"],
+      },
+      team: [
+        { es: "Chinatown — imágenes base", en: "Chinatown — base images" },
+      ],
+    },
   },
   {
     slug: "proyecto-mg",
@@ -372,6 +507,16 @@ export const projects: Project[] = [
       "/projects/proyecto-mg/06.webp",
     ],
     featured: false,
+    credits: {
+      modality: "team",
+      role: {
+        es: ["Animación de todas las imágenes", "Montaje", "Corrección de color", "Cierre"],
+        en: ["Animation of every image", "Editing", "Color correction", "End card"],
+      },
+      team: [
+        { es: "IA Films — imágenes", en: "IA Films — images" },
+      ],
+    },
   },
   {
     slug: "bburago-autos",
@@ -401,6 +546,17 @@ export const projects: Project[] = [
       "/projects/bburago-autos/03.webp",
     ],
     featured: false,
+    credits: {
+      modality: "team",
+      role: {
+        es: ["Cuadro de cada punto de corte del rodaje", "Imágenes regeneradas para cada auto", "Animación de las secuencias fantásticas de cada auto"],
+        en: ["Frame pulled at every cut point of the shoot", "Images regenerated for each car", "Animation of each car's fantasy sequence"],
+      },
+      scope: { es: "Los inserts de los autos", en: "The car inserts" },
+      team: [
+        { es: "Estudio Dios — rodaje", en: "Estudio Dios — live-action shoot" },
+      ],
+    },
   },
   {
     slug: "frutos-de-chile",
@@ -428,5 +584,12 @@ export const projects: Project[] = [
       "/projects/frutos-de-chile/6.webp",
     ],
     featured: false,
+    credits: {
+      modality: "full",
+      role: {
+        es: ["Casting digital de personajes", "Imágenes con estilo y luz consistentes", "Animación", "Postproducción", "Pieza de 40\" y sus adaptaciones"],
+        en: ["Digital character casting", "Images with consistent style and light", "Animation", "Post-production", "40\" spot and its adaptations"],
+      },
+    },
   },
 ];
